@@ -1,0 +1,115 @@
+GameOff = 0x20 - Offset of first file
+
+GameOff + 0x0000 - Playtime
+GameOff + 0x0004 - unknown;
+GameOff + 0x0008 - Date Time (When the file was saved, ticks from 1-1-2001 12AM)
+GameOff + 0x0010 - Player Origin (stored as 6 floats)
+GameOff + 0x0028 - Camera Origin (stored as 6 floats)
+GameOff + 0x08D3 - Location ID (Displays location name on the load screen)
+GameOff + 0x08D4 - Hero's Name (stored as a Big Endian Unicode String)
+GameOff + 0x08E6 - Groose Cutscene before retrieving first sword(Need to enter a building to enable or disable it if in skyloft overworld)
+GameOff + 0x08E7 - Zelda skyloft cutscene infront of the statue before the ceremony;
+GameOff + 0x08F1 - Z-Target Intro;
+GameOff + 0x08F8 - Crate intro
+GameOff + 0x0936 - Unknown set to 0x04 after talking to horwell for the first time and accepting the "mission";
+GameOff + 0x09D2 - Interface type (0x00 = standard, 0x40 = Pro, Light = 0x20, OR it by 0x08 if Fi has told link about it. [The 0x08 doesn't really do anything substantial])
+GameOff + 0x09E5 - Stamina tutorial related, probably used for other things as well (set to 0x10 afterwards), also used for the boy's rolling "tutorial"
+GameOff + 0x09E7 - Stamina fruit (and probably other things)
+GameOff + 0x09F2 - Items (I think there are more locations for this though)
+GameOff + 0x0A3C - Amber Relic
+GameOff + 0x0A44 - Sky Stag beatle
+GameOff + 0x0A46 - Gerudo DragonFly
+GameOff + 0x0A5E - Rupees
+GameOff + 0x0A60 - Slingshot ammo. (no it's not a short :P)
+GmaeOff + 0x0A61 - Slingshot ammo. 
+GameOff + 0x1A66 - Dash Intro and Mia Rescued flag (0x08 = dash, 0x50 = mia rescued or them together to complete both);
+GameOff + 0x1A68 - Unknown flag seems to deal with Horwell and the skyloft intro scene? o.0
+GameOff + 0x1A69 - Skyloft Flags1 (0x00, 0x10, 0x30 and 0x70 are current known values)
+GameOff + 0x1A6B - Unknown set to 0x02 after talking to horwell for the first time 0x10 after talking to jakamar, OR them together to get the final flag, 0x7A Pippit calls you over about your loft wing.
+GameOff + 0x1B80 - Lanaryu Mining Facility sandPile
+GameOff + 0x2AA8 - Lanayru Mining Facility Chest flags1
+GameOff + 0x30F5 - Skyloft Flags2 (0x00 haven't entered the main area yet, 0x80 the cutscene played imediately after you leave the academy has been played, 0x82 or 0x84 Instructor horwell has been talked to about Mia, 0x86 player accepted the rescue mission, 0x8E Spoke to Horwell after Zelda's second scene)
+GameOff + 0x30FB - Whether the rupee in links room was taken or not.
+GameOff + 0x5302 - Total Hearts
+GameOff + 0x5304 - Unk (Total heart pieces?)
+GameOff + 0x5306 - Current Health
+GameOff + 0x531C - Current Map
+GameOff + 0x533C - Current Location (Skyloft, Lanayru Mines, etc.)
+GameOff + 0x535C - Seems to be a Copy of of 0x533c
+GameOff + 0x53AE - Equipped Weapon
+GameOff + 0x53B0 - Deals with Minus button equipment not sure what it does exactly
+GameOff + 0x53B1 - Same as above.
+GameOff + 0x53BC - Checksum
+
+LocationIDs
+0x00 - Skyloft
+0x01 - Sealed Grounds
+0x02 - Faron Woods
+0x03 - Deep Woods
+0x04 - Lake Floria
+0x05 - Eldin Volcano
+0x06 - Volcano Summit
+0x07 - Lanayru Mine
+0x08 - Lanayru Desert
+0x09 - Lanayru Gorge
+0x0A - Lanaryu Sand Sea
+0x0B - Skyview Temple
+0x0C - Earth Temple
+0x0D - Lanaryu Mining Facility
+0x0E - Ancient Cistern
+0x0F - Sandship
+0x10 - Fire Sanctuary
+0x11 - Sky Keep
+0x12 - Farore's Silent Realm
+0x13 - Nayru's Silent Realm
+0x14 - Din's Silent Realm
+0x15 - The Goddesses's Silent Realm
+0x16 - The Sky
+0x17 - Nothing (green)
+0x18 - Nothing (red)
+0x19 - Nothing (tan)
+0x1A - Fun Fun Island
+0x1B - Pumpkin Landing
+0x1C - Beedles Island
+0x1D - Bamboo Island
+0x1E - Isle of Songs
+0x1F - Bug Rock
+0x20 - Nothing (blue)
+0x21 - Skyview Spring
+0x22 - Earth Spring
+9x23 - Temple Of Time
+0x24 - Knight Academy
+0x25 - Bazaar
+0x26 - Sparring Hall
+0x27 - Nothing (blue)
+0x28 - Lanayru Caves
+0x29 - Inside the Great Tree
+0x2A - Nothing (green)
+0x2B - Skipper's Retreat
+0x2C - Shipyard
+0x2D - Pirate Stronghold
+0x2E - Inside the Statue of the Goddess
+0x2F - Waterfall
+0x30 - Orielle & Parrow's House
+0x31 - Rupin's House
+0x32 - Bertie's House
+0x33 - The Lumpy Pumpkin
+0x34 - Sparrot's House
+0x35 - Gondo's House
+0x36 - Peatrice's House
+0x37 - Batreaux's house
+0x38 - Beedle's Airshop
+0x39 - Inside the Thunderhead
+0x3A - To Faron Woods
+0x3B - To Eldin Volcano
+0x3C - To Lanayru Desert
+0x3D - Pipit's House
+0x3E - Piper's House
+0x3F - Kukiel's House
+0x40 - Hylia's Realm
+0x41 - Sealed Temple
+0x42 - Temple Of Hylia
+0x43 - Nothing (brown)
+0x44 - Nothing (brown)
+0x45 - Nothing (brown)
+anything greater causes the game to crash
