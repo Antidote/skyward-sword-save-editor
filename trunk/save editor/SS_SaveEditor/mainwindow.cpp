@@ -72,23 +72,32 @@ void MainWindow::SetupActions()
 
 void MainWindow::SetupConnections()
 {
-    connect(m_ui->nameLineEdit,    SIGNAL(textChanged(QString)), this, SLOT(onTextChanged(QString)));
-    connect(m_ui->playerXSpinBox,  SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
-    connect(m_ui->playerYSpinBox,  SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
-    connect(m_ui->playerZSpinBox,  SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
-    connect(m_ui->rupeeSpinBox,    SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
-    connect(m_ui->totalHPSpinBox,  SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
-    connect(m_ui->unkHPSpinBox,    SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
-    connect(m_ui->curHPSpinBox,    SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
-    connect(m_ui->curMapLineEdit,  SIGNAL(textChanged(QString)), this, SLOT(onTextChanged(QString)));
-    connect(m_ui->curAreaLineEdit,  SIGNAL(textChanged(QString)), this, SLOT(onTextChanged(QString)));
-    connect(m_ui->curRoomLineEdit,  SIGNAL(textChanged(QString)), this, SLOT(onTextChanged(QString)));
-    connect(m_gameGroup,           SIGNAL(triggered(QAction*)),  this, SLOT(onGameChanged(QAction*)));
-    connect(m_ui->actionOpen,      SIGNAL(triggered()),          this, SLOT(onOpen()));
-    connect(m_ui->actionSave,      SIGNAL(triggered()),          this, SLOT(onSave()));
-    connect(m_ui->actionClose,     SIGNAL(triggered()),          this, SLOT(onClose()));
-    connect(m_ui->actionReload,    SIGNAL(triggered()),          this, SLOT(onReload()));
-    connect(m_ui->actionExit,      SIGNAL(triggered()),          this, SLOT(close()));
+    connect(m_ui->nameLineEdit,      SIGNAL(textChanged(QString)), this, SLOT(onTextChanged(QString)));
+    connect(m_ui->playerXSpinBox,    SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
+    connect(m_ui->playerYSpinBox,    SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
+    connect(m_ui->playerZSpinBox,    SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
+    connect(m_ui->playerRollSpinBox, SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
+    connect(m_ui->playerPitchSpinBox,SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
+    connect(m_ui->playerYawSpinBox,  SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
+    connect(m_ui->cameraXSpinBox,    SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
+    connect(m_ui->cameraYSpinBox,    SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
+    connect(m_ui->cameraZSpinBox,    SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
+    connect(m_ui->cameraRollSpinBox, SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
+    connect(m_ui->cameraPitchSpinBox,SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
+    connect(m_ui->cameraYawSpinBox,  SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
+    connect(m_ui->rupeeSpinBox,      SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
+    connect(m_ui->totalHPSpinBox,    SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
+    connect(m_ui->unkHPSpinBox,      SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
+    connect(m_ui->curHPSpinBox,      SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
+    connect(m_ui->curMapLineEdit,    SIGNAL(textChanged(QString)), this, SLOT(onTextChanged(QString)));
+    connect(m_ui->curAreaLineEdit,   SIGNAL(textChanged(QString)), this, SLOT(onTextChanged(QString)));
+    connect(m_ui->curRoomLineEdit,   SIGNAL(textChanged(QString)), this, SLOT(onTextChanged(QString)));
+    connect(m_gameGroup,             SIGNAL(triggered(QAction*)),  this, SLOT(onGameChanged(QAction*)));
+    connect(m_ui->actionOpen,        SIGNAL(triggered()),          this, SLOT(onOpen()));
+    connect(m_ui->actionSave,        SIGNAL(triggered()),          this, SLOT(onSave()));
+    connect(m_ui->actionClose,       SIGNAL(triggered()),          this, SLOT(onClose()));
+    connect(m_ui->actionReload,      SIGNAL(triggered()),          this, SLOT(onReload()));
+    connect(m_ui->actionExit,        SIGNAL(triggered()),          this, SLOT(close()));
 }
 
 void MainWindow::onTextChanged(QString text)
@@ -133,10 +142,22 @@ void MainWindow::onValueChanged()
     m_gameFile->SetPlayerX((float)m_ui->playerXSpinBox->value());
     m_gameFile->SetPlayerY((float)m_ui->playerYSpinBox->value());
     m_gameFile->SetPlayerZ((float)m_ui->playerZSpinBox->value());
+    m_gameFile->SetPlayerRoll((float)m_ui->playerRollSpinBox->value());
+    m_gameFile->SetPlayerPitch((float)m_ui->playerPitchSpinBox->value());
+    m_gameFile->SetPlayerYaw((float)m_ui->playerYawSpinBox->value());
+    m_gameFile->SetCameraX((float)m_ui->cameraXSpinBox->value());
+    m_gameFile->SetCameraY((float)m_ui->cameraYSpinBox->value());
+    m_gameFile->SetCameraZ((float)m_ui->cameraZSpinBox->value());
+    m_gameFile->SetCameraRoll((float)m_ui->cameraRollSpinBox->value());
+    m_gameFile->SetCameraPitch((float)m_ui->cameraPitchSpinBox->value());
+    m_gameFile->SetCameraYaw((float)m_ui->cameraYawSpinBox->value());
     m_gameFile->SetTotalHP((short)m_ui->totalHPSpinBox->value());
     m_gameFile->SetUnkHP((short)m_ui->unkHPSpinBox->value());
     m_gameFile->SetCurrentHP((short)m_ui->curHPSpinBox->value());
     m_gameFile->SetRupees((short)m_ui->rupeeSpinBox->value());
+
+    m_gameFile->UpdateChecksum();
+    this->setWindowTitle("0x" + QString("").sprintf("%08X", m_gameFile->GetChecksum()));
 }
 
 void MainWindow::onOpen()
@@ -151,7 +172,9 @@ void MainWindow::onOpen()
             m_gameFile->Close();
 
         if (m_gameFile->Open(m_curGame, file))
+        {
             UpdateInfo();
+        }
     }
 }
 
@@ -184,6 +207,7 @@ void MainWindow::onGameChanged(QAction* game)
 
     m_gameFile->SetGame(m_curGame);
     UpdateInfo();
+    this->setWindowTitle("0x" + QString("").sprintf("%08X", m_gameFile->GetChecksum()));
 }
 
 void MainWindow::onReload()
@@ -196,6 +220,7 @@ void MainWindow::onReload()
     {
         UpdateInfo();
         m_ui->statusBar->showMessage(tr("File successfully reloaded"));
+        this->setWindowTitle("0x" + QString("").sprintf("%08X", m_gameFile->GetChecksum()));
     }
     else
     {
@@ -230,6 +255,15 @@ void MainWindow::UpdateInfo()
     m_ui->playerXSpinBox->setValue(m_gameFile->GetPlayerX());
     m_ui->playerYSpinBox->setValue(m_gameFile->GetPlayerY());
     m_ui->playerZSpinBox->setValue(m_gameFile->GetPlayerZ());
+    m_ui->playerRollSpinBox->setValue(m_gameFile->GetPlayerRoll());
+    m_ui->playerPitchSpinBox->setValue(m_gameFile->GetPlayerPitch());
+    m_ui->playerYawSpinBox->setValue(m_gameFile->GetPlayerYaw());
+    m_ui->cameraXSpinBox->setValue(m_gameFile->GetCameraX());
+    m_ui->cameraYSpinBox->setValue(m_gameFile->GetCameraY());
+    m_ui->cameraZSpinBox->setValue(m_gameFile->GetCameraZ());
+    m_ui->cameraRollSpinBox->setValue(m_gameFile->GetCameraRoll());
+    m_ui->cameraPitchSpinBox->setValue(m_gameFile->GetCameraPitch());
+    m_ui->cameraYawSpinBox->setValue(m_gameFile->GetCameraYaw());
     m_ui->curMapLineEdit->setText(m_gameFile->GetCurrentMap());
     m_ui->curAreaLineEdit->setText(m_gameFile->GetCurrentArea());
     m_ui->curRoomLineEdit->setText(m_gameFile->GetCurrentRoom());

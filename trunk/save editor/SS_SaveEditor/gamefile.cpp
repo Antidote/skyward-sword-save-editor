@@ -196,15 +196,91 @@ float GameFile::GetPlayerRoll() const
     return swapFloat(*(float*)(m_data + GetGameOffset() + 0x001C));
 }
 
+void GameFile::SetPlayerRoll(float val)
+{
+    *(float*)(m_data + GetGameOffset() + 0x001C) = swapFloat(val);
+}
+
 float GameFile::GetPlayerPitch() const
 {
     return swapFloat(*(float*)(m_data + GetGameOffset() + 0x0020));
+}
+
+void GameFile::SetPlayerPitch(float val)
+{
+    *(float*)(m_data + GetGameOffset() + 0x0020) = swapFloat(val);
 }
 
 float GameFile::GetPlayerYaw() const
 {
     return swapFloat(*(float*)(m_data + GetGameOffset() + 0x0024));
 }
+
+void GameFile::SetPlayerYaw(float val)
+{
+    *(float*)(m_data + GetGameOffset() + 0x0024) = swapFloat(val);
+}
+
+float GameFile::GetCameraX() const
+{
+    return swapFloat(*(float*)(m_data + GetGameOffset() + 0x0028));
+}
+
+void GameFile::SetCameraX(float val)
+{
+    *(float*)(m_data + GetGameOffset() + 0x0028) = swapFloat(val);
+}
+
+float GameFile::GetCameraY() const
+{
+    return swapFloat(*(float*)(m_data + GetGameOffset() + 0x002C));
+}
+
+void GameFile::SetCameraY(float val)
+{
+    *(float*)(m_data + GetGameOffset() + 0x002C) = swapFloat(val);
+}
+
+float GameFile::GetCameraZ() const
+{
+    return swapFloat(*(float*)(m_data + GetGameOffset() + 0x0030));
+}
+
+void GameFile::SetCameraZ(float val)
+{
+    *(float*)(m_data + GetGameOffset() + 0x0030) = swapFloat(val);
+}
+
+float GameFile::GetCameraRoll() const
+{
+    return swapFloat(*(float*)(m_data + GetGameOffset() + 0x0034));
+}
+
+void GameFile::SetCameraRoll(float val)
+{
+    *(float*)(m_data + GetGameOffset() + 0x0034) = swapFloat(val);
+}
+
+float GameFile::GetCameraPitch() const
+{
+    return swapFloat(*(float*)(m_data + GetGameOffset() + 0x0038));
+}
+
+void GameFile::SetCameraPitch(float val)
+{
+    *(float*)(m_data + GetGameOffset() + 0x0038) = swapFloat(val);
+}
+
+float GameFile::GetCameraYaw() const
+{
+    return swapFloat(*(float*)(m_data + GetGameOffset() + 0x003C));
+}
+
+void GameFile::SetCameraYaw(float val)
+{
+    *(float*)(m_data + GetGameOffset() + 0x003C) = swapFloat(val);
+}
+
 
 QString GameFile::GetPlayerName() const
 {
