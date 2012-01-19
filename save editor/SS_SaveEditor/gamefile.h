@@ -43,6 +43,18 @@ public:
     void  SetPlayerPitch(float val);
     float GetPlayerYaw() const;
     void  SetPlayerYaw(float val);
+    float GetCameraX() const;
+    void  SetCameraX(float val);
+    float GetCameraY() const;
+    void  SetCameraY(float val);
+    float GetCameraZ() const;
+    void  SetCameraZ(float val);
+    float GetCameraRoll() const;
+    void  SetCameraRoll(float val);
+    float GetCameraPitch() const;
+    void  SetCameraPitch(float val);
+    float GetCameraYaw() const;
+    void  SetCameraYaw(float val);
     QString GetPlayerName() const;
     void SetPlayerName(const QString& name);
     ushort GetRupees() const;

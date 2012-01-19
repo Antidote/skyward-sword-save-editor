@@ -316,7 +316,17 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QDoubleSpinBox" name="doubleSpinBox"/>
+                  <widget class="QDoubleSpinBox" name="cameraXSpinBox">
+                   <property name="decimals">
+                    <number>6</number>
+                   </property>
+                   <property name="minimum">
+                    <double>-1000000.000000000000000</double>
+                   </property>
+                   <property name="maximum">
+                    <double>1000000.000000000000000</double>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -330,7 +340,17 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QDoubleSpinBox" name="doubleSpinBox_2"/>
+                  <widget class="QDoubleSpinBox" name="cameraYSpinBox">
+                   <property name="decimals">
+                    <number>6</number>
+                   </property>
+                   <property name="minimum">
+                    <double>-1000000.000000000000000</double>
+                   </property>
+                   <property name="maximum">
+                    <double>1000000.000000000000000</double>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -344,12 +364,15 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="camZLineEdit">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
+                  <widget class="QDoubleSpinBox" name="cameraZSpinBox">
+                   <property name="decimals">
+                    <number>6</number>
+                   </property>
+                   <property name="minimum">
+                    <double>-1000000.000000000000000</double>
+                   </property>
+                   <property name="value">
+                    <double>0.000000000000000</double>
                    </property>
                   </widget>
                  </item>
@@ -365,12 +388,15 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="camRollLineEdit">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
+                  <widget class="QDoubleSpinBox" name="cameraRollSpinBox">
+                   <property name="decimals">
+                    <number>6</number>
+                   </property>
+                   <property name="minimum">
+                    <double>-1000000.000000000000000</double>
+                   </property>
+                   <property name="maximum">
+                    <double>1000000.000000000000000</double>
                    </property>
                   </widget>
                  </item>
@@ -386,12 +412,15 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="camPitchLineEdit">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
+                  <widget class="QDoubleSpinBox" name="cameraPitchSpinBox">
+                   <property name="decimals">
+                    <number>6</number>
+                   </property>
+                   <property name="minimum">
+                    <double>-1000000.000000000000000</double>
+                   </property>
+                   <property name="maximum">
+                    <double>1000000.000000000000000</double>
                    </property>
                   </widget>
                  </item>
@@ -407,12 +436,15 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="camYawLineEdit">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
+                  <widget class="QDoubleSpinBox" name="cameraYawSpinBox">
+                   <property name="decimals">
+                    <number>6</number>
+                   </property>
+                   <property name="minimum">
+                    <double>-1000000.000000000000000</double>
+                   </property>
+                   <property name="maximum">
+                    <double>1000000.000000000000000</double>
                    </property>
                   </widget>
                  </item>
@@ -540,12 +572,18 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="playerRollLineEdit">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
+                  <widget class="QDoubleSpinBox" name="playerRollSpinBox">
+                   <property name="decimals">
+                    <number>6</number>
+                   </property>
+                   <property name="minimum">
+                    <double>-1000000.000000000000000</double>
+                   </property>
+                   <property name="maximum">
+                    <double>1000000.000000000000000</double>
+                   </property>
+                   <property name="value">
+                    <double>0.000000000000000</double>
                    </property>
                   </widget>
                  </item>
@@ -561,12 +599,18 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="playerPitchLineEdit">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
+                  <widget class="QDoubleSpinBox" name="playerPitchSpinBox">
+                   <property name="decimals">
+                    <number>6</number>
+                   </property>
+                   <property name="minimum">
+                    <double>-1000000.000000000000000</double>
+                   </property>
+                   <property name="maximum">
+                    <double>1000000.000000000000000</double>
+                   </property>
+                   <property name="value">
+                    <double>0.000000000000000</double>
                    </property>
                   </widget>
                  </item>
@@ -582,12 +626,15 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_6">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
+                  <widget class="QDoubleSpinBox" name="playerYawSpinBox">
+                   <property name="decimals">
+                    <number>6</number>
+                   </property>
+                   <property name="minimum">
+                    <double>-1000000.000000000000000</double>
+                   </property>
+                   <property name="maximum">
+                    <double>1000000.000000000000000</double>
                    </property>
                   </widget>
                  </item>
