@@ -45,11 +45,11 @@ float swapFloat(float val)
 
 quint64 swap64(quint64 val)
 {
-//#if Q_BYTE_ORDER == Q_LITTLE_ENDIAN
+#if Q_BYTE_ORDER == Q_LITTLE_ENDIAN
     return (quint64)((quint64)swap32(val) << 32 | swap32(val >> 32));
-//#else
-//    return val;
-//#endif
+#else
+    return val;
+#endif
 }
 
 GameFile::GameFile(const QString& filepath, Game game) :
@@ -172,17 +172,20 @@ PlayTime GameFile::GetPlayTime() const
     PlayTime playTime;
     quint64 tmp = swap64(*(quint64*)(m_data + GetGameOffset()));
     playTime.Hours = ((tmp / TICKS_PER_SECOND) / 60) / 60;
-    playTime.Mins =  ((tmp / TICKS_PER_SECOND) / 60) % 60;
-    playTime.Seconds = tmp / TICKS_PER_SECOND;
+    playTime.Minutes =  ((tmp / TICKS_PER_SECOND) / 60) % 60;
+    playTime.Seconds = ((tmp / TICKS_PER_SECOND) % 60);
+    playTime.RawTicks = tmp;
     return playTime;
 }
 
+// Sets the current playtime
 void GameFile::SetPlayTime(PlayTime val)
 {
-    quint64 totalSeconds = (quint64)(((60 * val.Mins)));
-    totalSeconds += (quint64)(val.Hours * 60) * 60;
+    quint64 totalSeconds = (val.Hours * 60) * 60;
+    totalSeconds += val.Minutes * 60;
+    totalSeconds += val.Seconds;
     totalSeconds *= TICKS_PER_SECOND;
-    qDebug() << " PlayTime: " << swap64(*(quint64*)(m_data + GetGameOffset())) << " New Play Time: " << totalSeconds;
+    *(quint64*)(m_data + GetGameOffset()) = swap64(totalSeconds);
 }
 
 QDateTime GameFile::GetSaveTime() const

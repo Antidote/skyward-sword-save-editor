@@ -8,7 +8,7 @@ class QDateTime;
 struct PlayTime
 {
     int Hours;
-    int Mins;
+    int Minutes;
     int Seconds;
     quint64 RawTicks;
 };
