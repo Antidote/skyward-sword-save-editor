@@ -252,8 +252,10 @@ void MainWindow::UpdateInfo()
     }
 
     m_isUpdating = true;
+    m_ui->playHoursLineEdit->setText(QString("%1").arg(m_gameFile->GetPlayTime().Hours));
+    m_ui->playMinutesLineEdit->setText(QString("%1").arg(m_gameFile->GetPlayTime().Minutes));
+    m_ui->playSecondsLineEdit->setText(QString("%1").arg(m_gameFile->GetPlayTime().Seconds));
     m_gameFile->SetPlayTime(m_gameFile->GetPlayTime());
-    m_ui->playTimeLineEdit->setText(QString().sprintf("%i:%i:%i", m_gameFile->GetPlayTime().Hours, m_gameFile->GetPlayTime().Mins, m_gameFile->GetPlayTime().Seconds));
     m_ui->saveTimeEdit->setDateTime(m_gameFile->GetSaveTime());
     m_ui->playerXSpinBox->setValue(m_gameFile->GetPlayerX());
     m_ui->playerYSpinBox->setValue(m_gameFile->GetPlayerY());
