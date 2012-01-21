@@ -1,6 +1,12 @@
 #include "gamefile.h"
 #include "CRC32.h"
 
+#include <QDateTime>
+#include <QDebug>
+
+#define TICKS_PER_SECOND 60750000
+#define SECONDS_TO_2000  946684800
+
 quint16 swap16(quint16 val)
 {
 #if Q_BYTE_ORDER == Q_LITTLE_ENDIAN
@@ -39,11 +45,11 @@ float swapFloat(float val)
 
 quint64 swap64(quint64 val)
 {
-#if Q_BYTE_ORDER == Q_LITTLE_ENDIAN
+//#if Q_BYTE_ORDER == Q_LITTLE_ENDIAN
     return (quint64)((quint64)swap32(val) << 32 | swap32(val >> 32));
-#else
-    return val;
-#endif
+//#else
+//    return val;
+//#endif
 }
 
 GameFile::GameFile(const QString& filepath, Game game) :
@@ -159,6 +165,31 @@ void GameFile::SetGame(Game game)
 QString GameFile::GetFilename() const
 {
     return m_filename;
+}
+
+PlayTime GameFile::GetPlayTime() const
+{
+    PlayTime playTime;
+    quint64 tmp = swap64(*(quint64*)(m_data + GetGameOffset()));
+    playTime.Hours = ((tmp / TICKS_PER_SECOND) / 60) / 60;
+    playTime.Mins =  ((tmp / TICKS_PER_SECOND) / 60) % 60;
+    playTime.Seconds = tmp / TICKS_PER_SECOND;
+    return playTime;
+}
+
+void GameFile::SetPlayTime(PlayTime val)
+{
+    quint64 totalSeconds = (quint64)(((60 * val.Mins)));
+    totalSeconds += (quint64)(val.Hours * 60) * 60;
+    totalSeconds *= TICKS_PER_SECOND;
+    qDebug() << " PlayTime: " << swap64(*(quint64*)(m_data + GetGameOffset())) << " New Play Time: " << totalSeconds;
+}
+
+QDateTime GameFile::GetSaveTime() const
+{
+    QDateTime tmp(QDate(2000, 1, 1));
+    tmp = tmp.addSecs(swap64(*(quint64*)(m_data + GetGameOffset() + 0x0008)) / TICKS_PER_SECOND);
+    return tmp;
 }
 
 float GameFile::GetPlayerX() const

@@ -9,6 +9,7 @@
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QApplication>
+#include <QDateTime>
 
 #ifdef DEBUG
 QString dir("D:/Projects/dolphin-emu/Binary/x64/User/Wii/title/00010000/534f5545/data");
@@ -250,8 +251,10 @@ void MainWindow::UpdateInfo()
         return;
     }
 
-
     m_isUpdating = true;
+    m_gameFile->SetPlayTime(m_gameFile->GetPlayTime());
+    m_ui->playTimeLineEdit->setText(QString().sprintf("%i:%i:%i", m_gameFile->GetPlayTime().Hours, m_gameFile->GetPlayTime().Mins, m_gameFile->GetPlayTime().Seconds));
+    m_ui->saveTimeEdit->setDateTime(m_gameFile->GetSaveTime());
     m_ui->playerXSpinBox->setValue(m_gameFile->GetPlayerX());
     m_ui->playerYSpinBox->setValue(m_gameFile->GetPlayerY());
     m_ui->playerZSpinBox->setValue(m_gameFile->GetPlayerZ());

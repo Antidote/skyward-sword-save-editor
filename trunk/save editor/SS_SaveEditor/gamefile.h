@@ -2,6 +2,17 @@
 #define GAMEFILE_H
 
 #include <QFile>
+
+class QDateTime;
+
+struct PlayTime
+{
+    int Hours;
+    int Mins;
+    int Seconds;
+    quint64 RawTicks;
+};
+
 class GameFile
 {
 public:
@@ -31,6 +42,9 @@ public:
 
     uint GetGameOffset() const;
 
+    PlayTime GetPlayTime() const;
+    void  SetPlayTime(PlayTime val);
+    QDateTime GetSaveTime() const;
     float GetPlayerX() const;
     void  SetPlayerX(float val);
     float GetPlayerY() const;

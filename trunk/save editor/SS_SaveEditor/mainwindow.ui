@@ -57,7 +57,14 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QSpinBox" name="playTimeSpinBox"/>
+                  <widget class="QLineEdit" name="playTimeLineEdit">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -71,7 +78,7 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QSpinBox" name="saveTimeSpinBox"/>
+                  <widget class="QDateTimeEdit" name="saveTimeEdit"/>
                  </item>
                 </layout>
                </item>
@@ -139,6 +146,8 @@
                 </layout>
                </item>
               </layout>
+              <zorder></zorder>
+              <zorder></zorder>
              </widget>
             </item>
             <item>
