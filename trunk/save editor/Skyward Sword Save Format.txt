@@ -125,3 +125,32 @@ Weapon Slots:
 0x07 - Nothing
 0x08 - Bug Net
 0x09 - Harp (does nothing)
+
+ItemFlags GameOff + 0x0A12:
+0x01 - Practice Sword
+0x02 - Bug Net
+0x04 - Faron Grasshopper
+0x08 - Woodland Rhino Beetle
+0x10 - unk
+0x20 - Skyloft Mantis
+0x40 - Volcanic Ladybug
+0x80 - Blessed Butterfly
+
+ItemFlags GameOFF + 0x0A13:
+0x01 - Sail Cloth
+0x02 - Harp (Not valid until after Zelda "gives" it to you)
+0x04 - unk
+0x08 - unk
+0x10 - unk
+0x20 - unk
+0x40 - unk
+0x80 - unk
+ItemFlags GameOff + 0x0A14:
+0x01 - Lanaryu Ant
+0x02 - Sand Cicada
+0x04 - Gerudo Dragon Fly
+0x08 - Eldin Roller
+0x10 - Sky Stag Beetle
+0x20 - Starry Firefly
+0x40 - Unused
+0x80 - Unused
