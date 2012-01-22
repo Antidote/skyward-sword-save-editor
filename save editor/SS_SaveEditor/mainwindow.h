@@ -3,6 +3,7 @@
 
 #include "gamefile.h"
 #include <QMainWindow>
+#include <QDateTime>
 
 class QActionGroup;
 
@@ -21,6 +22,7 @@ public:
     void UpdateInfo();
     void ClearInfo();
 private slots:
+    void onDateTimeChanged(QDateTime);
     void onTextChanged(QString text);
     void onValueChanged();
     void onGameChanged(QAction*);

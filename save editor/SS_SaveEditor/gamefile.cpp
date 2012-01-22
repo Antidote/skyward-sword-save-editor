@@ -4,9 +4,6 @@
 #include <QDateTime>
 #include <QDebug>
 
-#define TICKS_PER_SECOND 60750000
-#define SECONDS_TO_2000  946684800
-
 quint16 swap16(quint16 val)
 {
 #if Q_BYTE_ORDER == Q_LITTLE_ENDIAN
@@ -193,6 +190,15 @@ QDateTime GameFile::GetSaveTime() const
     QDateTime tmp(QDate(2000, 1, 1));
     tmp = tmp.addSecs(swap64(*(quint64*)(m_data + GetGameOffset() + 0x0008)) / TICKS_PER_SECOND);
     return tmp;
+}
+
+// Abandoned for now (Need to figure out how to do this :/)
+void GameFile::SetSaveTime(QDateTime val)
+{/*
+    time_t time = val.toTime_t();
+    qDebug() << "Time " << (quint64)((time + SECONDS_TO_2000) * TICKS_PER_SECOND);
+    *(quint64*)(m_data + GetGameOffset() + 0x0008) = swap64();
+*/
 }
 
 float GameFile::GetPlayerX() const

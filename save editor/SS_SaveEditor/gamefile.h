@@ -5,6 +5,10 @@
 
 class QDateTime;
 
+
+#define TICKS_PER_SECOND 60750000
+#define SECONDS_TO_2000  946684800
+
 struct PlayTime
 {
     int Hours;
@@ -45,6 +49,7 @@ public:
     PlayTime GetPlayTime() const;
     void  SetPlayTime(PlayTime val);
     QDateTime GetSaveTime() const;
+    void  SetSaveTime(QDateTime val);
     float GetPlayerX() const;
     void  SetPlayerX(float val);
     float GetPlayerY() const;
