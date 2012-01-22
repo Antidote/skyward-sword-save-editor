@@ -113,3 +113,15 @@ LocationIDs
 0x44 - Nothing (brown)
 0x45 - Nothing (brown)
 anything greater causes the game to crash
+
+Weapon Slots:
+0x00 - Bombs
+0x01 - Bow
+0x02 - Claw Shot
+0x03 - Beetle
+0x04 - Sling Shot
+0x05 - Gust Bellows
+0x06 - Whip
+0x07 - Nothing
+0x08 - Bug Net
+0x09 - Harp (does nothing)
