@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>753</width>
-    <height>572</height>
+    <height>573</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -38,7 +38,7 @@
             <item>
              <widget class="QGroupBox" name="playInfoGroup">
               <property name="title">
-               <string>GroupBox</string>
+               <string>Play Stats</string>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_4">
                <property name="spacing">
@@ -759,8 +759,99 @@
       </widget>
       <widget class="QWidget" name="tab_2">
        <attribute name="title">
-        <string>Tab 2</string>
+        <string>Items</string>
        </attribute>
+       <widget class="QCheckBox" name="trainingSwdChkBox">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>30</y>
+          <width>131</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Training Sword</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="bugNetChkBox">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>60</y>
+          <width>97</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Bug Net</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="grassHopperChkBox">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>90</y>
+          <width>161</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Faron Grasshopper</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="rhinoBeetleChkBox">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>120</y>
+          <width>191</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Woodland Rhino Beetle</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="mantisChkBox">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>150</y>
+          <width>161</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Skyloft Mantis</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="ladybugChkBox">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>180</y>
+          <width>161</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Volcanic Ladybug</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="butterflyChkBox">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>210</y>
+          <width>161</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Blessed Butterfly</string>
+        </property>
+       </widget>
       </widget>
      </widget>
     </item>

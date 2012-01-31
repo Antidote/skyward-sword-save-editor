@@ -89,6 +89,13 @@ void MainWindow::SetupConnections()
     connect(m_ui->cameraPitchSpinBox, SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
     connect(m_ui->cameraYawSpinBox,   SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
     connect(m_ui->nameLineEdit,       SIGNAL(textChanged(QString)), this, SLOT(onTextChanged(QString)));
+    connect(m_ui->trainingSwdChkBox,  SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->bugNetChkBox,       SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->grassHopperChkBox,  SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->rhinoBeetleChkBox,  SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->mantisChkBox,       SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->ladybugChkBox,      SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->butterflyChkBox,    SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
     connect(m_ui->rupeeSpinBox,       SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
     connect(m_ui->totalHPSpinBox,     SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
     connect(m_ui->unkHPSpinBox,       SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
@@ -164,6 +171,13 @@ void MainWindow::onValueChanged()
     m_gameFile->SetTotalHP((short)m_ui->totalHPSpinBox->value());
     m_gameFile->SetUnkHP((short)m_ui->unkHPSpinBox->value());
     m_gameFile->SetCurrentHP((short)m_ui->curHPSpinBox->value());
+    m_gameFile->SetTrainingSword(m_ui->trainingSwdChkBox->isChecked());
+    m_gameFile->SetBugNet(m_ui->bugNetChkBox->isChecked());
+    m_gameFile->SetFaronGrasshopper(m_ui->grassHopperChkBox->isChecked());
+    m_gameFile->SetWoodlandRhinoBeetle(m_ui->rhinoBeetleChkBox->isChecked());
+    m_gameFile->SetSkyloftMantis(m_ui->mantisChkBox->isChecked());
+    m_gameFile->SetVolcanicLadybug(m_ui->ladybugChkBox->isChecked());
+    m_gameFile->SetBlessedButterfly(m_ui->butterflyChkBox->isChecked());
     m_gameFile->SetRupees((short)m_ui->rupeeSpinBox->value());
 
     m_gameFile->UpdateChecksum();
@@ -216,7 +230,7 @@ void MainWindow::onSaveAs()
 
 void MainWindow::onGameChanged(QAction* game)
 {
-    if (!m_gameFile)
+    if (!m_gameFile || m_isUpdating)
         return;
 
     if (game == m_ui->actionGame1)
@@ -293,6 +307,13 @@ void MainWindow::UpdateInfo()
     m_ui->curAreaLineEdit->setText(m_gameFile->GetCurrentArea());
     m_ui->curRoomLineEdit->setText(m_gameFile->GetCurrentRoom());
     m_ui->nameLineEdit->setText(m_gameFile->GetPlayerName());
+    m_ui->trainingSwdChkBox->setChecked(m_gameFile->GetTrainingSword());
+    m_ui->bugNetChkBox->setChecked(m_gameFile->GetBugNet());
+    m_ui->grassHopperChkBox->setChecked(m_gameFile->GetFaronGrasshopper());
+    m_ui->rhinoBeetleChkBox->setChecked(m_gameFile->GetWoodlandRhinoBeetle());
+    m_ui->mantisChkBox->setChecked(m_gameFile->GetSkyloftMantis());
+    m_ui->ladybugChkBox->setChecked(m_gameFile->GetVolcanicLadybug());
+    m_ui->butterflyChkBox->setChecked(m_gameFile->GetBlessedButterfly());
     m_ui->rupeeSpinBox->setValue(m_gameFile->GetRupees());
     m_ui->totalHPSpinBox->setValue(m_gameFile->GetTotalHP());
     m_ui->unkHPSpinBox->setValue(m_gameFile->GetUnkHP());

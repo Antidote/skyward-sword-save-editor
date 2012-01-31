@@ -333,7 +333,7 @@ QString GameFile::GetPlayerName() const
         tmpName[i] = *(ushort*)(m_data + GetGameOffset() + (0x08D4 + j));
         tmpName[i] = swap16(tmpName[i]);
     }
-    tmpName[8] = 0;
+
     return QString(QString::fromUtf16(tmpName));
 }
 
@@ -348,6 +348,118 @@ void GameFile::SetPlayerName(const QString &name)
     }
 
     m_isDirty = true;
+}
+
+bool GameFile::GetTrainingSword() const
+{
+    if (!m_data)
+        return false;
+
+    return (*(char*)(m_data + GetGameOffset() + 0x09F2) & 0x01) == 0x01;
+}
+
+void GameFile::SetTrainingSword(bool val)
+{
+    if (val)
+        *(char*)(m_data + GetGameOffset() + 0x09F2) |= 0x01;
+    else
+        *(char*)(m_data + GetGameOffset() + 0x09F2) &= ~0x01;
+}
+
+bool GameFile::GetBugNet() const
+{
+    if (!m_data)
+        return false;
+
+    return (*(char*)(m_data + GetGameOffset() + 0x09F2) & 0x02) == 0x02;
+}
+
+void GameFile::SetBugNet(bool val)
+{
+    if (val)
+        *(char*)(m_data + GetGameOffset() + 0x09F2) |= 0x02;
+    else
+        *(char*)(m_data + GetGameOffset() + 0x09F2) &= ~0x02;
+}
+
+bool GameFile::GetFaronGrasshopper() const
+{
+    if (!m_data)
+        return false;
+
+    return (*(char*)(m_data + GetGameOffset() + 0x09F2) & 0x04) == 0x04;
+}
+
+void GameFile::SetFaronGrasshopper(bool val)
+{
+    if (val)
+        *(char*)(m_data + GetGameOffset() + 0x09F2) |= 0x04;
+    else
+        *(char*)(m_data + GetGameOffset() + 0x09F2) &= ~0x04;
+}
+
+bool GameFile::GetWoodlandRhinoBeetle() const
+{
+    if (!m_data)
+        return false;
+
+    return (*(char*)(m_data + GetGameOffset() + 0x09F2) & 0x08) == 0x08;
+}
+
+void GameFile::SetWoodlandRhinoBeetle(bool val)
+{
+    if (val)
+        *(char*)(m_data + GetGameOffset() + 0x09F2) |= 0x08;
+    else
+        *(char*)(m_data + GetGameOffset() + 0x09F2) &= ~0x08;
+}
+
+bool GameFile::GetSkyloftMantis() const
+{
+    if (!m_data)
+        return false;
+
+    return (*(char*)(m_data + GetGameOffset() + 0x09F2) & 0x20) == 0x20;
+}
+
+void GameFile::SetSkyloftMantis(bool val)
+{
+    if (val)
+        *(char*)(m_data + GetGameOffset() + 0x09F2) |= 0x20;
+    else
+        *(char*)(m_data + GetGameOffset() + 0x09F2) &= ~0x20;
+}
+
+bool GameFile::GetVolcanicLadybug() const
+{
+    if (!m_data)
+        return false;
+
+    return (*(char*)(m_data + GetGameOffset() + 0x09F2) & 0x40) == 0x40;
+}
+
+void GameFile::SetVolcanicLadybug(bool val)
+{
+    if (val)
+        *(char*)(m_data + GetGameOffset() + 0x09F2) |= 0x40;
+    else
+        *(char*)(m_data + GetGameOffset() + 0x09F2) &= ~0x40;
+}
+
+bool GameFile::GetBlessedButterfly() const
+{
+    if (!m_data)
+        return false;
+
+    return (*(char*)(m_data + GetGameOffset() + 0x09F2) & 0x80) == 0x80;
+}
+
+void GameFile::SetBlessedButterfly(bool val)
+{
+    if (val)
+        *(char*)(m_data + GetGameOffset() + 0x09F2) |= 0x80;
+    else
+        *(char*)(m_data + GetGameOffset() + 0x09F2) &= ~0x80;
 }
 
 ushort GameFile::GetRupees() const
