@@ -12,7 +12,7 @@ void CRC32::Initialize( )
     }
 }
 
-quint32 CRC32 :: Reflect( quint32 reflect, char c )
+quint32 CRC32::Reflect( quint32 reflect, char c )
 {
     quint32 value = 0;
 

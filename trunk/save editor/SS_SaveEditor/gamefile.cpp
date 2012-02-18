@@ -1,5 +1,6 @@
 #include "gamefile.h"
 #include "CRC32.h"
+#include <QtEndian>
 
 #include <QDateTime>
 #include <QDebug>
@@ -88,7 +89,7 @@ bool GameFile::Open(Game game, const QString& filepath)
         if (!m_data)
             m_data = new char[0xFBE0];
 
-        file.read(m_data, 0xFBE0);
+        file.read((char*)m_data, 0xFBE0);
         file.close();
 
         return m_isOpen = true;
@@ -146,7 +147,7 @@ bool GameFile::HasValidChecksum()
 
     CRC32 crc;
     crc.Initialize();
-    return (*(quint32*)(m_data + GetGameOffset() + 0x53BC) == swap32(crc.GetCRC32((const unsigned char*)m_data, GetGameOffset(), 0x53BC)));
+    return (*(quint32*)(m_data + GetGameOffset() + 0x53BC) == qFromBigEndian<quint32>(crc.GetCRC32((const unsigned char*)m_data, GetGameOffset(), 0x53BC)));
 }
 
 GameFile::Game GameFile::GetGame() const
@@ -581,7 +582,7 @@ void GameFile::UpdateChecksum()
 
     CRC32 crc;
     crc.Initialize();
-    *(uint*)(m_data + GetGameOffset() + 0x53BC) =  swap32(crc.GetCRC32((const unsigned char*)m_data, GetGameOffset(), 0x53BC)); // change it to Big Endian
+    *(uint*)(m_data + GetGameOffset() + 0x53BC) =  qToBigEndian<quint32>(crc.GetCRC32((const unsigned char*)m_data, GetGameOffset(), 0x53BC)); // change it to Big Endian
     m_isDirty = true;
 }
 

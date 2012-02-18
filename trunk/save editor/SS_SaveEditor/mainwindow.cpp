@@ -208,6 +208,11 @@ void MainWindow::onOpen()
 
         if (m_gameFile->Open(m_curGame, file))
         {
+            if (!m_gameFile->HasValidChecksum())
+            {
+                QMessageBox msg(QMessageBox::Warning, "CRC32 Mismatch", "The checksum generated does not match the one provided by the file");
+                msg.exec();
+            }
             UpdateInfo();
         }
     }
