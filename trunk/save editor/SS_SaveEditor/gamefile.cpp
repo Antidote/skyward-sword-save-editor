@@ -61,7 +61,7 @@ GameFile::GameFile(const QString& filepath, Game game) :
 
 GameFile::~GameFile()
 {
-    if (!m_data)
+    if (m_data)
     {
         delete[] m_data;
         m_data = NULL;
@@ -86,10 +86,18 @@ bool GameFile::Open(Game game, const QString& filepath)
             return false;
         }
 
-        if (!m_data)
-            m_data = new char[0xFBE0];
+        if (m_data)
+        {
+            delete[] m_data;
+            m_data = NULL;
+        }
 
+        m_data = new char[0xFBE0];
+
+        CRC32 crc;
+        crc.Initialize();
         file.read((char*)m_data, 0xFBE0);
+        m_fileChecksum = crc.GetCRC32((unsigned const char*)m_data, 0, 0xFBE0);
         file.close();
 
         return m_isOpen = true;
@@ -97,7 +105,6 @@ bool GameFile::Open(Game game, const QString& filepath)
 
     return false;
 }
-
 
 bool GameFile::Save(const QString& filename)
 {
@@ -120,6 +127,31 @@ bool GameFile::Save(const QString& filename)
         return true;
     }
     return false;
+}
+
+bool GameFile::HasFileChanged()
+{
+    QFile file(m_filename);
+
+    if (file.open(QIODevice::ReadOnly))
+    {
+        // I'm going to go ahead and keep this for now. (Prevents you from accidentally fucking up your save files)
+        if (file.size() != 64480)
+        {
+            file.close();
+            return false;
+        }
+        char* data = new char[0xFBE0];
+
+        CRC32 crc;
+        crc.Initialize();
+        file.read((char*)data, 0xFBE0);
+        quint32 fileChecksum = crc.GetCRC32((unsigned const char*)data, 0, 0xFBE0);
+        file.close();
+
+        if (fileChecksum != m_fileChecksum)
+            return true;
+    }
 }
 
 void GameFile::Close()
@@ -518,7 +550,7 @@ ushort GameFile::GetCurrentHP() const
     if (!m_data)
         return 0;
 
-    return swap16(*(ushort*)(m_data + GetGameOffset() + 0x5306));
+    return qFromBigEndian<quint16>(*(quint16*)(m_data + GetGameOffset() + 0x5306));
 }
 
 void GameFile::SetCurrentHP(ushort val)
@@ -564,7 +596,7 @@ uint GameFile::GetChecksum() const
     if (!m_data)
         return 0;
 
-    return swap32(*(quint32*)(m_data + GetGameOffset() + 0x53bc));
+    return qFromBigEndian<quint32>(*(quint32*)(m_data + GetGameOffset() + 0x53bc));
 }
 
 uint GameFile::GetGameOffset() const

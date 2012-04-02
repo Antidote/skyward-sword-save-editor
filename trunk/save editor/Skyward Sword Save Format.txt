@@ -11,11 +11,13 @@ GameOff + 0x08E6 - Groose Cutscene before retrieving first sword(Need to enter a
 GameOff + 0x08E7 - Zelda skyloft cutscene infront of the statue before the ceremony;
 GameOff + 0x08F1 - Z-Target Intro;
 GameOff + 0x08F8 - Crate intro
+GameOff + 0x08FB - 0x73 = Fi introduced interface
 GameOff + 0x0936 - Unknown set to 0x04 after talking to horwell for the first time and accepting the "mission";
 GameOff + 0x09D2 - Interface type (0x00 = standard, 0x40 = Pro, Light = 0x20, OR it by 0x08 if Fi has told link about it. [The 0x08 doesn't really do anything substantial])
 GameOff + 0x09E5 - Stamina tutorial related, probably used for other things as well (set to 0x10 afterwards), also used for the boy's rolling "tutorial"
 GameOff + 0x09E7 - Stamina fruit (and probably other things)
-GameOff + 0x09F2 - Items (I think there are more locations for this though)
+GameOff + 0x09EC - Items
+GameOff + 0x09F2 - Items
 GameOff + 0x0A3C - Amber Relic
 GameOff + 0x0A44 - Sky Stag beatle
 GameOff + 0x0A46 - Gerudo DragonFly
@@ -125,6 +127,25 @@ Weapon Slots:
 0x07 - Nothing
 0x08 - Bug Net
 0x09 - Harp (does nothing)
+
+ItemFlags GameOff + 0x09EC
+0x01 - unk (unused?)
+0x02 - Mogma Mitts
+0x04 - unk
+0x08 - unk
+0x10 - unk
+0x20 - unk
+0x40 - unk
+0x80 - Scatter Shot
+
+ItemFlags Gameoff + 0x09F1:
+0x01 - Unk
+0x02 - unk
+0x04 - unk
+0x08 - unk
+0x10 - unk
+0x20 - unk
+0x40 - unk
 
 ItemFlags GameOff + 0x09F2:
 0x01 - Practice Sword
