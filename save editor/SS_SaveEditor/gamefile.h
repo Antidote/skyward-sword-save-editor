@@ -33,6 +33,10 @@ public:
 
     bool Save(const QString& filename = NULL);
     bool Open(Game game = GameNone, const QString& filepath=NULL);
+    void UpdateChecksum();
+    bool HasValidChecksum(); // for integrity checks
+    bool IsModified() const;
+    bool HasFileChanged(); // Checks against the stored checksum for the entire file, if the file on disk differs from the stored checksum, the file has changed.
     void Close(); //<! Closes the current file without saving.
     void Reload(Game game);
 
@@ -105,10 +109,6 @@ public:
     void SetCurrentArea(const QString& map);
     QString GetCurrentRoom() const;
     void SetCurrentRoom(const QString& map);
-    void UpdateChecksum();
-    bool HasValidChecksum(); // for integrity checks
-
-    bool IsModified() const;
 
     QString ReadNullTermString(int offset) const;
     void WriteNullTermString(const QString& val, int offset);
@@ -119,6 +119,7 @@ private:
     Game m_game;
     bool m_isOpen;
     bool m_isDirty;
+    quint32 m_fileChecksum; // The checksum of the entire file.
 };
 
 #endif // GAMEFILE_H

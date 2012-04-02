@@ -4,6 +4,7 @@
 #include "gamefile.h"
 #include <QMainWindow>
 #include <QDateTime>
+#include <QTimer>
 
 class QActionGroup;
 
@@ -16,11 +17,14 @@ class MainWindow : public QMainWindow
     Q_OBJECT
     
 public:
+    static const quint32 UPDATE_DELAY = 2000;
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     
     void UpdateInfo();
+    void UpdateTitle(); // any reason these are exposed?
     void ClearInfo();
+
 private slots:
     void onDateTimeChanged(QDateTime);
     void onTextChanged(QString text);
@@ -31,13 +35,14 @@ private slots:
     void onSaveAs();
     void onReload();
     void onClose();
+    void onCheck(); // Checks for changes to file and prompts for an update.
 private:
+    QTimer* m_checkTimer;
     void ToggleVisible(bool visible);
     void SetupActions();
     void SetupConnections();
     Ui::MainWindow   *m_ui;
     GameFile*         m_gameFile;
-    GameFile::Game    m_curGame;
     bool              m_isUpdating;
 
     QActionGroup* m_gameGroup;

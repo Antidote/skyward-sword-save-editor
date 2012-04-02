@@ -20,13 +20,16 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     m_ui(new Ui::MainWindow),
     m_gameFile(NULL),
-    m_isUpdating(false),
-    m_curGame(GameFile::GameNone)
+    m_isUpdating(false)
 {
     m_ui->setupUi(this);
 
     SetupActions();
     SetupConnections();
+
+    m_checkTimer = new QTimer(this);
+    connect(m_checkTimer, SIGNAL(timeout()), this, SLOT(onCheck()));
+    m_checkTimer->start(UPDATE_DELAY); // set check for ever 5 seconds
 
     ToggleVisible(false);
 }
@@ -41,6 +44,16 @@ MainWindow::~MainWindow()
 
         delete m_gameFile;
     }
+}
+
+void MainWindow::onCheck()
+{
+    if (m_gameFile && m_gameFile->IsOpen() && m_gameFile->HasFileChanged())
+    {
+        m_gameFile->Reload(m_gameFile->GetGame());
+        UpdateInfo();
+    }
+    m_checkTimer->start(UPDATE_DELAY);
 }
 
 void MainWindow::SetupActions()
@@ -114,7 +127,7 @@ void MainWindow::SetupConnections()
 void MainWindow::onTextChanged(QString text)
 {
     if (!m_gameFile || !m_gameFile->IsOpen() ||
-         m_isUpdating || m_curGame == GameFile::GameNone)
+         m_isUpdating || m_gameFile->GetGame() == GameFile::GameNone)
         return;
 
     if (m_ui->nameLineEdit->isModified())
@@ -142,13 +155,13 @@ void MainWindow::onTextChanged(QString text)
     }
 
     m_gameFile->UpdateChecksum();
-    this->setWindowTitle("0x" + QString("").sprintf("%08X", m_gameFile->GetChecksum()));
+    UpdateTitle();
 }
 
 void MainWindow::onValueChanged()
 {
     if (!m_gameFile || !m_gameFile->IsOpen() ||
-         m_isUpdating || m_curGame == GameFile::GameNone)
+         m_isUpdating || m_gameFile->GetGame() == GameFile::GameNone)
         return;
     PlayTime playTime;
     playTime.Hours = m_ui->playHoursSpinBox->value();
@@ -181,18 +194,18 @@ void MainWindow::onValueChanged()
     m_gameFile->SetRupees((short)m_ui->rupeeSpinBox->value());
 
     m_gameFile->UpdateChecksum();
-    this->setWindowTitle("0x" + QString("").sprintf("%08X", m_gameFile->GetChecksum()));
+    UpdateTitle();
 }
 
 void MainWindow::onDateTimeChanged(QDateTime val)
 {
     if (!m_gameFile || !m_gameFile->IsOpen() ||
-         m_isUpdating || m_curGame == GameFile::GameNone)
+         m_isUpdating || m_gameFile->GetGame() == GameFile::GameNone)
         return;
 
     m_gameFile->SetSaveTime(val);
     m_gameFile->UpdateChecksum();
-    this->setWindowTitle("0x" + QString("").sprintf("%08X", m_gameFile->GetChecksum()));
+    UpdateTitle();
 }
 
 void MainWindow::onOpen()
@@ -206,7 +219,7 @@ void MainWindow::onOpen()
         else
             m_gameFile->Close();
 
-        if (m_gameFile->Open(m_curGame, file))
+        if (m_gameFile->Open(m_gameFile->GetGame(), file))
         {
             if (!m_gameFile->HasValidChecksum())
             {
@@ -220,13 +233,16 @@ void MainWindow::onOpen()
 
 void MainWindow::onSave()
 {
-    if (!m_gameFile || !m_gameFile->IsOpen())
+    if (!m_gameFile || !m_gameFile->IsOpen() || m_gameFile->GetGame() == GameFile::GameNone)
         return;
 
     if(m_gameFile->Save())
         m_ui->statusBar->showMessage(tr("Save successful!"));
     else
         m_ui->statusBar->showMessage(tr("Unable to save file"));
+
+    m_gameFile->UpdateChecksum();
+    UpdateTitle();
 }
 
 void MainWindow::onSaveAs()
@@ -238,16 +254,18 @@ void MainWindow::onGameChanged(QAction* game)
     if (!m_gameFile || m_isUpdating)
         return;
 
-    if (game == m_ui->actionGame1)
-        m_curGame = GameFile::Game1;
-    else if (game == m_ui->actionGame2)
-        m_curGame = GameFile::Game2;
-    else if (game == m_ui->actionGame3)
-        m_curGame = GameFile::Game3;
+    quint32 curGame;
 
-    m_gameFile->SetGame(m_curGame);
+    if (game == m_ui->actionGame1)
+        curGame = GameFile::Game1;
+    else if (game == m_ui->actionGame2)
+        curGame = GameFile::Game2;
+    else if (game == m_ui->actionGame3)
+        curGame = GameFile::Game3;
+
+    m_gameFile->SetGame((GameFile::Game)curGame);
     UpdateInfo();
-    this->setWindowTitle("0x" + QString("").sprintf("%08X", m_gameFile->GetChecksum()));
+    UpdateTitle();
 }
 
 void MainWindow::onReload()
@@ -255,12 +273,12 @@ void MainWindow::onReload()
     if (!m_gameFile || !m_gameFile->IsOpen())
         return;
 
-    m_gameFile->Reload(m_curGame);
+    m_gameFile->Reload(m_gameFile->GetGame());
     if(m_gameFile->IsOpen())
     {
         UpdateInfo();
         m_ui->statusBar->showMessage(tr("File successfully reloaded"));
-        this->setWindowTitle("0x" + QString("").sprintf("%08X", m_gameFile->GetChecksum()));
+        UpdateTitle();
     }
     else
     {
@@ -284,7 +302,7 @@ void MainWindow::onClose()
 void MainWindow::UpdateInfo()
 {
     if (!m_gameFile || !m_gameFile->IsOpen() ||
-         m_isUpdating || m_curGame == GameFile::GameNone)
+         m_isUpdating || m_gameFile->GetGame() == GameFile::GameNone)
     {
         ToggleVisible(false);
         return;
@@ -326,6 +344,16 @@ void MainWindow::UpdateInfo()
     m_isUpdating = false;
 
     ToggleVisible(true);
+}
+
+void MainWindow::UpdateTitle()
+{
+    if (m_gameFile == NULL || !m_gameFile->IsOpen() || m_gameFile->GetGame() == GameFile::GameNone)
+        this->setWindowTitle("WiiKing2 Editor");
+    else
+        this->setWindowTitle(QString("WiiKing2 Editor - Game %1 0x")
+                             .arg(m_gameFile->GetGame() + 1)
+                             .append(QString("").sprintf("%08X", m_gameFile->GetChecksum())));
 }
 
 void MainWindow::ClearInfo()
