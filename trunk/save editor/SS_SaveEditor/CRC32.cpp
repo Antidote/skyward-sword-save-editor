@@ -1,6 +1,6 @@
 #include "CRC32.h"
 
-void CRC32::Initialize( )
+CRC32::CRC32()
 {
     for( int codes = 0; codes <= 0xFF; codes++ )
     {

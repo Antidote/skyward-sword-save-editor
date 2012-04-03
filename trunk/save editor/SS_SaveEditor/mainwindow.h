@@ -17,7 +17,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
     
 public:
-    static const quint32 UPDATE_DELAY = 2000;
+    static const quint32 UPDATE_DELAY = 5000;
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     

@@ -8,7 +8,7 @@
 class CRC32
 {
 public:
-        void Initialize( );
+        CRC32();
         quint32 GetCRC32(const unsigned char *sData, quint32 pos, quint32 ulLength );
 
 private:
