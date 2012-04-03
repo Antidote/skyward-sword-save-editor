@@ -2,6 +2,7 @@
 #define GAMEFILE_H
 
 #include <QFile>
+#include "CRC32.h"
 
 class QDateTime;
 
@@ -114,12 +115,13 @@ public:
     void WriteNullTermString(const QString& val, int offset);
 
 private:
-    char* m_data;
-    QString m_filename;
-    Game m_game;
-    bool m_isOpen;
-    bool m_isDirty;
-    quint32 m_fileChecksum; // The checksum of the entire file.
+    char*    m_data;
+    QString  m_filename;
+    Game     m_game;
+    bool     m_isOpen;
+    bool     m_isDirty;
+    quint32  m_fileChecksum; // The checksum of the entire file.
+    CRC32*   m_crcEngine;
 };
 
 #endif // GAMEFILE_H

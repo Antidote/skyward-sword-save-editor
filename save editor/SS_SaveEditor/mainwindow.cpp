@@ -46,12 +46,18 @@ MainWindow::~MainWindow()
     }
 }
 
+// TODO: Need to make this more intelligent.
 void MainWindow::onCheck()
 {
     if (m_gameFile && m_gameFile->IsOpen() && m_gameFile->HasFileChanged())
     {
-        m_gameFile->Reload(m_gameFile->GetGame());
-        UpdateInfo();
+        QMessageBox msg(QMessageBox::Question, "File Modified", "The file on disk has been modified outside of the editor, reload?", QMessageBox::Ok | QMessageBox::Cancel);
+        int ret = msg.exec();
+        if (ret == QMessageBox::Ok)
+        {
+            m_gameFile->Reload(m_gameFile->GetGame());
+            UpdateInfo();
+        }
     }
     m_checkTimer->start(UPDATE_DELAY);
 }

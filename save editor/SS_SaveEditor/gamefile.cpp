@@ -1,27 +1,9 @@
 #include "gamefile.h"
-#include "CRC32.h"
 #include <QtEndian>
 
 #include <QDateTime>
 #include <QDebug>
 
-quint16 swap16(quint16 val)
-{
-#if Q_BYTE_ORDER == Q_LITTLE_ENDIAN
-    return ((val >> 8) | (val << 8));
-#else
-    return val;
-#endif
-}
-
-quint32 swap32(quint32 val)
-{
-#if Q_BYTE_ORDER == Q_LITTLE_ENDIAN
-    return (swap16(val) << 16) | swap16(val >> 16);
-#else
-    return val;
-#endif
-}
 
 float swapFloat(float val)
 {
@@ -41,15 +23,6 @@ float swapFloat(float val)
 #endif
 }
 
-quint64 swap64(quint64 val)
-{
-#if Q_BYTE_ORDER == Q_LITTLE_ENDIAN
-    return (quint64)((quint64)swap32(val) << 32 | swap32(val >> 32));
-#else
-    return val;
-#endif
-}
-
 GameFile::GameFile(const QString& filepath, Game game) :
     m_data(NULL),
     m_filename(filepath),
@@ -57,6 +30,7 @@ GameFile::GameFile(const QString& filepath, Game game) :
     m_isOpen(false),
     m_isDirty(false)
 {
+    m_crcEngine = new CRC32;
 }
 
 GameFile::~GameFile()
@@ -80,7 +54,7 @@ bool GameFile::Open(Game game, const QString& filepath)
 
     if (file.open(QIODevice::ReadOnly))
     {
-        if (file.size() != 64480)
+        if (file.size() != 0xFBE0)
         {
             file.close();
             return false;
@@ -94,10 +68,9 @@ bool GameFile::Open(Game game, const QString& filepath)
 
         m_data = new char[0xFBE0];
 
-        CRC32 crc;
-        crc.Initialize();
+
         file.read((char*)m_data, 0xFBE0);
-        m_fileChecksum = crc.GetCRC32((unsigned const char*)m_data, 0, 0xFBE0);
+        m_fileChecksum = m_crcEngine->GetCRC32((unsigned const char*)m_data, 0, 0xFBE0);
         file.close();
 
         return m_isOpen = true;
@@ -143,15 +116,15 @@ bool GameFile::HasFileChanged()
         }
         char* data = new char[0xFBE0];
 
-        CRC32 crc;
-        crc.Initialize();
         file.read((char*)data, 0xFBE0);
-        quint32 fileChecksum = crc.GetCRC32((unsigned const char*)data, 0, 0xFBE0);
+        quint32 fileChecksum = m_crcEngine->GetCRC32((unsigned const char*)data, 0, 0xFBE0);
         file.close();
 
         if (fileChecksum != m_fileChecksum)
             return true;
     }
+
+    return false;
 }
 
 void GameFile::Close()
@@ -177,9 +150,7 @@ bool GameFile::HasValidChecksum()
     if (!m_data)
         return false;
 
-    CRC32 crc;
-    crc.Initialize();
-    return (*(quint32*)(m_data + GetGameOffset() + 0x53BC) == qFromBigEndian<quint32>(crc.GetCRC32((const unsigned char*)m_data, GetGameOffset(), 0x53BC)));
+    return (*(quint32*)(m_data + GetGameOffset() + 0x53BC) == qFromBigEndian<quint32>(m_crcEngine->GetCRC32((const unsigned char*)m_data, GetGameOffset(), 0x53BC)));
 }
 
 GameFile::Game GameFile::GetGame() const
@@ -200,7 +171,7 @@ QString GameFile::GetFilename() const
 PlayTime GameFile::GetPlayTime() const
 {
     PlayTime playTime;
-    quint64 tmp = swap64(*(quint64*)(m_data + GetGameOffset()));
+    quint64 tmp = qFromBigEndian<quint64>(*(quint64*)(m_data + GetGameOffset()));
     playTime.Hours = ((tmp / TICKS_PER_SECOND) / 60) / 60;
     playTime.Minutes =  ((tmp / TICKS_PER_SECOND) / 60) % 60;
     playTime.Seconds = ((tmp / TICKS_PER_SECOND) % 60);
@@ -215,17 +186,17 @@ void GameFile::SetPlayTime(PlayTime val)
     totalSeconds += val.Minutes * 60;
     totalSeconds += val.Seconds;
     totalSeconds *= TICKS_PER_SECOND;
-    *(quint64*)(m_data + GetGameOffset()) = swap64(totalSeconds);
+    *(quint64*)(m_data + GetGameOffset()) = qToBigEndian<quint64>(totalSeconds);
 }
 
 QDateTime GameFile::GetSaveTime() const
 {
     QDateTime tmp(QDate(2000, 1, 1));
-    tmp = tmp.addSecs(swap64(*(quint64*)(m_data + GetGameOffset() + 0x0008)) / TICKS_PER_SECOND);
+    tmp = tmp.addSecs(qFromBigEndian<quint64>(*(quint64*)(m_data + GetGameOffset() + 0x0008)) / TICKS_PER_SECOND);
     return tmp;
 }
 
-// Abandoned for now (Need to figure out how to do this :/)
+// TODO: Abandoned for now (Need to figure out how to do this :/)
 void GameFile::SetSaveTime(QDateTime val)
 {/*
     time_t time = val.toTime_t();
@@ -364,7 +335,7 @@ QString GameFile::GetPlayerName() const
     for (int i = 0, j=0; i < 8; ++i, j+= 2)
     {
         tmpName[i] = *(ushort*)(m_data + GetGameOffset() + (0x08D4 + j));
-        tmpName[i] = swap16(tmpName[i]);
+        tmpName[i] = qFromBigEndian<quint16>(tmpName[i]);
     }
 
     return QString(QString::fromUtf16(tmpName));
@@ -376,9 +347,7 @@ void GameFile::SetPlayerName(const QString &name)
         return;
 
     for (int i = 0, j = 0; i < 8; ++i, ++j)
-    {
-        *(ushort*)(m_data + GetGameOffset() + (0x08D4 + j++)) = swap16(name.utf16()[i]);
-    }
+        *(ushort*)(m_data + GetGameOffset() + (0x08D4 + j++)) = qToBigEndian<quint16>(name.utf16()[i]);
 
     m_isDirty = true;
 }
@@ -501,14 +470,14 @@ ushort GameFile::GetRupees() const
         return 0;
 
     ushort tmp = *(ushort*)(m_data + GetGameOffset() + 0x0A5E);
-    return swap16(tmp);
+    return qFromBigEndian<quint16>(tmp);
 }
 
 void GameFile::SetRupees(ushort val)
 {
     if (!m_data)
         return;
-    *(ushort*)(m_data + GetGameOffset() + 0x0A5E) = swap16(val);
+    *(ushort*)(m_data + GetGameOffset() + 0x0A5E) = qToBigEndian<quint16>(val);
     m_isDirty = true;
 }
 
@@ -516,7 +485,7 @@ ushort GameFile::GetTotalHP() const
 {
     if (!m_data)
         return 0;
-    return swap16(*(ushort*)(m_data + GetGameOffset() + 0x5302));
+    return qToBigEndian<quint16>(*(ushort*)(m_data + GetGameOffset() + 0x5302));
 }
 
 void GameFile::SetTotalHP(ushort val)
@@ -524,7 +493,7 @@ void GameFile::SetTotalHP(ushort val)
     if (!m_data)
         return;
 
-    *(ushort*)(m_data + GetGameOffset() + 0x5302) = swap16(val);
+    *(ushort*)(m_data + GetGameOffset() + 0x5302) = qToBigEndian<quint16>(val);
     m_isDirty = true;
 }
 
@@ -533,7 +502,7 @@ ushort GameFile::GetUnkHP() const
     if (!m_data)
         return 0;
 
-    return swap16(*(ushort*)(m_data + GetGameOffset() + 0x5304));
+    return qFromBigEndian<quint16>(*(ushort*)(m_data + GetGameOffset() + 0x5304));
 }
 
 void GameFile::SetUnkHP(ushort val)
@@ -541,7 +510,7 @@ void GameFile::SetUnkHP(ushort val)
     if (!m_data)
         return;
 
-    *(ushort*)(m_data + GetGameOffset() + 0x5304) = swap16(val);
+    *(ushort*)(m_data + GetGameOffset() + 0x5304) = qToBigEndian<quint16>(val);
     m_isDirty = true;
 }
 
@@ -557,7 +526,7 @@ void GameFile::SetCurrentHP(ushort val)
 {
     if (!m_data)
         return;
-    *(ushort*)(m_data + GetGameOffset() + 0x5306) = swap16(val);
+    *(ushort*)(m_data + GetGameOffset() + 0x5306) = qToBigEndian<quint16>(val);
     m_isDirty = true;
 }
 
@@ -612,9 +581,7 @@ void GameFile::UpdateChecksum()
     if (!m_data)
         return;
 
-    CRC32 crc;
-    crc.Initialize();
-    *(uint*)(m_data + GetGameOffset() + 0x53BC) =  qToBigEndian<quint32>(crc.GetCRC32((const unsigned char*)m_data, GetGameOffset(), 0x53BC)); // change it to Big Endian
+    *(uint*)(m_data + GetGameOffset() + 0x53BC) =  qToBigEndian<quint32>(m_crcEngine->GetCRC32((const unsigned char*)m_data, GetGameOffset(), 0x53BC)); // change it to Big Endian
     m_isDirty = true;
 }
 
