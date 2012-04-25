@@ -352,6 +352,39 @@ void GameFile::SetPlayerName(const QString &name)
 
     m_isDirty = true;
 }
+
+bool GameFile::IsHeroMode() const
+{
+    if (!m_data)
+        return false;
+
+    return (*(char*)(m_data + GetGameOffset() + 0x08FE) & 0x08) == 0x08;
+}
+
+void GameFile::SetHeroMode(bool val)
+{
+    if (val)
+        *(char*)(m_data + GetGameOffset() + 0x08FE) |= 0x08;
+    else
+        *(char*)(m_data + GetGameOffset() + 0x08FE) &= ~0x08;
+}
+
+bool GameFile::GetIntroViewed() const
+{
+    if (!m_data)
+        return false;
+
+    return *(char*)(m_data + GetGameOffset() + 0x0941) != 0;
+}
+
+void GameFile::SetIntroViewed(bool val)
+{
+    if (val)
+        *(char*)(m_data + GetGameOffset() + 0x0941) = 2;
+    else
+        *(char*)(m_data + GetGameOffset() + 0x0941) = 0;
+}
+
 /*
 bool GameFile::GetItem() const
 {

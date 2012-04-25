@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/resources/about">
+        <file alias="zelda1.png">resources/zelda1.png</file>
+    </qresource>
+</RCC>

@@ -17,6 +17,10 @@ class MainWindow : public QMainWindow
     Q_OBJECT
     
 public:
+    // Default coords for new file
+    static const float DEFAULT_POS_X = -4798.150391;
+    static const float DEFAULT_POS_Y =  1237.629517;
+    static const float DEFAULT_POS_Z = -6573.722656;
     static const quint32 UPDATE_DELAY = 5000;
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
@@ -36,6 +40,7 @@ private slots:
     void onReload();
     void onClose();
     void onCheck(); // Checks for changes to file and prompts for an update.
+
 private:
     QTimer* m_checkTimer;
     void ToggleVisible(bool visible);
