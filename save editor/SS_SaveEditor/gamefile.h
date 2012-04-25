@@ -81,6 +81,10 @@ public:
     void  SetCameraYaw(float val);
     QString GetPlayerName() const;
     void SetPlayerName(const QString& name);
+    bool IsHeroMode() const;
+    void SetHeroMode(bool val);
+    bool GetIntroViewed() const;
+    void SetIntroViewed(bool val);
     bool GetTrainingSword() const;
     void SetTrainingSword(bool val);
     bool GetBugNet() const;

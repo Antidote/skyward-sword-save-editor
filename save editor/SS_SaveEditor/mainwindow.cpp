@@ -107,6 +107,8 @@ void MainWindow::SetupConnections()
     connect(m_ui->cameraRollSpinBox,  SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
     connect(m_ui->cameraPitchSpinBox, SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
     connect(m_ui->cameraYawSpinBox,   SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
+    connect(m_ui->heroModeChkBox,     SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->introViewedChkBox,  SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
     connect(m_ui->nameLineEdit,       SIGNAL(textChanged(QString)), this, SLOT(onTextChanged(QString)));
     connect(m_ui->trainingSwdChkBox,  SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
     connect(m_ui->bugNetChkBox,       SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
@@ -187,6 +189,8 @@ void MainWindow::onValueChanged()
     m_gameFile->SetCameraRoll((float)m_ui->cameraRollSpinBox->value());
     m_gameFile->SetCameraPitch((float)m_ui->cameraPitchSpinBox->value());
     m_gameFile->SetCameraYaw((float)m_ui->cameraYawSpinBox->value());
+    m_gameFile->SetHeroMode(m_ui->heroModeChkBox->isChecked());
+    m_gameFile->SetIntroViewed(m_ui->introViewedChkBox->isChecked());
     m_gameFile->SetTotalHP((short)m_ui->totalHPSpinBox->value());
     m_gameFile->SetUnkHP((short)m_ui->unkHPSpinBox->value());
     m_gameFile->SetCurrentHP((short)m_ui->curHPSpinBox->value());
@@ -232,7 +236,10 @@ void MainWindow::onOpen()
                 QMessageBox msg(QMessageBox::Warning, "CRC32 Mismatch", "The checksum generated does not match the one provided by the file");
                 msg.exec();
             }
+            m_gameFile->SetGame(GameFile::Game1);
+            m_ui->actionGame1->setChecked(true);
             UpdateInfo();
+            UpdateTitle();
         }
     }
 }
@@ -335,6 +342,8 @@ void MainWindow::UpdateInfo()
     m_ui->curMapLineEdit->setText(m_gameFile->GetCurrentMap());
     m_ui->curAreaLineEdit->setText(m_gameFile->GetCurrentArea());
     m_ui->curRoomLineEdit->setText(m_gameFile->GetCurrentRoom());
+    m_ui->heroModeChkBox->setChecked(m_gameFile->IsHeroMode());
+    m_ui->introViewedChkBox->setChecked(m_gameFile->GetIntroViewed());
     m_ui->nameLineEdit->setText(m_gameFile->GetPlayerName());
     m_ui->trainingSwdChkBox->setChecked(m_gameFile->GetTrainingSword());
     m_ui->bugNetChkBox->setChecked(m_gameFile->GetBugNet());
@@ -377,3 +386,4 @@ void MainWindow::ToggleVisible(bool visible)
 {
     m_ui->tabWidget->setVisible(visible);
 }
+
