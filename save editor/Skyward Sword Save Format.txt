@@ -28,16 +28,18 @@ GameOff + 0x1A66 - Dash Intro and Mia Rescued flag (0x08 = dash, 0x50 = mia resc
 GameOff + 0x1A68 - Unknown flag seems to deal with Horwell and the skyloft intro scene? o.0
 GameOff + 0x1A69 - Skyloft Flags1 (0x00, 0x10, 0x30 and 0x70 are current known values)
 GameOff + 0x1A6B - Unknown set to 0x02 after talking to horwell for the first time 0x10 after talking to jakamar, OR them together to get the final flag, 0x7A Pippit calls you over about your loft wing.
-GameOff + 0x1B80 - Lanaryu Mining Facility sandPile
-GameOff + 0x2AA8 - Lanayru Mining Facility Chest flags1
+GameOff + 0x1B80 - Seems to be a dumping ground for area specific flags (cleared after leaving room/area)
+GameOff + 0x2AA8 - Seems to be a dumping ground for area specific flags (cleared after leaving room/area)
 GameOff + 0x30F5 - Skyloft Flags2 (0x00 haven't entered the main area yet, 0x80 the cutscene played imediately after you leave the academy has been played, 0x82 or 0x84 Instructor horwell has been talked to about Mia, 0x86 player accepted the rescue mission, 0x8E Spoke to Horwell after Zelda's second scene)
 GameOff + 0x30FB - Whether the rupee in links room was taken or not.
 GameOff + 0x5302 - Total Hearts
 GameOff + 0x5304 - Unk (Total heart pieces?)
 GameOff + 0x5306 - Current Health
-GameOff + 0x531C - Current Map
-GameOff + 0x533C - Current Location (Skyloft, Lanayru Mines, etc.)
+GameOff + 0x5309 - Current Room
+GameOff + 0x531C - Current Map, refers to the directory the associated data is in
+GameOff + 0x533C - Current Location (Skyloft, Lanayru Mines, etc.), refers to the directory the associated data is in
 GameOff + 0x535C - Seems to be a Copy of of 0x533c
+GameOff + 0x53AD - isNew
 GameOff + 0x53AE - Equipped Weapon
 GameOff + 0x53B0 - Deals with Minus button equipment not sure what it does exactly
 GameOff + 0x53B1 - Same as above.
