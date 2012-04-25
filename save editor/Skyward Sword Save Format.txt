@@ -2,7 +2,7 @@ GameOff = 0x20 - Offset of first file
 
 GameOff + 0x0000 - Playtime
 GameOff + 0x0004 - unknown;
-GameOff + 0x0008 - Date Time (When the file was saved, ticks from 1-1-2001 12AM)
+GameOff + 0x0008 - Date Time (When the file was saved, ticks from 1-1-2000 12AM)
 GameOff + 0x0010 - Player Origin (stored as 6 floats)
 GameOff + 0x0028 - Camera Origin (stored as 6 floats)
 GameOff + 0x08D3 - Location ID (Displays location name on the load screen)
