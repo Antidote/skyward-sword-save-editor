@@ -87,7 +87,7 @@ bool GameFile::Save(const QString& filename)
     if (filename != NULL)
         m_filename = filename;
 
-    FILE* f = fopen(m_filename.toAscii(), "rb+");
+    FILE* f = fopen(m_filename.toAscii(), "wb");
     if (f)
     {
        if (!HasValidChecksum())
@@ -95,6 +95,7 @@ bool GameFile::Save(const QString& filename)
         fwrite(m_data, 1, 0xFBE0, f);
         fclose(f);
 
+        m_fileChecksum = m_crcEngine->GetCRC32((const uchar*)m_data, 0, 0xFBE0);
         m_isDirty = false;
 
         return true;
@@ -351,7 +352,11 @@ void GameFile::SetPlayerName(const QString &name)
 
     m_isDirty = true;
 }
-
+/*
+bool GameFile::GetItem() const
+{
+    char itemFlag1 =
+}*/
 bool GameFile::GetTrainingSword() const
 {
     if (!m_data)

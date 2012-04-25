@@ -51,7 +51,7 @@ void MainWindow::onCheck()
 {
     if (m_gameFile && m_gameFile->IsOpen() && m_gameFile->HasFileChanged())
     {
-        QMessageBox msg(QMessageBox::Question, "File Modified", "The file on disk has been modified outside of the editor, reload?", QMessageBox::Ok | QMessageBox::Cancel);
+        QMessageBox msg(QMessageBox::Question, "File Modified", "The file on disk has been modified outside of the editor, reload?", QMessageBox::Ok | QMessageBox::Cancel, this);
         int ret = msg.exec();
         if (ret == QMessageBox::Ok)
         {
