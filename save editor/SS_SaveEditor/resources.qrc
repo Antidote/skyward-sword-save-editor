@@ -1,1 +1,16 @@
-<RCC/>
+<RCC>
+    <qresource prefix="/bugs">
+        <file alias="BlessedButterfly">resources/bugs/Blessed Butterfly.png</file>
+        <file alias="DekuHornet">resources/bugs/Deku Hornet.png</file>
+        <file alias="EldinRoller">resources/bugs/Eldin Roller.png</file>
+        <file alias="FaronGrasshopper">resources/bugs/Faron Grasshopper.png</file>
+        <file alias="GerudoDragonfly">resources/bugs/Gerudo Dragonfly.png</file>
+        <file alias="LanayruAnt">resources/bugs/Lanayru Ant.png</file>
+        <file alias="LoftMantis">resources/bugs/Loft Mantis.png</file>
+        <file alias="SandCicada">resources/bugs/Sand Cicada.png</file>
+        <file alias="SkyStagBeetle">resources/bugs/Sky Stag Beetle.png</file>
+        <file alias="StarryFirefly">resources/bugs/Starry Firefly.png</file>
+        <file alias="VolcanicLadyBug">resources/bugs/Volcanic Ladybug.png</file>
+        <file alias="WoodlandRhinoBeetle">resources/bugs/Woodland Rhino Bettle.png</file>
+    </qresource>
+</RCC>
