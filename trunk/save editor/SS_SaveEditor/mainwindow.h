@@ -17,10 +17,6 @@ class MainWindow : public QMainWindow
     Q_OBJECT
     
 public:
-    // Default coords for new file
-    static const float DEFAULT_POS_X = -4798.150391;
-    static const float DEFAULT_POS_Y =  1237.629517;
-    static const float DEFAULT_POS_Z = -6573.722656;
     static const quint32 UPDATE_DELAY = 5000;
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
@@ -46,7 +42,7 @@ private:
     void ToggleVisible(bool visible);
     void SetupActions();
     void SetupConnections();
-    Ui::MainWindow   *m_ui;
+    Ui::MainWindow*   m_ui;
     GameFile*         m_gameFile;
     bool              m_isUpdating;
 

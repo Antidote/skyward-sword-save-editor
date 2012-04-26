@@ -29,6 +29,13 @@ public:
         Game3
     };
 
+    enum Region
+    {
+        NTSCU = 0x45554F53,
+        NTSCJ = 0x4A554F53,
+        PAL   = 0x50554F53
+    };
+
     GameFile(const QString& filepath = NULL, Game game = Game1);
     ~GameFile();
 
@@ -51,6 +58,8 @@ public:
 
     uint GetGameOffset() const;
 
+    Region GetRegion() const;
+    void  SetRegion(Region);
     PlayTime GetPlayTime() const;
     void  SetPlayTime(PlayTime val);
     QDateTime GetSaveTime() const;
@@ -114,6 +123,8 @@ public:
     void SetCurrentArea(const QString& map);
     QString GetCurrentRoom() const;
     void SetCurrentRoom(const QString& map);
+
+    bool IsNew() const { return false; };
 
     QString ReadNullTermString(int offset) const;
     void WriteNullTermString(const QString& val, int offset);

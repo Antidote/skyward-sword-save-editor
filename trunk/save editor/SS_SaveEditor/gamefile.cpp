@@ -169,6 +169,16 @@ QString GameFile::GetFilename() const
     return m_filename;
 }
 
+GameFile::Region GameFile::GetRegion() const
+{
+    return (Region)(*(quint32*)(m_data));
+}
+
+void GameFile::SetRegion(GameFile::Region val)
+{
+    (*(quint32*)(m_data)) = val;
+}
+
 PlayTime GameFile::GetPlayTime() const
 {
     PlayTime playTime;
