@@ -2,8 +2,10 @@
 #define NEWGAMEDIALOG_H
 
 #include <QDialog>
+#include "gamefile.h"
 
-class GameFile;
+class QAbstractButton;
+
 namespace Ui {
 class NewGameDialog;
 }
@@ -13,18 +15,16 @@ class NewGameDialog : public QDialog
     Q_OBJECT
     
 public:
-    // Default coords for new file
-    static const float DEFAULT_POS_X = -4798.150391;
-    static const float DEFAULT_POS_Y =  1237.629517;
-    static const float DEFAULT_POS_Z = -6573.722656;
-    explicit NewGameDialog(QWidget *parent = 0);
+    explicit NewGameDialog(QWidget *parent = 0, GameFile::Game game = GameFile::Game1);
     ~NewGameDialog();
 
-    GameFile* gameFile();
-    
+    GameFile* gameFile(GameFile* gameFile = NULL);
+
+private slots:
+    void onRegionChanged(QAbstractButton*);
 private:
     Ui::NewGameDialog* m_ui;
-    GameFile* m_gameFile;
+    GameFile::Game     m_game;
 };
 
 #endif // NEWGAMEDIALOG_H

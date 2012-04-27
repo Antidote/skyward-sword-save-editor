@@ -21,6 +21,11 @@ struct PlayTime
 class GameFile
 {
 public:
+    // Default coords for new file
+    static const float DEFAULT_POS_X = -4798.150391;
+    static const float DEFAULT_POS_Y =  1237.629517;
+    static const float DEFAULT_POS_Z = -6573.722656;
+
     enum Game
     {
         GameNone = -1,
@@ -41,6 +46,7 @@ public:
 
     bool Save(const QString& filename = NULL);
     bool Open(Game game = GameNone, const QString& filepath=NULL);
+    void CreateNewGame(Game game);
     void UpdateChecksum();
     bool HasValidChecksum(); // for integrity checks
     bool IsModified() const;
@@ -124,7 +130,8 @@ public:
     QString GetCurrentRoom() const;
     void SetCurrentRoom(const QString& map);
 
-    bool IsNew() const { return false; };
+    bool IsNew() const;
+    void SetNew(bool val);
 
     QString ReadNullTermString(int offset) const;
     void WriteNullTermString(const QString& val, int offset);

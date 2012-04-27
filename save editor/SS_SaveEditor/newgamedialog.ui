@@ -86,52 +86,13 @@
     </item>
    </layout>
   </widget>
-  <widget class="QGroupBox" name="groupBox_2">
+  <widget class="QGroupBox" name="groupBox_3">
    <property name="geometry">
     <rect>
      <x>10</x>
      <y>10</y>
      <width>201</width>
-     <height>51</height>
-    </rect>
-   </property>
-   <property name="title">
-    <string>Game</string>
-   </property>
-   <layout class="QHBoxLayout" name="horizontalLayout">
-    <item>
-     <widget class="QRadioButton" name="game1RadioBtn">
-      <property name="text">
-       <string>Game 1</string>
-      </property>
-      <property name="checked">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QRadioButton" name="game2RadioBtn">
-      <property name="text">
-       <string>Game 2</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QRadioButton" name="game3RadioBtn">
-      <property name="text">
-       <string>Game 3</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QGroupBox" name="groupBox_3">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>70</y>
-     <width>201</width>
-     <height>91</height>
+     <height>151</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -170,8 +131,14 @@
       </item>
       <item>
        <widget class="QLineEdit" name="nameLineEdit">
+        <property name="text">
+         <string>Link</string>
+        </property>
         <property name="maxLength">
          <number>12</number>
+        </property>
+        <property name="placeholderText">
+         <string>Link</string>
         </property>
        </widget>
       </item>
