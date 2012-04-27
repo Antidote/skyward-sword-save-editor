@@ -14,7 +14,7 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     gamefile.cpp \
     CRC32.cpp \
-    newgamedialog.cpp \
+    newgamedialog.cpp
 
 HEADERS  += mainwindow.h \
     gamefile.h \

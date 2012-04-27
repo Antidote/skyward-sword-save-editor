@@ -30,6 +30,9 @@ GameFile::GameFile(const QString& filepath, Game game) :
     m_isOpen(false),
     m_isDirty(false)
 {
+    if (m_filename == NULL)
+        m_data = new char[0xFBE0];
+    memset(m_data, 255, 0xFBE0);
     m_crcEngine = new CRC32;
 }
 
@@ -103,8 +106,43 @@ bool GameFile::Save(const QString& filename)
     return false;
 }
 
+void GameFile::CreateNewGame(GameFile::Game game)
+{
+    if (m_isOpen == false)
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            this->m_game = (Game)i;
+            this->SetNew(true);
+            this->UpdateChecksum();
+        }
+        this->m_isOpen = true;
+    }
+
+    this->m_game = game;
+
+    this->SetCurrentArea("F000");
+    this->SetCurrentRoom("F000");
+    this->SetCurrentMap ("F000");
+    this->SetCameraX    (DEFAULT_POS_X);
+    this->SetCameraY    (DEFAULT_POS_Y);
+    this->SetCameraZ    (DEFAULT_POS_Z);
+    this->SetCameraPitch(0.0f);
+    this->SetCameraRoll (0.0f);
+    this->SetCameraYaw  (0.0f);
+    this->SetPlayerX    (DEFAULT_POS_X);
+    this->SetPlayerY    (DEFAULT_POS_Y);
+    this->SetPlayerZ    (DEFAULT_POS_Z);
+    this->SetPlayerPitch(0.0f);
+    this->SetPlayerRoll (0.0f);
+    this->SetPlayerYaw  (0.0f);
+}
+
 bool GameFile::HasFileChanged()
 {
+    if (m_filename.size() <= 0)
+        return false; // Currently working in memory only
+
     QFile file(m_filename);
 
     if (file.open(QIODevice::ReadOnly))
@@ -169,6 +207,11 @@ QString GameFile::GetFilename() const
     return m_filename;
 }
 
+void GameFile::SetFilename(const QString &filepath)
+{
+    m_filename = filepath;
+}
+
 GameFile::Region GameFile::GetRegion() const
 {
     return (Region)(*(quint32*)(m_data));
@@ -176,7 +219,7 @@ GameFile::Region GameFile::GetRegion() const
 
 void GameFile::SetRegion(GameFile::Region val)
 {
-    (*(quint32*)(m_data)) = val;
+    *(quint32*)(m_data) = val;
 }
 
 PlayTime GameFile::GetPlayTime() const
@@ -633,6 +676,16 @@ void GameFile::UpdateChecksum()
     m_isDirty = true;
 }
 
+bool GameFile::IsNew() const
+{
+    return (*(char*)(m_data + GetGameOffset() + 0x53AD)) != 0;
+}
+
+void GameFile::SetNew(bool val)
+{
+    *(char*)(m_data + GetGameOffset() + 0x53AD) = val;
+}
+
 bool GameFile::IsModified() const
 {
     return m_isDirty;
@@ -653,6 +706,9 @@ QString GameFile::ReadNullTermString(int offset) const
 
 void GameFile::WriteNullTermString(const QString& val, int offset)
 {
+    if (!m_data)
+        return;
+
     char c = val.toStdString().c_str()[0];
     int i = 0;
     while (c != '\0')

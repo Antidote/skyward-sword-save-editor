@@ -4,6 +4,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "gamefile.h"
+#include "newgamedialog.h"
 #include <QFile>
 #include <QString>
 #include <QMessageBox>
@@ -20,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     m_ui(new Ui::MainWindow),
     m_gameFile(NULL),
+    m_curGame(GameFile::Game1),
     m_isUpdating(false)
 {
     m_ui->setupUi(this);
@@ -126,7 +128,9 @@ void MainWindow::SetupConnections()
     connect(m_ui->curRoomLineEdit,    SIGNAL(textChanged(QString)), this, SLOT(onTextChanged(QString)));
     connect(m_gameGroup,              SIGNAL(triggered(QAction*)),  this, SLOT(onGameChanged(QAction*)));
     connect(m_ui->actionOpen,         SIGNAL(triggered()),          this, SLOT(onOpen()));
+    connect(m_ui->createFileBtn,      SIGNAL(clicked()),            this, SLOT(onCreateNewGame()));
     connect(m_ui->actionSave,         SIGNAL(triggered()),          this, SLOT(onSave()));
+    connect(m_ui->actionSaveAs,       SIGNAL(triggered()),          this, SLOT(onSaveAs()));
     connect(m_ui->actionClose,        SIGNAL(triggered()),          this, SLOT(onClose()));
     connect(m_ui->actionReload,       SIGNAL(triggered()),          this, SLOT(onReload()));
     connect(m_ui->actionExit,         SIGNAL(triggered()),          this, SLOT(close()));
@@ -244,10 +248,31 @@ void MainWindow::onOpen()
     }
 }
 
+void MainWindow::onCreateNewGame()
+{
+    NewGameDialog* ngd = new NewGameDialog(this, m_curGame);
+    ngd->exec();
+    if (ngd->result() == NewGameDialog::Accepted)
+    {
+        GameFile* tmpFile = ngd->gameFile(m_gameFile);
+        m_gameFile = tmpFile;
+        UpdateInfo();
+        UpdateTitle();
+    }
+    delete ngd;
+}
+
 void MainWindow::onSave()
 {
     if (!m_gameFile || !m_gameFile->IsOpen() || m_gameFile->GetGame() == GameFile::GameNone)
         return;
+
+    if (m_gameFile->GetFilename().size() <= 0)
+    {
+        QFileDialog fileDialog;
+        QString file = fileDialog.getSaveFileName(this, tr("Save Skyward Sword Save File..."), dir, tr("Skyward Sword Save Files (*.sav)"));
+        m_gameFile->SetFilename(file);
+    }
 
     if(m_gameFile->Save())
         m_ui->statusBar->showMessage(tr("Save successful!"));
@@ -260,6 +285,11 @@ void MainWindow::onSave()
 
 void MainWindow::onSaveAs()
 {
+    if (!m_gameFile)
+        return;
+
+    m_gameFile->SetFilename(QString(""));
+    onSave();
 }
 
 void MainWindow::onGameChanged(QAction* game)
@@ -267,16 +297,14 @@ void MainWindow::onGameChanged(QAction* game)
     if (!m_gameFile || m_isUpdating)
         return;
 
-    quint32 curGame;
-
     if (game == m_ui->actionGame1)
-        curGame = GameFile::Game1;
+        m_curGame = GameFile::Game1;
     else if (game == m_ui->actionGame2)
-        curGame = GameFile::Game2;
+        m_curGame = GameFile::Game2;
     else if (game == m_ui->actionGame3)
-        curGame = GameFile::Game3;
+        m_curGame = GameFile::Game3;
 
-    m_gameFile->SetGame((GameFile::Game)curGame);
+    m_gameFile->SetGame((GameFile::Game)m_curGame);
     UpdateInfo();
     UpdateTitle();
 }
@@ -309,6 +337,7 @@ void MainWindow::onClose()
     m_gameFile = NULL;
 
     ClearInfo();
+    m_ui->createFileBtn->setVisible(true);
     ToggleVisible(false);
 }
 
@@ -325,7 +354,6 @@ void MainWindow::UpdateInfo()
     m_ui->playHoursSpinBox->setValue(m_gameFile->GetPlayTime().Hours);
     m_ui->playMinutesSpinBox->setValue(m_gameFile->GetPlayTime().Minutes);
     m_ui->playSecondsSpinBox->setValue(m_gameFile->GetPlayTime().Seconds);
-    m_gameFile->SetPlayTime(m_gameFile->GetPlayTime());
     m_ui->saveTimeEdit->setDateTime(m_gameFile->GetSaveTime());
     m_ui->playerXSpinBox->setValue(m_gameFile->GetPlayerX());
     m_ui->playerYSpinBox->setValue(m_gameFile->GetPlayerY());
@@ -358,7 +386,8 @@ void MainWindow::UpdateInfo()
     m_ui->curHPSpinBox->setValue(m_gameFile->GetCurrentHP());
     m_isUpdating = false;
 
-    ToggleVisible(true);
+    m_ui->createFileBtn->setVisible(m_gameFile->IsNew());
+    ToggleVisible(!m_gameFile->IsNew());
 }
 
 void MainWindow::UpdateTitle()

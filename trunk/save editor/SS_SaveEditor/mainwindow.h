@@ -30,6 +30,7 @@ private slots:
     void onTextChanged(QString text);
     void onValueChanged();
     void onGameChanged(QAction*);
+    void onCreateNewGame();
     void onOpen();
     void onSave();
     void onSaveAs();
@@ -44,6 +45,7 @@ private:
     void SetupConnections();
     Ui::MainWindow*   m_ui;
     GameFile*         m_gameFile;
+    GameFile::Game    m_curGame;
     bool              m_isUpdating;
 
     QActionGroup* m_gameGroup;
