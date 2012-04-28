@@ -363,7 +363,7 @@ void MainWindow::SetRegion(GameFile::Region region)
     switch(region)
     {
      case GameFile::NTSCJ:
-        m_ui->ntscJRadioBtn->setCheckable(true);
+        m_ui->ntscJRadioBtn->setChecked(true);
         break;
      case GameFile::NTSCU:
         m_ui->ntscURadioBtn->setChecked(true);
