@@ -50,6 +50,7 @@ GameFile* NewGameDialog::gameFile(GameFile* gameFile)
     gameFile->SetCurrentHP  (m_ui->hpSpinBox->value());
     gameFile->SetUnkHP      (m_ui->hpSpinBox->value());
     gameFile->SetNew        (false);
+    gameFile->UpdateChecksum();
 
     return gameFile;
 }

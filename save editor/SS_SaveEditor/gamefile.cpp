@@ -33,6 +33,8 @@ GameFile::GameFile(const QString& filepath, Game game) :
     if (m_filename == NULL)
         m_data = new char[0xFBE0];
     memset(m_data, 0, 0xFBE0);
+
+    *(char*)(m_data + 0x01F) = 0x1D;
     m_crcEngine = new CRC32;
 }
 
@@ -120,7 +122,6 @@ void GameFile::CreateNewGame(GameFile::Game game)
     }
 
     this->m_game = game;
-    *(char*)(m_data + 0x01C) = 0x1D;
     this->SetCurrentArea("F000");
     this->SetCurrentRoom("F000");
     this->SetCurrentMap ("F000");
@@ -253,11 +254,12 @@ QDateTime GameFile::GetSaveTime() const
 // TODO: Abandoned for now (Need to figure out how to do this :/)
 void GameFile::SetSaveTime(QDateTime val)
 {
+/*
     quint64 time = (quint64)val.toMSecsSinceEpoch();
     qDebug() << "Time " << ((quint64)((time / 1000) + SECONDS_TO_2000) * TICKS_PER_SECOND);
     qDebug() << "\n" << val.toString();
     *(qint64*)(m_data + GetGameOffset() + 0x0008) = qToBigEndian<qint64>((qint64)((time / 1000) * (TICKS_PER_SECOND)));
-
+*/
 }
 
 float GameFile::GetPlayerX() const
@@ -402,7 +404,14 @@ void GameFile::SetPlayerName(const QString &name)
         return;
 
     for (int i = 0, j = 0; i < 8; ++i, ++j)
+    {
+        if (i > name.length())
+        {
+            *(ushort*)(m_data + GetGameOffset() + (0x08D4 + j++)) = 0;
+            continue;
+        }
         *(ushort*)(m_data + GetGameOffset() + (0x08D4 + j++)) = qToBigEndian<quint16>(name.utf16()[i]);
+    }
 
     m_isDirty = true;
 }

@@ -7,6 +7,8 @@
 #include <QTimer>
 
 class QActionGroup;
+class QButtonGroup;
+class QAbstractButton;
 
 namespace Ui {
 class MainWindow;
@@ -30,6 +32,7 @@ private slots:
     void onTextChanged(QString text);
     void onValueChanged();
     void onGameChanged(QAction*);
+    void onRegionChanged(QAbstractButton*);
     void onCreateNewGame();
     void onOpen();
     void onSave();
@@ -39,7 +42,9 @@ private slots:
     void onCheck(); // Checks for changes to file and prompts for an update.
 
 private:
+    bool event(QEvent *);
     QTimer* m_checkTimer;
+    void SetRegion(GameFile::Region);
     void ToggleVisible(bool visible);
     void SetupActions();
     void SetupConnections();
@@ -49,6 +54,7 @@ private:
     bool              m_isUpdating;
 
     QActionGroup* m_gameGroup;
+    QButtonGroup* m_regionGroup;
 };
 
 #endif // MAINWINDOW_H

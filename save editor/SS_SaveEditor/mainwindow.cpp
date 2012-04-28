@@ -29,9 +29,9 @@ MainWindow::MainWindow(QWidget *parent) :
     SetupActions();
     SetupConnections();
 
-    m_checkTimer = new QTimer(this);
-    connect(m_checkTimer, SIGNAL(timeout()), this, SLOT(onCheck()));
-    m_checkTimer->start(UPDATE_DELAY); // set check for ever 5 seconds
+   //m_checkTimer = new QTimer(this);
+   // connect(m_checkTimer, SIGNAL(timeout()), this, SLOT(onCheck()));
+   // m_checkTimer->start(UPDATE_DELAY); // set check for ever 5 seconds
 
     ToggleVisible(false);
 }
@@ -48,6 +48,14 @@ MainWindow::~MainWindow()
     }
 }
 
+bool MainWindow::event(QEvent *event)
+{
+    if (event->type() == QEvent::Enter)
+        onCheck();
+
+    return QMainWindow::event(event);
+}
+
 // TODO: Need to make this more intelligent.
 void MainWindow::onCheck()
 {
@@ -61,7 +69,7 @@ void MainWindow::onCheck()
             UpdateInfo();
         }
     }
-    m_checkTimer->start(UPDATE_DELAY);
+    //m_checkTimer->start(UPDATE_DELAY);
 }
 
 void MainWindow::SetupActions()
@@ -89,6 +97,11 @@ void MainWindow::SetupActions()
     m_gameGroup->addAction(m_ui->actionGame1);
     m_gameGroup->addAction(m_ui->actionGame2);
     m_gameGroup->addAction(m_ui->actionGame3);
+
+    m_regionGroup = new QButtonGroup(this);
+    m_regionGroup->addButton(m_ui->ntscURadioBtn);
+    m_regionGroup->addButton(m_ui->ntscJRadioBtn);
+    m_regionGroup->addButton(m_ui->palRadioBtn);
 }
 
 void MainWindow::SetupConnections()
@@ -126,6 +139,7 @@ void MainWindow::SetupConnections()
     connect(m_ui->curMapLineEdit,     SIGNAL(textChanged(QString)), this, SLOT(onTextChanged(QString)));
     connect(m_ui->curAreaLineEdit,    SIGNAL(textChanged(QString)), this, SLOT(onTextChanged(QString)));
     connect(m_ui->curRoomLineEdit,    SIGNAL(textChanged(QString)), this, SLOT(onTextChanged(QString)));
+    connect(m_regionGroup,            SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(onRegionChanged(QAbstractButton*)));
     connect(m_gameGroup,              SIGNAL(triggered(QAction*)),  this, SLOT(onGameChanged(QAction*)));
     connect(m_ui->actionOpen,         SIGNAL(triggered()),          this, SLOT(onOpen()));
     connect(m_ui->createFileBtn,      SIGNAL(clicked()),            this, SLOT(onCreateNewGame()));
@@ -328,6 +342,38 @@ void MainWindow::onReload()
     }
 }
 
+void MainWindow::onRegionChanged(QAbstractButton *button)
+{
+    if (!m_gameFile || !m_gameFile->IsOpen())
+        return;
+
+    if (m_isUpdating)
+        return;
+
+    if (button == m_ui->ntscJRadioBtn)
+        m_gameFile->SetRegion(GameFile::NTSCJ);
+    else if (button == m_ui->ntscURadioBtn )
+        m_gameFile->SetRegion(GameFile::NTSCU);
+    else if (button == m_ui->palRadioBtn)
+        m_gameFile->SetRegion(GameFile::PAL);
+}
+
+void MainWindow::SetRegion(GameFile::Region region)
+{
+    switch(region)
+    {
+     case GameFile::NTSCJ:
+        m_ui->ntscJRadioBtn->setCheckable(true);
+        break;
+     case GameFile::NTSCU:
+        m_ui->ntscURadioBtn->setChecked(true);
+        break;
+     case GameFile::PAL:
+        m_ui->palRadioBtn->setChecked(true);
+        break;
+    }
+}
+
 void MainWindow::onClose()
 {
     if (!m_gameFile || !m_gameFile->IsOpen())
@@ -351,6 +397,7 @@ void MainWindow::UpdateInfo()
     }
 
     m_isUpdating = true;
+    SetRegion(m_gameFile->GetRegion());
     m_ui->playHoursSpinBox->setValue(m_gameFile->GetPlayTime().Hours);
     m_ui->playMinutesSpinBox->setValue(m_gameFile->GetPlayTime().Minutes);
     m_ui->playSecondsSpinBox->setValue(m_gameFile->GetPlayTime().Seconds);
@@ -414,4 +461,5 @@ void MainWindow::ClearInfo()
 void MainWindow::ToggleVisible(bool visible)
 {
     m_ui->tabWidget->setVisible(visible);
+    m_ui->regionGroupBox->setVisible(visible);
 }
