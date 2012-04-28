@@ -71,4 +71,10 @@ OTHER_FILES += \
     resources/equipment/Wallets/Small Wallet.png \
     resources/equipment/Wallets/Mediu Wallet.png \
     resources/equipment/Wallets/Giant Wallet.png \
-    resources/equipment/Wallets/Big Wallet.png
+    resources/equipment/Wallets/Big Wallet.png \
+    resource.rc
+
+win32{
+    RC_FILE = resource.rc
+}
+
