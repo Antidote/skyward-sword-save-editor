@@ -13,4 +13,21 @@
         <file alias="VolcanicLadyBug">resources/bugs/Volcanic Ladybug.png</file>
         <file alias="WoodlandRhinoBeetle">resources/bugs/Woodland Rhino Bettle.png</file>
     </qresource>
+    <qresource prefix="/swords">
+        <file alias="LongSword">resources/equipment/Swords/Goddess Long Sword.png</file>
+        <file alias="GoddessLongSword">resources/equipment/Swords/Goddess Sword Icon.png</file>
+        <file alias="GoddessWhiteSword">resources/equipment/Swords/Goddess White Sword.png</file>
+        <file alias="MasterSword">resources/equipment/Swords/Master Sword.png</file>
+        <file alias="PracticeSword">resources/equipment/Swords/Practice Sword.png</file>
+        <file alias="TrueMasterSword">resources/equipment/Swords/True Master Sword.png</file>
+    </qresource>
+    <qresource prefix="/weapons"/>
+    <qresource prefix="/bags">
+        <file alias="BombBagLarge">resources/equipment/Bags/Bomb Bag Large.png</file>
+        <file alias="BombBagMedium">resources/equipment/Bags/Bomb Bag Medium.png</file>
+        <file alias="BombBagSmall">resources/equipment/Bags/Bomb Bag Small.png</file>
+        <file alias="SeedSatchelLarge">resources/equipment/Bags/Seed Satchel Large.png</file>
+        <file alias="SeedSatchelMedium">resources/equipment/Bags/Seed Satchel Medium.png</file>
+        <file alias="SeedSatchelSmall">resources/equipment/Bags/Seed Satchel Small.png</file>
+    </qresource>
 </RCC>
