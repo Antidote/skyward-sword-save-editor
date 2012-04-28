@@ -32,7 +32,7 @@ GameFile::GameFile(const QString& filepath, Game game) :
 {
     if (m_filename == NULL)
         m_data = new char[0xFBE0];
-    memset(m_data, 255, 0xFBE0);
+    memset(m_data, 0, 0xFBE0);
     m_crcEngine = new CRC32;
 }
 
@@ -120,7 +120,7 @@ void GameFile::CreateNewGame(GameFile::Game game)
     }
 
     this->m_game = game;
-
+    *(char*)(m_data + 0x01C) = 0x1D;
     this->SetCurrentArea("F000");
     this->SetCurrentRoom("F000");
     this->SetCurrentMap ("F000");

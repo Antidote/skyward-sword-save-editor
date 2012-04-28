@@ -415,4 +415,3 @@ void MainWindow::ToggleVisible(bool visible)
 {
     m_ui->tabWidget->setVisible(visible);
 }
-
