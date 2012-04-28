@@ -252,11 +252,12 @@ QDateTime GameFile::GetSaveTime() const
 
 // TODO: Abandoned for now (Need to figure out how to do this :/)
 void GameFile::SetSaveTime(QDateTime val)
-{/*
-    time_t time = val.toTime_t();
-    qDebug() << "Time " << (quint64)((time + SECONDS_TO_2000) * TICKS_PER_SECOND);
-    *(quint64*)(m_data + GetGameOffset() + 0x0008) = swap64();
-*/
+{
+    quint64 time = (quint64)val.toMSecsSinceEpoch();
+    qDebug() << "Time " << ((quint64)((time / 1000) + SECONDS_TO_2000) * TICKS_PER_SECOND);
+    qDebug() << "\n" << val.toString();
+    *(qint64*)(m_data + GetGameOffset() + 0x0008) = qToBigEndian<qint64>((qint64)((time / 1000) * (TICKS_PER_SECOND)));
+
 }
 
 float GameFile::GetPlayerX() const
