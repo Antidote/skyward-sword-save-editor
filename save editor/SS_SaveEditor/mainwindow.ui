@@ -102,7 +102,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="playerTab">
        <attribute name="title">
@@ -862,8 +862,8 @@
          <rect>
           <x>10</x>
           <y>10</y>
-          <width>51</width>
-          <height>61</height>
+          <width>71</width>
+          <height>81</height>
          </rect>
         </property>
         <property name="icon">
@@ -872,8 +872,8 @@
         </property>
         <property name="iconSize">
          <size>
-          <width>26</width>
-          <height>80</height>
+          <width>32</width>
+          <height>160</height>
          </size>
         </property>
        </widget>
@@ -881,13 +881,420 @@
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>130</y>
-          <width>97</width>
-          <height>22</height>
+          <y>90</y>
+          <width>81</width>
+          <height>71</height>
          </rect>
         </property>
-        <property name="text">
-         <string>Bug Net</string>
+        <property name="icon">
+         <iconset resource="resources.qrc">
+          <normaloff>:/weapons/Bugnet</normaloff>:/weapons/Bugnet</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>64</width>
+          <height>64</height>
+         </size>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="bugNetChkBox_2">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>250</y>
+          <width>81</width>
+          <height>71</height>
+         </rect>
+        </property>
+        <property name="icon">
+         <iconset resource="resources.qrc">
+          <normaloff>:/weapons/Bomb</normaloff>:/weapons/Bomb</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>64</width>
+          <height>64</height>
+         </size>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="trainingSwdChkBox_2">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>170</y>
+          <width>81</width>
+          <height>71</height>
+         </rect>
+        </property>
+        <property name="icon">
+         <iconset resource="resources.qrc">
+          <normaloff>:/weapons/BigBugnet</normaloff>:/weapons/BigBugnet</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>64</width>
+          <height>64</height>
+         </size>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="bugNetChkBox_3">
+        <property name="geometry">
+         <rect>
+          <x>210</x>
+          <y>250</y>
+          <width>81</width>
+          <height>71</height>
+         </rect>
+        </property>
+        <property name="icon">
+         <iconset resource="resources.qrc">
+          <normaloff>:/weapons/IronBow</normaloff>:/weapons/IronBow</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>64</width>
+          <height>64</height>
+         </size>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="trainingSwdChkBox_3">
+        <property name="geometry">
+         <rect>
+          <x>210</x>
+          <y>90</y>
+          <width>81</width>
+          <height>71</height>
+         </rect>
+        </property>
+        <property name="icon">
+         <iconset resource="resources.qrc">
+          <normaloff>:/weapons/ToughBeetle</normaloff>:/weapons/ToughBeetle</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>64</width>
+          <height>64</height>
+         </size>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="bugNetChkBox_4">
+        <property name="geometry">
+         <rect>
+          <x>120</x>
+          <y>170</y>
+          <width>81</width>
+          <height>71</height>
+         </rect>
+        </property>
+        <property name="icon">
+         <iconset resource="resources.qrc">
+          <normaloff>:/weapons/Harp</normaloff>:/weapons/Harp</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>64</width>
+          <height>64</height>
+         </size>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="trainingSwdChkBox_4">
+        <property name="geometry">
+         <rect>
+          <x>120</x>
+          <y>90</y>
+          <width>81</width>
+          <height>71</height>
+         </rect>
+        </property>
+        <property name="icon">
+         <iconset resource="resources.qrc">
+          <normaloff>:/weapons/SpeedBeetle</normaloff>:/weapons/SpeedBeetle</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>64</width>
+          <height>64</height>
+         </size>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="bugNetChkBox_5">
+        <property name="geometry">
+         <rect>
+          <x>300</x>
+          <y>10</y>
+          <width>81</width>
+          <height>71</height>
+         </rect>
+        </property>
+        <property name="icon">
+         <iconset resource="resources.qrc">
+          <normaloff>:/weapons/ScatterShot</normaloff>:/weapons/ScatterShot</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>64</width>
+          <height>64</height>
+         </size>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="trainingSwdChkBox_5">
+        <property name="geometry">
+         <rect>
+          <x>300</x>
+          <y>250</y>
+          <width>81</width>
+          <height>71</height>
+         </rect>
+        </property>
+        <property name="icon">
+         <iconset resource="resources.qrc">
+          <normaloff>:/weapons/Whip</normaloff>:/weapons/Whip</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>64</width>
+          <height>64</height>
+         </size>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="bugNetChkBox_6">
+        <property name="geometry">
+         <rect>
+          <x>210</x>
+          <y>170</y>
+          <width>81</width>
+          <height>71</height>
+         </rect>
+        </property>
+        <property name="icon">
+         <iconset resource="resources.qrc">
+          <normaloff>:/weapons/SacredBow</normaloff>:/weapons/SacredBow</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>64</width>
+          <height>64</height>
+         </size>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="trainingSwdChkBox_6">
+        <property name="geometry">
+         <rect>
+          <x>120</x>
+          <y>10</y>
+          <width>81</width>
+          <height>81</height>
+         </rect>
+        </property>
+        <property name="icon">
+         <iconset resource="resources.qrc">
+          <normaloff>:/weapons/Beetle</normaloff>:/weapons/Beetle</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>64</width>
+          <height>64</height>
+         </size>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="bugNetChkBox_7">
+        <property name="geometry">
+         <rect>
+          <x>300</x>
+          <y>90</y>
+          <width>81</width>
+          <height>71</height>
+         </rect>
+        </property>
+        <property name="icon">
+         <iconset resource="resources.qrc">
+          <normaloff>:/weapons/SlingShot</normaloff>:/weapons/SlingShot</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>64</width>
+          <height>64</height>
+         </size>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="trainingSwdChkBox_7">
+        <property name="geometry">
+         <rect>
+          <x>210</x>
+          <y>10</y>
+          <width>81</width>
+          <height>81</height>
+         </rect>
+        </property>
+        <property name="icon">
+         <iconset resource="resources.qrc">
+          <normaloff>:/weapons/HookBeetle</normaloff>:/weapons/HookBeetle</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>64</width>
+          <height>64</height>
+         </size>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="bugNetChkBox_8">
+        <property name="geometry">
+         <rect>
+          <x>120</x>
+          <y>250</y>
+          <width>81</width>
+          <height>71</height>
+         </rect>
+        </property>
+        <property name="icon">
+         <iconset resource="resources.qrc">
+          <normaloff>:/weapons/Bow</normaloff>:/weapons/Bow</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>64</width>
+          <height>64</height>
+         </size>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="trainingSwdChkBox_8">
+        <property name="geometry">
+         <rect>
+          <x>300</x>
+          <y>170</y>
+          <width>91</width>
+          <height>71</height>
+         </rect>
+        </property>
+        <property name="icon">
+         <iconset resource="resources.qrc">
+          <normaloff>:/weapons/DoubleClawshot</normaloff>:/weapons/DoubleClawshot</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>64</width>
+          <height>64</height>
+         </size>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="trainingSwdChkBox_9">
+        <property name="geometry">
+         <rect>
+          <x>390</x>
+          <y>10</y>
+          <width>81</width>
+          <height>71</height>
+         </rect>
+        </property>
+        <property name="icon">
+         <iconset resource="resources.qrc">
+          <normaloff>:/weapons/GustBellows</normaloff>:/weapons/GustBellows</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>64</width>
+          <height>64</height>
+         </size>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="trainingSwdChkBox_10">
+        <property name="geometry">
+         <rect>
+          <x>390</x>
+          <y>80</y>
+          <width>71</width>
+          <height>81</height>
+         </rect>
+        </property>
+        <property name="icon">
+         <iconset resource="resources.qrc">
+          <normaloff>:/swords/GoddessLongSword</normaloff>:/swords/GoddessLongSword</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>32</width>
+          <height>160</height>
+         </size>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="trainingSwdChkBox_11">
+        <property name="geometry">
+         <rect>
+          <x>390</x>
+          <y>160</y>
+          <width>71</width>
+          <height>91</height>
+         </rect>
+        </property>
+        <property name="icon">
+         <iconset resource="resources.qrc">
+          <normaloff>:/swords/GoddessWhiteSword</normaloff>:/swords/GoddessWhiteSword</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>32</width>
+          <height>160</height>
+         </size>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="trainingSwdChkBox_12">
+        <property name="geometry">
+         <rect>
+          <x>390</x>
+          <y>250</y>
+          <width>71</width>
+          <height>91</height>
+         </rect>
+        </property>
+        <property name="icon">
+         <iconset resource="resources.qrc">
+          <normaloff>:/swords/LongSword</normaloff>:/swords/LongSword</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>32</width>
+          <height>160</height>
+         </size>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="trainingSwdChkBox_13">
+        <property name="geometry">
+         <rect>
+          <x>490</x>
+          <y>10</y>
+          <width>71</width>
+          <height>101</height>
+         </rect>
+        </property>
+        <property name="icon">
+         <iconset resource="resources.qrc">
+          <normaloff>:/swords/MasterSword</normaloff>:/swords/MasterSword</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>32</width>
+          <height>160</height>
+         </size>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="trainingSwdChkBox_27">
+        <property name="geometry">
+         <rect>
+          <x>500</x>
+          <y>130</y>
+          <width>71</width>
+          <height>111</height>
+         </rect>
+        </property>
+        <property name="icon">
+         <iconset resource="resources.qrc">
+          <normaloff>:/swords/TrueMasterSword</normaloff>:/swords/TrueMasterSword</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>32</width>
+          <height>160</height>
+         </size>
         </property>
        </widget>
       </widget>
