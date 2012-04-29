@@ -136,6 +136,7 @@ void MainWindow::SetupConnections()
     connect(m_ui->totalHPSpinBox,     SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
     connect(m_ui->unkHPSpinBox,       SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
     connect(m_ui->curHPSpinBox,       SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
+    connect(m_ui->roomIDSpinBox,      SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
     connect(m_ui->curMapLineEdit,     SIGNAL(textChanged(QString)), this, SLOT(onTextChanged(QString)));
     connect(m_ui->curAreaLineEdit,    SIGNAL(textChanged(QString)), this, SLOT(onTextChanged(QString)));
     connect(m_ui->curRoomLineEdit,    SIGNAL(textChanged(QString)), this, SLOT(onTextChanged(QString)));
@@ -212,6 +213,7 @@ void MainWindow::onValueChanged()
     m_gameFile->SetTotalHP((short)m_ui->totalHPSpinBox->value());
     m_gameFile->SetUnkHP((short)m_ui->unkHPSpinBox->value());
     m_gameFile->SetCurrentHP((short)m_ui->curHPSpinBox->value());
+    m_gameFile->SetRoomID((uint)m_ui->roomIDSpinBox->value());
     m_gameFile->SetTrainingSword(m_ui->trainingSwdChkBox->isChecked());
     m_gameFile->SetBugNet(m_ui->bugNetChkBox->isChecked());
     m_gameFile->SetFaronGrasshopper(m_ui->grassHopperChkBox->isChecked());
@@ -414,6 +416,7 @@ void MainWindow::UpdateInfo()
     m_ui->cameraRollSpinBox->setValue(m_gameFile->GetCameraRoll());
     m_ui->cameraPitchSpinBox->setValue(m_gameFile->GetCameraPitch());
     m_ui->cameraYawSpinBox->setValue(m_gameFile->GetCameraYaw());
+    m_ui->roomIDSpinBox->setValue(m_gameFile->GetRoomID());
     m_ui->curMapLineEdit->setText(m_gameFile->GetCurrentMap());
     m_ui->curAreaLineEdit->setText(m_gameFile->GetCurrentArea());
     m_ui->curRoomLineEdit->setText(m_gameFile->GetCurrentRoom());
