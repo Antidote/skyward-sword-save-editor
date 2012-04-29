@@ -28,7 +28,17 @@ Flags GameOff + 0x090D
 0x40 - Beetle Stolen
 0x80 - Bombs
 
-ItemFlags GameOff + 0x09EC
+Flags GameOff + 0x9E4
+0x01 - unk
+0x02 - unk
+0x04 - unk
+0x08 - unk
+0x10 - unk
+0x20 - Clawshot
+0x40 - unk
+0x80 - unk
+
+Flags GameOff + 0x09EC
 0x01 - unk (unused?)
 0x02 - Mogma Mitts
 0x04 - unk
@@ -38,7 +48,7 @@ ItemFlags GameOff + 0x09EC
 0x40 - unk
 0x80 - Scatter Shot
 
-ItemFlags Gameoff + 0x09F1:
+Flags Gameoff + 0x09F1:
 0x01 - Unk
 0x02 - unk
 0x04 - unk
@@ -47,7 +57,7 @@ ItemFlags Gameoff + 0x09F1:
 0x20 - unk
 0x40 - unk
 
-ItemFlags GameOff + 0x09F2:
+Flags GameOff + 0x09F2:
 0x01 - Practice Sword
 0x02 - Bug Net
 0x04 - Faron Grasshopper
@@ -57,7 +67,7 @@ ItemFlags GameOff + 0x09F2:
 0x40 - Volcanic Ladybug
 0x80 - Blessed Butterfly
 
-ItemFlags GameOFF + 0x09F3:
+Flags GameOFF + 0x09F3:
 0x01 - Sail Cloth
 0x02 - Harp (Not valid until after Zelda "gives" it to you)
 0x04 - unk
@@ -67,7 +77,7 @@ ItemFlags GameOFF + 0x09F3:
 0x40 - unk
 0x80 - unk
 
-ItemFlags GameOff + 0x09F4:
+Flags GameOff + 0x09F4:
 0x01 - Lanaryu Ant
 0x02 - Sand Cicada
 0x04 - Gerudo Dragon Fly
