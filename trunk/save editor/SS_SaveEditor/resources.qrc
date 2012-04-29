@@ -21,7 +21,24 @@
         <file alias="PracticeSword">resources/equipment/Swords/Practice Sword.png</file>
         <file alias="TrueMasterSword">resources/equipment/Swords/True Master Sword.png</file>
     </qresource>
-    <qresource prefix="/weapons"/>
+    <qresource prefix="/weapons">
+        <file alias="Beetle">resources/equipment/Weapons/Beetle.png</file>
+        <file alias="BigBugnet">resources/equipment/Weapons/Big Bugnet.png</file>
+        <file alias="Bomb">resources/equipment/Weapons/Bomb.png</file>
+        <file alias="Bow">resources/equipment/Weapons/Bow.png</file>
+        <file alias="Bugnet">resources/equipment/Weapons/Bugnet.png</file>
+        <file alias="DoubleClawshot">resources/equipment/Weapons/Double Clawshot.png</file>
+        <file alias="GustBellows">resources/equipment/Weapons/Gust Bellows.png</file>
+        <file alias="Harp">resources/equipment/Weapons/Harp.png</file>
+        <file alias="HookBeetle">resources/equipment/Weapons/Hook Beetle.png</file>
+        <file alias="IronBow">resources/equipment/Weapons/Iron Bow.png</file>
+        <file alias="SacredBow">resources/equipment/Weapons/Sacred Bow.png</file>
+        <file alias="ScatterShot">resources/equipment/Weapons/Scattershot.png</file>
+        <file alias="SlingShot">resources/equipment/Weapons/Slingshot.png</file>
+        <file alias="SpeedBeetle">resources/equipment/Weapons/Speed Beetle.png</file>
+        <file alias="ToughBeetle">resources/equipment/Weapons/Tough Beetle.png</file>
+        <file alias="Whip">resources/equipment/Weapons/Whip.png</file>
+    </qresource>
     <qresource prefix="/bags">
         <file alias="BombBagLarge">resources/equipment/Bags/Bomb Bag Large.png</file>
         <file alias="BombBagMedium">resources/equipment/Bags/Bomb Bag Medium.png</file>
