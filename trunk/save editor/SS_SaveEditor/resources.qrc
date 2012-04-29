@@ -15,7 +15,7 @@
     </qresource>
     <qresource prefix="/swords">
         <file alias="LongSword">resources/equipment/Swords/Goddess Long Sword.png</file>
-        <file alias="GoddessLongSword">resources/equipment/Swords/Goddess Sword Icon.png</file>
+        <file alias="GoddessSword">resources/equipment/Swords/Goddess Sword Icon.png</file>
         <file alias="GoddessWhiteSword">resources/equipment/Swords/Goddess White Sword.png</file>
         <file alias="MasterSword">resources/equipment/Swords/Master Sword.png</file>
         <file alias="PracticeSword">resources/equipment/Swords/Practice Sword.png</file>

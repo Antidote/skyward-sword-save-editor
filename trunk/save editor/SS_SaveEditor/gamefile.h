@@ -123,6 +123,8 @@ public:
     ushort GetCurrentHP() const;
     void SetCurrentHP(ushort val);
     uint GetChecksum() const;
+    uint  GetRoomID() const;
+    void SetRoomID(uint val);
     QString GetCurrentMap() const;
     void SetCurrentMap(const QString& map);
     QString GetCurrentArea() const;

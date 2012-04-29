@@ -631,6 +631,16 @@ void GameFile::SetCurrentHP(ushort val)
     m_isDirty = true;
 }
 
+uint GameFile::GetRoomID() const
+{
+    return (uint)(*(uchar*)(m_data + GetGameOffset() + 0x5309));
+}
+
+void GameFile::SetRoomID(uint val)
+{
+    *(uchar*)(m_data + GetGameOffset() + 0x5309) = (uchar)val;
+}
+
 QString GameFile::GetCurrentMap() const
 {
     return ReadNullTermString(GetGameOffset() + 0x531c);
