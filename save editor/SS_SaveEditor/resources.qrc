@@ -47,4 +47,9 @@
         <file alias="SeedSatchelMedium">resources/equipment/Bags/Seed Satchel Medium.png</file>
         <file alias="SeedSatchelSmall">resources/equipment/Bags/Seed Satchel Small.png</file>
     </qresource>
+    <qresource prefix="/icons">
+        <file alias="Game1">resources/icons/game1Icon.png</file>
+        <file alias="Game2">resources/icons/game2Icon.png</file>
+        <file alias="Game3">resources/icons/game3Icon.png</file>
+    </qresource>
 </RCC>
