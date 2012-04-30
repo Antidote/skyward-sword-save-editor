@@ -8,26 +8,29 @@ QT       += core gui
 
 TARGET = SS_SaveEditor
 TEMPLATE = app
+INCLUDEPATH += include
 
+SOURCES += \
+    src/main.cpp\
+    src/mainwindow.cpp \
+    src/gamefile.cpp \
+    src/CRC32.cpp \
+    src/newgamedialog.cpp
 
-SOURCES += main.cpp\
-        mainwindow.cpp \
-    gamefile.cpp \
-    CRC32.cpp \
-    newgamedialog.cpp
+HEADERS  += \
+    include/mainwindow.h \
+    include/gamefile.h \
+    include/CRC32.h \
+    include/newgamedialog.h \
 
-HEADERS  += mainwindow.h \
-    gamefile.h \
-    CRC32.h \
-    newgamedialog.h \
-
-FORMS    += mainwindow.ui \
-    newgamedialog.ui \
+FORMS    += \
+    forms/mainwindow.ui \
+    forms/newgamedialog.ui \
 
 DEFINES += DEBUG
 
 RESOURCES += \
-    resources.qrc
+    resources/resources.qrc
 
 OTHER_FILES += \
     resources/bugs/Woodland Rhino Bettle.png \
@@ -72,9 +75,9 @@ OTHER_FILES += \
     resources/equipment/Wallets/Mediu Wallet.png \
     resources/equipment/Wallets/Giant Wallet.png \
     resources/equipment/Wallets/Big Wallet.png \
-    resource.rc
+    resources/mainicon.rc
 
 win32{
-    RC_FILE = resource.rc
+    RC_FILE = resources/mainicon.rc
 }
 
