@@ -139,6 +139,26 @@ void GameFile::CreateNewGame(GameFile::Game game)
     this->SetPlayerYaw  (0.0f);
 }
 
+void GameFile::DeleteGame(Game game)
+{
+    if (!m_data)
+        return;
+
+    Game oldGame = m_game;
+    m_game = game;
+    memset((uchar*)(m_data + GetGameOffset()), 0, 0x53BC);
+    SetNew(true);
+    SetPlayerName("Link");
+    UpdateChecksum();
+    m_game = oldGame;
+}
+
+void GameFile::DeleteAllGames()
+{
+    for (int i = 0; i < 3; i++)
+        DeleteGame((Game)i);
+}
+
 bool GameFile::HasFileChanged()
 {
     if (m_filename.size() <= 0)
@@ -149,7 +169,7 @@ bool GameFile::HasFileChanged()
     if (file.open(QIODevice::ReadOnly))
     {
         // I'm going to go ahead and keep this for now. (Prevents you from accidentally fucking up your save files)
-        if (file.size() != 64480)
+        if (file.size() != 0xFBE0)
         {
             file.close();
             return false;
@@ -169,6 +189,9 @@ bool GameFile::HasFileChanged()
 
 void GameFile::Close()
 {
+    if (!m_data)
+        return;
+
     delete[] m_data;
     m_data = NULL;
     m_isOpen = false;

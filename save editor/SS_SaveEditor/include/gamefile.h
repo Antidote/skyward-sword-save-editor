@@ -47,6 +47,8 @@ public:
     bool Save(const QString& filename = NULL);
     bool Open(Game game = GameNone, const QString& filepath=NULL);
     void CreateNewGame(Game game);
+    void DeleteGame(Game game = GameNone);
+    void DeleteAllGames();
     void UpdateChecksum();
     bool HasValidChecksum(); // for integrity checks
     bool IsModified() const;

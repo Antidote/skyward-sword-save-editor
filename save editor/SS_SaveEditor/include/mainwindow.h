@@ -34,6 +34,7 @@ private slots:
     void onGameChanged(QAction*);
     void onRegionChanged(QAbstractButton*);
     void onCreateNewGame();
+    void onDeleteGame();
     void onOpen();
     void onSave();
     void onSaveAs();
