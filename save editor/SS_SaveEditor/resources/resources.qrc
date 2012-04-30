@@ -1,0 +1,55 @@
+<RCC>
+    <qresource prefix="/bugs">
+        <file alias="BlessedButterfly">bugs/Blessed Butterfly.png</file>
+        <file alias="DekuHornet">bugs/Deku Hornet.png</file>
+        <file alias="EldinRoller">bugs/Eldin Roller.png</file>
+        <file alias="FaronGrasshopper">bugs/Faron Grasshopper.png</file>
+        <file alias="GerudoDragonfly">bugs/Gerudo Dragonfly.png</file>
+        <file alias="LanayruAnt">bugs/Lanayru Ant.png</file>
+        <file alias="LoftMantis">bugs/Loft Mantis.png</file>
+        <file alias="SandCicada">bugs/Sand Cicada.png</file>
+        <file alias="SkyStagBeetle">bugs/Sky Stag Beetle.png</file>
+        <file alias="StarryFirefly">bugs/Starry Firefly.png</file>
+        <file alias="VolcanicLadyBug">bugs/Volcanic Ladybug.png</file>
+        <file alias="WoodlandRhinoBeetle">bugs/Woodland Rhino Bettle.png</file>
+    </qresource>
+    <qresource prefix="/swords">
+        <file alias="LongSword">equipment/Swords/Goddess Long Sword.png</file>
+        <file alias="GoddessSword">equipment/Swords/Goddess Sword Icon.png</file>
+        <file alias="GoddessWhiteSword">equipment/Swords/Goddess White Sword.png</file>
+        <file alias="MasterSword">equipment/Swords/Master Sword.png</file>
+        <file alias="PracticeSword">equipment/Swords/Practice Sword.png</file>
+        <file alias="TrueMasterSword">equipment/Swords/True Master Sword.png</file>
+    </qresource>
+    <qresource prefix="/weapons">
+        <file alias="Beetle">equipment/Weapons/Beetle.png</file>
+        <file alias="BigBugnet">equipment/Weapons/Big Bugnet.png</file>
+        <file alias="Bomb">equipment/Weapons/Bomb.png</file>
+        <file alias="Bow">equipment/Weapons/Bow.png</file>
+        <file alias="Bugnet">equipment/Weapons/Bugnet.png</file>
+        <file alias="DoubleClawshot">equipment/Weapons/Double Clawshot.png</file>
+        <file alias="GustBellows">equipment/Weapons/Gust Bellows.png</file>
+        <file alias="Harp">equipment/Weapons/Harp.png</file>
+        <file alias="HookBeetle">equipment/Weapons/Hook Beetle.png</file>
+        <file alias="IronBow">equipment/Weapons/Iron Bow.png</file>
+        <file alias="SacredBow">equipment/Weapons/Sacred Bow.png</file>
+        <file alias="ScatterShot">equipment/Weapons/Scattershot.png</file>
+        <file alias="SlingShot">equipment/Weapons/Slingshot.png</file>
+        <file alias="SpeedBeetle">equipment/Weapons/Speed Beetle.png</file>
+        <file alias="ToughBeetle">equipment/Weapons/Tough Beetle.png</file>
+        <file alias="Whip">equipment/Weapons/Whip.png</file>
+    </qresource>
+    <qresource prefix="/bags">
+        <file alias="BombBagLarge">equipment/Bags/Bomb Bag Large.png</file>
+        <file alias="BombBagMedium">equipment/Bags/Bomb Bag Medium.png</file>
+        <file alias="BombBagSmall">equipment/Bags/Bomb Bag Small.png</file>
+        <file alias="SeedSatchelLarge">equipment/Bags/Seed Satchel Large.png</file>
+        <file alias="SeedSatchelMedium">equipment/Bags/Seed Satchel Medium.png</file>
+        <file alias="SeedSatchelSmall">equipment/Bags/Seed Satchel Small.png</file>
+    </qresource>
+    <qresource prefix="/icons">
+        <file alias="Game1">icons/game1Icon.png</file>
+        <file alias="Game2">icons/game2Icon.png</file>
+        <file alias="Game3">icons/game3Icon.png</file>
+    </qresource>
+</RCC>
