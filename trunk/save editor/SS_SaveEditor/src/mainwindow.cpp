@@ -144,6 +144,7 @@ void MainWindow::SetupConnections()
     connect(m_gameGroup,              SIGNAL(triggered(QAction*)),  this, SLOT(onGameChanged(QAction*)));
     connect(m_ui->actionOpen,         SIGNAL(triggered()),          this, SLOT(onOpen()));
     connect(m_ui->createFileBtn,      SIGNAL(clicked()),            this, SLOT(onCreateNewGame()));
+    connect(m_ui->deleteGameBtn,      SIGNAL(clicked()),            this, SLOT(onDeleteGame()));
     connect(m_ui->actionSave,         SIGNAL(triggered()),          this, SLOT(onSave()));
     connect(m_ui->actionSaveAs,       SIGNAL(triggered()),          this, SLOT(onSaveAs()));
     connect(m_ui->actionClose,        SIGNAL(triggered()),          this, SLOT(onClose()));
@@ -276,6 +277,16 @@ void MainWindow::onCreateNewGame()
         UpdateTitle();
     }
     delete ngd;
+}
+
+void MainWindow::onDeleteGame()
+{
+    if (!m_gameFile || !m_gameFile->IsOpen())
+        return;
+
+    m_gameFile->DeleteGame(m_curGame);
+    UpdateInfo();
+    UpdateTitle();
 }
 
 void MainWindow::onSave()
@@ -464,5 +475,9 @@ void MainWindow::ClearInfo()
 void MainWindow::ToggleVisible(bool visible)
 {
     m_ui->tabWidget->setVisible(visible);
-    m_ui->regionGroupBox->setVisible(visible);
+    m_ui->deleteGameBtn->setVisible(visible);
+    if (!m_gameFile)
+        return;
+
+    m_ui->regionGroupBox->setVisible(!m_gameFile->IsOpen());
 }
