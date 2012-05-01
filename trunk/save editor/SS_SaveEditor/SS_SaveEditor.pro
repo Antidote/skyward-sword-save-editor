@@ -77,6 +77,9 @@ OTHER_FILES += \
     resources/equipment/Wallets/Big Wallet.png \
     resources/mainicon.rc
 
+TRANSLATIONS += \
+    resources/languages/ja.ts
+	
 win32{
     RC_FILE = resources/mainicon.rc
 }

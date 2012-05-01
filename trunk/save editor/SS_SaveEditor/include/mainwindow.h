@@ -46,7 +46,7 @@ private:
     bool event(QEvent *);
     QTimer* m_checkTimer;
     void SetRegion(GameFile::Region);
-    void ToggleVisible(bool visible);
+    void ToggleEnabled(bool visible);
     void SetupActions();
     void SetupConnections();
     Ui::MainWindow*   m_ui;

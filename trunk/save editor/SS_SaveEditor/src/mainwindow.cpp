@@ -32,8 +32,6 @@ MainWindow::MainWindow(QWidget *parent) :
    //m_checkTimer = new QTimer(this);
    // connect(m_checkTimer, SIGNAL(timeout()), this, SLOT(onCheck()));
    // m_checkTimer->start(UPDATE_DELAY); // set check for ever 5 seconds
-
-    ToggleVisible(false);
 }
 
 MainWindow::~MainWindow()
@@ -143,8 +141,7 @@ void MainWindow::SetupConnections()
     connect(m_regionGroup,            SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(onRegionChanged(QAbstractButton*)));
     connect(m_gameGroup,              SIGNAL(triggered(QAction*)),  this, SLOT(onGameChanged(QAction*)));
     connect(m_ui->actionOpen,         SIGNAL(triggered()),          this, SLOT(onOpen()));
-    connect(m_ui->createFileBtn,      SIGNAL(clicked()),            this, SLOT(onCreateNewGame()));
-    connect(m_ui->deleteGameBtn,      SIGNAL(clicked()),            this, SLOT(onDeleteGame()));
+    connect(m_ui->createDeleteGameBtn,SIGNAL(clicked()),            this, SLOT(onCreateNewGame()));
     connect(m_ui->actionSave,         SIGNAL(triggered()),          this, SLOT(onSave()));
     connect(m_ui->actionSaveAs,       SIGNAL(triggered()),          this, SLOT(onSaveAs()));
     connect(m_ui->actionClose,        SIGNAL(triggered()),          this, SLOT(onClose()));
@@ -254,11 +251,12 @@ void MainWindow::onOpen()
         {
             if (!m_gameFile->HasValidChecksum())
             {
-                QMessageBox msg(QMessageBox::Warning, "CRC32 Mismatch", "The checksum generated does not match the one provided by the file");
+                QMessageBox msg(QMessageBox::Warning, tr("CRC32 Mismatch"), tr("The checksum generated does not match the one provided by the file"));
                 msg.exec();
             }
             m_gameFile->SetGame(GameFile::Game1);
             m_ui->actionGame1->setChecked(true);
+            m_ui->regionGroupBox->setEnabled(true);
             UpdateInfo();
             UpdateTitle();
         }
@@ -315,7 +313,7 @@ void MainWindow::onSaveAs()
     if (!m_gameFile)
         return;
 
-    m_gameFile->SetFilename(QString(""));
+    m_gameFile->SetFilename(QString(tr("")));
     onSave();
 }
 
@@ -396,17 +394,34 @@ void MainWindow::onClose()
     m_gameFile = NULL;
 
     ClearInfo();
-    m_ui->createFileBtn->setVisible(true);
-    ToggleVisible(false);
+    m_ui->regionGroupBox->setEnabled(false);
+    m_ui->tabWidget->setEnabled(false);
 }
 
 void MainWindow::UpdateInfo()
 {
     if (!m_gameFile || !m_gameFile->IsOpen() ||
          m_isUpdating || m_gameFile->GetGame() == GameFile::GameNone)
-    {
-        ToggleVisible(false);
         return;
+
+    if (!m_gameFile->IsNew())
+    {
+        m_ui->createDeleteGameBtn->setText(tr("Delete Game"));
+        if (disconnect(m_ui->createDeleteGameBtn))
+            connect(m_ui->createDeleteGameBtn, SIGNAL(clicked()), this, SLOT(onDeleteGame()));
+
+        m_ui->regionGroupBox->setEnabled(true);
+        m_ui->tabWidget->setEnabled(true);
+    }
+    else
+    {
+        m_ui->createDeleteGameBtn->setText(tr("Click to Create New game"));
+        if (disconnect(m_ui->createDeleteGameBtn))
+            connect(m_ui->createDeleteGameBtn, SIGNAL(clicked()), this, SLOT(onCreateNewGame()));
+
+        m_ui->regionGroupBox->setEnabled(false);
+        m_ui->tabWidget->setEnabled(false);
+        return; // No need to change all of this ;D
     }
 
     m_isUpdating = true;
@@ -446,17 +461,14 @@ void MainWindow::UpdateInfo()
     m_ui->unkHPSpinBox->setValue(m_gameFile->GetUnkHP());
     m_ui->curHPSpinBox->setValue(m_gameFile->GetCurrentHP());
     m_isUpdating = false;
-
-    m_ui->createFileBtn->setVisible(m_gameFile->IsNew());
-    ToggleVisible(!m_gameFile->IsNew());
 }
 
 void MainWindow::UpdateTitle()
 {
     if (m_gameFile == NULL || !m_gameFile->IsOpen() || m_gameFile->GetGame() == GameFile::GameNone)
-        this->setWindowTitle("WiiKing2 Editor");
+        this->setWindowTitle(tr("WiiKing2 Editor"));
     else
-        this->setWindowTitle(QString("WiiKing2 Editor - Game %1 0x")
+        this->setWindowTitle(QString(tr("WiiKing2 Editor - Game %1 0x"))
                              .arg(m_gameFile->GetGame() + 1)
                              .append(QString("").sprintf("%08X", m_gameFile->GetChecksum())));
 }
@@ -470,14 +482,4 @@ void MainWindow::ClearInfo()
     m_ui->unkHPSpinBox->clear();
     m_ui->curHPSpinBox->clear();
     m_isUpdating = false;
-}
-
-void MainWindow::ToggleVisible(bool visible)
-{
-    m_ui->tabWidget->setVisible(visible);
-    m_ui->deleteGameBtn->setVisible(visible);
-    if (!m_gameFile)
-        return;
-
-    m_ui->regionGroupBox->setVisible(!m_gameFile->IsOpen());
 }
