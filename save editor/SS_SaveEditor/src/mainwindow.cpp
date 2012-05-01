@@ -407,7 +407,7 @@ void MainWindow::UpdateInfo()
     if (!m_gameFile->IsNew())
     {
         m_ui->createDeleteGameBtn->setText(tr("Delete Game"));
-        if (disconnect(m_ui->createDeleteGameBtn))
+        if (m_ui->createDeleteGameBtn->disconnect())
             connect(m_ui->createDeleteGameBtn, SIGNAL(clicked()), this, SLOT(onDeleteGame()));
 
         m_ui->regionGroupBox->setEnabled(true);
@@ -416,7 +416,7 @@ void MainWindow::UpdateInfo()
     else
     {
         m_ui->createDeleteGameBtn->setText(tr("Click to Create New game"));
-        if (disconnect(m_ui->createDeleteGameBtn))
+        if (m_ui->createDeleteGameBtn->disconnect())
             connect(m_ui->createDeleteGameBtn, SIGNAL(clicked()), this, SLOT(onCreateNewGame()));
 
         m_ui->regionGroupBox->setEnabled(false);
