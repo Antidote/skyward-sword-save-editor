@@ -277,6 +277,7 @@ QDateTime GameFile::GetSaveTime() const
 // TODO: Abandoned for now (Need to figure out how to do this :/)
 void GameFile::SetSaveTime(QDateTime val)
 {
+    Q_UNUSED(val);
 /*
     quint64 time = (quint64)val.toMSecsSinceEpoch();
     qDebug() << "Time " << ((quint64)((time / 1000) + SECONDS_TO_2000) * TICKS_PER_SECOND);
