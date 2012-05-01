@@ -2,6 +2,14 @@
 <ui version="4.0">
  <class>NewGameDialog</class>
  <widget class="QDialog" name="NewGameDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>324</width>
+    <height>191</height>
+   </rect>
+  </property>
   <property name="minimumSize">
    <size>
     <width>324</width>
@@ -38,8 +46,8 @@
     <rect>
      <x>220</x>
      <y>10</y>
-     <width>101</width>
-     <height>114</height>
+     <width>80</width>
+     <height>96</height>
     </rect>
    </property>
    <property name="title">
