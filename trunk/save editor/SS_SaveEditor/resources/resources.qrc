@@ -51,5 +51,11 @@
         <file alias="Game1">icons/game1Icon.png</file>
         <file alias="Game2">icons/game2Icon.png</file>
         <file alias="Game3">icons/game3Icon.png</file>
+        <file alias="Copy">icons/copy_page.png</file>
+        <file alias="Close">icons/delete.png</file>
+        <file alias="New">icons/new_page.png</file>
+        <file alias="Reload">icons/refresh.png</file>
+        <file alias="Open">icons/folder.png</file>
+        <file alias="Save">icons/save.png</file>
     </qresource>
 </RCC>

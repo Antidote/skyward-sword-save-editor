@@ -38,6 +38,8 @@ private slots:
     void onOpen();
     void onSave();
     void onSaveAs();
+    void onAbout();
+    void onAboutQt();
     void onReload();
     void onClose();
     void onCheck(); // Checks for changes to file and prompts for an update.

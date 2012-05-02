@@ -116,7 +116,7 @@ QPushButton
 {
 	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(249, 249, 249, 255), stop:1 rgba(217, 217, 217, 255));
 	border: 1px solid rgb(171, 173, 179);
-	padding: 2px;
+	padding: 2px 8px;
 }
 
 QGroupBox
@@ -269,6 +269,13 @@ QStatusBar
       </item>
      </layout>
     </item>
+    <item row="2" column="0">
+     <widget class="QPushButton" name="createDeleteGameBtn">
+      <property name="text">
+       <string>Click to create new game</string>
+      </property>
+     </widget>
+    </item>
     <item row="1" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="enabled">
@@ -281,7 +288,7 @@ QStatusBar
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="playerTab">
        <attribute name="title">
@@ -1568,14 +1575,113 @@ QStatusBar
          </size>
         </property>
        </widget>
+       <widget class="QCheckBox" name="checkBox_3">
+        <property name="geometry">
+         <rect>
+          <x>100</x>
+          <y>10</y>
+          <width>81</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="icon">
+         <iconset resource="../resources/resources.qrc">
+          <normaloff>:/bugs/GerudoDragonfly</normaloff>:/bugs/GerudoDragonfly</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>64</width>
+          <height>64</height>
+         </size>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="checkBox_4">
+        <property name="geometry">
+         <rect>
+          <x>100</x>
+          <y>70</y>
+          <width>81</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="icon">
+         <iconset resource="../resources/resources.qrc">
+          <normaloff>:/bugs/SkyStagBeetle</normaloff>:/bugs/SkyStagBeetle</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>64</width>
+          <height>64</height>
+         </size>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="checkBox_5">
+        <property name="geometry">
+         <rect>
+          <x>100</x>
+          <y>130</y>
+          <width>81</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../resources/resources.qrc">
+          <normaloff>:/bugs/EldinRoller</normaloff>:/bugs/EldinRoller</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>64</width>
+          <height>64</height>
+         </size>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="checkBox_6">
+        <property name="geometry">
+         <rect>
+          <x>100</x>
+          <y>190</y>
+          <width>81</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>CheckBox</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../resources/resources.qrc">
+          <normaloff>:/bugs/LanayruAnt</normaloff>:/bugs/LanayruAnt</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>64</width>
+          <height>64</height>
+         </size>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="checkBox_7">
+        <property name="geometry">
+         <rect>
+          <x>100</x>
+          <y>250</y>
+          <width>81</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="icon">
+         <iconset resource="../resources/resources.qrc">
+          <normaloff>:/bugs/DekuHornet</normaloff>:/bugs/DekuHornet</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>64</width>
+          <height>64</height>
+         </size>
+        </property>
+       </widget>
       </widget>
-     </widget>
-    </item>
-    <item row="2" column="0">
-     <widget class="QPushButton" name="createDeleteGameBtn">
-      <property name="text">
-       <string>Click to create new game</string>
-      </property>
      </widget>
     </item>
    </layout>
@@ -1609,8 +1715,8 @@ QStatusBar
     <property name="title">
      <string>&amp;Help</string>
     </property>
-    <addaction name="action_About"/>
-    <addaction name="actionAbout_Qt"/>
+    <addaction name="actionAbout"/>
+    <addaction name="actionAboutQt"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_Help"/>
@@ -1624,8 +1730,8 @@ QStatusBar
    </property>
    <property name="iconSize">
     <size>
-     <width>30</width>
-     <height>30</height>
+     <width>32</width>
+     <height>32</height>
     </size>
    </property>
    <property name="floatable">
@@ -1649,6 +1755,10 @@ QStatusBar
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionOpen">
+   <property name="icon">
+    <iconset resource="../resources/resources.qrc">
+     <normaloff>:/icons/Open</normaloff>:/icons/Open</iconset>
+   </property>
    <property name="text">
     <string>&amp;Open</string>
    </property>
@@ -1701,6 +1811,10 @@ QStatusBar
    </property>
   </action>
   <action name="actionSave">
+   <property name="icon">
+    <iconset resource="../resources/resources.qrc">
+     <normaloff>:/icons/Save</normaloff>:/icons/Save</iconset>
+   </property>
    <property name="text">
     <string>&amp;Save</string>
    </property>
@@ -1711,21 +1825,29 @@ QStatusBar
    </property>
   </action>
   <action name="actionClose">
+   <property name="icon">
+    <iconset resource="../resources/resources.qrc">
+     <normaloff>:/icons/Close</normaloff>:/icons/Close</iconset>
+   </property>
    <property name="text">
     <string>&amp;Close</string>
    </property>
   </action>
   <action name="actionReload">
+   <property name="icon">
+    <iconset resource="../resources/resources.qrc">
+     <normaloff>:/icons/Reload</normaloff>:/icons/Reload</iconset>
+   </property>
    <property name="text">
     <string>Reload</string>
    </property>
   </action>
-  <action name="action_About">
+  <action name="actionAbout">
    <property name="text">
     <string>&amp;About</string>
    </property>
   </action>
-  <action name="actionAbout_Qt">
+  <action name="actionAboutQt">
    <property name="text">
     <string>About &amp;Qt</string>
    </property>
