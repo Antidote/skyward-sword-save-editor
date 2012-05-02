@@ -9,170 +9,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>630</width>
-    <height>699</height>
+    <width>694</width>
+    <height>719</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="acceptDrops">
    <bool>true</bool>
   </property>
   <property name="windowTitle">
    <string>WiiKing2 Editor</string>
-  </property>
-  <property name="styleSheet">
-   <string notr="true">MainWindow
-{
-	background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(0, 0, 0, 255), stop:0.130682 rgba(249, 249, 249, 255), stop:1 rgba(207, 207, 207, 255));
-}
-
-QDialog
-{
-	background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(249, 249, 249, 255), stop:1 rgba(217, 217, 217, 255));
-}
-
-QMenuBar
-{
-	background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(249, 249, 249, 255), stop:1 rgba(217, 217, 217, 255));
-	border: 1px solid rgb(171, 173, 179);
-	border-bottom:none;
-	padding: 4px;
-}
-
-QMenuBar::item 
-{
-	background:transparent;
- }
-
- QMenuBar::item:selected 
-{ /* when selected using mouse or keyboard */
-     background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(217, 217, 217, 255), stop:1 rgba(249, 249, 249, 255));
-     border: 1px solid rgb(171, 173, 179);
-     border-top-left-radius:4px;
-	 border-top-right-radius: 4px;
-	 min-width: 100%
- }
-
-QMenuBar::item:pressed 
-{
-     background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(249, 249, 249, 255), stop:1 rgba(217, 217, 217, 255)); 
-	 border-bottom:none;
-	 border-bottom-left-radius:none;
-	 border-bottom-right-radius:none;
- }
-
-QToolBar
-{
-	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(217, 217, 217, 255), stop:1 rgba(249, 249, 249, 255));
-	border: 1px solid rgb(171, 173, 179);
-	border-top:none;
-	border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
-	padding:4px;
-}
-
-QTabWidget::pane
-{
-	top: 1px;
-	background-color: rgb(217, 217, 217);
-	border-radius: 4px;
-	border: 1px solid rgb(171, 173, 179);
-}
-
-QTabWidget::tab-bar
-{
-	left:7px;
-	bottom: -2px;
-}
-
-QTabBar:tab
-{
-	min-width: 15ex;
-	padding: 8px;
-}
-
-QTabBar::tab:selected
-{
-	top: +1px;
-	background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(249, 249, 249, 255), stop:1 rgba(217, 217, 217, 255));
-	border-top: 1px solid rgb(171, 173, 179);
-	border-left: 1px solid rgb(171, 173, 179);
-	border-right: 1px solid rgb(171, 173, 179);
-	border-top-left-radius: 4px;
-	border-top-right-radius: 4px;
-}
-
-QTabBar::tab:!selected
-{
-	background-color: rgba(217, 217, 217, 255);
-	border-top: 1px solid rgb(171, 173, 179);
-	border-left: 1px solid rgb(171, 173, 179);
-	border-right: 1px solid rgb(171, 173, 179);
-	border-bottom: 1px solid rgb(171, 173, 179);
-	border-top-left-radius: 4px;
-	border-top-right-radius: 4px;
-}
-
-QPushButton
-{
-	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(249, 249, 249, 255), stop:1 rgba(217, 217, 217, 255));
-	border: 1px solid rgb(171, 173, 179);
-	padding: 2px 8px;
-}
-
-QGroupBox
-{
-	color:none;
-	background-color: rgba(227, 227, 227, 255);
-	top: +18px;
-	border: 1px solid rgb(171, 173, 179);
-	border-top-left-radius: 4px;
-	border-top-right-radius:4px;
-	margin-top: 20px;
-}
-
-*:disabled
-{
-	color:gray;
-}
-
-QGroupBox::title
-{
-	subcontrol-origin: margin;
-	left: +5px;
-    padding: 4px;
-	background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(249, 249, 249, 255), stop:1 rgba(227, 227, 227, 255));
-	border: 1px solid rgb(171, 173, 179);
-	border-top-left-radius: 4px;
-	border-top-right-radius:4px;
-	border-bottom: none;
-}
-
-QToolButton
-{
-	border: 1px solid rgb(171, 173, 179);
-	border-radius: 4px;
-	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(249, 249, 249, 255), stop:1 rgba(227, 227, 227, 255));
-}
-
-QToolButton:hover, QPushButton:hover
-{
-	background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(239, 239, 239, 255), stop:1 rgba(227, 227, 227, 255));
-}
-
-QToolButton:checked, QPushButton:pressed
-{
-	background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(227, 227, 227, 255), stop:1 rgba(249, 249, 249, 255));
-}
-
-QStatusBar
-{
-    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(249, 249, 249, 255), stop:1 rgba(217, 217, 217, 255));
-	border: 1px solid rgb(171, 173, 179);
-	border-bottom:none;
-	border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
-	padding:4px;
-}</string>
   </property>
   <property name="iconSize">
    <size>
@@ -182,113 +33,23 @@ QStatusBar
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout_5">
-    <item row="0" column="0">
-     <layout class="QHBoxLayout" name="horizontalLayout_4">
-      <property name="sizeConstraint">
-       <enum>QLayout::SetMinAndMaxSize</enum>
-      </property>
-      <item>
-       <spacer name="horizontalSpacer_3">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Fixed</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>13</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
-       <widget class="QGroupBox" name="regionGroupBox">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="title">
-         <string>Region</string>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
-         <property name="spacing">
-          <number>6</number>
-         </property>
-         <property name="sizeConstraint">
-          <enum>QLayout::SetFixedSize</enum>
-         </property>
-         <property name="leftMargin">
-          <number>4</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>4</number>
-         </property>
-         <item>
-          <widget class="QRadioButton" name="ntscURadioBtn">
-           <property name="text">
-            <string>NTSC-U</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="ntscJRadioBtn">
-           <property name="text">
-            <string>NTSC-J</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="palRadioBtn">
-           <property name="text">
-            <string>PAL</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item>
-       <spacer name="horizontalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-     </layout>
-    </item>
-    <item row="2" column="0">
+    <item row="1" column="0">
      <widget class="QPushButton" name="createDeleteGameBtn">
       <property name="text">
-       <string>Click to create new game</string>
+       <string>Click to create new Adventure</string>
       </property>
      </widget>
     </item>
-    <item row="1" column="0">
+    <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="enabled">
        <bool>false</bool>
-      </property>
-      <property name="styleSheet">
-       <string notr="true"/>
       </property>
       <property name="tabShape">
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="playerTab">
        <attribute name="title">
@@ -1580,7 +1341,7 @@ QStatusBar
          <rect>
           <x>100</x>
           <y>10</y>
-          <width>81</width>
+          <width>91</width>
           <height>51</height>
          </rect>
         </property>
@@ -1600,7 +1361,7 @@ QStatusBar
          <rect>
           <x>100</x>
           <y>70</y>
-          <width>81</width>
+          <width>91</width>
           <height>51</height>
          </rect>
         </property>
@@ -1620,7 +1381,7 @@ QStatusBar
          <rect>
           <x>100</x>
           <y>130</y>
-          <width>81</width>
+          <width>91</width>
           <height>61</height>
          </rect>
         </property>
@@ -1643,7 +1404,7 @@ QStatusBar
          <rect>
           <x>100</x>
           <y>190</y>
-          <width>81</width>
+          <width>91</width>
           <height>51</height>
          </rect>
         </property>
@@ -1666,7 +1427,7 @@ QStatusBar
          <rect>
           <x>100</x>
           <y>250</y>
-          <width>81</width>
+          <width>91</width>
           <height>51</height>
          </rect>
         </property>
@@ -1691,8 +1452,8 @@ QStatusBar
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>630</width>
-     <height>31</height>
+     <width>694</width>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -1718,7 +1479,15 @@ QStatusBar
     <addaction name="actionAbout"/>
     <addaction name="actionAboutQt"/>
    </widget>
+   <widget class="QMenu" name="menu_Edit">
+    <property name="title">
+     <string>&amp;Edit</string>
+    </property>
+    <addaction name="actionFileInfo"/>
+    <addaction name="action_Preferences"/>
+   </widget>
    <addaction name="menu_File"/>
+   <addaction name="menu_Edit"/>
    <addaction name="menu_Help"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
@@ -1850,6 +1619,16 @@ QStatusBar
   <action name="actionAboutQt">
    <property name="text">
     <string>About &amp;Qt</string>
+   </property>
+  </action>
+  <action name="actionFileInfo">
+   <property name="text">
+    <string>File &amp;Info</string>
+   </property>
+  </action>
+  <action name="action_Preferences">
+   <property name="text">
+    <string>&amp;Preferences</string>
    </property>
   </action>
  </widget>

@@ -1,16 +1,16 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
-#include "gamefile.h"
-#include "newgamedialog.h"
-#include "aboutdialog.h"
 #include <QFile>
 #include <QString>
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QApplication>
+
+#include "gamefile.h"
+#include "newgamedialog.h"
+#include "aboutdialog.h"
+#include "fileinfodialog.h"
 
 #ifdef DEBUG
 QString dir("D:/Projects/dolphin-emu/Binary/x64/User/Wii/title/00010000/534f5545/data");
@@ -30,8 +30,6 @@ MainWindow::MainWindow(QWidget *parent) :
     SetupActions();
     SetupConnections();
 
-    QApplication* app = (QApplication*)QApplication::instance();
-    app->setStyleSheet(this->styleSheet());
    //m_checkTimer = new QTimer(this);
    // connect(m_checkTimer, SIGNAL(timeout()), this, SLOT(onCheck()));
    // m_checkTimer->start(UPDATE_DELAY); // set check for ever 5 seconds
@@ -99,10 +97,6 @@ void MainWindow::SetupActions()
     m_gameGroup->addAction(m_ui->actionGame2);
     m_gameGroup->addAction(m_ui->actionGame3);
 
-    m_regionGroup = new QButtonGroup(this);
-    m_regionGroup->addButton(m_ui->ntscURadioBtn);
-    m_regionGroup->addButton(m_ui->ntscJRadioBtn);
-    m_regionGroup->addButton(m_ui->palRadioBtn);
 }
 
 void MainWindow::SetupConnections()
@@ -141,7 +135,6 @@ void MainWindow::SetupConnections()
     connect(m_ui->curMapLineEdit,     SIGNAL(textChanged(QString)), this, SLOT(onTextChanged(QString)));
     connect(m_ui->curAreaLineEdit,    SIGNAL(textChanged(QString)), this, SLOT(onTextChanged(QString)));
     connect(m_ui->curRoomLineEdit,    SIGNAL(textChanged(QString)), this, SLOT(onTextChanged(QString)));
-    connect(m_regionGroup,            SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(onRegionChanged(QAbstractButton*)));
     connect(m_gameGroup,              SIGNAL(triggered(QAction*)),  this, SLOT(onGameChanged(QAction*)));
     connect(m_ui->actionOpen,         SIGNAL(triggered()),          this, SLOT(onOpen()));
     connect(m_ui->createDeleteGameBtn,SIGNAL(clicked()),            this, SLOT(onCreateNewGame()));
@@ -152,6 +145,7 @@ void MainWindow::SetupConnections()
     connect(m_ui->actionExit,         SIGNAL(triggered()),          this, SLOT(close()));
     connect(m_ui->actionAbout,        SIGNAL(triggered()),          this, SLOT(onAbout()));
     connect(m_ui->actionAboutQt,      SIGNAL(triggered()),          this, SLOT(onAboutQt()));
+    connect(m_ui->actionFileInfo,     SIGNAL(triggered()),          this, SLOT(onFileInfo()));
 }
 
 void MainWindow::onTextChanged(QString text)
@@ -262,7 +256,6 @@ void MainWindow::onOpen()
             }
             m_gameFile->SetGame(GameFile::Game1);
             m_ui->actionGame1->setChecked(true);
-            m_ui->regionGroupBox->setEnabled(true);
             UpdateInfo();
             UpdateTitle();
         }
@@ -325,13 +318,19 @@ void MainWindow::onSaveAs()
 
 void MainWindow::onAbout()
 {
-    AboutDialog abt;
-    abt.exec();
+    AboutDialog* abt = new AboutDialog(this);
+    abt->exec();
 }
 
 void MainWindow::onAboutQt()
 {
     QApplication::aboutQt();
+}
+
+void MainWindow::onFileInfo()
+{
+    FileInfoDialog* fid = new FileInfoDialog(this, *m_gameFile);
+    fid->exec();
 }
 
 void MainWindow::onGameChanged(QAction* game)
@@ -370,38 +369,6 @@ void MainWindow::onReload()
     }
 }
 
-void MainWindow::onRegionChanged(QAbstractButton *button)
-{
-    if (!m_gameFile || !m_gameFile->IsOpen())
-        return;
-
-    if (m_isUpdating)
-        return;
-
-    if (button == m_ui->ntscJRadioBtn)
-        m_gameFile->SetRegion(GameFile::NTSCJ);
-    else if (button == m_ui->ntscURadioBtn )
-        m_gameFile->SetRegion(GameFile::NTSCU);
-    else if (button == m_ui->palRadioBtn)
-        m_gameFile->SetRegion(GameFile::PAL);
-}
-
-void MainWindow::SetRegion(GameFile::Region region)
-{
-    switch(region)
-    {
-     case GameFile::NTSCJ:
-        m_ui->ntscJRadioBtn->setChecked(true);
-        break;
-     case GameFile::NTSCU:
-        m_ui->ntscURadioBtn->setChecked(true);
-        break;
-     case GameFile::PAL:
-        m_ui->palRadioBtn->setChecked(true);
-        break;
-    }
-}
-
 void MainWindow::onClose()
 {
     if (!m_gameFile || !m_gameFile->IsOpen())
@@ -411,7 +378,6 @@ void MainWindow::onClose()
     m_gameFile = NULL;
 
     ClearInfo();
-    m_ui->regionGroupBox->setEnabled(false);
     m_ui->tabWidget->setEnabled(false);
 }
 
@@ -423,26 +389,23 @@ void MainWindow::UpdateInfo()
 
     if (!m_gameFile->IsNew())
     {
-        m_ui->createDeleteGameBtn->setText(tr("Delete Game"));
+        m_ui->createDeleteGameBtn->setText(tr("Delete Adventure"));
         if (m_ui->createDeleteGameBtn->disconnect())
             connect(m_ui->createDeleteGameBtn, SIGNAL(clicked()), this, SLOT(onDeleteGame()));
 
-        m_ui->regionGroupBox->setEnabled(true);
         m_ui->tabWidget->setEnabled(true);
     }
     else
     {
-        m_ui->createDeleteGameBtn->setText(tr("Click to Create New game"));
+        m_ui->createDeleteGameBtn->setText(tr("Click to create new Adventure"));
         if (m_ui->createDeleteGameBtn->disconnect())
             connect(m_ui->createDeleteGameBtn, SIGNAL(clicked()), this, SLOT(onCreateNewGame()));
 
-        m_ui->regionGroupBox->setEnabled(false);
         m_ui->tabWidget->setEnabled(false);
         return; // No need to change all of this ;D
     }
 
     m_isUpdating = true;
-    SetRegion(m_gameFile->GetRegion());
     m_ui->playHoursSpinBox->setValue(m_gameFile->GetPlayTime().Hours);
     m_ui->playMinutesSpinBox->setValue(m_gameFile->GetPlayTime().Minutes);
     m_ui->playSecondsSpinBox->setValue(m_gameFile->GetPlayTime().Seconds);
