@@ -32,7 +32,6 @@ private slots:
     void onTextChanged(QString text);
     void onValueChanged();
     void onGameChanged(QAction*);
-    void onRegionChanged(QAbstractButton*);
     void onCreateNewGame();
     void onDeleteGame();
     void onOpen();
@@ -42,6 +41,7 @@ private slots:
     void onAboutQt();
     void onReload();
     void onClose();
+    void onFileInfo();
     void onCheck(); // Checks for changes to file and prompts for an update.
 
 private:

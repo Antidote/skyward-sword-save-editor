@@ -16,19 +16,22 @@ SOURCES += \
     src/gamefile.cpp \
     src/CRC32.cpp \
     src/newgamedialog.cpp \
-    src/aboutdialog.cpp
+    src/aboutdialog.cpp \
+    src/fileinfodialog.cpp
 
 HEADERS  += \
     include/mainwindow.h \
     include/gamefile.h \
     include/CRC32.h \
     include/newgamedialog.h \
-    include/aboutdialog.h
+    include/aboutdialog.h \
+    include/fileinfodialog.h
 
 FORMS    += \
     forms/mainwindow.ui \
     forms/newgamedialog.ui \
-    forms/aboutdialog.ui
+    forms/aboutdialog.ui \
+    forms/fileinfodialog.ui
 
 DEFINES += DEBUG
 
@@ -86,4 +89,3 @@ TRANSLATIONS += \
 win32{
     RC_FILE = resources/mainicon.rc
 }
-

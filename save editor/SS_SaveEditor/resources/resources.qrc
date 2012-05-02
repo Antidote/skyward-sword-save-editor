@@ -58,4 +58,7 @@
         <file alias="Open">icons/folder.png</file>
         <file alias="Save">icons/save.png</file>
     </qresource>
+    <qresource prefix="/css">
+        <file alias="WindowStyle">style.css</file>
+    </qresource>
 </RCC>
