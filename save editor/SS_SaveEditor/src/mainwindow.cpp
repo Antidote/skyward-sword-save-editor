@@ -5,6 +5,7 @@
 #include "ui_mainwindow.h"
 #include "gamefile.h"
 #include "newgamedialog.h"
+#include "aboutdialog.h"
 #include <QFile>
 #include <QString>
 #include <QMessageBox>
@@ -29,6 +30,8 @@ MainWindow::MainWindow(QWidget *parent) :
     SetupActions();
     SetupConnections();
 
+    QApplication* app = (QApplication*)QApplication::instance();
+    app->setStyleSheet(this->styleSheet());
    //m_checkTimer = new QTimer(this);
    // connect(m_checkTimer, SIGNAL(timeout()), this, SLOT(onCheck()));
    // m_checkTimer->start(UPDATE_DELAY); // set check for ever 5 seconds
@@ -147,6 +150,8 @@ void MainWindow::SetupConnections()
     connect(m_ui->actionClose,        SIGNAL(triggered()),          this, SLOT(onClose()));
     connect(m_ui->actionReload,       SIGNAL(triggered()),          this, SLOT(onReload()));
     connect(m_ui->actionExit,         SIGNAL(triggered()),          this, SLOT(close()));
+    connect(m_ui->actionAbout,        SIGNAL(triggered()),          this, SLOT(onAbout()));
+    connect(m_ui->actionAboutQt,      SIGNAL(triggered()),          this, SLOT(onAboutQt()));
 }
 
 void MainWindow::onTextChanged(QString text)
@@ -252,6 +257,7 @@ void MainWindow::onOpen()
             if (!m_gameFile->HasValidChecksum())
             {
                 QMessageBox msg(QMessageBox::Warning, tr("CRC32 Mismatch"), tr("The checksum generated does not match the one provided by the file"));
+                msg.setStyleSheet(this->styleSheet());
                 msg.exec();
             }
             m_gameFile->SetGame(GameFile::Game1);
@@ -315,6 +321,17 @@ void MainWindow::onSaveAs()
 
     m_gameFile->SetFilename(QString(tr("")));
     onSave();
+}
+
+void MainWindow::onAbout()
+{
+    AboutDialog abt;
+    abt.exec();
+}
+
+void MainWindow::onAboutQt()
+{
+    QApplication::aboutQt();
 }
 
 void MainWindow::onGameChanged(QAction* game)

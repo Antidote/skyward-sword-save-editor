@@ -473,10 +473,11 @@ void GameFile::SetIntroViewed(bool val)
 }
 
 /*
-bool GameFile::GetItem() const
+bool GameFile::GetItem(Item item) const
 {
     char itemFlag1 =
 }*/
+
 bool GameFile::GetTrainingSword() const
 {
     if (!m_data)

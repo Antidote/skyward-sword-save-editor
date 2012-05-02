@@ -15,17 +15,20 @@ SOURCES += \
     src/mainwindow.cpp \
     src/gamefile.cpp \
     src/CRC32.cpp \
-    src/newgamedialog.cpp
+    src/newgamedialog.cpp \
+    src/aboutdialog.cpp
 
 HEADERS  += \
     include/mainwindow.h \
     include/gamefile.h \
     include/CRC32.h \
     include/newgamedialog.h \
+    include/aboutdialog.h
 
 FORMS    += \
     forms/mainwindow.ui \
     forms/newgamedialog.ui \
+    forms/aboutdialog.ui
 
 DEFINES += DEBUG
 
