@@ -1,4 +1,4 @@
-Flags GameOff + 0x08D3
+Flags - GameOff + 0x08D3:
 0x01 - unk
 0x02 - unk
 0x04 - unk
@@ -8,7 +8,7 @@ Flags GameOff + 0x08D3
 0x40 - unk
 0x80 - unk
 
-Flags GameOff + 0x090C
+Flags - GameOff + 0x090C:
 0x01 - Claw Shot Stolen
 0x02 - Whip Stolen
 0x04 - Gust Bellows Stolen
@@ -18,7 +18,7 @@ Flags GameOff + 0x090C
 0x40 - unk
 0x80 - unk
 
-Flags GameOff + 0x090D
+Flags - GameOff + 0x090D:
 0x01 - unk
 0x02 - unk
 0x04 - unk
@@ -28,7 +28,30 @@ Flags GameOff + 0x090D
 0x40 - Beetle Stolen
 0x80 - Bombs
 
-Flags GameOff + 0x9E4
+Flags - GameOff + 0x0934:
+0x01 - unk
+0x02 - Hornet Larvae
+0x04 - Bird Feather
+0x08 - Tumbleweed
+0x10 - Lizard Tail
+0x20 - Eldin Ore
+0x40 - Ancient Flower
+0x80 - Amber Relic
+
+Flags - GameOff + 0x0936:
+0x01 - Goddess Plume;
+
+Flags - GameOff + 0x0937:
+0x01 - Dusk Relic
+0x02 - Jelly Blob
+0x04 - Monster Claw
+0x08 - Monster Horn
+0x10 - Ornamental Skull
+0x20 - Evil Crystal
+0x40 - Blue Bird Feather
+0x80 - Golden Skull
+
+Flags - GameOff + 0x09E4:
 0x01 - unk
 0x02 - unk
 0x04 - unk
@@ -38,8 +61,44 @@ Flags GameOff + 0x9E4
 0x40 - unk
 0x80 - unk
 
-Flags GameOff + 0x09EC
-0x01 - unk (unused?)
+Flags - GameOff + 0x09E5:
+unknown
+
+Flags - GameOff + 0x09E6:
+0x01 - unk
+0x02 - Gust Bellows
+0x04 - unk
+0x08 - unk
+0x10 - Sling Shot
+0x20 - Beetle
+0x40 - Digging Mitts
+0x80 - unk
+
+Flags - GameOff + 0x09E7:
+unknown
+
+Flags - GameOff + 0x09E8:
+0x01 - Bugnet
+rest unknown
+
+Flags - GameOff + 0x09E9:
+0x01 - unk
+0x02 - unk
+0x04 - unk
+0x08 - unk
+0x10 - unk
+0x20 - Water Dragon's Scale
+rest unknown
+
+Flags - GameOff + 0x09EB:
+0x01 - unk
+0x02 - Hook Beetle
+0x04 - Quick Beetle
+0x08 - Tough Beetle
+rest unknown
+
+Flags - GameOff + 0x09EC:
+0x01 - unk
 0x02 - Mogma Mitts
 0x04 - unk
 0x08 - unk
@@ -48,7 +107,27 @@ Flags GameOff + 0x09EC
 0x40 - unk
 0x80 - Scatter Shot
 
-Flags Gameoff + 0x09F1:
+Flags GameOff + 0x09ED:
+0x01 - Iron Bow
+0x02 - Sacred Bow
+0x04 - Bombs
+0x08 - unk
+0x10 - unk
+0x20 - Right Triforce Piece
+0x40 - Top Triforce Piece
+0x80 - Left Triforce Piece
+
+Flags - GameOff + 0x09EF:
+0x01 - unk
+0x02 - unk
+0x04 - Medium Wallet
+0x08 - Big Wallet
+0x10 - Giant Wallet
+0x20 - Tycoon Wallet
+0x40 - unk
+0x80 - unk
+
+Flags - Gameoff + 0x09F1:
 0x01 - Unk
 0x02 - unk
 0x04 - unk
@@ -67,7 +146,17 @@ Flags GameOff + 0x09F2:
 0x40 - Volcanic Ladybug
 0x80 - Blessed Butterfly
 
-Flags GameOFF + 0x09F3:
+Flags - GameOff + 0x09F3:
+0x01 - unk
+0x02 - unk
+0x04 - unk
+0x08 - unk
+0x10 - Whip
+0x20 - Fireshield Earings
+0x40 - unk
+0x80 - True Master Sword (also "gives" the fires)
+
+Flags - GameOFF + 0x09F4:
 0x01 - Sail Cloth
 0x02 - Harp (Not valid until after Zelda "gives" it to you)
 0x04 - unk
@@ -77,12 +166,32 @@ Flags GameOFF + 0x09F3:
 0x40 - unk
 0x80 - unk
 
-Flags GameOff + 0x09F4:
-0x01 - Lanaryu Ant
+Flags - GameOff + 0x09F5:
+0x01 - Lanayru Ant
 0x02 - Sand Cicada
-0x04 - Gerudo Dragon Fly
+0x04 - Gerudo DragonFly
 0x08 - Eldin Roller
 0x10 - Sky Stag Beetle
 0x20 - Starry Firefly
-0x40 - Unused
-0x80 - Unused
+0x40 - unk
+0x80 - Ancient Tablet Right
+
+Flags - GameOff + 0x09FA:
+0x01 - Din's Power
+0x02 - Water Dragon's Song
+0x04 - Fire Dragon's Song
+0x08 - lulz "===="
+0x10 - Song of the Hero
+0x20 - unk
+0x40 - unk
+0x80 - unk
+
+Flags - GameOff + 0x09FB:
+0x01 - unk
+0x02 - unk
+0x04 - unk
+0x08 - unk
+0x10 - Goddess White Sword
+0x20 - Ballad Of the Goddess
+0x40 - Farore's Courage
+0x80 - Nayru's Wisdom

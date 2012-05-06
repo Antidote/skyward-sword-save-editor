@@ -59,6 +59,7 @@
         <file alias="Save">icons/save.png</file>
     </qresource>
     <qresource prefix="/css">
-        <file alias="WindowStyle">style.css</file>
+        <file alias="WindowStyleUnix">styleUnix.css</file>
+        <file alias="WindowStyleWin32">styleWin32.css</file>
     </qresource>
 </RCC>
