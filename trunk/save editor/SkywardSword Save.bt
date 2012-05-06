@@ -143,6 +143,11 @@ struct GameData
             FSeek(GameOff + 0x090C);
             byte itemsStolenInterfaceSelectionFlags;
             byte itemsStolen1;
+            FSeek(GameOff + 0x0934);
+            uchar treasure1;
+            uchar unk;
+            uchar treasure2; // Also holds some scene flags, such as horwell.
+            uchar treasure3;
             FSeek(GameOff + 0x0941);
             byte introFlag; // Controls wether the file has gone through the first cutscene.
             FSeek(GameOff + 0x09D2);
@@ -166,6 +171,7 @@ struct GameData
             uchar itemFlags11;
             uchar itemFlags12;
             uchar itemFlags13;
+            uchar unk;
             uchar unk;
             uchar unk;
             uchar unk;

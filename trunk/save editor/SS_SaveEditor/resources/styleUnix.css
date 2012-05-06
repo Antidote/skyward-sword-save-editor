@@ -1,3 +1,13 @@
+*
+{
+    font: 8pt "Arial";
+}
+
+*:disabled
+{
+    color:gray;
+}
+
 MainWindow
 {
     background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(0, 0, 0, 255), stop:0.130682 rgba(249, 249, 249, 255), stop:1 rgba(207, 207, 207, 255));
@@ -104,17 +114,11 @@ QGroupBox
     border: 1px solid rgb(171, 173, 179);
     border-top-left-radius: 4px;
     border-top-right-radius:4px;
-    margin-top: 3.05ex;
-}
-
-*:disabled
-{
-    color:gray;
+    margin-top: 3.5ex;
 }
 
 QGroupBox::title
 {
-    font: 9px "Arial";
     subcontrol-origin: margin;
     left: +5px;
     padding: 4px;
