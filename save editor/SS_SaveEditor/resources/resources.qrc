@@ -47,6 +47,23 @@
         <file alias="PracticeSword">equipment/Swords/Practice Sword.png</file>
         <file alias="TrueMasterSword">equipment/Swords/True Master Sword.png</file>
     </qresource>
+	<qresource prefix="/equipment">
+        <file alias="SailCloth">equipment/Sail Cloth.png</file>
+        <file alias="DiggingMitts">equipment/Digging Mitts.png</file>
+        <file alias="MoleMitts">equipment/Mole Mitts.png</file>
+        <file alias="BandedShield">Equipment/Shields/Banded Shield.png</file>
+        <file alias="BracedShield">Equipment/Shields/Braced Shield.png</file>
+        <file alias="DivineShield">Equipment/Shields/Divine Shield.png</file>
+        <file alias="FortifiedShield">Equipment/Shields/Fortified Shield.png</file>
+        <file alias="GoddessShield">Equipment/Shields/Goddess Shield.png</file>
+        <file alias="HylianShield">Equipment/Shields/Hylian Shield.png</file>
+        <file alias="IronShield">Equipment/Shields/Iron Shield.png</file>
+        <file alias="ReinforcedShield">Equipment/Shields/Reinforced Shield.png</file>
+        <file alias="SacredShield">Equipment/Shields/Sacred Shield.png</file>
+        <file alias="WoodenShield">Equipment/Shields/Wooden Shield.png</file>
+		<file alias="FireShieldEarings">Equipment/Fire Shield Earings.png</file>
+        <file alias="WaterDragonScale">Equipment/Water Dragon Scale.png</file>
+    </qresource>
     <qresource prefix="/weapons">
         <file alias="Beetle">equipment/Weapons/Beetle.png</file>
         <file alias="BigBugnet">equipment/Weapons/Big Bugnet.png</file>
@@ -88,10 +105,5 @@
     <qresource prefix="/css">
         <file alias="WindowStyleUnix">styleUnix.css</file>
         <file alias="WindowStyleWin32">styleWin32.css</file>
-    </qresource>
-    <qresource prefix="/equipment">
-        <file alias="SailCloth">equipment/Sail Cloth.png</file>
-        <file alias="DiggingMitts">equipment/Digging Mitts.png</file>
-        <file alias="MoleMitts">equipment/Mole Mitts.png</file>
     </qresource>
 </RCC>

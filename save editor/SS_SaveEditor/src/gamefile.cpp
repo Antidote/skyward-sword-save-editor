@@ -582,7 +582,7 @@ void GameFile::SetSword(Sword sword, bool val)
     }
 }
 
-bool GameFile::GetWeapon(Weapon weapon) const
+bool GameFile::GetEquipment(WeaponEquipment weapon) const
 {
     if (!m_data)
       return false;
@@ -619,14 +619,14 @@ bool GameFile::GetWeapon(Weapon weapon) const
             return GetFlag(0x09ED, 0x01);
         case SacredBowWeapon:
             return GetFlag(0x09ED, 0x02);
-        case HarpWeapon:
+        case HarpEquipment:
             return GetFlag(0x09F4, 0x02);
         default:
             return false;
     }
 }
 
-void GameFile::SetWeapon(Weapon weapon, bool val)
+void GameFile::SetEquipment(WeaponEquipment weapon, bool val)
 {
     if (!m_data)
         return;
@@ -648,6 +648,7 @@ void GameFile::SetWeapon(Weapon weapon, bool val)
         case BowWeapon:         SetFlag(0x09E4, 0x10, val); break;
         case IronBowWeapon:     SetFlag(0x09ED, 0x01, val); break;
         case SacredBowWeapon:   SetFlag(0x09ED, 0x02, val); break;
+        case HarpEquipment:     SetFlag(0x09F5, 0x02, val); break;
         default: return;
     }
 }

@@ -1302,6 +1302,50 @@
           </layout>
          </widget>
         </item>
+        <item row="0" column="3" rowspan="2">
+         <widget class="QGroupBox" name="groupBox_5">
+          <property name="title">
+           <string>GroupBox</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_15">
+           <item row="0" column="0">
+            <widget class="QCheckBox" name="fireShieldEaringsChkBox">
+             <property name="icon">
+              <iconset resource="../resources/resources.qrc">
+               <normaloff>:/equipment/FireShieldEarings</normaloff>:/equipment/FireShieldEarings</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>64</width>
+               <height>64</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QCheckBox" name="dragonScaleChkBox">
+             <property name="icon">
+              <iconset resource="../resources/resources.qrc">
+               <normaloff>:/equipment/WaterDragonScale</normaloff>:/equipment/WaterDragonScale</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>64</width>
+               <height>64</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QCheckBox" name="checkBox_8">
+             <property name="text">
+              <string>CheckBox</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
        </layout>
       </widget>
       <widget class="QWidget" name="questItemTab">
