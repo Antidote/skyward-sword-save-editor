@@ -29,7 +29,8 @@ GameOff + 0x0937 - Treasure
 GameOff + 0x0941 - First cutscene has been viewed if nonzero
 GameOff + 0x09D2 - Interface type (0x00 = standard, 0x40 = Pro, Light = 0x20, OR it by 0x08 if Fi has told link about it. [The 0x08 doesn't really do anything substantial])
 GameOff + 0x09E4 - Items 1
-GameOff + 0x09E5 - Items 2 Stamina tutorial related, probably used for other things as well (set to 0x10 afterwards), also used for the boy's rolling "tutorial"
+GameOff + 0x09E5 - Stamina tutorial related, probably used for other things as well (set to 0x10 afterwards), also used for the boy's rolling "tutorial"
+GameOff + 0x09E6 - Items 2
 GameOff + 0x09E7 - Stamina fruit (and probably other things)
 GameOff + 0x09E8 - Items 3
 GameOff + 0x09E9 - Items 4

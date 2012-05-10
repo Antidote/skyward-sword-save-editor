@@ -37,13 +37,13 @@ FileInfoDialog::FileInfoDialog(QWidget *parent, GameFile& game) :
         m_ui->noFileInfoLbl->hide();
         switch(m_gameFile->GetRegion())
         {
-        case GameFile::Region_NTSCU:
+        case GameFile::NTSCURegion:
             m_ui->ntscURadioBtn->setChecked(true);
             break;
-        case GameFile::Region_NTSCJ:
+        case GameFile::NTSCJRegion:
             m_ui->ntscJRadioBtn->setChecked(true);
             break;
-        case GameFile::Region_PAL:
+        case GameFile::PALRegion:
             m_ui->palRadioBtn->setChecked(true);
             break;
         }
@@ -84,9 +84,9 @@ void FileInfoDialog::onRegionChanged(QAbstractButton *)
         return;
 
     if (m_ui->ntscURadioBtn->isChecked())
-        m_gameFile->SetRegion(GameFile::Region_NTSCU);
+        m_gameFile->SetRegion(GameFile::NTSCURegion);
     else if (m_ui->ntscJRadioBtn->isChecked())
-        m_gameFile->SetRegion(GameFile::Region_NTSCJ);
+        m_gameFile->SetRegion(GameFile::NTSCJRegion);
     else if (m_ui->palRadioBtn->isChecked())
-        m_gameFile->SetRegion(GameFile::Region_PAL);
+        m_gameFile->SetRegion(GameFile::PALRegion);
 }

@@ -51,10 +51,20 @@ public:
 
     enum Region
     {
-        Region_NTSCU = 0x45554F53,
-        Region_NTSCJ = 0x4A554F53,
-        Region_PAL   = 0x50554F53
+        NTSCURegion = 0x45554F53,
+        NTSCJRegion = 0x4A554F53,
+        PALRegion   = 0x50554F53
     };
+    enum Bug
+    {
+        HornetBug,
+        GrasshopperBug,
+        LadybugBug, // o.o that looks weird
+        ButterflyBug,
+        MantisBug,
+        BeetleBug
+    };
+
     enum Weapon
     {
         SlingshotWeapon,
@@ -62,17 +72,23 @@ public:
         BugnetWeapon,
         BigBugnetWeapon,
         BeetleWeapon,
-        BombsWeapon,
         HookBeetleWeapon,
-        SpeedBeetleWeapon,
+        QuickBeetleWeapon,
         ToughBeetleWeapon,
+        BombWeapon,
         GustBellowsWeapon,
+        WhipWeapon,
+        ClawshotWeapon,
         BowWeapon,
         IronBowWeapon,
-        SacredBowWeapon,
-        ClawshotWeapon,
-        WhipWeapon
+        SacredBowWeapon
     };
+
+    enum Equipment
+    {
+        HarpEquipment
+    };
+
     enum Sword
     {
         PracticeSword,
@@ -94,7 +110,12 @@ public:
     void UpdateChecksum();
     bool HasValidChecksum(); // for integrity checks
     bool IsModified() const;
-    bool HasFileChanged(); // Checks against the stored checksum for the entire file, if the file on disk differs from the stored checksum, the file has changed.
+
+    /// HasFileOnDiskChanged
+    /// Checks against the stored checksum for the entire file,
+    /// if the file on disk differs from the stored checksum,
+    /// the file has changed (should probably use an SHA1 or MD5 hash for the but w/e).
+    bool HasFileOnDiskChanged();
     void Close(); //<! Closes the current file without saving.
     void Reload(Game game);
 
@@ -146,18 +167,10 @@ public:
     void SetIntroViewed(bool val);
     bool GetSword(Sword sword) const;
     void SetSword(Sword sword, bool val);
-    bool GetBigBugNet() const;
-    void SetBigBugNet(bool val);
-    bool GetFaronGrasshopper() const;
-    void SetFaronGrasshopper(bool val);
-    bool GetWoodlandRhinoBeetle() const;
-    void SetWoodlandRhinoBeetle(bool val);
-    bool GetSkyloftMantis() const;
-    void SetSkyloftMantis(bool val);
-    bool GetVolcanicLadybug() const;
-    void SetVolcanicLadybug(bool val);
-    bool GetBlessedButterfly() const;
-    void SetBlessedButterfly(bool val);
+    bool GetWeapon(Weapon weapon) const;
+    void SetWeapon(Weapon, bool val);
+    bool GetBug(Bug bug) const;
+    void SetBug(Bug bug, bool val);
     ushort GetRupees() const;
     void SetRupees(ushort val);
     ushort GetTotalHP() const;
@@ -179,10 +192,11 @@ public:
     bool IsNew() const;
     void SetNew(bool val);
 
+private:
     QString ReadNullTermString(int offset) const;
     void WriteNullTermString(const QString& val, int offset);
-
-private:
+    bool GetFlag(quint32 offset, quint32 flag) const;
+    void SetFlag(quint32 offset, quint32 flag, bool val);
     char*    m_data;
     QString  m_filename;
     Game     m_game;

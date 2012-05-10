@@ -74,8 +74,8 @@ QTabWidget::tab-bar
 
 QTabBar:tab
 {
-    min-width: 15ex;
-    padding: 8px;
+    min-width: 10ex;
+    padding: 3px 3px;
 }
 
 QTabBar::tab:selected
@@ -115,14 +115,14 @@ QGroupBox
     border: 1px solid rgb(171, 173, 179);
     border-top-left-radius: 4px;
     border-top-right-radius:4px;
-    margin-top: 7ex;
+    margin-top: 5ex;
 }
 
 QGroupBox::title
 {
     subcontrol-origin: margin;
     left: +5px;
-    padding: 4px;
+	padding: 1px 4px;
     background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(249, 249, 249, 255), stop:1 rgba(227, 227, 227, 255));
     border: 1px solid rgb(171, 173, 179);
     border-top-left-radius: 4px;
