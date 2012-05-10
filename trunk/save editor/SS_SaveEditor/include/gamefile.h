@@ -65,7 +65,7 @@ public:
         BeetleBug
     };
 
-    enum Weapon
+    enum WeaponEquipment
     {
         SlingshotWeapon,
         ScattershotWeapon,
@@ -81,12 +81,13 @@ public:
         ClawshotWeapon,
         BowWeapon,
         IronBowWeapon,
-        SacredBowWeapon
-    };
-
-    enum Equipment
-    {
-        HarpEquipment
+        SacredBowWeapon,
+        HarpEquipment,
+        SailClothEquipment,
+        DiggingMitts,
+        MoleMittsEquipment,
+        FireShieldEaringsEquipment,
+        DragonScaleEquipment
     };
 
     enum Sword
@@ -167,8 +168,8 @@ public:
     void SetIntroViewed(bool val);
     bool GetSword(Sword sword) const;
     void SetSword(Sword sword, bool val);
-    bool GetWeapon(Weapon weapon) const;
-    void SetWeapon(Weapon, bool val);
+    bool GetEquipment(WeaponEquipment weapon) const;
+    void SetEquipment(WeaponEquipment, bool val);
     bool GetBug(Bug bug) const;
     void SetBug(Bug bug, bool val);
     ushort GetRupees() const;
