@@ -13,6 +13,32 @@
         <file alias="VolcanicLadyBug">bugs/Volcanic Ladybug.png</file>
         <file alias="WoodlandRhinoBeetle">bugs/Woodland Rhino Bettle.png</file>
     </qresource>
+    <qresource prefix="/materials">
+        <file alias="AmberRelic">Materials/Amber Relic.png</file>
+        <file alias="AncientFlower">Materials/Ancient Flower.png</file>
+        <file alias="BirdFeather">Materials/Bird Feather.png</file>
+        <file alias="BlueBirdFeather">Materials/Blue Bird Feather.png</file>
+        <file alias="DekuHornetLarvae">Materials/Deku Hornet Larvae.png</file>
+        <file alias="DuskRelic">Materials/Dusk Relic.png</file>
+        <file alias="EldinOre">Materials/Eldin Ore.png</file>
+        <file alias="EvilCrystal">Materials/Evil Crystal.png</file>
+        <file alias="GoddessPlume">Materials/Goddess Plume.png</file>
+        <file alias="GoldenSkull">Materials/Golden Skull.png</file>
+        <file alias="JellyBlob">Materials/Jelly Blob.png</file>
+        <file alias="LizardTail">Materials/Lizard Tail.png</file>
+        <file alias="MonsterClaw">Materials/Monster Claw.png</file>
+        <file alias="MonsterHorn">Materials/Monster Horn.png</file>
+        <file alias="OrnamentalSkull">Materials/Ornamental Skull.png</file>
+        <file alias="TumbleWeed">Materials/Tumbleweed.png</file>
+    </qresource>
+    <qresource prefix="/questItems">
+        <file alias="BugCage">Quest Items/Bug Cage.png</file>
+        <file alias="GratitudeCrystal">Quest Items/Gratitude Crystal.png</file>
+        <file alias="Letter">Quest Items/Letter.png</file>
+        <file alias="LifeFruit">Quest Items/Life Fruit.png</file>
+        <file alias="LifeSeed">Quest Items/Life Seed.png</file>
+        <file alias="Rattle">Quest Items/Rattle.png</file>
+    </qresource>
     <qresource prefix="/swords">
         <file alias="LongSword">equipment/Swords/Goddess Long Sword.png</file>
         <file alias="GoddessSword">equipment/Swords/Goddess Sword Icon.png</file>
@@ -62,5 +88,10 @@
     <qresource prefix="/css">
         <file alias="WindowStyleUnix">styleUnix.css</file>
         <file alias="WindowStyleWin32">styleWin32.css</file>
+    </qresource>
+    <qresource prefix="/equipment">
+        <file alias="SailCloth">equipment/Sail Cloth.png</file>
+        <file alias="DiggingMitts">equipment/Digging Mitts.png</file>
+        <file alias="MoleMitts">equipment/Mole Mitts.png</file>
     </qresource>
 </RCC>

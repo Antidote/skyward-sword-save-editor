@@ -52,11 +52,11 @@ Flags - GameOff + 0x0937:
 0x80 - Golden Skull
 
 Flags - GameOff + 0x09E4:
-0x01 - unk
-0x02 - unk
-0x04 - unk
+0x01 - Goddess Sword
+0x02 - Goddess Long Sword
+0x04 - Master Sword
 0x08 - unk
-0x10 - unk
+0x10 - Bow
 0x20 - Clawshot
 0x40 - unk
 0x80 - unk
@@ -158,7 +158,7 @@ Flags - GameOff + 0x09F3:
 
 Flags - GameOFF + 0x09F4:
 0x01 - Sail Cloth
-0x02 - Harp (Not valid until after Zelda "gives" it to you)
+0x02 - Harp
 0x04 - unk
 0x08 - unk
 0x10 - unk

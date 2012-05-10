@@ -76,7 +76,7 @@ bool MainWindow::event(QEvent *event)
 // TODO: Need to make this more intelligent.
 void MainWindow::onCheck()
 {
-    if (m_gameFile && m_gameFile->IsOpen() && m_gameFile->HasFileChanged())
+    if (m_gameFile && m_gameFile->IsOpen() && m_gameFile->HasFileOnDiskChanged())
     {
         QMessageBox msg(QMessageBox::Question, "File Modified", "The file on disk has been modified outside of the editor, reload?", QMessageBox::Ok | QMessageBox::Cancel, this);
         int ret = msg.exec();
@@ -138,23 +138,6 @@ void MainWindow::SetupConnections()
     connect(m_ui->heroModeChkBox,     SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
     connect(m_ui->introViewedChkBox,  SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
     connect(m_ui->nameLineEdit,       SIGNAL(textChanged(QString)), this, SLOT(onTextChanged(QString)));
-    connect(m_ui->practiceSwdChkBox,  SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->goddessSwdChkBox,   SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->longSwdChkBox,      SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->whiteSwdChkBox,     SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->masterSwdChkBox,    SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->trueMasterSwdChkBox,SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->bigBugNetChkBox,    SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->grassHopperChkBox,  SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->rhinoBeetleChkBox,  SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->mantisChkBox,       SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->ladybugChkBox,      SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->butterflyChkBox,    SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->rupeeSpinBox,       SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
-    connect(m_ui->totalHPSpinBox,     SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
-    connect(m_ui->unkHPSpinBox,       SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
-    connect(m_ui->curHPSpinBox,       SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
-    connect(m_ui->roomIDSpinBox,      SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
     connect(m_ui->curMapLineEdit,     SIGNAL(textChanged(QString)), this, SLOT(onTextChanged(QString)));
     connect(m_ui->curAreaLineEdit,    SIGNAL(textChanged(QString)), this, SLOT(onTextChanged(QString)));
     connect(m_ui->curRoomLineEdit,    SIGNAL(textChanged(QString)), this, SLOT(onTextChanged(QString)));
@@ -169,6 +152,41 @@ void MainWindow::SetupConnections()
     connect(m_ui->actionAbout,        SIGNAL(triggered()),          this, SLOT(onAbout()));
     connect(m_ui->actionAboutQt,      SIGNAL(triggered()),          this, SLOT(onAboutQt()));
     connect(m_ui->actionFileInfo,     SIGNAL(triggered()),          this, SLOT(onFileInfo()));
+
+    // Swords
+    connect(m_ui->practiceSwdChkBox,  SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->goddessSwdChkBox,   SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->longSwdChkBox,      SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->whiteSwdChkBox,     SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->masterSwdChkBox,    SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->trueMasterSwdChkBox,SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    // Weapons
+    connect(m_ui->slingShotChkBox,    SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->scatterShotChkBox,  SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->bugNetChkBox,       SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->bigBugNetChkBox,    SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->beetleChkBox,       SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->hookBeetleChkBox,   SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->quickBeetleChkBox,  SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->toughBeetleChkBox,  SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->bombChkBox,         SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->gustBellowsChkBox,  SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->whipChkBox,         SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->clawShotChkBox,     SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->bowChkBox,          SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->ironBowChkBox,      SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->sacredBowChkBox,    SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    // Bugs
+    connect(m_ui->grassHopperChkBox,  SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->rhinoBeetleChkBox,  SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->mantisChkBox,       SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->ladybugChkBox,      SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->butterflyChkBox,    SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->rupeeSpinBox,       SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
+    connect(m_ui->totalHPSpinBox,     SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
+    connect(m_ui->unkHPSpinBox,       SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
+    connect(m_ui->curHPSpinBox,       SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
+    connect(m_ui->roomIDSpinBox,      SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
 }
 
 void MainWindow::onTextChanged(QString text)
@@ -234,20 +252,36 @@ void MainWindow::onValueChanged()
     m_gameFile->SetUnkHP((short)m_ui->unkHPSpinBox->value());
     m_gameFile->SetCurrentHP((short)m_ui->curHPSpinBox->value());
     m_gameFile->SetRoomID((uint)m_ui->roomIDSpinBox->value());
+    m_gameFile->SetRupees((short)m_ui->rupeeSpinBox->value());
+    // Swords
     m_gameFile->SetSword(GameFile::PracticeSword,m_ui->practiceSwdChkBox->isChecked());
     m_gameFile->SetSword(GameFile::GoddessSword, m_ui->goddessSwdChkBox->isChecked());
     m_gameFile->SetSword(GameFile::LongSword, m_ui->longSwdChkBox->isChecked());
     m_gameFile->SetSword(GameFile::WhiteSword, m_ui->whiteSwdChkBox->isChecked());
     m_gameFile->SetSword(GameFile::MasterSword, m_ui->masterSwdChkBox->isChecked());
     m_gameFile->SetSword(GameFile::TrueMasterSword, m_ui->trueMasterSwdChkBox->isChecked());
-    m_gameFile->SetBigBugNet(m_ui->bigBugNetChkBox->isChecked());
-    m_gameFile->SetFaronGrasshopper(m_ui->grassHopperChkBox->isChecked());
-    m_gameFile->SetWoodlandRhinoBeetle(m_ui->rhinoBeetleChkBox->isChecked());
-    m_gameFile->SetSkyloftMantis(m_ui->mantisChkBox->isChecked());
-    m_gameFile->SetVolcanicLadybug(m_ui->ladybugChkBox->isChecked());
-    m_gameFile->SetBlessedButterfly(m_ui->butterflyChkBox->isChecked());
-    m_gameFile->SetRupees((short)m_ui->rupeeSpinBox->value());
-
+    // Weapons
+    m_gameFile->SetWeapon(GameFile::SlingshotWeapon, m_ui->slingShotChkBox->isChecked());
+    m_gameFile->SetWeapon(GameFile::ScattershotWeapon, m_ui->scatterShotChkBox->isChecked());
+    m_gameFile->SetWeapon(GameFile::BugnetWeapon, m_ui->bugNetChkBox->isChecked());
+    m_gameFile->SetWeapon(GameFile::BigBugnetWeapon, m_ui->bigBugNetChkBox->isChecked());
+    m_gameFile->SetWeapon(GameFile::BeetleWeapon, m_ui->beetleChkBox->isChecked());
+    m_gameFile->SetWeapon(GameFile::HookBeetleWeapon, m_ui->hookBeetleChkBox->isChecked());
+    m_gameFile->SetWeapon(GameFile::QuickBeetleWeapon, m_ui->quickBeetleChkBox->isChecked());
+    m_gameFile->SetWeapon(GameFile::ToughBeetleWeapon, m_ui->toughBeetleChkBox->isChecked());
+    m_gameFile->SetWeapon(GameFile::BombWeapon, m_ui->bombChkBox->isChecked());
+    m_gameFile->SetWeapon(GameFile::GustBellowsWeapon, m_ui->gustBellowsChkBox->isChecked());
+    m_gameFile->SetWeapon(GameFile::WhipWeapon, m_ui->whipChkBox->isChecked());
+    m_gameFile->SetWeapon(GameFile::ClawshotWeapon, m_ui->clawShotChkBox->isChecked());
+    m_gameFile->SetWeapon(GameFile::BowWeapon, m_ui->bowChkBox->isChecked());
+    m_gameFile->SetWeapon(GameFile::IronBowWeapon, m_ui->ironBowChkBox->isChecked());
+    m_gameFile->SetWeapon(GameFile::SacredBowWeapon, m_ui->sacredBowChkBox->isChecked());
+    // Bugs
+    m_gameFile->SetBug(GameFile::GrasshopperBug, m_ui->grassHopperChkBox->isChecked());
+    m_gameFile->SetBug(GameFile::BeetleBug, m_ui->rhinoBeetleChkBox->isChecked());
+    m_gameFile->SetBug(GameFile::MantisBug, m_ui->mantisChkBox->isChecked());
+    m_gameFile->SetBug(GameFile::LadybugBug, m_ui->ladybugChkBox->isChecked());
+    m_gameFile->SetBug(GameFile::ButterflyBug, m_ui->butterflyChkBox->isChecked());
     m_gameFile->UpdateChecksum();
     UpdateTitle();
 }
@@ -279,7 +313,6 @@ void MainWindow::onOpen()
             if (!m_gameFile->HasValidChecksum())
             {
                 QMessageBox msg(QMessageBox::Warning, tr("CRC32 Mismatch"), tr("The checksum generated does not match the one provided by the file"));
-                msg.setStyleSheet(this->styleSheet());
                 msg.exec();
             }
             m_gameFile->SetGame(GameFile::Game1);
@@ -293,6 +326,7 @@ void MainWindow::onOpen()
 void MainWindow::onCreateNewGame()
 {
     NewGameDialog* ngd = new NewGameDialog(this, m_curGame);
+    ngd->setWindowTitle("New Adventure...");
     ngd->exec();
     if (ngd->result() == NewGameDialog::Accepted)
     {
@@ -401,12 +435,34 @@ void MainWindow::onClose()
 {
     if (!m_gameFile || !m_gameFile->IsOpen())
         return;
+    if(m_gameFile->IsModified())
+    {
+        QString filename = QFileInfo(m_gameFile->GetFilename()).fileName();
+        QMessageBox msg(QMessageBox::Information,
+                        "File Modified",
+                        QString("The file \"%1\" has been modified.\n Do you wish to save?")
+                        .arg(filename.isEmpty() ? tr("Untitled") : filename),
+                        QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
+        int result = msg.exec();
+        if (result == QMessageBox::Yes)
+            onSave();
+
+        if(result == QMessageBox::Cancel)
+            return;
+    }
+
+
     m_gameFile->Close();
     delete m_gameFile;
     m_gameFile = NULL;
 
     ClearInfo();
     m_ui->tabWidget->setEnabled(false);
+
+    m_ui->createDeleteGameBtn->setText(tr("Click to create new Adventure"));
+    if (m_ui->createDeleteGameBtn->disconnect())
+        connect(m_ui->createDeleteGameBtn, SIGNAL(clicked()), this, SLOT(onCreateNewGame()));
+    UpdateTitle();
 }
 
 void MainWindow::UpdateInfo()
@@ -430,49 +486,68 @@ void MainWindow::UpdateInfo()
             connect(m_ui->createDeleteGameBtn, SIGNAL(clicked()), this, SLOT(onCreateNewGame()));
 
         m_ui->tabWidget->setEnabled(false);
-        return; // No need to change all of this ;D
+        //return; // No need to change all of this ;D
     }
 
     m_isUpdating = true;
-    m_ui->playHoursSpinBox->setValue(m_gameFile->GetPlayTime().Hours);
-    m_ui->playMinutesSpinBox->setValue(m_gameFile->GetPlayTime().Minutes);
-    m_ui->playSecondsSpinBox->setValue(m_gameFile->GetPlayTime().Seconds);
-    m_ui->saveTimeEdit->setDateTime(m_gameFile->GetSaveTime());
-    m_ui->playerXSpinBox->setValue(m_gameFile->GetPlayerX());
-    m_ui->playerYSpinBox->setValue(m_gameFile->GetPlayerY());
-    m_ui->playerZSpinBox->setValue(m_gameFile->GetPlayerZ());
-    m_ui->playerRollSpinBox->setValue(m_gameFile->GetPlayerRoll());
-    m_ui->playerPitchSpinBox->setValue(m_gameFile->GetPlayerPitch());
-    m_ui->playerYawSpinBox->setValue(m_gameFile->GetPlayerYaw());
-    m_ui->cameraXSpinBox->setValue(m_gameFile->GetCameraX());
-    m_ui->cameraYSpinBox->setValue(m_gameFile->GetCameraY());
-    m_ui->cameraZSpinBox->setValue(m_gameFile->GetCameraZ());
-    m_ui->cameraRollSpinBox->setValue(m_gameFile->GetCameraRoll());
-    m_ui->cameraPitchSpinBox->setValue(m_gameFile->GetCameraPitch());
-    m_ui->cameraYawSpinBox->setValue(m_gameFile->GetCameraYaw());
-    m_ui->roomIDSpinBox->setValue(m_gameFile->GetRoomID());
-    m_ui->curMapLineEdit->setText(m_gameFile->GetCurrentMap());
-    m_ui->curAreaLineEdit->setText(m_gameFile->GetCurrentArea());
-    m_ui->curRoomLineEdit->setText(m_gameFile->GetCurrentRoom());
-    m_ui->heroModeChkBox->setChecked(m_gameFile->IsHeroMode());
-    m_ui->introViewedChkBox->setChecked(m_gameFile->GetIntroViewed());
-    m_ui->nameLineEdit->setText(m_gameFile->GetPlayerName());
-    m_ui->practiceSwdChkBox->setChecked(m_gameFile->GetSword(GameFile::PracticeSword));
-    m_ui->goddessSwdChkBox->setChecked(m_gameFile->GetSword(GameFile::GoddessSword));
-    m_ui->longSwdChkBox->setChecked(m_gameFile->GetSword(GameFile::LongSword));
-    m_ui->whiteSwdChkBox->setChecked(m_gameFile->GetSword(GameFile::WhiteSword));
-    m_ui->masterSwdChkBox->setChecked(m_gameFile->GetSword(GameFile::MasterSword));
-    m_ui->trueMasterSwdChkBox->setChecked(m_gameFile->GetSword(GameFile::TrueMasterSword));
-    m_ui->bigBugNetChkBox->setChecked(m_gameFile->GetBigBugNet());
-    m_ui->grassHopperChkBox->setChecked(m_gameFile->GetFaronGrasshopper());
-    m_ui->rhinoBeetleChkBox->setChecked(m_gameFile->GetWoodlandRhinoBeetle());
-    m_ui->mantisChkBox->setChecked(m_gameFile->GetSkyloftMantis());
-    m_ui->ladybugChkBox->setChecked(m_gameFile->GetVolcanicLadybug());
-    m_ui->butterflyChkBox->setChecked(m_gameFile->GetBlessedButterfly());
-    m_ui->rupeeSpinBox->setValue(m_gameFile->GetRupees());
-    m_ui->totalHPSpinBox->setValue(m_gameFile->GetTotalHP());
-    m_ui->unkHPSpinBox->setValue(m_gameFile->GetUnkHP());
-    m_ui->curHPSpinBox->setValue(m_gameFile->GetCurrentHP());
+    // Player Stats
+    m_ui->nameLineEdit       ->setText(m_gameFile->GetPlayerName());
+    m_ui->rupeeSpinBox       ->setValue(m_gameFile->GetRupees());
+    m_ui->totalHPSpinBox     ->setValue(m_gameFile->GetTotalHP());
+    m_ui->unkHPSpinBox       ->setValue(m_gameFile->GetUnkHP());
+    m_ui->curHPSpinBox       ->setValue(m_gameFile->GetCurrentHP());
+    m_ui->playHoursSpinBox   ->setValue(m_gameFile->GetPlayTime().Hours);
+    m_ui->playMinutesSpinBox ->setValue(m_gameFile->GetPlayTime().Minutes);
+    m_ui->playSecondsSpinBox ->setValue(m_gameFile->GetPlayTime().Seconds);
+    m_ui->saveTimeEdit       ->setDateTime(m_gameFile->GetSaveTime());
+    m_ui->playerXSpinBox     ->setValue(m_gameFile->GetPlayerX());
+    m_ui->playerYSpinBox     ->setValue(m_gameFile->GetPlayerY());
+    m_ui->playerZSpinBox     ->setValue(m_gameFile->GetPlayerZ());
+    m_ui->playerRollSpinBox  ->setValue(m_gameFile->GetPlayerRoll());
+    m_ui->playerPitchSpinBox ->setValue(m_gameFile->GetPlayerPitch());
+    m_ui->playerYawSpinBox   ->setValue(m_gameFile->GetPlayerYaw());
+    m_ui->cameraXSpinBox     ->setValue(m_gameFile->GetCameraX());
+    m_ui->cameraYSpinBox     ->setValue(m_gameFile->GetCameraY());
+    m_ui->cameraZSpinBox     ->setValue(m_gameFile->GetCameraZ());
+    m_ui->cameraRollSpinBox  ->setValue(m_gameFile->GetCameraRoll());
+    m_ui->cameraPitchSpinBox ->setValue(m_gameFile->GetCameraPitch());
+    m_ui->cameraYawSpinBox   ->setValue(m_gameFile->GetCameraYaw());
+    m_ui->roomIDSpinBox      ->setValue(m_gameFile->GetRoomID());
+    m_ui->curMapLineEdit     ->setText(m_gameFile->GetCurrentMap());
+    m_ui->curAreaLineEdit    ->setText(m_gameFile->GetCurrentArea());
+    m_ui->curRoomLineEdit    ->setText(m_gameFile->GetCurrentRoom());
+    m_ui->heroModeChkBox     ->setChecked(m_gameFile->IsHeroMode());
+    m_ui->introViewedChkBox  ->setChecked(m_gameFile->GetIntroViewed());
+    // Swords
+    m_ui->practiceSwdChkBox  ->setChecked(m_gameFile->GetSword (GameFile::PracticeSword));
+    m_ui->goddessSwdChkBox   ->setChecked(m_gameFile->GetSword (GameFile::GoddessSword));
+    m_ui->longSwdChkBox      ->setChecked(m_gameFile->GetSword (GameFile::LongSword));
+    m_ui->whiteSwdChkBox     ->setChecked(m_gameFile->GetSword (GameFile::WhiteSword));
+    m_ui->masterSwdChkBox    ->setChecked(m_gameFile->GetSword (GameFile::MasterSword));
+    m_ui->trueMasterSwdChkBox->setChecked(m_gameFile->GetSword (GameFile::TrueMasterSword));
+    // Weapons
+    m_ui->slingShotChkBox    ->setChecked(m_gameFile->GetWeapon(GameFile::SlingshotWeapon));
+    m_ui->scatterShotChkBox  ->setChecked(m_gameFile->GetWeapon(GameFile::ScattershotWeapon));
+    m_ui->bugNetChkBox       ->setChecked(m_gameFile->GetWeapon(GameFile::BugnetWeapon));
+    m_ui->bigBugNetChkBox    ->setChecked(m_gameFile->GetWeapon(GameFile::BigBugnetWeapon));
+    m_ui->beetleChkBox       ->setChecked(m_gameFile->GetWeapon(GameFile::BeetleWeapon));
+    m_ui->hookBeetleChkBox   ->setChecked(m_gameFile->GetWeapon(GameFile::HookBeetleWeapon));
+    m_ui->quickBeetleChkBox  ->setChecked(m_gameFile->GetWeapon(GameFile::QuickBeetleWeapon));
+    m_ui->toughBeetleChkBox  ->setChecked(m_gameFile->GetWeapon(GameFile::ToughBeetleWeapon));
+    m_ui->bombChkBox         ->setChecked(m_gameFile->GetWeapon(GameFile::BombWeapon));
+    m_ui->gustBellowsChkBox  ->setChecked(m_gameFile->GetWeapon(GameFile::GustBellowsWeapon));
+    m_ui->whipChkBox         ->setChecked(m_gameFile->GetWeapon(GameFile::WhipWeapon));
+    m_ui->clawShotChkBox     ->setChecked(m_gameFile->GetWeapon(GameFile::ClawshotWeapon));
+    m_ui->bowChkBox          ->setChecked(m_gameFile->GetWeapon(GameFile::BowWeapon));
+    m_ui->ironBowChkBox      ->setChecked(m_gameFile->GetWeapon(GameFile::IronBowWeapon));
+    m_ui->sacredBowChkBox    ->setChecked(m_gameFile->GetWeapon(GameFile::SacredBowWeapon));
+    m_ui->harpChkBox         ->setChecked(m_gameFile->GetWeapon(GameFile::HarpWeapon));
+    // Bugs
+    m_ui->grassHopperChkBox  ->setChecked(m_gameFile->GetBug   (GameFile::GrasshopperBug));
+    m_ui->rhinoBeetleChkBox  ->setChecked(m_gameFile->GetBug   (GameFile::BeetleBug));
+    m_ui->mantisChkBox       ->setChecked(m_gameFile->GetBug   (GameFile::MantisBug));
+    m_ui->ladybugChkBox      ->setChecked(m_gameFile->GetBug   (GameFile::LadybugBug));
+    m_ui->butterflyChkBox    ->setChecked(m_gameFile->GetBug   (GameFile::ButterflyBug));
     m_isUpdating = false;
 }
 

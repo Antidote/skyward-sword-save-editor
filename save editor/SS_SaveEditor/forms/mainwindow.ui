@@ -9,20 +9,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>667</width>
-    <height>514</height>
+    <width>730</width>
+    <height>535</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>667</width>
-    <height>514</height>
+    <width>730</width>
+    <height>535</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>667</width>
-    <height>514</height>
+    <width>730</width>
+    <height>535</height>
    </size>
   </property>
   <property name="acceptDrops">
@@ -51,6 +51,15 @@
     <property name="sizeConstraint">
      <enum>QLayout::SetNoConstraint</enum>
     </property>
+    <property name="horizontalSpacing">
+     <number>0</number>
+    </property>
+    <property name="verticalSpacing">
+     <number>2</number>
+    </property>
+    <property name="margin">
+     <number>4</number>
+    </property>
     <item row="1" column="0">
      <widget class="QPushButton" name="createDeleteGameBtn">
       <property name="text">
@@ -61,7 +70,7 @@
     <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="enabled">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <property name="sizePolicy">
        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -772,9 +781,9 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="weaponsTab">
+      <widget class="QWidget" name="equipmentTab">
        <attribute name="title">
-        <string>Weapons</string>
+        <string>Equipment</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_9">
         <property name="margin">
@@ -783,7 +792,7 @@
         <property name="spacing">
          <number>4</number>
         </property>
-        <item row="0" column="0" rowspan="2">
+        <item row="0" column="0" rowspan="3">
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <item>
            <widget class="QGroupBox" name="beetleGrpBox">
@@ -835,7 +844,7 @@
               </widget>
              </item>
              <item row="1" column="0">
-              <widget class="QCheckBox" name="checkBox">
+              <widget class="QCheckBox" name="quickBeetleChkBox">
                <property name="text">
                 <string/>
                </property>
@@ -852,7 +861,7 @@
               </widget>
              </item>
              <item row="1" column="1">
-              <widget class="QCheckBox" name="checkBox_2">
+              <widget class="QCheckBox" name="toughBeetleChkBox">
                <property name="text">
                 <string/>
                </property>
@@ -1040,26 +1049,26 @@
           </layout>
          </widget>
         </item>
-        <item row="1" column="1">
+        <item row="1" column="1" rowspan="2">
          <widget class="QGroupBox" name="miscGrpBox">
           <property name="title">
            <string>Misc</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_4">
            <property name="margin">
-            <number>4</number>
+            <number>2</number>
            </property>
            <property name="spacing">
-            <number>4</number>
+            <number>0</number>
            </property>
-           <item row="0" column="0">
-            <widget class="QCheckBox" name="bombChkBox">
+           <item row="0" column="1">
+            <widget class="QCheckBox" name="harpChkBox">
              <property name="text">
               <string/>
              </property>
              <property name="icon">
               <iconset resource="../resources/resources.qrc">
-               <normaloff>:/weapons/Bomb</normaloff>:/weapons/Bomb</iconset>
+               <normaloff>:/weapons/Harp</normaloff>:/weapons/Harp</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -1069,14 +1078,14 @@
              </property>
             </widget>
            </item>
-           <item row="0" column="1">
-            <widget class="QCheckBox" name="harpChkBox">
+           <item row="6" column="0">
+            <widget class="QCheckBox" name="whipChkBox">
              <property name="text">
               <string/>
              </property>
              <property name="icon">
               <iconset resource="../resources/resources.qrc">
-               <normaloff>:/weapons/Harp</normaloff>:/weapons/Harp</iconset>
+               <normaloff>:/weapons/Whip</normaloff>:/weapons/Whip</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -1120,14 +1129,56 @@
              </property>
             </widget>
            </item>
-           <item row="2" column="0">
-            <widget class="QCheckBox" name="whipChkBox">
+           <item row="7" column="0">
+            <widget class="QCheckBox" name="diggingMittsChkBox">
+             <property name="icon">
+              <iconset resource="../resources/resources.qrc">
+               <normaloff>:/equipment/DiggingMitts</normaloff>:/equipment/DiggingMitts</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>64</width>
+               <height>64</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="1">
+            <widget class="QCheckBox" name="sailClothChkBox">
+             <property name="icon">
+              <iconset resource="../resources/resources.qrc">
+               <normaloff>:/equipment/SailCloth</normaloff>:/equipment/SailCloth</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>64</width>
+               <height>64</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="1">
+            <widget class="QCheckBox" name="moleMittsChkBox">
+             <property name="icon">
+              <iconset resource="../resources/resources.qrc">
+               <normaloff>:/equipment/MoleMitts</normaloff>:/equipment/MoleMitts</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>64</width>
+               <height>64</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="QCheckBox" name="bombChkBox">
              <property name="text">
               <string/>
              </property>
              <property name="icon">
               <iconset resource="../resources/resources.qrc">
-               <normaloff>:/weapons/Whip</normaloff>:/weapons/Whip</iconset>
+               <normaloff>:/weapons/Bomb</normaloff>:/weapons/Bomb</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -1253,215 +1304,551 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="insectTab">
+      <widget class="QWidget" name="questItemTab">
        <attribute name="title">
-        <string>Bugs</string>
+        <string>Quest Items</string>
        </attribute>
-       <widget class="QCheckBox" name="butterflyChkBox">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>250</y>
-          <width>81</width>
-          <height>61</height>
-         </rect>
-        </property>
-        <property name="icon">
-         <iconset resource="../resources/resources.qrc">
-          <normaloff>:/bugs/BlessedButterfly</normaloff>:/bugs/BlessedButterfly</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>64</width>
-          <height>64</height>
-         </size>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="mantisChkBox">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>130</y>
-          <width>81</width>
-          <height>61</height>
-         </rect>
-        </property>
-        <property name="icon">
-         <iconset resource="../resources/resources.qrc">
-          <normaloff>:/bugs/LoftMantis</normaloff>:/bugs/LoftMantis</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>64</width>
-          <height>64</height>
-         </size>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="grassHopperChkBox">
+       <widget class="QGroupBox" name="groupBox">
         <property name="geometry">
          <rect>
           <x>10</x>
           <y>10</y>
-          <width>81</width>
-          <height>61</height>
+          <width>351</width>
+          <height>181</height>
          </rect>
         </property>
-        <property name="text">
-         <string/>
+        <property name="title">
+         <string>Bugs</string>
         </property>
-        <property name="icon">
-         <iconset resource="../resources/resources.qrc">
-          <normaloff>:/bugs/FaronGrasshopper</normaloff>:/bugs/FaronGrasshopper</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>64</width>
-          <height>64</height>
-         </size>
-        </property>
+        <layout class="QGridLayout" name="gridLayout_11">
+         <property name="margin">
+          <number>2</number>
+         </property>
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <item row="0" column="0">
+          <widget class="QCheckBox" name="checkBox_7">
+           <property name="icon">
+            <iconset resource="../resources/resources.qrc">
+             <normaloff>:/bugs/DekuHornet</normaloff>:/bugs/DekuHornet</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>64</width>
+             <height>64</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QCheckBox" name="butterflyChkBox">
+           <property name="icon">
+            <iconset resource="../resources/resources.qrc">
+             <normaloff>:/bugs/BlessedButterfly</normaloff>:/bugs/BlessedButterfly</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>64</width>
+             <height>64</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QCheckBox" name="checkBox_3">
+           <property name="icon">
+            <iconset resource="../resources/resources.qrc">
+             <normaloff>:/bugs/GerudoDragonfly</normaloff>:/bugs/GerudoDragonfly</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>64</width>
+             <height>64</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="QCheckBox" name="starryFireflyChkBox">
+           <property name="icon">
+            <iconset resource="../resources/resources.qrc">
+             <normaloff>:/bugs/StarryFirefly</normaloff>:/bugs/StarryFirefly</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>64</width>
+             <height>64</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QCheckBox" name="rhinoBeetleChkBox">
+           <property name="icon">
+            <iconset resource="../resources/resources.qrc">
+             <normaloff>:/bugs/WoodlandRhinoBeetle</normaloff>:/bugs/WoodlandRhinoBeetle</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>64</width>
+             <height>64</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QCheckBox" name="ladybugChkBox">
+           <property name="icon">
+            <iconset resource="../resources/resources.qrc">
+             <normaloff>:/bugs/VolcanicLadyBug</normaloff>:/bugs/VolcanicLadyBug</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>64</width>
+             <height>64</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QCheckBox" name="sandCicadaChkBox">
+           <property name="icon">
+            <iconset resource="../resources/resources.qrc">
+             <normaloff>:/bugs/SandCicada</normaloff>:/bugs/SandCicada</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>64</width>
+             <height>64</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="3">
+          <widget class="QCheckBox" name="checkBox_4">
+           <property name="icon">
+            <iconset resource="../resources/resources.qrc">
+             <normaloff>:/bugs/SkyStagBeetle</normaloff>:/bugs/SkyStagBeetle</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>64</width>
+             <height>64</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QCheckBox" name="grassHopperChkBox">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="../resources/resources.qrc">
+             <normaloff>:/bugs/FaronGrasshopper</normaloff>:/bugs/FaronGrasshopper</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>64</width>
+             <height>64</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QCheckBox" name="mantisChkBox">
+           <property name="icon">
+            <iconset resource="../resources/resources.qrc">
+             <normaloff>:/bugs/LoftMantis</normaloff>:/bugs/LoftMantis</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>64</width>
+             <height>64</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="2">
+          <widget class="QCheckBox" name="checkBox_6">
+           <property name="icon">
+            <iconset resource="../resources/resources.qrc">
+             <normaloff>:/bugs/LanayruAnt</normaloff>:/bugs/LanayruAnt</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>64</width>
+             <height>64</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="3">
+          <widget class="QCheckBox" name="checkBox_5">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="../resources/resources.qrc">
+             <normaloff>:/bugs/EldinRoller</normaloff>:/bugs/EldinRoller</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>64</width>
+             <height>64</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
-       <widget class="QCheckBox" name="ladybugChkBox">
+       <widget class="QGroupBox" name="groupBox_2">
         <property name="geometry">
          <rect>
-          <x>10</x>
-          <y>190</y>
-          <width>81</width>
-          <height>61</height>
-         </rect>
-        </property>
-        <property name="icon">
-         <iconset resource="../resources/resources.qrc">
-          <normaloff>:/bugs/VolcanicLadyBug</normaloff>:/bugs/VolcanicLadyBug</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>64</width>
-          <height>64</height>
-         </size>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="rhinoBeetleChkBox">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>70</y>
-          <width>81</width>
-          <height>61</height>
-         </rect>
-        </property>
-        <property name="icon">
-         <iconset resource="../resources/resources.qrc">
-          <normaloff>:/bugs/WoodlandRhinoBeetle</normaloff>:/bugs/WoodlandRhinoBeetle</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>64</width>
-          <height>64</height>
-         </size>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="checkBox_3">
-        <property name="geometry">
-         <rect>
-          <x>100</x>
+          <x>370</x>
           <y>10</y>
-          <width>91</width>
-          <height>51</height>
+          <width>331</width>
+          <height>251</height>
          </rect>
         </property>
-        <property name="icon">
-         <iconset resource="../resources/resources.qrc">
-          <normaloff>:/bugs/GerudoDragonfly</normaloff>:/bugs/GerudoDragonfly</iconset>
+        <property name="title">
+         <string>Materials</string>
         </property>
-        <property name="iconSize">
-         <size>
-          <width>64</width>
-          <height>64</height>
-         </size>
-        </property>
+        <layout class="QGridLayout" name="gridLayout_12">
+         <property name="margin">
+          <number>2</number>
+         </property>
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <item row="0" column="0">
+          <widget class="QCheckBox" name="hornetLarvaeChkBox">
+           <property name="icon">
+            <iconset resource="../resources/resources.qrc">
+             <normaloff>:/materials/DekuHornetLarvae</normaloff>:/materials/DekuHornetLarvae</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>64</width>
+             <height>64</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1" colspan="4">
+          <widget class="QCheckBox" name="birdFeatherChkBox">
+           <property name="icon">
+            <iconset resource="../resources/resources.qrc">
+             <normaloff>:/materials/BirdFeather</normaloff>:/materials/BirdFeather</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>64</width>
+             <height>64</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="5" colspan="3">
+          <widget class="QCheckBox" name="tumbleWeedChkBox">
+           <property name="icon">
+            <iconset resource="../resources/resources.qrc">
+             <normaloff>:/materials/TumbleWeed</normaloff>:/materials/TumbleWeed</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>64</width>
+             <height>64</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="8" colspan="3">
+          <widget class="QCheckBox" name="lizardTailChkBox">
+           <property name="icon">
+            <iconset resource="../resources/resources.qrc">
+             <normaloff>:/materials/LizardTail</normaloff>:/materials/LizardTail</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>64</width>
+             <height>64</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QCheckBox" name="eldinOreChkBox">
+           <property name="icon">
+            <iconset resource="../resources/resources.qrc">
+             <normaloff>:/materials/EldinOre</normaloff>:/materials/EldinOre</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>64</width>
+             <height>64</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1" colspan="4">
+          <widget class="QCheckBox" name="ancientFlowerChkBox">
+           <property name="icon">
+            <iconset resource="../resources/resources.qrc">
+             <normaloff>:/materials/AncientFlower</normaloff>:/materials/AncientFlower</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>64</width>
+             <height>64</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="5" colspan="3">
+          <widget class="QCheckBox" name="amberRelicChkBox">
+           <property name="icon">
+            <iconset resource="../resources/resources.qrc">
+             <normaloff>:/materials/AmberRelic</normaloff>:/materials/AmberRelic</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>64</width>
+             <height>64</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="8" colspan="3">
+          <widget class="QCheckBox" name="duskRelicChkBox">
+           <property name="icon">
+            <iconset resource="../resources/resources.qrc">
+             <normaloff>:/materials/DuskRelic</normaloff>:/materials/DuskRelic</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>64</width>
+             <height>64</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0" colspan="3">
+          <widget class="QCheckBox" name="jellyBlobChkBox">
+           <property name="icon">
+            <iconset resource="../resources/resources.qrc">
+             <normaloff>:/materials/JellyBlob</normaloff>:/materials/JellyBlob</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>64</width>
+             <height>64</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="10">
+          <widget class="QCheckBox" name="ornamentalSkullChkBox">
+           <property name="icon">
+            <iconset resource="../resources/resources.qrc">
+             <normaloff>:/materials/OrnamentalSkull</normaloff>:/materials/OrnamentalSkull</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>64</width>
+             <height>64</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0" colspan="2">
+          <widget class="QCheckBox" name="evilCrystalChkBox">
+           <property name="icon">
+            <iconset resource="../resources/resources.qrc">
+             <normaloff>:/materials/EvilCrystal</normaloff>:/materials/EvilCrystal</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>64</width>
+             <height>64</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="2" colspan="4">
+          <widget class="QCheckBox" name="blueBirdFeatherChkBox">
+           <property name="icon">
+            <iconset resource="../resources/resources.qrc">
+             <normaloff>:/materials/BlueBirdFeather</normaloff>:/materials/BlueBirdFeather</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>64</width>
+             <height>64</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="6" colspan="3">
+          <widget class="QCheckBox" name="goldenSkullChkBox">
+           <property name="icon">
+            <iconset resource="../resources/resources.qrc">
+             <normaloff>:/materials/GoldenSkull</normaloff>:/materials/GoldenSkull</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>64</width>
+             <height>64</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="9" colspan="2">
+          <widget class="QCheckBox" name="goddessPlumeChkBox">
+           <property name="icon">
+            <iconset resource="../resources/resources.qrc">
+             <normaloff>:/materials/GoddessPlume</normaloff>:/materials/GoddessPlume</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>64</width>
+             <height>64</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="3">
+          <widget class="QCheckBox" name="monsterClawChkBox">
+           <property name="icon">
+            <iconset resource="../resources/resources.qrc">
+             <normaloff>:/materials/MonsterClaw</normaloff>:/materials/MonsterClaw</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>64</width>
+             <height>64</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="6">
+          <widget class="QCheckBox" name="monsterHornChkBox">
+           <property name="icon">
+            <iconset resource="../resources/resources.qrc">
+             <normaloff>:/materials/MonsterHorn</normaloff>:/materials/MonsterHorn</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>64</width>
+             <height>64</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
-       <widget class="QCheckBox" name="checkBox_4">
+       <widget class="QGroupBox" name="groupBox_3">
         <property name="geometry">
          <rect>
-          <x>100</x>
-          <y>70</y>
-          <width>91</width>
-          <height>51</height>
+          <x>10</x>
+          <y>200</y>
+          <width>351</width>
+          <height>81</height>
          </rect>
         </property>
-        <property name="icon">
-         <iconset resource="../resources/resources.qrc">
-          <normaloff>:/bugs/SkyStagBeetle</normaloff>:/bugs/SkyStagBeetle</iconset>
+        <property name="title">
+         <string>GroupBox</string>
         </property>
-        <property name="iconSize">
-         <size>
-          <width>64</width>
-          <height>64</height>
-         </size>
-        </property>
+        <layout class="QGridLayout" name="gridLayout_13">
+         <property name="margin">
+          <number>2</number>
+         </property>
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <item row="0" column="0">
+          <widget class="QCheckBox" name="letterChkBox">
+           <property name="icon">
+            <iconset resource="../resources/resources.qrc">
+             <normaloff>:/questItems/Letter</normaloff>:/questItems/Letter</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>64</width>
+             <height>64</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QCheckBox" name="bugCageChkBox">
+           <property name="icon">
+            <iconset resource="../resources/resources.qrc">
+             <normaloff>:/questItems/BugCage</normaloff>:/questItems/BugCage</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>64</width>
+             <height>64</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QCheckBox" name="rattleChkBox">
+           <property name="icon">
+            <iconset resource="../resources/resources.qrc">
+             <normaloff>:/questItems/Rattle</normaloff>:/questItems/Rattle</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>64</width>
+             <height>64</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="QCheckBox" name="gratitudeCrystalChkBox">
+           <property name="icon">
+            <iconset resource="../resources/resources.qrc">
+             <normaloff>:/questItems/GratitudeCrystal</normaloff>:/questItems/GratitudeCrystal</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>64</width>
+             <height>64</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
-       <widget class="QCheckBox" name="checkBox_5">
+       <widget class="QGroupBox" name="groupBox_4">
         <property name="geometry">
          <rect>
-          <x>100</x>
-          <y>130</y>
-          <width>91</width>
-          <height>61</height>
+          <x>10</x>
+          <y>290</y>
+          <width>691</width>
+          <height>81</height>
          </rect>
         </property>
-        <property name="text">
-         <string/>
+        <property name="title">
+         <string>Not so random filler</string>
         </property>
-        <property name="icon">
-         <iconset resource="../resources/resources.qrc">
-          <normaloff>:/bugs/EldinRoller</normaloff>:/bugs/EldinRoller</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>64</width>
-          <height>64</height>
-         </size>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="checkBox_6">
-        <property name="geometry">
-         <rect>
-          <x>100</x>
-          <y>190</y>
-          <width>91</width>
-          <height>51</height>
-         </rect>
-        </property>
-        <property name="icon">
-         <iconset resource="../resources/resources.qrc">
-          <normaloff>:/bugs/LanayruAnt</normaloff>:/bugs/LanayruAnt</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>64</width>
-          <height>64</height>
-         </size>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="checkBox_7">
-        <property name="geometry">
-         <rect>
-          <x>100</x>
-          <y>250</y>
-          <width>91</width>
-          <height>51</height>
-         </rect>
-        </property>
-        <property name="icon">
-         <iconset resource="../resources/resources.qrc">
-          <normaloff>:/bugs/DekuHornet</normaloff>:/bugs/DekuHornet</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>64</width>
-          <height>64</height>
-         </size>
-        </property>
+        <layout class="QGridLayout" name="gridLayout_14">
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>Waiting for amounts to be documented fully</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </widget>
      </widget>
@@ -1473,7 +1860,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>667</width>
+     <width>730</width>
      <height>21</height>
     </rect>
    </property>
