@@ -263,6 +263,8 @@ void GameFile::SetRegion(GameFile::Region val)
 
 PlayTime GameFile::GetPlayTime() const
 {
+    if (!m_data)
+        return PlayTime();
     PlayTime playTime;
     quint64 tmp = qFromBigEndian<quint64>(*(quint64*)(m_data + GetGameOffset()));
     playTime.Hours = ((tmp / TICKS_PER_SECOND) / 60) / 60;
@@ -275,6 +277,8 @@ PlayTime GameFile::GetPlayTime() const
 // Sets the current playtime
 void GameFile::SetPlayTime(PlayTime val)
 {
+    if (!m_data)
+        return;
     quint64 totalSeconds = (val.Hours * 60) * 60;
     totalSeconds += val.Minutes * 60;
     totalSeconds += val.Seconds;
@@ -284,6 +288,8 @@ void GameFile::SetPlayTime(PlayTime val)
 
 QDateTime GameFile::GetSaveTime() const
 {
+    if (!m_data)
+        return QDateTime::currentDateTime();
     QDateTime tmp(QDate(2000, 1, 1));
     tmp = tmp.addSecs(qFromBigEndian<quint64>(*(quint64*)(m_data + GetGameOffset() + 0x0008)) / TICKS_PER_SECOND);
     return tmp;
@@ -303,121 +309,170 @@ void GameFile::SetSaveTime(QDateTime val)
 
 float GameFile::GetPlayerX() const
 {
+    if (!m_data)
+        return 0;
     return swapFloat(*(float*)(m_data + GetGameOffset() + 0x0010));
 }
 
 void GameFile::SetPlayerX(float val)
 {
+    if (!m_data)
+        return;
     *(float*)(m_data + GetGameOffset() + 0x0010) = swapFloat(val);
 }
 
 float GameFile::GetPlayerY() const
 {
+    if (!m_data)
+        return 0;
     return swapFloat(*(float*)(m_data + GetGameOffset() + 0x0014));
 }
 
 void GameFile::SetPlayerY(float val)
 {
+    if (!m_data)
+        return;
     *(float*)(m_data + GetGameOffset() + 0x0014) = swapFloat(val);
 }
 
 float GameFile::GetPlayerZ() const
 {
+    if (!m_data)
+        return 0;
     return swapFloat(*(float*)(m_data + GetGameOffset() + 0x0018));
 }
 
 void GameFile::SetPlayerZ(float val)
 {
+    if (!m_data)
+        return;
     *(float*)(m_data + GetGameOffset() + 0x0018) = swapFloat(val);
 }
 
 float GameFile::GetPlayerRoll() const
 {
+    if (!m_data)
+        return 0;
     return swapFloat(*(float*)(m_data + GetGameOffset() + 0x001C));
 }
 
 void GameFile::SetPlayerRoll(float val)
 {
+    if (!m_data)
+        return;
     *(float*)(m_data + GetGameOffset() + 0x001C) = swapFloat(val);
 }
 
 float GameFile::GetPlayerPitch() const
 {
+    if (!m_data)
+        return 0;
     return swapFloat(*(float*)(m_data + GetGameOffset() + 0x0020));
 }
 
 void GameFile::SetPlayerPitch(float val)
 {
+    if (!m_data)
+        return;
     *(float*)(m_data + GetGameOffset() + 0x0020) = swapFloat(val);
 }
 
 float GameFile::GetPlayerYaw() const
 {
+    if (!m_data)
+        return 0;
     return swapFloat(*(float*)(m_data + GetGameOffset() + 0x0024));
 }
 
 void GameFile::SetPlayerYaw(float val)
 {
+    if (!m_data)
+        return;
     *(float*)(m_data + GetGameOffset() + 0x0024) = swapFloat(val);
 }
 
 float GameFile::GetCameraX() const
 {
+    if (!m_data)
+        return 0.f;
     return swapFloat(*(float*)(m_data + GetGameOffset() + 0x0028));
 }
 
 void GameFile::SetCameraX(float val)
 {
+    if (!m_data)
+        return;
     *(float*)(m_data + GetGameOffset() + 0x0028) = swapFloat(val);
 }
 
 float GameFile::GetCameraY() const
 {
+    if (!m_data)
+        return 0.f;
     return swapFloat(*(float*)(m_data + GetGameOffset() + 0x002C));
 }
 
 void GameFile::SetCameraY(float val)
 {
+    if (!m_data)
+        return;
     *(float*)(m_data + GetGameOffset() + 0x002C) = swapFloat(val);
 }
 
 float GameFile::GetCameraZ() const
 {
+    if (!m_data)
+        return 0.f;
     return swapFloat(*(float*)(m_data + GetGameOffset() + 0x0030));
 }
 
 void GameFile::SetCameraZ(float val)
 {
+    if (!m_data)
+        return;
     *(float*)(m_data + GetGameOffset() + 0x0030) = swapFloat(val);
 }
 
 float GameFile::GetCameraRoll() const
 {
+    if (!m_data)
+        return 0.f;
     return swapFloat(*(float*)(m_data + GetGameOffset() + 0x0034));
 }
 
 void GameFile::SetCameraRoll(float val)
 {
+    if (!m_data)
+        return;
     *(float*)(m_data + GetGameOffset() + 0x0034) = swapFloat(val);
 }
 
 float GameFile::GetCameraPitch() const
 {
+    if (!m_data)
+        return 0.f;
     return swapFloat(*(float*)(m_data + GetGameOffset() + 0x0038));
 }
 
 void GameFile::SetCameraPitch(float val)
 {
+    if (!m_data)
+        return;
     *(float*)(m_data + GetGameOffset() + 0x0038) = swapFloat(val);
 }
 
 float GameFile::GetCameraYaw() const
 {
+    if (!m_data)
+        return 0.f;
     return swapFloat(*(float*)(m_data + GetGameOffset() + 0x003C));
 }
 
 void GameFile::SetCameraYaw(float val)
 {
+    if (!m_data)
+        return;
+
     *(float*)(m_data + GetGameOffset() + 0x003C) = swapFloat(val);
 }
 
@@ -465,6 +520,9 @@ bool GameFile::IsHeroMode() const
 
 void GameFile::SetHeroMode(bool val)
 {
+    if (!m_data)
+        return;
+
     if (val)
         *(char*)(m_data + GetGameOffset() + 0x08FE) |= 0x08;
     else
@@ -481,35 +539,113 @@ bool GameFile::GetIntroViewed() const
 
 void GameFile::SetIntroViewed(bool val)
 {
+    if (!m_data)
+        return;
+
     if (val)
         *(char*)(m_data + GetGameOffset() + 0x0941) = 2;
     else
         *(char*)(m_data + GetGameOffset() + 0x0941) = 0;
 }
 
-/*
-bool GameFile::GetItem(Item item) const
-{
-    char itemFlag1 =
-}*/
 
-bool GameFile::GetTrainingSword() const
+bool GameFile::GetSword(Sword sword) const
 {
     if (!m_data)
         return false;
 
-    return (*(char*)(m_data + GetGameOffset() + 0x09F2) & 0x01) == 0x01;
+    char swordFlag1 = *(m_data + GetGameOffset() + 0x09E4); // Goddess, Long, and Master Swords
+    char swordFlag2 = *(m_data + GetGameOffset() + 0x09F2); // Practice Sword
+    char swordFlag3 = *(m_data + GetGameOffset() + 0x09F3); // True Master Sword
+    char swordFlag4 = *(m_data + GetGameOffset() + 0x09FB); // Goddess White Sword
+
+    switch(sword)
+    {
+        case PracticeSword:
+            return (swordFlag2 & 0x01) == 0x01;
+        case GoddessSword:
+            return (swordFlag1 & 0x01) == 0x01;
+        case LongSword:
+            return (swordFlag1 & 0x02) == 0x02;
+        case MasterSword:
+            return (swordFlag1 & 0x04) == 0x04;
+        case WhiteSword:
+            return (swordFlag3 & 0x10) == 0x10;
+        case TrueMasterSword:
+            return (swordFlag4 & 0x80) == 0x80;
+        default:
+            return false;
+    }
 }
 
-void GameFile::SetTrainingSword(bool val)
+void GameFile::SetSword(Sword sword, bool val)
 {
-    if (val)
-        *(char*)(m_data + GetGameOffset() + 0x09F2) |= 0x01;
-    else
-        *(char*)(m_data + GetGameOffset() + 0x09F2) &= ~0x01;
-}
+    if (!m_data)
+        return;
 
-bool GameFile::GetBugNet() const
+    switch (sword)
+    {
+        case PracticeSword:
+        {
+            if (val)
+                *(char*)(m_data + GetGameOffset() + 0x09F2) |= 0x01;
+            else
+                *(char*)(m_data + GetGameOffset() + 0x09F2) &= ~0x01;
+        }
+        break;
+        case GoddessSword:
+        {
+            if (val)
+                *(char*)(m_data + GetGameOffset() + 0x09E4) |= 0x01;
+            else
+                *(char*)(m_data + GetGameOffset() + 0x09E4) &= ~0x01;
+        }
+        break;
+        case LongSword:
+        {
+            if (val)
+                *(char*)(m_data + GetGameOffset() + 0x09E4) |= 0x02;
+            else
+                *(char*)(m_data + GetGameOffset() + 0x09E4) &= ~0x02;
+        }
+        break;
+        case WhiteSword:
+        {
+            if (val)
+                *(char*)(m_data + GetGameOffset() + 0x09FB) |= 0x10;
+            else
+                *(char*)(m_data + GetGameOffset() + 0x09FB) &= ~0x10;
+        }
+        break;
+        case MasterSword:
+        {
+            if (val)
+                *(char*)(m_data + GetGameOffset() + 0x09E4) |= 0x04;
+            else
+                *(char*)(m_data + GetGameOffset() + 0x09E4) &= ~0x04;
+        }
+        break;
+        case TrueMasterSword:
+        {
+            if (val)
+                *(char*)(m_data + GetGameOffset() + 0x09F3) |= 0x80;
+            else
+                *(char*)(m_data + GetGameOffset() + 0x09F3) &= ~0x80;
+        }
+        break;
+        default:
+            return;
+    }
+}
+/*
+bool GameFile::GetWeapon(Weapon weapon) const
+{
+    switch(weapon)
+    {
+    }
+}*/
+
+bool GameFile::GetBigBugNet() const
 {
     if (!m_data)
         return false;
@@ -517,7 +653,7 @@ bool GameFile::GetBugNet() const
     return (*(char*)(m_data + GetGameOffset() + 0x09F2) & 0x02) == 0x02;
 }
 
-void GameFile::SetBugNet(bool val)
+void GameFile::SetBigBugNet(bool val)
 {
     if (val)
         *(char*)(m_data + GetGameOffset() + 0x09F2) |= 0x02;
@@ -748,7 +884,8 @@ void GameFile::SetNew(bool val)
 
 bool GameFile::IsModified() const
 {
-    return m_isDirty;
+    quint32 newCrc = m_crcEngine->GetCRC32((const quint8*)m_data, 0, 0xFBE0);
+    return !(newCrc == m_fileChecksum);
 }
 
 QString GameFile::ReadNullTermString(int offset) const

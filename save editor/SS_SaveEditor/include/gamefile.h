@@ -51,9 +51,36 @@ public:
 
     enum Region
     {
-        NTSCU = 0x45554F53,
-        NTSCJ = 0x4A554F53,
-        PAL   = 0x50554F53
+        Region_NTSCU = 0x45554F53,
+        Region_NTSCJ = 0x4A554F53,
+        Region_PAL   = 0x50554F53
+    };
+    enum Weapon
+    {
+        SlingshotWeapon,
+        ScattershotWeapon,
+        BugnetWeapon,
+        BigBugnetWeapon,
+        BeetleWeapon,
+        BombsWeapon,
+        HookBeetleWeapon,
+        SpeedBeetleWeapon,
+        ToughBeetleWeapon,
+        GustBellowsWeapon,
+        BowWeapon,
+        IronBowWeapon,
+        SacredBowWeapon,
+        ClawshotWeapon,
+        WhipWeapon
+    };
+    enum Sword
+    {
+        PracticeSword,
+        GoddessSword,
+        LongSword,
+        WhiteSword,
+        MasterSword,
+        TrueMasterSword
     };
 
     GameFile(const QString& filepath = NULL, Game game = Game1);
@@ -117,10 +144,10 @@ public:
     void SetHeroMode(bool val);
     bool GetIntroViewed() const;
     void SetIntroViewed(bool val);
-    bool GetTrainingSword() const;
-    void SetTrainingSword(bool val);
-    bool GetBugNet() const;
-    void SetBugNet(bool val);
+    bool GetSword(Sword sword) const;
+    void SetSword(Sword sword, bool val);
+    bool GetBigBugNet() const;
+    void SetBigBugNet(bool val);
     bool GetFaronGrasshopper() const;
     void SetFaronGrasshopper(bool val);
     bool GetWoodlandRhinoBeetle() const;
@@ -160,7 +187,6 @@ private:
     QString  m_filename;
     Game     m_game;
     bool     m_isOpen;
-    bool     m_isDirty;
     quint32  m_fileChecksum; // The checksum of the entire file.
     CRC32*   m_crcEngine;
 };

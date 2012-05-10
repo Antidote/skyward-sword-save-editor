@@ -21,6 +21,7 @@
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QApplication>
+#include <QDebug>
 
 #include "gamefile.h"
 #include "newgamedialog.h"
@@ -137,8 +138,13 @@ void MainWindow::SetupConnections()
     connect(m_ui->heroModeChkBox,     SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
     connect(m_ui->introViewedChkBox,  SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
     connect(m_ui->nameLineEdit,       SIGNAL(textChanged(QString)), this, SLOT(onTextChanged(QString)));
-    connect(m_ui->trainingSwdChkBox,  SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->bugNetChkBox,       SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->practiceSwdChkBox,  SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->goddessSwdChkBox,   SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->longSwdChkBox,      SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->whiteSwdChkBox,     SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->masterSwdChkBox,    SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->trueMasterSwdChkBox,SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->bigBugNetChkBox,    SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
     connect(m_ui->grassHopperChkBox,  SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
     connect(m_ui->rhinoBeetleChkBox,  SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
     connect(m_ui->mantisChkBox,       SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
@@ -228,8 +234,13 @@ void MainWindow::onValueChanged()
     m_gameFile->SetUnkHP((short)m_ui->unkHPSpinBox->value());
     m_gameFile->SetCurrentHP((short)m_ui->curHPSpinBox->value());
     m_gameFile->SetRoomID((uint)m_ui->roomIDSpinBox->value());
-    m_gameFile->SetTrainingSword(m_ui->trainingSwdChkBox->isChecked());
-    m_gameFile->SetBugNet(m_ui->bugNetChkBox->isChecked());
+    m_gameFile->SetSword(GameFile::PracticeSword,m_ui->practiceSwdChkBox->isChecked());
+    m_gameFile->SetSword(GameFile::GoddessSword, m_ui->goddessSwdChkBox->isChecked());
+    m_gameFile->SetSword(GameFile::LongSword, m_ui->longSwdChkBox->isChecked());
+    m_gameFile->SetSword(GameFile::WhiteSword, m_ui->whiteSwdChkBox->isChecked());
+    m_gameFile->SetSword(GameFile::MasterSword, m_ui->masterSwdChkBox->isChecked());
+    m_gameFile->SetSword(GameFile::TrueMasterSword, m_ui->trueMasterSwdChkBox->isChecked());
+    m_gameFile->SetBigBugNet(m_ui->bigBugNetChkBox->isChecked());
     m_gameFile->SetFaronGrasshopper(m_ui->grassHopperChkBox->isChecked());
     m_gameFile->SetWoodlandRhinoBeetle(m_ui->rhinoBeetleChkBox->isChecked());
     m_gameFile->SetSkyloftMantis(m_ui->mantisChkBox->isChecked());
@@ -446,8 +457,13 @@ void MainWindow::UpdateInfo()
     m_ui->heroModeChkBox->setChecked(m_gameFile->IsHeroMode());
     m_ui->introViewedChkBox->setChecked(m_gameFile->GetIntroViewed());
     m_ui->nameLineEdit->setText(m_gameFile->GetPlayerName());
-    m_ui->trainingSwdChkBox->setChecked(m_gameFile->GetTrainingSword());
-    m_ui->bugNetChkBox->setChecked(m_gameFile->GetBugNet());
+    m_ui->practiceSwdChkBox->setChecked(m_gameFile->GetSword(GameFile::PracticeSword));
+    m_ui->goddessSwdChkBox->setChecked(m_gameFile->GetSword(GameFile::GoddessSword));
+    m_ui->longSwdChkBox->setChecked(m_gameFile->GetSword(GameFile::LongSword));
+    m_ui->whiteSwdChkBox->setChecked(m_gameFile->GetSword(GameFile::WhiteSword));
+    m_ui->masterSwdChkBox->setChecked(m_gameFile->GetSword(GameFile::MasterSword));
+    m_ui->trueMasterSwdChkBox->setChecked(m_gameFile->GetSword(GameFile::TrueMasterSword));
+    m_ui->bigBugNetChkBox->setChecked(m_gameFile->GetBigBugNet());
     m_ui->grassHopperChkBox->setChecked(m_gameFile->GetFaronGrasshopper());
     m_ui->rhinoBeetleChkBox->setChecked(m_gameFile->GetWoodlandRhinoBeetle());
     m_ui->mantisChkBox->setChecked(m_gameFile->GetSkyloftMantis());
@@ -465,9 +481,18 @@ void MainWindow::UpdateTitle()
     if (m_gameFile == NULL || !m_gameFile->IsOpen() || m_gameFile->GetGame() == GameFile::GameNone)
         this->setWindowTitle(tr("WiiKing2 Editor"));
     else
-        this->setWindowTitle(QString(tr("WiiKing2 Editor - Game %1 0x"))
+    {
+        QFileInfo fileInfo(m_gameFile->GetFilename());
+        //HACK: Does this count as a hack?
+        if (fileInfo.fileName().isEmpty())
+            fileInfo.setFile(QDir(), "Untitled");
+
+        this->setWindowTitle(QString(tr("WiiKing2 Editor (%1%2) - Game %3 0x"))
+                             .arg(fileInfo.fileName())
+                             .arg((m_gameFile->IsModified() ? "*" : ""))
                              .arg(m_gameFile->GetGame() + 1)
                              .append(QString("").sprintf("%08X", m_gameFile->GetChecksum())));
+    }
 }
 
 void MainWindow::ClearInfo()

@@ -51,11 +51,11 @@ GameFile* NewGameDialog::gameFile(GameFile* gameFile)
         gameFile = new GameFile();
 
     if (m_ui->ntscURadioBtn->isChecked())
-        gameFile->SetRegion     (GameFile::NTSCU);
+        gameFile->SetRegion     (GameFile::Region_NTSCU);
     else if (m_ui->ntscJRadioBtn->isChecked())
-        gameFile->SetRegion     (GameFile::NTSCJ);
+        gameFile->SetRegion     (GameFile::Region_NTSCJ);
     else if (m_ui->palRadioBtn->isChecked())
-        gameFile->SetRegion     (GameFile::PAL);
+        gameFile->SetRegion     (GameFile::Region_PAL);
 
     gameFile->CreateNewGame(m_game); // Create a new Game with defaults.
 
