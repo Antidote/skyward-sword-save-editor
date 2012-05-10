@@ -1201,7 +1201,7 @@
             </widget>
            </item>
            <item row="0" column="3">
-            <widget class="QCheckBox" name="goddessLongSwdChkBox">
+            <widget class="QCheckBox" name="longSwdChkBox">
              <property name="text">
               <string/>
              </property>
@@ -1218,7 +1218,7 @@
             </widget>
            </item>
            <item row="1" column="1">
-            <widget class="QCheckBox" name="goddessWhiteSwdChkBox">
+            <widget class="QCheckBox" name="whiteSwdChkBox">
              <property name="icon">
               <iconset resource="../resources/resources.qrc">
                <normaloff>:/swords/GoddessWhiteSword</normaloff>:/swords/GoddessWhiteSword</iconset>
@@ -1232,7 +1232,7 @@
             </widget>
            </item>
            <item row="0" column="1">
-            <widget class="QCheckBox" name="trainingSwdChkBox">
+            <widget class="QCheckBox" name="practiceSwdChkBox">
              <property name="text">
               <string/>
              </property>

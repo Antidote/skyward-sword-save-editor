@@ -57,6 +57,7 @@
         <file alias="Reload">icons/refresh.png</file>
         <file alias="Open">icons/folder.png</file>
         <file alias="Save">icons/save.png</file>
+        <file alias="Bomb256x256">Bomb256x256.png</file>
     </qresource>
     <qresource prefix="/css">
         <file alias="WindowStyleUnix">styleUnix.css</file>
