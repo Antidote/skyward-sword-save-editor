@@ -57,10 +57,13 @@ private slots:
     void onReload();
     void onClose();
     void onFileInfo();
-    void onCheck(); // Checks for changes to file and prompts for an update.
+    //void onCheck(); // Checks for changes to file and prompts for an update.
 
 private:
-    bool event(QEvent *);
+    void dragEnterEvent(QDragEnterEvent *event);
+    void dragLeaveEvent(QDragLeaveEvent *event);
+    void dropEvent(QDropEvent *event);
+    //bool event(QEvent *);
     QTimer* m_checkTimer;
     void SetRegion(GameFile::Region);
     void ToggleEnabled(bool visible);
