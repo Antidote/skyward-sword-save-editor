@@ -33,6 +33,16 @@ struct PlayTime
     quint64 RawTicks;
 };
 
+struct Vector3
+{
+    float X;
+    float Y;
+    float Z;
+
+    Vector3(float x, float y, float z) : X(x), Y(y), Z(z)
+    {}
+};
+
 class GameFile
 {
 public:
@@ -58,11 +68,17 @@ public:
     enum Bug
     {
         HornetBug,
-        GrasshopperBug,
-        LadybugBug, // o.o that looks weird
         ButterflyBug,
+        DragonflyBug,
+        FireflyBug,
+        RhinoBeetleBug,
+        LadybugBug, // o.o that looks weird
+        SandCicadaBug,
+        StagBeetleBug,
+        GrasshopperBug,
         MantisBug,
-        BeetleBug
+        AntBug,
+        RollerBug
     };
 
     enum WeaponEquipment
@@ -136,30 +152,18 @@ public:
     void  SetPlayTime(PlayTime val);
     QDateTime GetSaveTime() const;
     void  SetSaveTime(QDateTime val);
-    float GetPlayerX() const;
-    void  SetPlayerX(float val);
-    float GetPlayerY() const;
-    void  SetPlayerY(float val);
-    float GetPlayerZ() const;
-    void  SetPlayerZ(float val);
-    float GetPlayerRoll() const;
-    void  SetPlayerRoll(float val);
-    float GetPlayerPitch() const;
-    void  SetPlayerPitch(float val);
-    float GetPlayerYaw() const;
-    void  SetPlayerYaw(float val);
-    float GetCameraX() const;
-    void  SetCameraX(float val);
-    float GetCameraY() const;
-    void  SetCameraY(float val);
-    float GetCameraZ() const;
-    void  SetCameraZ(float val);
-    float GetCameraRoll() const;
-    void  SetCameraRoll(float val);
-    float GetCameraPitch() const;
-    void  SetCameraPitch(float val);
-    float GetCameraYaw() const;
-    void  SetCameraYaw(float val);
+    Vector3 GetPlayerPosition() const;
+    void    SetPlayerPosition(float x, float y, float z);
+    void    SetPlayerPosition(Vector3 pos);
+    Vector3 GetPlayerRotation() const;
+    void    SetPlayerRotation(float roll, float pitch, float yaw);
+    void    SetPlayerRotation(Vector3 rotation);
+    Vector3 GetCameraPosition() const;
+    void    SetCameraPosition(float x, float y, float z);
+    void    SetCameraPosition(Vector3 position);
+    Vector3 GetCameraRotation() const;
+    void    SetCameraRotation(float roll, float pitch, float yaw);
+    void    SetCameraRotation(Vector3 rotation);
     QString GetPlayerName() const;
     void SetPlayerName(const QString& name);
     bool IsHeroMode() const;
@@ -193,6 +197,7 @@ public:
     bool IsNew() const;
     void SetNew(bool val);
 
+    static bool IsValidFile(const QString& filepath, Region* region);
 private:
     QString ReadNullTermString(int offset) const;
     void WriteNullTermString(const QString& val, int offset);

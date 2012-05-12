@@ -21,6 +21,8 @@
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QApplication>
+#include <QDropEvent>
+#include <QUrl>
 #include <QDebug>
 
 #include "gamefile.h"
@@ -65,6 +67,46 @@ MainWindow::~MainWindow()
     }
 }
 
+void MainWindow::dragEnterEvent(QDragEnterEvent *event)
+{
+    GameFile::Region region;
+    if (event->mimeData()->urls().count() == 1 && GameFile::IsValidFile(event->mimeData()->urls()[0].toLocalFile(), &region))
+    {
+        event->acceptProposedAction();
+        statusBar()->showMessage(QString("File Valid (%1)").arg((region == GameFile::NTSCURegion ? "NTSC-U" : region == GameFile::NTSCJRegion ? "NTSC-J" : "PAL")));
+    }
+}
+
+void MainWindow::dragLeaveEvent(QDragLeaveEvent *event)
+{
+    Q_UNUSED(event)
+
+    statusBar()->clearMessage();
+}
+
+void MainWindow::dropEvent(QDropEvent* event)
+{
+    const QMimeData* mimeData = event->mimeData();
+
+    // check for our needed mime type, here a file or a list of files
+    if (mimeData->hasUrls())
+    {
+        if (!m_gameFile)
+            m_gameFile = new GameFile();
+
+        if (m_curGame == GameFile::GameNone)
+            m_curGame = GameFile::Game1;
+
+
+        if (m_gameFile->Open(m_curGame, mimeData->urls()[0].toLocalFile()))
+        {
+            UpdateInfo();
+            UpdateTitle();
+        }
+    }
+    statusBar()->clearMessage();
+}
+/*
 bool MainWindow::event(QEvent *event)
 {
     if (event->type() == QEvent::Enter)
@@ -88,7 +130,7 @@ void MainWindow::onCheck()
     }
     //m_checkTimer->start(UPDATE_DELAY);
 }
-
+*/
 void MainWindow::SetupActions()
 {
     // File -> Open
@@ -176,6 +218,7 @@ void MainWindow::SetupConnections()
     connect(m_ui->bowChkBox,          SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
     connect(m_ui->ironBowChkBox,      SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
     connect(m_ui->sacredBowChkBox,    SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->harpChkBox,         SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
     // Bugs
     connect(m_ui->grassHopperChkBox,  SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
     connect(m_ui->rhinoBeetleChkBox,  SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
@@ -234,18 +277,10 @@ void MainWindow::onValueChanged()
     playTime.Seconds = m_ui->playSecondsSpinBox->value();
     playTime.RawTicks = (((playTime.Hours * 60) * 60) + (playTime.Minutes * 60) + playTime.Seconds) * TICKS_PER_SECOND;
     m_gameFile->SetPlayTime(playTime);
-    m_gameFile->SetPlayerX((float)m_ui->playerXSpinBox->value());
-    m_gameFile->SetPlayerY((float)m_ui->playerYSpinBox->value());
-    m_gameFile->SetPlayerZ((float)m_ui->playerZSpinBox->value());
-    m_gameFile->SetPlayerRoll((float)m_ui->playerRollSpinBox->value());
-    m_gameFile->SetPlayerPitch((float)m_ui->playerPitchSpinBox->value());
-    m_gameFile->SetPlayerYaw((float)m_ui->playerYawSpinBox->value());
-    m_gameFile->SetCameraX((float)m_ui->cameraXSpinBox->value());
-    m_gameFile->SetCameraY((float)m_ui->cameraYSpinBox->value());
-    m_gameFile->SetCameraZ((float)m_ui->cameraZSpinBox->value());
-    m_gameFile->SetCameraRoll((float)m_ui->cameraRollSpinBox->value());
-    m_gameFile->SetCameraPitch((float)m_ui->cameraPitchSpinBox->value());
-    m_gameFile->SetCameraYaw((float)m_ui->cameraYawSpinBox->value());
+    m_gameFile->SetPlayerPosition((float)m_ui->playerXSpinBox->value(),    (float)m_ui->playerYSpinBox->value(),     (float)m_ui->playerZSpinBox->value());
+    m_gameFile->SetPlayerRotation((float)m_ui->playerRollSpinBox->value(), (float)m_ui->playerPitchSpinBox->value(), (float)m_ui->playerYawSpinBox->value() );
+    m_gameFile->SetCameraPosition((float)m_ui->cameraXSpinBox->value(),    (float)m_ui->cameraYSpinBox->value(),     (float)m_ui->cameraZSpinBox->value());
+    m_gameFile->SetCameraRotation((float)m_ui->cameraRollSpinBox->value(), (float)m_ui->cameraPitchSpinBox->value(), (float)m_ui->cameraYawSpinBox->value());
     m_gameFile->SetHeroMode(m_ui->heroModeChkBox->isChecked());
     m_gameFile->SetIntroViewed(m_ui->introViewedChkBox->isChecked());
     m_gameFile->SetTotalHP((short)m_ui->totalHPSpinBox->value());
@@ -276,9 +311,10 @@ void MainWindow::onValueChanged()
     m_gameFile->SetEquipment(GameFile::BowWeapon, m_ui->bowChkBox->isChecked());
     m_gameFile->SetEquipment(GameFile::IronBowWeapon, m_ui->ironBowChkBox->isChecked());
     m_gameFile->SetEquipment(GameFile::SacredBowWeapon, m_ui->sacredBowChkBox->isChecked());
+    m_gameFile->SetEquipment(GameFile::HarpEquipment, m_ui->harpChkBox->isChecked());
     // Bugs
     m_gameFile->SetBug(GameFile::GrasshopperBug, m_ui->grassHopperChkBox->isChecked());
-    m_gameFile->SetBug(GameFile::BeetleBug, m_ui->rhinoBeetleChkBox->isChecked());
+    m_gameFile->SetBug(GameFile::RhinoBeetleBug, m_ui->rhinoBeetleChkBox->isChecked());
     m_gameFile->SetBug(GameFile::MantisBug, m_ui->mantisChkBox->isChecked());
     m_gameFile->SetBug(GameFile::LadybugBug, m_ui->ladybugChkBox->isChecked());
     m_gameFile->SetBug(GameFile::ButterflyBug, m_ui->butterflyChkBox->isChecked());
@@ -486,7 +522,6 @@ void MainWindow::UpdateInfo()
             connect(m_ui->createDeleteGameBtn, SIGNAL(clicked()), this, SLOT(onCreateNewGame()));
 
         m_ui->tabWidget->setEnabled(false);
-        //return; // No need to change all of this ;D
     }
 
     m_isUpdating = true;
@@ -500,18 +535,18 @@ void MainWindow::UpdateInfo()
     m_ui->playMinutesSpinBox ->setValue(m_gameFile->GetPlayTime().Minutes);
     m_ui->playSecondsSpinBox ->setValue(m_gameFile->GetPlayTime().Seconds);
     m_ui->saveTimeEdit       ->setDateTime(m_gameFile->GetSaveTime());
-    m_ui->playerXSpinBox     ->setValue(m_gameFile->GetPlayerX());
-    m_ui->playerYSpinBox     ->setValue(m_gameFile->GetPlayerY());
-    m_ui->playerZSpinBox     ->setValue(m_gameFile->GetPlayerZ());
-    m_ui->playerRollSpinBox  ->setValue(m_gameFile->GetPlayerRoll());
-    m_ui->playerPitchSpinBox ->setValue(m_gameFile->GetPlayerPitch());
-    m_ui->playerYawSpinBox   ->setValue(m_gameFile->GetPlayerYaw());
-    m_ui->cameraXSpinBox     ->setValue(m_gameFile->GetCameraX());
-    m_ui->cameraYSpinBox     ->setValue(m_gameFile->GetCameraY());
-    m_ui->cameraZSpinBox     ->setValue(m_gameFile->GetCameraZ());
-    m_ui->cameraRollSpinBox  ->setValue(m_gameFile->GetCameraRoll());
-    m_ui->cameraPitchSpinBox ->setValue(m_gameFile->GetCameraPitch());
-    m_ui->cameraYawSpinBox   ->setValue(m_gameFile->GetCameraYaw());
+    m_ui->playerXSpinBox     ->setValue(m_gameFile->GetPlayerPosition().X);
+    m_ui->playerYSpinBox     ->setValue(m_gameFile->GetPlayerPosition().Y);
+    m_ui->playerZSpinBox     ->setValue(m_gameFile->GetPlayerPosition().Z);
+    m_ui->playerRollSpinBox  ->setValue(m_gameFile->GetPlayerRotation().X);
+    m_ui->playerPitchSpinBox ->setValue(m_gameFile->GetPlayerRotation().Y);
+    m_ui->playerYawSpinBox   ->setValue(m_gameFile->GetPlayerRotation().Z);
+    m_ui->cameraXSpinBox     ->setValue(m_gameFile->GetCameraPosition().X);
+    m_ui->cameraYSpinBox     ->setValue(m_gameFile->GetCameraPosition().Y);
+    m_ui->cameraZSpinBox     ->setValue(m_gameFile->GetCameraPosition().Z);
+    m_ui->cameraRollSpinBox  ->setValue(m_gameFile->GetCameraRotation().X);
+    m_ui->cameraPitchSpinBox ->setValue(m_gameFile->GetCameraRotation().Y);
+    m_ui->cameraYawSpinBox   ->setValue(m_gameFile->GetCameraRotation().Z);
     m_ui->roomIDSpinBox      ->setValue(m_gameFile->GetRoomID());
     m_ui->curMapLineEdit     ->setText(m_gameFile->GetCurrentMap());
     m_ui->curAreaLineEdit    ->setText(m_gameFile->GetCurrentArea());
@@ -544,7 +579,7 @@ void MainWindow::UpdateInfo()
     m_ui->harpChkBox         ->setChecked(m_gameFile->GetEquipment(GameFile::HarpEquipment));
     // Bugs
     m_ui->grassHopperChkBox  ->setChecked(m_gameFile->GetBug   (GameFile::GrasshopperBug));
-    m_ui->rhinoBeetleChkBox  ->setChecked(m_gameFile->GetBug   (GameFile::BeetleBug));
+    m_ui->rhinoBeetleChkBox  ->setChecked(m_gameFile->GetBug   (GameFile::RhinoBeetleBug));
     m_ui->mantisChkBox       ->setChecked(m_gameFile->GetBug   (GameFile::MantisBug));
     m_ui->ladybugChkBox      ->setChecked(m_gameFile->GetBug   (GameFile::LadybugBug));
     m_ui->butterflyChkBox    ->setChecked(m_gameFile->GetBug   (GameFile::ButterflyBug));

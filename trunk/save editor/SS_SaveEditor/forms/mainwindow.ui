@@ -31,6 +31,9 @@
   <property name="windowTitle">
    <string>WiiKing2 Editor</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
   <property name="iconSize">
    <size>
     <width>6</width>
@@ -82,7 +85,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="playerTab">
        <attribute name="title">
@@ -786,12 +789,6 @@
         <string>Equipment</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_9">
-        <property name="margin">
-         <number>4</number>
-        </property>
-        <property name="spacing">
-         <number>4</number>
-        </property>
         <item row="0" column="0" rowspan="3">
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <item>
@@ -811,6 +808,12 @@
              </property>
              <item row="0" column="0">
               <widget class="QCheckBox" name="beetleChkBox">
+               <property name="toolTip">
+                <string>Beetle</string>
+               </property>
+               <property name="statusTip">
+                <string>Beetle</string>
+               </property>
                <property name="text">
                 <string/>
                </property>
@@ -828,6 +831,12 @@
              </item>
              <item row="0" column="1">
               <widget class="QCheckBox" name="hookBeetleChkBox">
+               <property name="toolTip">
+                <string>Hook Beetle</string>
+               </property>
+               <property name="statusTip">
+                <string>Hook Beetle</string>
+               </property>
                <property name="text">
                 <string/>
                </property>
@@ -845,6 +854,12 @@
              </item>
              <item row="1" column="0">
               <widget class="QCheckBox" name="quickBeetleChkBox">
+               <property name="toolTip">
+                <string>Quick Beetle</string>
+               </property>
+               <property name="statusTip">
+                <string>Quick Beetle</string>
+               </property>
                <property name="text">
                 <string/>
                </property>
@@ -862,6 +877,12 @@
              </item>
              <item row="1" column="1">
               <widget class="QCheckBox" name="toughBeetleChkBox">
+               <property name="toolTip">
+                <string>Tough Beetle</string>
+               </property>
+               <property name="statusTip">
+                <string>Tough Beetle</string>
+               </property>
                <property name="text">
                 <string/>
                </property>
@@ -965,6 +986,12 @@
            </property>
            <item row="0" column="0">
             <widget class="QCheckBox" name="bugNetChkBox">
+             <property name="toolTip">
+              <string>Bug Net</string>
+             </property>
+             <property name="statusTip">
+              <string>Bug Net</string>
+             </property>
              <property name="text">
               <string/>
              </property>
@@ -982,6 +1009,12 @@
            </item>
            <item row="0" column="1">
             <widget class="QCheckBox" name="bigBugNetChkBox">
+             <property name="toolTip">
+              <string>Big Bug Net</string>
+             </property>
+             <property name="statusTip">
+              <string>Big Bug Net</string>
+             </property>
              <property name="text">
               <string/>
              </property>
@@ -1014,6 +1047,12 @@
            </property>
            <item row="0" column="0">
             <widget class="QCheckBox" name="slingShotChkBox">
+             <property name="toolTip">
+              <string>Slingshot</string>
+             </property>
+             <property name="statusTip">
+              <string>Slingshot</string>
+             </property>
              <property name="text">
               <string/>
              </property>
@@ -1031,12 +1070,67 @@
            </item>
            <item row="0" column="1">
             <widget class="QCheckBox" name="scatterShotChkBox">
+             <property name="toolTip">
+              <string>Scattershot</string>
+             </property>
+             <property name="statusTip">
+              <string>Scattershot</string>
+             </property>
              <property name="text">
               <string/>
              </property>
              <property name="icon">
               <iconset resource="../resources/resources.qrc">
                <normaloff>:/weapons/SlingShot</normaloff>:/weapons/SlingShot</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>64</width>
+               <height>64</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="0" column="3" rowspan="2">
+         <widget class="QGroupBox" name="groupBox_5">
+          <property name="title">
+           <string>GroupBox</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_15">
+           <item row="0" column="0">
+            <widget class="QCheckBox" name="fireShieldEaringsChkBox">
+             <property name="toolTip">
+              <string>Fire Shield Earrings</string>
+             </property>
+             <property name="statusTip">
+              <string>Fire Shield Earrings</string>
+             </property>
+             <property name="icon">
+              <iconset resource="../resources/resources.qrc">
+               <normaloff>:/equipment/FireShieldEarings</normaloff>:/equipment/FireShieldEarings</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>64</width>
+               <height>64</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QCheckBox" name="dragonScaleChkBox">
+             <property name="toolTip">
+              <string>Water Dragon Scale</string>
+             </property>
+             <property name="statusTip">
+              <string>Water Dragon Scale</string>
+             </property>
+             <property name="icon">
+              <iconset resource="../resources/resources.qrc">
+               <normaloff>:/equipment/WaterDragonScale</normaloff>:/equipment/WaterDragonScale</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -1063,6 +1157,12 @@
            </property>
            <item row="0" column="1">
             <widget class="QCheckBox" name="harpChkBox">
+             <property name="toolTip">
+              <string>Goddess Harp</string>
+             </property>
+             <property name="statusTip">
+              <string>Goddess Harp</string>
+             </property>
              <property name="text">
               <string/>
              </property>
@@ -1080,6 +1180,12 @@
            </item>
            <item row="6" column="0">
             <widget class="QCheckBox" name="whipChkBox">
+             <property name="toolTip">
+              <string>Whip</string>
+             </property>
+             <property name="statusTip">
+              <string>Whip</string>
+             </property>
              <property name="text">
               <string/>
              </property>
@@ -1097,6 +1203,12 @@
            </item>
            <item row="1" column="0">
             <widget class="QCheckBox" name="gustBellowsChkBox">
+             <property name="toolTip">
+              <string>Gust Bellows</string>
+             </property>
+             <property name="statusTip">
+              <string>Gust Bellows</string>
+             </property>
              <property name="text">
               <string/>
              </property>
@@ -1114,6 +1226,12 @@
            </item>
            <item row="1" column="1">
             <widget class="QCheckBox" name="clawShotChkBox">
+             <property name="toolTip">
+              <string>Clawshot</string>
+             </property>
+             <property name="statusTip">
+              <string>Clawshot</string>
+             </property>
              <property name="text">
               <string/>
              </property>
@@ -1131,6 +1249,12 @@
            </item>
            <item row="7" column="0">
             <widget class="QCheckBox" name="diggingMittsChkBox">
+             <property name="toolTip">
+              <string>Digging Mitts</string>
+             </property>
+             <property name="statusTip">
+              <string>Digging Mitts</string>
+             </property>
              <property name="icon">
               <iconset resource="../resources/resources.qrc">
                <normaloff>:/equipment/DiggingMitts</normaloff>:/equipment/DiggingMitts</iconset>
@@ -1145,6 +1269,12 @@
            </item>
            <item row="6" column="1">
             <widget class="QCheckBox" name="sailClothChkBox">
+             <property name="toolTip">
+              <string>Sail Cloth</string>
+             </property>
+             <property name="statusTip">
+              <string>Sail Cloth</string>
+             </property>
              <property name="icon">
               <iconset resource="../resources/resources.qrc">
                <normaloff>:/equipment/SailCloth</normaloff>:/equipment/SailCloth</iconset>
@@ -1159,6 +1289,12 @@
            </item>
            <item row="7" column="1">
             <widget class="QCheckBox" name="moleMittsChkBox">
+             <property name="toolTip">
+              <string>Mole Mitts</string>
+             </property>
+             <property name="statusTip">
+              <string>Mole Mitts</string>
+             </property>
              <property name="icon">
               <iconset resource="../resources/resources.qrc">
                <normaloff>:/equipment/MoleMitts</normaloff>:/equipment/MoleMitts</iconset>
@@ -1173,6 +1309,12 @@
            </item>
            <item row="0" column="0">
             <widget class="QCheckBox" name="bombChkBox">
+             <property name="toolTip">
+              <string>Bombs</string>
+             </property>
+             <property name="statusTip">
+              <string>Bombs</string>
+             </property>
              <property name="text">
               <string/>
              </property>
@@ -1191,7 +1333,7 @@
           </layout>
          </widget>
         </item>
-        <item row="1" column="2">
+        <item row="1" column="2" rowspan="2">
          <widget class="QGroupBox" name="swdGroupBox">
           <property name="title">
            <string>Swords</string>
@@ -1205,6 +1347,12 @@
            </property>
            <item row="0" column="2">
             <widget class="QCheckBox" name="goddessSwdChkBox">
+             <property name="toolTip">
+              <string>Goddess Sword</string>
+             </property>
+             <property name="statusTip">
+              <string>Goddess Sword</string>
+             </property>
              <property name="text">
               <string/>
              </property>
@@ -1222,6 +1370,12 @@
            </item>
            <item row="1" column="2">
             <widget class="QCheckBox" name="masterSwdChkBox">
+             <property name="toolTip">
+              <string>Master Sword</string>
+             </property>
+             <property name="statusTip">
+              <string>Master Sword</string>
+             </property>
              <property name="text">
               <string/>
              </property>
@@ -1239,6 +1393,12 @@
            </item>
            <item row="1" column="3">
             <widget class="QCheckBox" name="trueMasterSwdChkBox">
+             <property name="toolTip">
+              <string>True Master Sword</string>
+             </property>
+             <property name="statusTip">
+              <string>True Master Sword</string>
+             </property>
              <property name="icon">
               <iconset resource="../resources/resources.qrc">
                <normaloff>:/swords/TrueMasterSword</normaloff>:/swords/TrueMasterSword</iconset>
@@ -1253,6 +1413,12 @@
            </item>
            <item row="0" column="3">
             <widget class="QCheckBox" name="longSwdChkBox">
+             <property name="toolTip">
+              <string>Goddess Long Sword</string>
+             </property>
+             <property name="statusTip">
+              <string>Goddess Long Sword</string>
+             </property>
              <property name="text">
               <string/>
              </property>
@@ -1270,6 +1436,12 @@
            </item>
            <item row="1" column="1">
             <widget class="QCheckBox" name="whiteSwdChkBox">
+             <property name="toolTip">
+              <string>Goddess White Sword</string>
+             </property>
+             <property name="statusTip">
+              <string>Goddess White Sword</string>
+             </property>
              <property name="icon">
               <iconset resource="../resources/resources.qrc">
                <normaloff>:/swords/GoddessWhiteSword</normaloff>:/swords/GoddessWhiteSword</iconset>
@@ -1284,6 +1456,12 @@
            </item>
            <item row="0" column="1">
             <widget class="QCheckBox" name="practiceSwdChkBox">
+             <property name="toolTip">
+              <string>Practice Sword</string>
+             </property>
+             <property name="statusTip">
+              <string>Practice Sword</string>
+             </property>
              <property name="text">
               <string/>
              </property>
@@ -1302,48 +1480,11 @@
           </layout>
          </widget>
         </item>
-        <item row="0" column="3" rowspan="2">
-         <widget class="QGroupBox" name="groupBox_5">
+        <item row="2" column="3">
+         <widget class="QGroupBox" name="groupBox_6">
           <property name="title">
            <string>GroupBox</string>
           </property>
-          <layout class="QGridLayout" name="gridLayout_15">
-           <item row="0" column="0">
-            <widget class="QCheckBox" name="fireShieldEaringsChkBox">
-             <property name="icon">
-              <iconset resource="../resources/resources.qrc">
-               <normaloff>:/equipment/FireShieldEarings</normaloff>:/equipment/FireShieldEarings</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>64</width>
-               <height>64</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QCheckBox" name="dragonScaleChkBox">
-             <property name="icon">
-              <iconset resource="../resources/resources.qrc">
-               <normaloff>:/equipment/WaterDragonScale</normaloff>:/equipment/WaterDragonScale</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>64</width>
-               <height>64</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
-            <widget class="QCheckBox" name="checkBox_8">
-             <property name="text">
-              <string>CheckBox</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
          </widget>
         </item>
        </layout>
@@ -1553,7 +1694,7 @@
           <x>370</x>
           <y>10</y>
           <width>331</width>
-          <height>251</height>
+          <height>271</height>
          </rect>
         </property>
         <property name="title">
@@ -1905,7 +2046,7 @@
      <x>0</x>
      <y>0</y>
      <width>730</width>
-     <height>21</height>
+     <height>18</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -1943,6 +2084,9 @@
    <addaction name="menu_Help"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
+   <property name="acceptDrops">
+    <bool>true</bool>
+   </property>
    <property name="movable">
     <bool>false</bool>
    </property>

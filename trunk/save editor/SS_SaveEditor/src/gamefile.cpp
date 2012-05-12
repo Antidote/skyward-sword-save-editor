@@ -91,8 +91,8 @@ bool GameFile::Open(Game game, const QString& filepath)
         file.read((char*)m_data, 0xFBE0);
         m_fileChecksum = m_crcEngine->GetCRC32((unsigned const char*)m_data, 0, 0xFBE0);
         file.close();
-
-        return m_isOpen = true;
+        m_isOpen = true;
+        return true;
     }
 
     return false;
@@ -134,21 +134,13 @@ void GameFile::CreateNewGame(GameFile::Game game)
     }
 
     this->m_game = game;
-    this->SetCurrentArea("F000");
-    this->SetCurrentRoom("F000");
-    this->SetCurrentMap ("F000");
-    this->SetCameraX    (DEFAULT_POS_X);
-    this->SetCameraY    (DEFAULT_POS_Y);
-    this->SetCameraZ    (DEFAULT_POS_Z);
-    this->SetCameraPitch(0.0f);
-    this->SetCameraRoll (0.0f);
-    this->SetCameraYaw  (0.0f);
-    this->SetPlayerX    (DEFAULT_POS_X);
-    this->SetPlayerY    (DEFAULT_POS_Y);
-    this->SetPlayerZ    (DEFAULT_POS_Z);
-    this->SetPlayerPitch(0.0f);
-    this->SetPlayerRoll (0.0f);
-    this->SetPlayerYaw  (0.0f);
+    this->SetCurrentArea   ("F000");
+    this->SetCurrentRoom   ("F000");
+    this->SetCurrentMap    ("F000");
+    this->SetPlayerPosition(DEFAULT_POS_X, DEFAULT_POS_Y, DEFAULT_POS_Z);
+    this->SetPlayerRotation(0.0f, 0.0f, 0.0f);
+    this->SetCameraPosition(DEFAULT_POS_X, DEFAULT_POS_Y, DEFAULT_POS_Z);
+    this->SetCameraRotation(0.0f, 0.0f, 0.0f);
 }
 
 void GameFile::DeleteGame(Game game)
@@ -304,175 +296,99 @@ void GameFile::SetSaveTime(QDateTime val)
 */
 }
 
-float GameFile::GetPlayerX() const
+Vector3 GameFile::GetPlayerPosition() const
 {
     if (!m_data)
-        return 0;
-    return swapFloat(*(float*)(m_data + GetGameOffset() + 0x0010));
+        return Vector3(0.0f, 0.0f, 0.0f);
+
+    return Vector3(swapFloat(*(float*)(m_data + GetGameOffset() + 0x0010)),
+                   swapFloat(*(float*)(m_data + GetGameOffset() + 0x0014)),
+                   swapFloat(*(float*)(m_data + GetGameOffset() + 0x0018)));
 }
 
-void GameFile::SetPlayerX(float val)
+void GameFile::SetPlayerPosition(float x, float y, float z)
 {
-    if (!m_data)
-        return;
-    *(float*)(m_data + GetGameOffset() + 0x0010) = swapFloat(val);
+    SetPlayerPosition(Vector3(x, y, z));
 }
 
-float GameFile::GetPlayerY() const
-{
-    if (!m_data)
-        return 0;
-    return swapFloat(*(float*)(m_data + GetGameOffset() + 0x0014));
-}
-
-void GameFile::SetPlayerY(float val)
+void GameFile::SetPlayerPosition(Vector3 pos)
 {
     if (!m_data)
         return;
-    *(float*)(m_data + GetGameOffset() + 0x0014) = swapFloat(val);
+    *(float*)(m_data + GetGameOffset() + 0x0010) = swapFloat(pos.X);
+    *(float*)(m_data + GetGameOffset() + 0x0014) = swapFloat(pos.Y);
+    *(float*)(m_data + GetGameOffset() + 0x0018) = swapFloat(pos.Z);
 }
 
-float GameFile::GetPlayerZ() const
+Vector3 GameFile::GetPlayerRotation() const
 {
     if (!m_data)
-        return 0;
-    return swapFloat(*(float*)(m_data + GetGameOffset() + 0x0018));
+        return Vector3(0, 0, 0);
+    return Vector3(swapFloat(*(float*)(m_data + GetGameOffset() + 0x001C)),
+                   swapFloat(*(float*)(m_data + GetGameOffset() + 0x0020)),
+                   swapFloat(*(float*)(m_data + GetGameOffset() + 0x0024)));
 }
 
-void GameFile::SetPlayerZ(float val)
+void GameFile::SetPlayerRotation(float roll, float pitch, float yaw)
 {
-    if (!m_data)
-        return;
-    *(float*)(m_data + GetGameOffset() + 0x0018) = swapFloat(val);
+    SetPlayerRotation(Vector3(roll, pitch, yaw));
 }
 
-float GameFile::GetPlayerRoll() const
-{
-    if (!m_data)
-        return 0;
-    return swapFloat(*(float*)(m_data + GetGameOffset() + 0x001C));
-}
-
-void GameFile::SetPlayerRoll(float val)
+void GameFile::SetPlayerRotation(Vector3 rotation)
 {
     if (!m_data)
         return;
-    *(float*)(m_data + GetGameOffset() + 0x001C) = swapFloat(val);
+    *(float*)(m_data + GetGameOffset() + 0x001C) = swapFloat(rotation.X);
+    *(float*)(m_data + GetGameOffset() + 0x0020) = swapFloat(rotation.Y);
+    *(float*)(m_data + GetGameOffset() + 0x0024) = swapFloat(rotation.Z);
 }
 
-float GameFile::GetPlayerPitch() const
+Vector3 GameFile::GetCameraPosition() const
 {
     if (!m_data)
-        return 0;
-    return swapFloat(*(float*)(m_data + GetGameOffset() + 0x0020));
+        return Vector3(0.0f, 0.0f, 0.0f);
+    return Vector3(swapFloat(*(float*)(m_data + GetGameOffset() + 0x0028)),
+                   swapFloat(*(float*)(m_data + GetGameOffset() + 0x002C)),
+                   swapFloat(*(float*)(m_data + GetGameOffset() + 0x0030)));
 }
 
-void GameFile::SetPlayerPitch(float val)
+void GameFile::SetCameraPosition(float x, float y, float z)
 {
-    if (!m_data)
-        return;
-    *(float*)(m_data + GetGameOffset() + 0x0020) = swapFloat(val);
+    SetCameraPosition(Vector3(x, y, z));
 }
 
-float GameFile::GetPlayerYaw() const
-{
-    if (!m_data)
-        return 0;
-    return swapFloat(*(float*)(m_data + GetGameOffset() + 0x0024));
-}
-
-void GameFile::SetPlayerYaw(float val)
+void GameFile::SetCameraPosition(Vector3 pos)
 {
     if (!m_data)
         return;
-    *(float*)(m_data + GetGameOffset() + 0x0024) = swapFloat(val);
+    *(float*)(m_data + GetGameOffset() + 0x0028) = swapFloat(pos.X);
+    *(float*)(m_data + GetGameOffset() + 0x002C) = swapFloat(pos.Y);
+    *(float*)(m_data + GetGameOffset() + 0x0030) = swapFloat(pos.Z);
 }
 
-float GameFile::GetCameraX() const
+Vector3 GameFile::GetCameraRotation() const
 {
     if (!m_data)
-        return 0.f;
-    return swapFloat(*(float*)(m_data + GetGameOffset() + 0x0028));
+        return Vector3(0.0f, 0.0f, 0.0f);
+    return Vector3(swapFloat(*(float*)(m_data + GetGameOffset() + 0x0034)),
+                   swapFloat(*(float*)(m_data + GetGameOffset() + 0x0038)),
+                   swapFloat(*(float*)(m_data + GetGameOffset() + 0x003C)));
 }
 
-void GameFile::SetCameraX(float val)
+void GameFile::SetCameraRotation(float roll, float pitch, float yaw)
 {
-    if (!m_data)
-        return;
-    *(float*)(m_data + GetGameOffset() + 0x0028) = swapFloat(val);
+    SetCameraRotation(Vector3(roll, pitch, yaw));
 }
 
-float GameFile::GetCameraY() const
-{
-    if (!m_data)
-        return 0.f;
-    return swapFloat(*(float*)(m_data + GetGameOffset() + 0x002C));
-}
-
-void GameFile::SetCameraY(float val)
-{
-    if (!m_data)
-        return;
-    *(float*)(m_data + GetGameOffset() + 0x002C) = swapFloat(val);
-}
-
-float GameFile::GetCameraZ() const
-{
-    if (!m_data)
-        return 0.f;
-    return swapFloat(*(float*)(m_data + GetGameOffset() + 0x0030));
-}
-
-void GameFile::SetCameraZ(float val)
-{
-    if (!m_data)
-        return;
-    *(float*)(m_data + GetGameOffset() + 0x0030) = swapFloat(val);
-}
-
-float GameFile::GetCameraRoll() const
-{
-    if (!m_data)
-        return 0.f;
-    return swapFloat(*(float*)(m_data + GetGameOffset() + 0x0034));
-}
-
-void GameFile::SetCameraRoll(float val)
-{
-    if (!m_data)
-        return;
-    *(float*)(m_data + GetGameOffset() + 0x0034) = swapFloat(val);
-}
-
-float GameFile::GetCameraPitch() const
-{
-    if (!m_data)
-        return 0.f;
-    return swapFloat(*(float*)(m_data + GetGameOffset() + 0x0038));
-}
-
-void GameFile::SetCameraPitch(float val)
-{
-    if (!m_data)
-        return;
-    *(float*)(m_data + GetGameOffset() + 0x0038) = swapFloat(val);
-}
-
-float GameFile::GetCameraYaw() const
-{
-    if (!m_data)
-        return 0.f;
-    return swapFloat(*(float*)(m_data + GetGameOffset() + 0x003C));
-}
-
-void GameFile::SetCameraYaw(float val)
+void GameFile::SetCameraRotation(Vector3 rotation)
 {
     if (!m_data)
         return;
 
-    *(float*)(m_data + GetGameOffset() + 0x003C) = swapFloat(val);
+    *(float*)(m_data + GetGameOffset() + 0x0034) = swapFloat(rotation.X);
+    *(float*)(m_data + GetGameOffset() + 0x0038) = swapFloat(rotation.Y);
+    *(float*)(m_data + GetGameOffset() + 0x003C) = swapFloat(rotation.Z);
 }
-
 
 QString GameFile::GetPlayerName() const
 {
@@ -578,6 +494,7 @@ void GameFile::SetSword(Sword sword, bool val)
         case LongSword:       SetFlag(0x09E4, 0x02, val); break;
         case WhiteSword:      SetFlag(0x09FB, 0x10, val); break;
         case MasterSword:     SetFlag(0x09E4, 0x04, val); break;
+        case TrueMasterSword: SetFlag(0x09FB, 0x80, val); break;
         default: return;
     }
 }
@@ -633,8 +550,8 @@ void GameFile::SetEquipment(WeaponEquipment weapon, bool val)
 
     switch(weapon)
     {
-        case SlingshotWeapon:   SetFlag(0x09E6, 0x01, val); break;
-        case ScattershotWeapon: SetFlag(0x09EC, 0x08, val); break;
+        case SlingshotWeapon:   SetFlag(0x09E6, 0x10, val); break;
+        case ScattershotWeapon: SetFlag(0x09EC, 0x80, val); break;
         case BugnetWeapon:      SetFlag(0x09E8, 0x01, val); break;
         case BigBugnetWeapon:   SetFlag(0x09F2, 0x02, val); break;
         case BeetleWeapon:      SetFlag(0x09E6, 0x20, val); break;
@@ -648,7 +565,7 @@ void GameFile::SetEquipment(WeaponEquipment weapon, bool val)
         case BowWeapon:         SetFlag(0x09E4, 0x10, val); break;
         case IronBowWeapon:     SetFlag(0x09ED, 0x01, val); break;
         case SacredBowWeapon:   SetFlag(0x09ED, 0x02, val); break;
-        case HarpEquipment:     SetFlag(0x09F5, 0x02, val); break;
+        case HarpEquipment:     SetFlag(0x09F4, 0x02, val); break;
         default: return;
     }
 }
@@ -660,16 +577,30 @@ bool GameFile::GetBug(Bug bug) const
 
     switch(bug)
     {
-        case GrasshopperBug:
-            return GetFlag(0x09F2, 0x04);
-        case BeetleBug:
-            return GetFlag(0x09F2, 0x08);
-        case MantisBug:
-            return GetFlag(0x09F2, 0x20);
-        case LadybugBug:
-            return GetFlag(0x09F2, 0x40);
+        case HornetBug:
+            return GetFlag(0x08F6, 0x08);
         case ButterflyBug:
             return GetFlag(0x09F2, 0x80);
+        case DragonflyBug:
+            return GetFlag(0x09F5, 0x04);
+        case FireflyBug:
+            return GetFlag(0x09F5, 0x20);
+        case RhinoBeetleBug:
+            return GetFlag(0x09F2, 0x08);
+        case LadybugBug:
+            return GetFlag(0x09F2, 0x40);
+        case SandCicadaBug:
+            return GetFlag(0x09F5, 0x02);
+        case StagBeetleBug:
+            return GetFlag(0x09F5, 0x10);
+        case GrasshopperBug:
+            return GetFlag(0x09F2, 0x04);
+        case MantisBug:
+            return GetFlag(0x09F2, 0x20);
+        case AntBug:
+            return GetFlag(0x09F5, 0x01);
+        case RollerBug:
+            return GetFlag(0x09F5, 0x08);
         default:
             return false;
     }
@@ -681,11 +612,18 @@ void GameFile::SetBug(Bug bug, bool val)
         return;
     switch(bug)
     {
-        case GrasshopperBug: SetFlag(0x09F2, 0x04, val); break;
-        case BeetleBug:      SetFlag(0x09F2, 0x08, val); break;
-        case MantisBug:      SetFlag(0x09F2, 0x20, val); break;
-        case LadybugBug:     SetFlag(0x09F2, 0x40, val); break;
+        case HornetBug:      SetFlag(0x08F6, 0x08, val); break;
         case ButterflyBug:   SetFlag(0x09F2, 0x80, val); break;
+        case DragonflyBug:   SetFlag(0x09F5, 0x04, val); break;
+        case FireflyBug:     SetFlag(0x09F5, 0x20, val); break;
+        case RhinoBeetleBug: SetFlag(0x09F2, 0x08, val); break;
+        case LadybugBug:     SetFlag(0x09F2, 0x40, val); break;
+        case SandCicadaBug:  SetFlag(0x09F5, 0x02, val); break;
+        case StagBeetleBug:  SetFlag(0x09F5, 0x10, val); break;
+        case GrasshopperBug: SetFlag(0x09F2, 0x04, val); break;
+        case MantisBug:      SetFlag(0x09F2, 0x20, val); break;
+        case AntBug:         SetFlag(0x09F5, 0x01, val); break;
+        case RollerBug:      SetFlag(0x09F5, 0x08, val); break;
         default: return;
     }
 }
@@ -871,4 +809,18 @@ void GameFile::SetFlag(quint32 offset, quint32 flag, bool val)
         *(char*)(m_data + GetGameOffset() + offset) |= flag;
     else
         *(char*)(m_data + GetGameOffset() + offset) &= ~flag;
+}
+
+bool GameFile::IsValidFile(const QString &filepath, Region* outRegion)
+{
+
+    FILE* file = fopen(filepath.toAscii(), "rb");
+    if (!file)
+        return false;
+
+    Region region;
+    fread(&region, 4, 1, file);
+    fclose(file);
+    *outRegion = region;
+    return (region == NTSCURegion || region == NTSCJRegion || region == PALRegion);
 }
