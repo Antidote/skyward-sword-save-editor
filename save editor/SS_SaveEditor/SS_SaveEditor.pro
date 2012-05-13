@@ -13,19 +13,20 @@ INCLUDEPATH += include
 SOURCES += \
     src/main.cpp\
     src/mainwindow.cpp \
-    src/gamefile.cpp \
     src/CRC32.cpp \
     src/newgamedialog.cpp \
     src/aboutdialog.cpp \
-    src/fileinfodialog.cpp
+    src/fileinfodialog.cpp \
+    src/skywardswordfile.cpp
 
 HEADERS  += \
     include/mainwindow.h \
-    include/gamefile.h \
+    include/igamefile.h \
     include/CRC32.h \
     include/newgamedialog.h \
     include/aboutdialog.h \
-    include/fileinfodialog.h
+    include/fileinfodialog.h \
+    include/skywardswordfile.h
 
 FORMS    += \
     forms/mainwindow.ui \

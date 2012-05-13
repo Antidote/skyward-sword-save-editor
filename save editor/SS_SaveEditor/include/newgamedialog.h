@@ -17,7 +17,8 @@
 #define NEWGAMEDIALOG_H
 
 #include <QDialog>
-#include "gamefile.h"
+#include "igamefile.h"
+#include "skywardswordfile.h"
 
 class QAbstractButton;
 
@@ -30,16 +31,16 @@ class NewGameDialog : public QDialog
     Q_OBJECT
     
 public:
-    explicit NewGameDialog(QWidget *parent = 0, GameFile::Game game = GameFile::Game1);
+    explicit NewGameDialog(QWidget *parent = 0, SkywardSwordFile::Game game = SkywardSwordFile::Game1);
     ~NewGameDialog();
 
-    GameFile* gameFile(GameFile* gameFile = NULL);
+    SkywardSwordFile* gameFile(SkywardSwordFile* gameFile = NULL);
 
 private slots:
     void onRegionChanged(QAbstractButton*);
 private:
     Ui::NewGameDialog* m_ui;
-    GameFile::Game     m_game;
+    SkywardSwordFile::Game     m_game;
 };
 
 #endif // NEWGAMEDIALOG_H

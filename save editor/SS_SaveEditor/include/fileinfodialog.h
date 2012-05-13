@@ -18,7 +18,7 @@
 
 #include <QDialog>
 
-class GameFile;
+class SkywardSwordFile;
 class QAbstractButton;
 
 namespace Ui {
@@ -30,14 +30,14 @@ class FileInfoDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit FileInfoDialog(QWidget *parent, GameFile& game);
+    explicit FileInfoDialog(QWidget *parent, SkywardSwordFile& game);
     ~FileInfoDialog();
 
 private slots:
     void onRegionChanged(QAbstractButton*);
 private:
     Ui::FileInfoDialog *m_ui;
-    GameFile* m_gameFile;
+    SkywardSwordFile* m_gameFile;
 };
 
 #endif // FILEINFODIALOG_H

@@ -25,7 +25,8 @@
 #include <QUrl>
 #include <QDebug>
 
-#include "gamefile.h"
+#include "igamefile.h"
+#include "skywardswordfile.h"
 #include "newgamedialog.h"
 #include "aboutdialog.h"
 #include "fileinfodialog.h"
@@ -40,7 +41,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     m_ui(new Ui::MainWindow),
     m_gameFile(NULL),
-    m_curGame(GameFile::Game1),
+    m_curGame(IGameFile::Game1),
     m_isUpdating(false)
 {
     m_ui->setupUi(this);
@@ -69,11 +70,11 @@ MainWindow::~MainWindow()
 
 void MainWindow::dragEnterEvent(QDragEnterEvent *event)
 {
-    GameFile::Region region;
-    if (event->mimeData()->urls().count() == 1 && GameFile::IsValidFile(event->mimeData()->urls()[0].toLocalFile(), &region))
+    SkywardSwordFile::Region region;
+    if (event->mimeData()->urls().count() == 1 && SkywardSwordFile::IsValidFile(event->mimeData()->urls()[0].toLocalFile(), &region))
     {
         event->acceptProposedAction();
-        statusBar()->showMessage(QString("File Valid (%1)").arg((region == GameFile::NTSCURegion ? "NTSC-U" : region == GameFile::NTSCJRegion ? "NTSC-J" : "PAL")));
+        statusBar()->showMessage(QString("File Valid (%1)").arg((region == SkywardSwordFile::NTSCURegion ? "NTSC-U" : region == SkywardSwordFile::NTSCJRegion ? "NTSC-J" : "PAL")));
     }
 }
 
@@ -92,10 +93,10 @@ void MainWindow::dropEvent(QDropEvent* event)
     if (mimeData->hasUrls())
     {
         if (!m_gameFile)
-            m_gameFile = new GameFile();
+            m_gameFile = new SkywardSwordFile();
 
-        if (m_curGame == GameFile::GameNone)
-            m_curGame = GameFile::Game1;
+        if (m_curGame == SkywardSwordFile::GameNone)
+            m_curGame = SkywardSwordFile::Game1;
 
 
         if (m_gameFile->Open(m_curGame, mimeData->urls()[0].toLocalFile()))
@@ -232,10 +233,15 @@ void MainWindow::SetupConnections()
     connect(m_ui->roomIDSpinBox,      SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
 }
 
+SkywardSwordFile* MainWindow::GetGameFile()
+{
+    return m_gameFile;
+}
+
 void MainWindow::onTextChanged(QString text)
 {
     if (!m_gameFile || !m_gameFile->IsOpen() ||
-         m_isUpdating || m_gameFile->GetGame() == GameFile::GameNone)
+         m_isUpdating || m_gameFile->GetGame() == SkywardSwordFile::GameNone)
         return;
 
     if (m_ui->nameLineEdit->isModified())
@@ -269,7 +275,7 @@ void MainWindow::onTextChanged(QString text)
 void MainWindow::onValueChanged()
 {
     if (!m_gameFile || !m_gameFile->IsOpen() ||
-         m_isUpdating || m_gameFile->GetGame() == GameFile::GameNone)
+         m_isUpdating || m_gameFile->GetGame() == SkywardSwordFile::GameNone)
         return;
     PlayTime playTime;
     playTime.Hours = m_ui->playHoursSpinBox->value();
@@ -289,35 +295,35 @@ void MainWindow::onValueChanged()
     m_gameFile->SetRoomID((uint)m_ui->roomIDSpinBox->value());
     m_gameFile->SetRupees((short)m_ui->rupeeSpinBox->value());
     // Swords
-    m_gameFile->SetSword(GameFile::PracticeSword,m_ui->practiceSwdChkBox->isChecked());
-    m_gameFile->SetSword(GameFile::GoddessSword, m_ui->goddessSwdChkBox->isChecked());
-    m_gameFile->SetSword(GameFile::LongSword, m_ui->longSwdChkBox->isChecked());
-    m_gameFile->SetSword(GameFile::WhiteSword, m_ui->whiteSwdChkBox->isChecked());
-    m_gameFile->SetSword(GameFile::MasterSword, m_ui->masterSwdChkBox->isChecked());
-    m_gameFile->SetSword(GameFile::TrueMasterSword, m_ui->trueMasterSwdChkBox->isChecked());
+    m_gameFile->SetSword(SkywardSwordFile::PracticeSword,m_ui->practiceSwdChkBox->isChecked());
+    m_gameFile->SetSword(SkywardSwordFile::GoddessSword, m_ui->goddessSwdChkBox->isChecked());
+    m_gameFile->SetSword(SkywardSwordFile::LongSword, m_ui->longSwdChkBox->isChecked());
+    m_gameFile->SetSword(SkywardSwordFile::WhiteSword, m_ui->whiteSwdChkBox->isChecked());
+    m_gameFile->SetSword(SkywardSwordFile::MasterSword, m_ui->masterSwdChkBox->isChecked());
+    m_gameFile->SetSword(SkywardSwordFile::TrueMasterSword, m_ui->trueMasterSwdChkBox->isChecked());
     // Weapons
-    m_gameFile->SetEquipment(GameFile::SlingshotWeapon, m_ui->slingShotChkBox->isChecked());
-    m_gameFile->SetEquipment(GameFile::ScattershotWeapon, m_ui->scatterShotChkBox->isChecked());
-    m_gameFile->SetEquipment(GameFile::BugnetWeapon, m_ui->bugNetChkBox->isChecked());
-    m_gameFile->SetEquipment(GameFile::BigBugnetWeapon, m_ui->bigBugNetChkBox->isChecked());
-    m_gameFile->SetEquipment(GameFile::BeetleWeapon, m_ui->beetleChkBox->isChecked());
-    m_gameFile->SetEquipment(GameFile::HookBeetleWeapon, m_ui->hookBeetleChkBox->isChecked());
-    m_gameFile->SetEquipment(GameFile::QuickBeetleWeapon, m_ui->quickBeetleChkBox->isChecked());
-    m_gameFile->SetEquipment(GameFile::ToughBeetleWeapon, m_ui->toughBeetleChkBox->isChecked());
-    m_gameFile->SetEquipment(GameFile::BombWeapon, m_ui->bombChkBox->isChecked());
-    m_gameFile->SetEquipment(GameFile::GustBellowsWeapon, m_ui->gustBellowsChkBox->isChecked());
-    m_gameFile->SetEquipment(GameFile::WhipWeapon, m_ui->whipChkBox->isChecked());
-    m_gameFile->SetEquipment(GameFile::ClawshotWeapon, m_ui->clawShotChkBox->isChecked());
-    m_gameFile->SetEquipment(GameFile::BowWeapon, m_ui->bowChkBox->isChecked());
-    m_gameFile->SetEquipment(GameFile::IronBowWeapon, m_ui->ironBowChkBox->isChecked());
-    m_gameFile->SetEquipment(GameFile::SacredBowWeapon, m_ui->sacredBowChkBox->isChecked());
-    m_gameFile->SetEquipment(GameFile::HarpEquipment, m_ui->harpChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::SlingshotWeapon, m_ui->slingShotChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::ScattershotWeapon, m_ui->scatterShotChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::BugnetWeapon, m_ui->bugNetChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::BigBugnetWeapon, m_ui->bigBugNetChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::BeetleWeapon, m_ui->beetleChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::HookBeetleWeapon, m_ui->hookBeetleChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::QuickBeetleWeapon, m_ui->quickBeetleChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::ToughBeetleWeapon, m_ui->toughBeetleChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::BombWeapon, m_ui->bombChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::GustBellowsWeapon, m_ui->gustBellowsChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::WhipWeapon, m_ui->whipChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::ClawshotWeapon, m_ui->clawShotChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::BowWeapon, m_ui->bowChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::IronBowWeapon, m_ui->ironBowChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::SacredBowWeapon, m_ui->sacredBowChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::HarpEquipment, m_ui->harpChkBox->isChecked());
     // Bugs
-    m_gameFile->SetBug(GameFile::GrasshopperBug, m_ui->grassHopperChkBox->isChecked());
-    m_gameFile->SetBug(GameFile::RhinoBeetleBug, m_ui->rhinoBeetleChkBox->isChecked());
-    m_gameFile->SetBug(GameFile::MantisBug, m_ui->mantisChkBox->isChecked());
-    m_gameFile->SetBug(GameFile::LadybugBug, m_ui->ladybugChkBox->isChecked());
-    m_gameFile->SetBug(GameFile::ButterflyBug, m_ui->butterflyChkBox->isChecked());
+    m_gameFile->SetBug(SkywardSwordFile::GrasshopperBug, m_ui->grassHopperChkBox->isChecked());
+    m_gameFile->SetBug(SkywardSwordFile::RhinoBeetleBug, m_ui->rhinoBeetleChkBox->isChecked());
+    m_gameFile->SetBug(SkywardSwordFile::MantisBug, m_ui->mantisChkBox->isChecked());
+    m_gameFile->SetBug(SkywardSwordFile::LadybugBug, m_ui->ladybugChkBox->isChecked());
+    m_gameFile->SetBug(SkywardSwordFile::ButterflyBug, m_ui->butterflyChkBox->isChecked());
     m_gameFile->UpdateChecksum();
     UpdateTitle();
 }
@@ -325,7 +331,7 @@ void MainWindow::onValueChanged()
 void MainWindow::onDateTimeChanged(QDateTime val)
 {
     if (!m_gameFile || !m_gameFile->IsOpen() ||
-         m_isUpdating || m_gameFile->GetGame() == GameFile::GameNone)
+         m_isUpdating || m_gameFile->GetGame() == SkywardSwordFile::GameNone)
         return;
 
     m_gameFile->SetSaveTime(val);
@@ -340,7 +346,7 @@ void MainWindow::onOpen()
     if (file.size() > 0)
     {
         if (m_gameFile == NULL)
-            m_gameFile = new GameFile();
+            m_gameFile = new SkywardSwordFile();
         else
             m_gameFile->Close();
 
@@ -351,7 +357,7 @@ void MainWindow::onOpen()
                 QMessageBox msg(QMessageBox::Warning, tr("CRC32 Mismatch"), tr("The checksum generated does not match the one provided by the file"));
                 msg.exec();
             }
-            m_gameFile->SetGame(GameFile::Game1);
+            m_gameFile->SetGame(SkywardSwordFile::Game1);
             m_ui->actionGame1->setChecked(true);
             UpdateInfo();
             UpdateTitle();
@@ -366,7 +372,7 @@ void MainWindow::onCreateNewGame()
     ngd->exec();
     if (ngd->result() == NewGameDialog::Accepted)
     {
-        GameFile* tmpFile = ngd->gameFile(m_gameFile);
+        SkywardSwordFile* tmpFile = ngd->gameFile(m_gameFile);
         m_gameFile = tmpFile;
         UpdateInfo();
         UpdateTitle();
@@ -386,7 +392,7 @@ void MainWindow::onDeleteGame()
 
 void MainWindow::onSave()
 {
-    if (!m_gameFile || !m_gameFile->IsOpen() || m_gameFile->GetGame() == GameFile::GameNone)
+    if (!m_gameFile || !m_gameFile->IsOpen() || m_gameFile->GetGame() == SkywardSwordFile::GameNone)
         return;
 
     if (m_gameFile->GetFilename().size() <= 0)
@@ -437,13 +443,13 @@ void MainWindow::onGameChanged(QAction* game)
         return;
 
     if (game == m_ui->actionGame1)
-        m_curGame = GameFile::Game1;
+        m_curGame = SkywardSwordFile::Game1;
     else if (game == m_ui->actionGame2)
-        m_curGame = GameFile::Game2;
+        m_curGame = SkywardSwordFile::Game2;
     else if (game == m_ui->actionGame3)
-        m_curGame = GameFile::Game3;
+        m_curGame = SkywardSwordFile::Game3;
 
-    m_gameFile->SetGame((GameFile::Game)m_curGame);
+    m_gameFile->SetGame((SkywardSwordFile::Game)m_curGame);
     UpdateInfo();
     UpdateTitle();
 }
@@ -504,7 +510,7 @@ void MainWindow::onClose()
 void MainWindow::UpdateInfo()
 {
     if (!m_gameFile || !m_gameFile->IsOpen() ||
-         m_isUpdating || m_gameFile->GetGame() == GameFile::GameNone)
+         m_isUpdating || m_gameFile->GetGame() == SkywardSwordFile::GameNone)
         return;
 
     if (!m_gameFile->IsNew())
@@ -554,41 +560,41 @@ void MainWindow::UpdateInfo()
     m_ui->heroModeChkBox     ->setChecked(m_gameFile->IsHeroMode());
     m_ui->introViewedChkBox  ->setChecked(m_gameFile->GetIntroViewed());
     // Swords
-    m_ui->practiceSwdChkBox  ->setChecked(m_gameFile->GetSword (GameFile::PracticeSword));
-    m_ui->goddessSwdChkBox   ->setChecked(m_gameFile->GetSword (GameFile::GoddessSword));
-    m_ui->longSwdChkBox      ->setChecked(m_gameFile->GetSword (GameFile::LongSword));
-    m_ui->whiteSwdChkBox     ->setChecked(m_gameFile->GetSword (GameFile::WhiteSword));
-    m_ui->masterSwdChkBox    ->setChecked(m_gameFile->GetSword (GameFile::MasterSword));
-    m_ui->trueMasterSwdChkBox->setChecked(m_gameFile->GetSword (GameFile::TrueMasterSword));
+    m_ui->practiceSwdChkBox  ->setChecked(m_gameFile->GetSword (SkywardSwordFile::PracticeSword));
+    m_ui->goddessSwdChkBox   ->setChecked(m_gameFile->GetSword (SkywardSwordFile::GoddessSword));
+    m_ui->longSwdChkBox      ->setChecked(m_gameFile->GetSword (SkywardSwordFile::LongSword));
+    m_ui->whiteSwdChkBox     ->setChecked(m_gameFile->GetSword (SkywardSwordFile::WhiteSword));
+    m_ui->masterSwdChkBox    ->setChecked(m_gameFile->GetSword (SkywardSwordFile::MasterSword));
+    m_ui->trueMasterSwdChkBox->setChecked(m_gameFile->GetSword (SkywardSwordFile::TrueMasterSword));
     // Weapons
-    m_ui->slingShotChkBox    ->setChecked(m_gameFile->GetEquipment(GameFile::SlingshotWeapon));
-    m_ui->scatterShotChkBox  ->setChecked(m_gameFile->GetEquipment(GameFile::ScattershotWeapon));
-    m_ui->bugNetChkBox       ->setChecked(m_gameFile->GetEquipment(GameFile::BugnetWeapon));
-    m_ui->bigBugNetChkBox    ->setChecked(m_gameFile->GetEquipment(GameFile::BigBugnetWeapon));
-    m_ui->beetleChkBox       ->setChecked(m_gameFile->GetEquipment(GameFile::BeetleWeapon));
-    m_ui->hookBeetleChkBox   ->setChecked(m_gameFile->GetEquipment(GameFile::HookBeetleWeapon));
-    m_ui->quickBeetleChkBox  ->setChecked(m_gameFile->GetEquipment(GameFile::QuickBeetleWeapon));
-    m_ui->toughBeetleChkBox  ->setChecked(m_gameFile->GetEquipment(GameFile::ToughBeetleWeapon));
-    m_ui->bombChkBox         ->setChecked(m_gameFile->GetEquipment(GameFile::BombWeapon));
-    m_ui->gustBellowsChkBox  ->setChecked(m_gameFile->GetEquipment(GameFile::GustBellowsWeapon));
-    m_ui->whipChkBox         ->setChecked(m_gameFile->GetEquipment(GameFile::WhipWeapon));
-    m_ui->clawShotChkBox     ->setChecked(m_gameFile->GetEquipment(GameFile::ClawshotWeapon));
-    m_ui->bowChkBox          ->setChecked(m_gameFile->GetEquipment(GameFile::BowWeapon));
-    m_ui->ironBowChkBox      ->setChecked(m_gameFile->GetEquipment(GameFile::IronBowWeapon));
-    m_ui->sacredBowChkBox    ->setChecked(m_gameFile->GetEquipment(GameFile::SacredBowWeapon));
-    m_ui->harpChkBox         ->setChecked(m_gameFile->GetEquipment(GameFile::HarpEquipment));
+    m_ui->slingShotChkBox    ->setChecked(m_gameFile->GetEquipment(SkywardSwordFile::SlingshotWeapon));
+    m_ui->scatterShotChkBox  ->setChecked(m_gameFile->GetEquipment(SkywardSwordFile::ScattershotWeapon));
+    m_ui->bugNetChkBox       ->setChecked(m_gameFile->GetEquipment(SkywardSwordFile::BugnetWeapon));
+    m_ui->bigBugNetChkBox    ->setChecked(m_gameFile->GetEquipment(SkywardSwordFile::BigBugnetWeapon));
+    m_ui->beetleChkBox       ->setChecked(m_gameFile->GetEquipment(SkywardSwordFile::BeetleWeapon));
+    m_ui->hookBeetleChkBox   ->setChecked(m_gameFile->GetEquipment(SkywardSwordFile::HookBeetleWeapon));
+    m_ui->quickBeetleChkBox  ->setChecked(m_gameFile->GetEquipment(SkywardSwordFile::QuickBeetleWeapon));
+    m_ui->toughBeetleChkBox  ->setChecked(m_gameFile->GetEquipment(SkywardSwordFile::ToughBeetleWeapon));
+    m_ui->bombChkBox         ->setChecked(m_gameFile->GetEquipment(SkywardSwordFile::BombWeapon));
+    m_ui->gustBellowsChkBox  ->setChecked(m_gameFile->GetEquipment(SkywardSwordFile::GustBellowsWeapon));
+    m_ui->whipChkBox         ->setChecked(m_gameFile->GetEquipment(SkywardSwordFile::WhipWeapon));
+    m_ui->clawShotChkBox     ->setChecked(m_gameFile->GetEquipment(SkywardSwordFile::ClawshotWeapon));
+    m_ui->bowChkBox          ->setChecked(m_gameFile->GetEquipment(SkywardSwordFile::BowWeapon));
+    m_ui->ironBowChkBox      ->setChecked(m_gameFile->GetEquipment(SkywardSwordFile::IronBowWeapon));
+    m_ui->sacredBowChkBox    ->setChecked(m_gameFile->GetEquipment(SkywardSwordFile::SacredBowWeapon));
+    m_ui->harpChkBox         ->setChecked(m_gameFile->GetEquipment(SkywardSwordFile::HarpEquipment));
     // Bugs
-    m_ui->grassHopperChkBox  ->setChecked(m_gameFile->GetBug   (GameFile::GrasshopperBug));
-    m_ui->rhinoBeetleChkBox  ->setChecked(m_gameFile->GetBug   (GameFile::RhinoBeetleBug));
-    m_ui->mantisChkBox       ->setChecked(m_gameFile->GetBug   (GameFile::MantisBug));
-    m_ui->ladybugChkBox      ->setChecked(m_gameFile->GetBug   (GameFile::LadybugBug));
-    m_ui->butterflyChkBox    ->setChecked(m_gameFile->GetBug   (GameFile::ButterflyBug));
+    m_ui->grassHopperChkBox  ->setChecked(m_gameFile->GetBug   (SkywardSwordFile::GrasshopperBug));
+    m_ui->rhinoBeetleChkBox  ->setChecked(m_gameFile->GetBug   (SkywardSwordFile::RhinoBeetleBug));
+    m_ui->mantisChkBox       ->setChecked(m_gameFile->GetBug   (SkywardSwordFile::MantisBug));
+    m_ui->ladybugChkBox      ->setChecked(m_gameFile->GetBug   (SkywardSwordFile::LadybugBug));
+    m_ui->butterflyChkBox    ->setChecked(m_gameFile->GetBug   (SkywardSwordFile::ButterflyBug));
     m_isUpdating = false;
 }
 
 void MainWindow::UpdateTitle()
 {
-    if (m_gameFile == NULL || !m_gameFile->IsOpen() || m_gameFile->GetGame() == GameFile::GameNone)
+    if (m_gameFile == NULL || !m_gameFile->IsOpen() || m_gameFile->GetGame() == SkywardSwordFile::GameNone)
         this->setWindowTitle(tr("WiiKing2 Editor"));
     else
     {

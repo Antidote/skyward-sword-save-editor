@@ -16,7 +16,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "gamefile.h"
+#include "skywardswordfile.h"
 #include <QMainWindow>
 #include <QDateTime>
 #include <QTimer>
@@ -41,6 +41,7 @@ public:
     void UpdateInfo();
     void UpdateTitle(); // any reason these are exposed?
     void ClearInfo();
+    SkywardSwordFile* GetGameFile();
 
 private slots:
     void onDateTimeChanged(QDateTime);
@@ -65,13 +66,13 @@ private:
     void dropEvent(QDropEvent *event);
     //bool event(QEvent *);
     QTimer* m_checkTimer;
-    void SetRegion(GameFile::Region);
+    void SetRegion(SkywardSwordFile::Region);
     void ToggleEnabled(bool visible);
     void SetupActions();
     void SetupConnections();
     Ui::MainWindow*   m_ui;
-    GameFile*         m_gameFile;
-    GameFile::Game    m_curGame;
+    SkywardSwordFile*         m_gameFile;
+    SkywardSwordFile::Game    m_curGame;
     bool              m_isUpdating;
 
     QActionGroup* m_gameGroup;
