@@ -18,9 +18,9 @@ public:
     virtual void Close() = 0;
     virtual void Reload(Game game) = 0;
     virtual bool Save(const QString& filename = NULL) = 0;
-    virtual bool Open(Game game = GameNone, const QString& filepath=NULL)=0;
+    virtual bool Open(Game game = GameNone, const QString& filepath=NULL) = 0;
     virtual void CreateNewGame(Game game) = 0;
-    virtual void DeleteGame(Game game = GameNone);
+    virtual void DeleteGame(Game game = GameNone) = 0;
     virtual void DeleteAllGames() = 0;
     virtual void UpdateChecksum() = 0;
     virtual bool HasValidChecksum() = 0;

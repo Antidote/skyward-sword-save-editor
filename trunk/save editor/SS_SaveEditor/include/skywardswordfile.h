@@ -48,9 +48,9 @@ class SkywardSwordFile : public IGameFile
 {
 public:
     // Default coords for new file
-    static const float DEFAULT_POS_X = -4798.150391;
-    static const float DEFAULT_POS_Y =  1237.629517;
-    static const float DEFAULT_POS_Z = -6573.722656;
+    static const float DEFAULT_POS_X;
+    static const float DEFAULT_POS_Y;
+    static const float DEFAULT_POS_Z;
 
     enum Region
     {
@@ -99,6 +99,26 @@ public:
         DragonScaleEquipment
     };
 
+    enum Material
+    {
+        HornetLarvaeMaterial,
+        BirdFeatherMaterial,
+        TumbleWeedMaterial,
+        LizardTailMaterial,
+        OreMaterial,
+        AncientFlowerMaterial,
+        AmberRelicMaterial,
+        DuskRelicMaterial,
+        JellyBlobMaterial,
+        MonsterClawMaterial,
+        MonsterHornMaterial,
+        OrnamentalSkullMaterial,
+        EvilCrystalMaterial,
+        BlueBirdFeatherMaterial,
+        GoldenSkullMaterial,
+        GoddessPlumeMaterial
+    };
+
     enum Sword
     {
         PracticeSword,
@@ -125,83 +145,84 @@ public:
     /// Checks against the stored checksum for the entire file,
     /// if the file on disk differs from the stored checksum,
     /// the file has changed (should probably use an SHA1 or MD5 hash for the but w/e).
-    bool HasFileOnDiskChanged();
-    void Close(); //<! Closes the current file without saving.
-    void Reload(Game game);
+    bool      HasFileOnDiskChanged();
+    void      Close(); //<! Closes the current file without saving.
+    void      Reload(Game game);
 
-    bool IsOpen() const;
+    bool      IsOpen() const;
 
-    QString GetFilename() const;
-    void SetFilename(const QString& filepath);
+    QString   GetFilename() const;
+    void      SetFilename(const QString& filepath);
 
-    Game GetGame() const;
-    void SetGame(Game game);
+    Game      GetGame() const;
+    void      SetGame(Game game);
 
-    uint GetGameOffset() const;
-
-    Region GetRegion() const;
-    void  SetRegion(Region);
-    PlayTime GetPlayTime() const;
-    void  SetPlayTime(PlayTime val);
+    Region    GetRegion() const;
+    void      SetRegion(Region);
+    PlayTime  GetPlayTime() const;
+    void      SetPlayTime(PlayTime val);
     QDateTime GetSaveTime() const;
-    void  SetSaveTime(QDateTime val);
-    Vector3 GetPlayerPosition() const;
-    void    SetPlayerPosition(float x, float y, float z);
-    void    SetPlayerPosition(Vector3 pos);
-    Vector3 GetPlayerRotation() const;
-    void    SetPlayerRotation(float roll, float pitch, float yaw);
-    void    SetPlayerRotation(Vector3 rotation);
-    Vector3 GetCameraPosition() const;
-    void    SetCameraPosition(float x, float y, float z);
-    void    SetCameraPosition(Vector3 position);
-    Vector3 GetCameraRotation() const;
-    void    SetCameraRotation(float roll, float pitch, float yaw);
-    void    SetCameraRotation(Vector3 rotation);
-    QString GetPlayerName() const;
-    void SetPlayerName(const QString& name);
-    bool IsHeroMode() const;
-    void SetHeroMode(bool val);
-    bool GetIntroViewed() const;
-    void SetIntroViewed(bool val);
-    bool GetSword(Sword sword) const;
-    void SetSword(Sword sword, bool val);
-    bool GetEquipment(WeaponEquipment weapon) const;
-    void SetEquipment(WeaponEquipment, bool val);
-    bool GetBug(Bug bug) const;
-    void SetBug(Bug bug, bool val);
-    ushort GetRupees() const;
-    void SetRupees(ushort val);
-    ushort GetTotalHP() const;
-    void SetTotalHP(ushort val);
-    ushort GetUnkHP() const;
-    void SetUnkHP(ushort val);
-    ushort GetCurrentHP() const;
-    void SetCurrentHP(ushort val);
-    uint GetChecksum() const;
-    uint  GetRoomID() const;
-    void SetRoomID(uint val);
-    QString GetCurrentMap() const;
-    void SetCurrentMap(const QString& map);
-    QString GetCurrentArea() const;
-    void SetCurrentArea(const QString& map);
-    QString GetCurrentRoom() const;
-    void SetCurrentRoom(const QString& map);
+    void      SetSaveTime(QDateTime val);
+    Vector3   GetPlayerPosition() const;
+    void      SetPlayerPosition(float x, float y, float z);
+    void      SetPlayerPosition(Vector3 pos);
+    Vector3   GetPlayerRotation() const;
+    void      SetPlayerRotation(float roll, float pitch, float yaw);
+    void      SetPlayerRotation(Vector3 rotation);
+    Vector3   GetCameraPosition() const;
+    void      SetCameraPosition(float x, float y, float z);
+    void      SetCameraPosition(Vector3 position);
+    Vector3   GetCameraRotation() const;
+    void      SetCameraRotation(float roll, float pitch, float yaw);
+    void      SetCameraRotation(Vector3 rotation);
+    QString   GetPlayerName() const;
+    void      SetPlayerName(const QString& name);
+    bool      IsHeroMode() const;
+    void      SetHeroMode(bool val);
+    bool      GetIntroViewed() const;
+    void      SetIntroViewed(bool val);
+    bool      GetSword(Sword sword) const;
+    void      SetSword(Sword sword, bool val);
+    bool      GetEquipment(WeaponEquipment weapon) const;
+    void      SetEquipment(WeaponEquipment, bool val);
+    bool      GetBug(Bug bug) const;
+    void      SetBug(Bug bug, bool val);
+    bool      GetMaterial(Material material);
+    void      SetMaterial(Material material, bool val);
+    ushort    GetRupees() const;
+    void      SetRupees(ushort val);
+    ushort    GetTotalHP() const;
+    void      SetTotalHP(ushort val);
+    ushort    GetUnkHP() const;
+    void      SetUnkHP(ushort val);
+    ushort    GetCurrentHP() const;
+    void      SetCurrentHP(ushort val);
+    uint      GetChecksum() const;
+    uint      GetRoomID() const;
+    void      SetRoomID(uint val);
+    QString   GetCurrentMap() const;
+    void      SetCurrentMap(const QString& map);
+    QString   GetCurrentArea() const;
+    void      SetCurrentArea(const QString& map);
+    QString   GetCurrentRoom() const;
+    void      SetCurrentRoom(const QString& map);
 
-    bool IsNew() const;
-    void SetNew(bool val);
+    bool      IsNew() const;
+    void      SetNew(bool val);
 
     static bool IsValidFile(const QString& filepath, Region* region);
 private:
+    uint    GetGameOffset() const;
     QString ReadNullTermString(int offset) const;
-    void WriteNullTermString(const QString& val, int offset);
-    bool GetFlag(quint32 offset, quint32 flag) const;
-    void SetFlag(quint32 offset, quint32 flag, bool val);
-    char*    m_data;
-    QString  m_filename;
-    Game     m_game;
-    bool     m_isOpen;
-    quint32  m_fileChecksum; // The checksum of the entire file.
-    CRC32*   m_crcEngine;
+    void    WriteNullTermString(const QString& val, int offset);
+    bool    GetFlag(quint32 offset, quint32 flag) const;
+    void    SetFlag(quint32 offset, quint32 flag, bool val);
+    char*   m_data;
+    QString m_filename;
+    Game    m_game;
+    bool    m_isOpen;
+    quint32 m_fileChecksum; // The checksum of the entire file.
+    CRC32*  m_crcEngine;
 };
 
 #endif // GAMEFILE_H

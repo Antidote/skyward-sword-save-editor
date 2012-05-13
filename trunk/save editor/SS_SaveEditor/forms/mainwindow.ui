@@ -85,7 +85,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="playerTab">
        <attribute name="title">
@@ -1109,7 +1109,7 @@
               <string>Fire Shield Earrings</string>
              </property>
              <property name="icon">
-              <iconset resource="../resources/resources.qrc">
+              <iconset>
                <normaloff>:/equipment/FireShieldEarings</normaloff>:/equipment/FireShieldEarings</iconset>
              </property>
              <property name="iconSize">
@@ -1129,7 +1129,7 @@
               <string>Water Dragon Scale</string>
              </property>
              <property name="icon">
-              <iconset resource="../resources/resources.qrc">
+              <iconset>
                <normaloff>:/equipment/WaterDragonScale</normaloff>:/equipment/WaterDragonScale</iconset>
              </property>
              <property name="iconSize">
@@ -1256,7 +1256,7 @@
               <string>Digging Mitts</string>
              </property>
              <property name="icon">
-              <iconset resource="../resources/resources.qrc">
+              <iconset>
                <normaloff>:/equipment/DiggingMitts</normaloff>:/equipment/DiggingMitts</iconset>
              </property>
              <property name="iconSize">
@@ -1276,7 +1276,7 @@
               <string>Sail Cloth</string>
              </property>
              <property name="icon">
-              <iconset resource="../resources/resources.qrc">
+              <iconset>
                <normaloff>:/equipment/SailCloth</normaloff>:/equipment/SailCloth</iconset>
              </property>
              <property name="iconSize">
@@ -1296,7 +1296,7 @@
               <string>Mole Mitts</string>
              </property>
              <property name="icon">
-              <iconset resource="../resources/resources.qrc">
+              <iconset>
                <normaloff>:/equipment/MoleMitts</normaloff>:/equipment/MoleMitts</iconset>
              </property>
              <property name="iconSize">
@@ -1513,7 +1513,13 @@
           <number>0</number>
          </property>
          <item row="0" column="0">
-          <widget class="QCheckBox" name="checkBox_7">
+          <widget class="QCheckBox" name="hornetChkBox">
+           <property name="toolTip">
+            <string>Deku Hornet</string>
+           </property>
+           <property name="statusTip">
+            <string>Deku Hornet</string>
+           </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
              <normaloff>:/bugs/DekuHornet</normaloff>:/bugs/DekuHornet</iconset>
@@ -1528,6 +1534,12 @@
          </item>
          <item row="0" column="1">
           <widget class="QCheckBox" name="butterflyChkBox">
+           <property name="toolTip">
+            <string>Blessed Butterfly</string>
+           </property>
+           <property name="statusTip">
+            <string>Blessed Butterfly</string>
+           </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
              <normaloff>:/bugs/BlessedButterfly</normaloff>:/bugs/BlessedButterfly</iconset>
@@ -1541,7 +1553,13 @@
           </widget>
          </item>
          <item row="0" column="2">
-          <widget class="QCheckBox" name="checkBox_3">
+          <widget class="QCheckBox" name="dragonflyChkBox">
+           <property name="toolTip">
+            <string>Gerudo Dragonfly</string>
+           </property>
+           <property name="statusTip">
+            <string>Gerudo Dragonfly</string>
+           </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
              <normaloff>:/bugs/GerudoDragonfly</normaloff>:/bugs/GerudoDragonfly</iconset>
@@ -1555,7 +1573,13 @@
           </widget>
          </item>
          <item row="0" column="3">
-          <widget class="QCheckBox" name="starryFireflyChkBox">
+          <widget class="QCheckBox" name="fireflyChkBox">
+           <property name="toolTip">
+            <string>Starry Firefly</string>
+           </property>
+           <property name="statusTip">
+            <string>Starry Firefly</string>
+           </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
              <normaloff>:/bugs/StarryFirefly</normaloff>:/bugs/StarryFirefly</iconset>
@@ -1570,6 +1594,12 @@
          </item>
          <item row="1" column="0">
           <widget class="QCheckBox" name="rhinoBeetleChkBox">
+           <property name="toolTip">
+            <string>Woodland Rhino Beetle</string>
+           </property>
+           <property name="statusTip">
+            <string>Woodland Rhino Beetle</string>
+           </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
              <normaloff>:/bugs/WoodlandRhinoBeetle</normaloff>:/bugs/WoodlandRhinoBeetle</iconset>
@@ -1584,6 +1614,12 @@
          </item>
          <item row="1" column="1">
           <widget class="QCheckBox" name="ladybugChkBox">
+           <property name="toolTip">
+            <string>Volcanic Ladybug</string>
+           </property>
+           <property name="statusTip">
+            <string>Volcanic Ladybug</string>
+           </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
              <normaloff>:/bugs/VolcanicLadyBug</normaloff>:/bugs/VolcanicLadyBug</iconset>
@@ -1598,6 +1634,12 @@
          </item>
          <item row="1" column="2">
           <widget class="QCheckBox" name="sandCicadaChkBox">
+           <property name="toolTip">
+            <string>Sand Cicada</string>
+           </property>
+           <property name="statusTip">
+            <string>Sand Cicada</string>
+           </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
              <normaloff>:/bugs/SandCicada</normaloff>:/bugs/SandCicada</iconset>
@@ -1611,7 +1653,13 @@
           </widget>
          </item>
          <item row="1" column="3">
-          <widget class="QCheckBox" name="checkBox_4">
+          <widget class="QCheckBox" name="stagBeetleChkBox">
+           <property name="toolTip">
+            <string>Sky Stag Beetle</string>
+           </property>
+           <property name="statusTip">
+            <string>Sky Stag Beetle</string>
+           </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
              <normaloff>:/bugs/SkyStagBeetle</normaloff>:/bugs/SkyStagBeetle</iconset>
@@ -1626,6 +1674,12 @@
          </item>
          <item row="2" column="0">
           <widget class="QCheckBox" name="grassHopperChkBox">
+           <property name="toolTip">
+            <string>Faron Grasshopper</string>
+           </property>
+           <property name="statusTip">
+            <string>Faron Grasshopper</string>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -1643,6 +1697,12 @@
          </item>
          <item row="2" column="1">
           <widget class="QCheckBox" name="mantisChkBox">
+           <property name="toolTip">
+            <string>Skyloft Mantis</string>
+           </property>
+           <property name="statusTip">
+            <string>Skyloft Mantis</string>
+           </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
              <normaloff>:/bugs/LoftMantis</normaloff>:/bugs/LoftMantis</iconset>
@@ -1656,7 +1716,13 @@
           </widget>
          </item>
          <item row="2" column="2">
-          <widget class="QCheckBox" name="checkBox_6">
+          <widget class="QCheckBox" name="antChkBox">
+           <property name="toolTip">
+            <string>Lanayru Ant</string>
+           </property>
+           <property name="statusTip">
+            <string>Lanayru Ant</string>
+           </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
              <normaloff>:/bugs/LanayruAnt</normaloff>:/bugs/LanayruAnt</iconset>
@@ -1670,7 +1736,13 @@
           </widget>
          </item>
          <item row="2" column="3">
-          <widget class="QCheckBox" name="checkBox_5">
+          <widget class="QCheckBox" name="eldinRollerChkBox">
+           <property name="toolTip">
+            <string>Eldin Roller</string>
+           </property>
+           <property name="statusTip">
+            <string>Eldin Roller</string>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -1709,6 +1781,12 @@
          </property>
          <item row="0" column="0">
           <widget class="QCheckBox" name="hornetLarvaeChkBox">
+           <property name="toolTip">
+            <string>Deku Hornet Larvae</string>
+           </property>
+           <property name="statusTip">
+            <string>Deku Hornet Larvae</string>
+           </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
              <normaloff>:/materials/DekuHornetLarvae</normaloff>:/materials/DekuHornetLarvae</iconset>
@@ -1723,6 +1801,12 @@
          </item>
          <item row="0" column="1" colspan="4">
           <widget class="QCheckBox" name="birdFeatherChkBox">
+           <property name="toolTip">
+            <string>Bird Feather</string>
+           </property>
+           <property name="statusTip">
+            <string>Bird Feather</string>
+           </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
              <normaloff>:/materials/BirdFeather</normaloff>:/materials/BirdFeather</iconset>
@@ -1737,6 +1821,12 @@
          </item>
          <item row="0" column="5" colspan="3">
           <widget class="QCheckBox" name="tumbleWeedChkBox">
+           <property name="toolTip">
+            <string>Tumbe Weed</string>
+           </property>
+           <property name="statusTip">
+            <string>Tumbe Weed</string>
+           </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
              <normaloff>:/materials/TumbleWeed</normaloff>:/materials/TumbleWeed</iconset>
@@ -1751,6 +1841,12 @@
          </item>
          <item row="0" column="8" colspan="3">
           <widget class="QCheckBox" name="lizardTailChkBox">
+           <property name="toolTip">
+            <string>Lizard Tail</string>
+           </property>
+           <property name="statusTip">
+            <string>Lizard Tail</string>
+           </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
              <normaloff>:/materials/LizardTail</normaloff>:/materials/LizardTail</iconset>
@@ -1765,6 +1861,12 @@
          </item>
          <item row="1" column="0">
           <widget class="QCheckBox" name="eldinOreChkBox">
+           <property name="toolTip">
+            <string>Eldin Ore</string>
+           </property>
+           <property name="statusTip">
+            <string>Eldin Ore</string>
+           </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
              <normaloff>:/materials/EldinOre</normaloff>:/materials/EldinOre</iconset>
@@ -1779,6 +1881,12 @@
          </item>
          <item row="1" column="1" colspan="4">
           <widget class="QCheckBox" name="ancientFlowerChkBox">
+           <property name="toolTip">
+            <string>Ancient Flower</string>
+           </property>
+           <property name="statusTip">
+            <string>Ancient Flower</string>
+           </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
              <normaloff>:/materials/AncientFlower</normaloff>:/materials/AncientFlower</iconset>
@@ -1793,6 +1901,12 @@
          </item>
          <item row="1" column="5" colspan="3">
           <widget class="QCheckBox" name="amberRelicChkBox">
+           <property name="toolTip">
+            <string>Amber Relic</string>
+           </property>
+           <property name="statusTip">
+            <string>Amber Relic</string>
+           </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
              <normaloff>:/materials/AmberRelic</normaloff>:/materials/AmberRelic</iconset>
@@ -1807,6 +1921,12 @@
          </item>
          <item row="1" column="8" colspan="3">
           <widget class="QCheckBox" name="duskRelicChkBox">
+           <property name="toolTip">
+            <string>Dusk Relic</string>
+           </property>
+           <property name="statusTip">
+            <string>Dusk Relic</string>
+           </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
              <normaloff>:/materials/DuskRelic</normaloff>:/materials/DuskRelic</iconset>
@@ -1821,6 +1941,12 @@
          </item>
          <item row="2" column="0" colspan="3">
           <widget class="QCheckBox" name="jellyBlobChkBox">
+           <property name="toolTip">
+            <string>Jelly Blob</string>
+           </property>
+           <property name="statusTip">
+            <string>Jelly Blob</string>
+           </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
              <normaloff>:/materials/JellyBlob</normaloff>:/materials/JellyBlob</iconset>
@@ -1834,7 +1960,13 @@
           </widget>
          </item>
          <item row="2" column="10">
-          <widget class="QCheckBox" name="ornamentalSkullChkBox">
+          <widget class="QCheckBox" name="decoSkullChkBox">
+           <property name="toolTip">
+            <string>Ornamental Skull</string>
+           </property>
+           <property name="statusTip">
+            <string>Ornamental Skull</string>
+           </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
              <normaloff>:/materials/OrnamentalSkull</normaloff>:/materials/OrnamentalSkull</iconset>
@@ -1849,6 +1981,12 @@
          </item>
          <item row="3" column="0" colspan="2">
           <widget class="QCheckBox" name="evilCrystalChkBox">
+           <property name="toolTip">
+            <string>Evil Crystal</string>
+           </property>
+           <property name="statusTip">
+            <string>Evil Crystal</string>
+           </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
              <normaloff>:/materials/EvilCrystal</normaloff>:/materials/EvilCrystal</iconset>
@@ -1863,6 +2001,12 @@
          </item>
          <item row="3" column="2" colspan="4">
           <widget class="QCheckBox" name="blueBirdFeatherChkBox">
+           <property name="toolTip">
+            <string>Blue Bird Feather</string>
+           </property>
+           <property name="statusTip">
+            <string>Blue Bird Feather</string>
+           </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
              <normaloff>:/materials/BlueBirdFeather</normaloff>:/materials/BlueBirdFeather</iconset>
@@ -1877,6 +2021,12 @@
          </item>
          <item row="3" column="6" colspan="3">
           <widget class="QCheckBox" name="goldenSkullChkBox">
+           <property name="toolTip">
+            <string>Golden Skull</string>
+           </property>
+           <property name="statusTip">
+            <string>Golden Skull</string>
+           </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
              <normaloff>:/materials/GoldenSkull</normaloff>:/materials/GoldenSkull</iconset>
@@ -1891,6 +2041,12 @@
          </item>
          <item row="3" column="9" colspan="2">
           <widget class="QCheckBox" name="goddessPlumeChkBox">
+           <property name="toolTip">
+            <string>Goddess Plume</string>
+           </property>
+           <property name="statusTip">
+            <string>Goddess Plume</string>
+           </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
              <normaloff>:/materials/GoddessPlume</normaloff>:/materials/GoddessPlume</iconset>
@@ -1905,6 +2061,12 @@
          </item>
          <item row="2" column="3">
           <widget class="QCheckBox" name="monsterClawChkBox">
+           <property name="toolTip">
+            <string>Monster Claw</string>
+           </property>
+           <property name="statusTip">
+            <string>Monster Claw</string>
+           </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
              <normaloff>:/materials/MonsterClaw</normaloff>:/materials/MonsterClaw</iconset>
@@ -1919,6 +2081,12 @@
          </item>
          <item row="2" column="6">
           <widget class="QCheckBox" name="monsterHornChkBox">
+           <property name="toolTip">
+            <string>Monster Horn</string>
+           </property>
+           <property name="statusTip">
+            <string>Monster Horn</string>
+           </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
              <normaloff>:/materials/MonsterHorn</normaloff>:/materials/MonsterHorn</iconset>
@@ -1954,6 +2122,12 @@
          </property>
          <item row="0" column="0">
           <widget class="QCheckBox" name="letterChkBox">
+           <property name="toolTip">
+            <string>Crawlin's Letter</string>
+           </property>
+           <property name="statusTip">
+            <string>Crawlin's Letter</string>
+           </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
              <normaloff>:/questItems/Letter</normaloff>:/questItems/Letter</iconset>
@@ -1968,6 +2142,12 @@
          </item>
          <item row="0" column="1">
           <widget class="QCheckBox" name="bugCageChkBox">
+           <property name="toolTip">
+            <string>Beedle's Bug Cage</string>
+           </property>
+           <property name="statusTip">
+            <string>Beedle's Bug Cage</string>
+           </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
              <normaloff>:/questItems/BugCage</normaloff>:/questItems/BugCage</iconset>
@@ -1982,6 +2162,12 @@
          </item>
          <item row="0" column="2">
           <widget class="QCheckBox" name="rattleChkBox">
+           <property name="toolTip">
+            <string>Rattle</string>
+           </property>
+           <property name="statusTip">
+            <string>Rattle</string>
+           </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
              <normaloff>:/questItems/Rattle</normaloff>:/questItems/Rattle</iconset>
@@ -1996,6 +2182,12 @@
          </item>
          <item row="0" column="3">
           <widget class="QCheckBox" name="gratitudeCrystalChkBox">
+           <property name="toolTip">
+            <string>Gratitude Crystal</string>
+           </property>
+           <property name="statusTip">
+            <string>Gratitude Crystal</string>
+           </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
              <normaloff>:/questItems/GratitudeCrystal</normaloff>:/questItems/GratitudeCrystal</iconset>
