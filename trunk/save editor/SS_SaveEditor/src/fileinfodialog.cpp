@@ -16,11 +16,12 @@
 #include "fileinfodialog.h"
 #include "ui_fileinfodialog.h"
 
-#include "gamefile.h"
+#include "igamefile.h"
+#include "skywardswordfile.h"
 
 #include <QRadioButton>
 
-FileInfoDialog::FileInfoDialog(QWidget *parent, GameFile& game) :
+FileInfoDialog::FileInfoDialog(QWidget *parent, SkywardSwordFile& game) :
     QDialog(parent),
     m_ui(new Ui::FileInfoDialog)
 {
@@ -37,23 +38,23 @@ FileInfoDialog::FileInfoDialog(QWidget *parent, GameFile& game) :
         m_ui->noFileInfoLbl->hide();
         switch(m_gameFile->GetRegion())
         {
-        case GameFile::NTSCURegion:
+        case SkywardSwordFile::NTSCURegion:
             m_ui->ntscURadioBtn->setChecked(true);
             break;
-        case GameFile::NTSCJRegion:
+        case SkywardSwordFile::NTSCJRegion:
             m_ui->ntscJRadioBtn->setChecked(true);
             break;
-        case GameFile::PALRegion:
+        case SkywardSwordFile::PALRegion:
             m_ui->palRadioBtn->setChecked(true);
             break;
         }
 
         int count = 0;
 
-        GameFile::Game oldGame = m_gameFile->GetGame();
+        SkywardSwordFile::Game oldGame = m_gameFile->GetGame();
         for (int i = 0; i < 3; i++)
         {
-            m_gameFile->SetGame((GameFile::Game)i);
+            m_gameFile->SetGame((SkywardSwordFile::Game)i);
             if (!m_gameFile->IsNew())
                 count++;
         }
@@ -84,9 +85,9 @@ void FileInfoDialog::onRegionChanged(QAbstractButton *)
         return;
 
     if (m_ui->ntscURadioBtn->isChecked())
-        m_gameFile->SetRegion(GameFile::NTSCURegion);
+        m_gameFile->SetRegion(SkywardSwordFile::NTSCURegion);
     else if (m_ui->ntscJRadioBtn->isChecked())
-        m_gameFile->SetRegion(GameFile::NTSCJRegion);
+        m_gameFile->SetRegion(SkywardSwordFile::NTSCJRegion);
     else if (m_ui->palRadioBtn->isChecked())
-        m_gameFile->SetRegion(GameFile::PALRegion);
+        m_gameFile->SetRegion(SkywardSwordFile::PALRegion);
 }

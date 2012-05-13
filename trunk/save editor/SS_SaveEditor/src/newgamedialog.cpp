@@ -15,9 +15,10 @@
 
 #include "newgamedialog.h"
 #include "ui_newgamedialog.h"
-#include "gamefile.h"
+#include "igamefile.h"
+#include "skywardswordfile.h"
 
-NewGameDialog::NewGameDialog(QWidget *parent, GameFile::Game game) :
+NewGameDialog::NewGameDialog(QWidget *parent, SkywardSwordFile::Game game) :
     QDialog(parent),
     m_ui(new Ui::NewGameDialog),
     m_game(game)
@@ -45,17 +46,17 @@ void NewGameDialog::onRegionChanged(QAbstractButton *button)
         m_ui->nameLineEdit->setText("Link");
 }
 
-GameFile* NewGameDialog::gameFile(GameFile* gameFile)
+SkywardSwordFile* NewGameDialog::gameFile(SkywardSwordFile* gameFile)
 {
     if (gameFile == NULL)
-        gameFile = new GameFile();
+        gameFile = new SkywardSwordFile();
 
     if (m_ui->ntscURadioBtn->isChecked())
-        gameFile->SetRegion     (GameFile::NTSCURegion);
+        gameFile->SetRegion     (SkywardSwordFile::NTSCURegion);
     else if (m_ui->ntscJRadioBtn->isChecked())
-        gameFile->SetRegion     (GameFile::NTSCJRegion);
+        gameFile->SetRegion     (SkywardSwordFile::NTSCJRegion);
     else if (m_ui->palRadioBtn->isChecked())
-        gameFile->SetRegion     (GameFile::PALRegion);
+        gameFile->SetRegion     (SkywardSwordFile::PALRegion);
 
     gameFile->CreateNewGame(m_game); // Create a new Game with defaults.
 
