@@ -628,6 +628,77 @@ void SkywardSwordFile::SetBug(Bug bug, bool val)
     }
 }
 
+bool SkywardSwordFile::GetMaterial(Material material)
+{
+    if (!m_data)
+        return false;
+
+    switch(material)
+    {
+        case HornetLarvaeMaterial:
+            return GetFlag(0x0934, 0x02);
+        case BirdFeatherMaterial:
+            return GetFlag(0x0934, 0x04);
+        case TumbleWeedMaterial:
+            return GetFlag(0x0934, 0x08);
+        case LizardTailMaterial:
+            return GetFlag(0x0934, 0x10);
+        case OreMaterial:
+            return GetFlag(0x0934, 0x20);
+        case AncientFlowerMaterial:
+            return GetFlag(0x0934, 0x40);
+        case AmberRelicMaterial:
+            return GetFlag(0x0934, 0x80);
+        case DuskRelicMaterial:
+            return GetFlag(0x0937, 0x01);
+        case Jellyblobmaterial:
+            return GetFlag(0x0937, 0x02);
+        case MonsterClawMaterial:
+            return GetFlag(0x0937, 0x04);
+        case MonsterHornMaterial:
+            return GetFlag(0x0937, 0x08);
+        case OrnamentalSkullMaterial:
+            return GetFlag(0x0937, 0x10);
+        case EvilCrystalMaterial:
+            return GetFlag(0x0937, 0x20);
+        case BlueBirdFeatherMaterial:
+            return GetFlag(0x0937, 0x40);
+        case GoldenSkullMaterial:
+            return GetFlag(0x0937, 0x80);
+        case GoddessPlumeMaterial:
+            return GetFlag(0x0936, 0x01);
+        default:
+            return false;
+    }
+}
+
+void SkywardSwordFile::SetMaterial(Material material, bool val)
+{
+    if (!m_data)
+        return;
+
+    switch(material)
+    {
+        case HornetLarvaeMaterial:    SetFlag(0x0934, 0x02, val); break;
+        case BirdFeatherMaterial:     SetFlag(0x0934, 0x04, val); break;
+        case TumbleWeedMaterial:      SetFlag(0x0934, 0x08, val); break;
+        case LizardTailMaterial:      SetFlag(0x0934, 0x10, val); break;
+        case OreMaterial:             SetFlag(0x0934, 0x20, val); break;
+        case AncientFlowerMaterial:   SetFlag(0x0934, 0x40, val); break;
+        case AmberRelicMaterial:      SetFlag(0x0934, 0x80, val); break;
+        case DuskRelicMaterial:       SetFlag(0x0937, 0x01, val); break;
+        case Jellyblobmaterial:       SetFlag(0x0937, 0x02, val); break;
+        case MonsterClawMaterial:     SetFlag(0x0937, 0x04, val); break;
+        case MonsterHornMaterial:     SetFlag(0x0937, 0x08, val); break;
+        case OrnamentalSkullMaterial: SetFlag(0x0937, 0x10, val); break;
+        case EvilCrystalMaterial:     SetFlag(0x0937, 0x20, val); break;
+        case BlueBirdFeatherMaterial: SetFlag(0x0937, 0x40, val); break;
+        case GoldenSkullMaterial:     SetFlag(0x0937, 0x80, val); break;
+        case GoddessPlumeMaterial:    SetFlag(0x0936, 0x01, val); break;
+        default: return;
+    }
+}
+
 ushort SkywardSwordFile::GetRupees() const
 {
     if (!m_data)
@@ -820,7 +891,15 @@ bool SkywardSwordFile::IsValidFile(const QString &filepath, Region* outRegion)
 
     Region region;
     fread(&region, 4, 1, file);
+    fseek(file, 0, SEEK_END);
+    quint32 size = ftell(file);
     fclose(file);
     *outRegion = region;
-    return (region == NTSCURegion || region == NTSCJRegion || region == PALRegion);
+    return (region == NTSCURegion || region == NTSCJRegion || region == PALRegion) && size == 0xFBE0;
 }
+
+// To support MSVC I have placed these here, why can't Microsoft follow real ANSI Standards? <.<
+const float SkywardSwordFile::DEFAULT_POS_X = -4798.150391;
+const float SkywardSwordFile::DEFAULT_POS_Y =  1237.629517;
+const float SkywardSwordFile::DEFAULT_POS_Z = -6573.722656;
+
