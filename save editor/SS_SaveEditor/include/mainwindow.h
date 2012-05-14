@@ -58,13 +58,13 @@ private slots:
     void onReload();
     void onClose();
     void onFileInfo();
-    //void onCheck(); // Checks for changes to file and prompts for an update.
+    void onCheck(); // Checks for changes to file and prompts for an update.
 
 private:
     void dragEnterEvent(QDragEnterEvent *event);
     void dragLeaveEvent(QDragLeaveEvent *event);
     void dropEvent(QDropEvent *event);
-    //bool event(QEvent *);
+    //bool eventFilter(QObject *, QEvent *);
     QTimer* m_checkTimer;
     void SetRegion(SkywardSwordFile::Region);
     void ToggleEnabled(bool visible);
@@ -74,6 +74,7 @@ private:
     SkywardSwordFile*         m_gameFile;
     SkywardSwordFile::Game    m_curGame;
     bool              m_isUpdating;
+    bool              m_isChecking;
 
     QActionGroup* m_gameGroup;
     QButtonGroup* m_regionGroup;

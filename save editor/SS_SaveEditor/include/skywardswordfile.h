@@ -129,6 +129,12 @@ public:
         TrueMasterSword
     };
 
+    enum AmountTesting
+    {
+        Left,
+        Right
+    };
+
     SkywardSwordFile(const QString& filepath = NULL, Game game = Game1);
     ~SkywardSwordFile();
 
@@ -206,6 +212,7 @@ public:
     void      SetCurrentArea(const QString& map);
     QString   GetCurrentRoom() const;
     void      SetCurrentRoom(const QString& map);
+    int       GetAmount(AmountTesting side, int offset) const;
 
     bool      IsNew() const;
     void      SetNew(bool val);

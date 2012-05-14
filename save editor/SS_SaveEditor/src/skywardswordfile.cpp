@@ -476,7 +476,7 @@ bool SkywardSwordFile::GetSword(Sword sword) const
         case MasterSword:
             return GetFlag(0x09E4, 0x04);
         case TrueMasterSword:
-            return GetFlag(0x09FB, 0x80);
+            return GetFlag(0x09F3, 0x80);
         default:
             return false;
     }
@@ -494,7 +494,7 @@ void SkywardSwordFile::SetSword(Sword sword, bool val)
         case LongSword:       SetFlag(0x09E4, 0x02, val); break;
         case WhiteSword:      SetFlag(0x09FB, 0x10, val); break;
         case MasterSword:     SetFlag(0x09E4, 0x04, val); break;
-        case TrueMasterSword: SetFlag(0x09FB, 0x80, val); break;
+        case TrueMasterSword: SetFlag(0x09F3, 0x80, val); break;
         default: return;
     }
 }
@@ -578,7 +578,7 @@ bool SkywardSwordFile::GetBug(Bug bug) const
     switch(bug)
     {
         case HornetBug:
-            return GetFlag(0x08F6, 0x08);
+            return GetFlag(0x08F6, 0x80);
         case ButterflyBug:
             return GetFlag(0x09F2, 0x80);
         case DragonflyBug:
@@ -612,7 +612,7 @@ void SkywardSwordFile::SetBug(Bug bug, bool val)
         return;
     switch(bug)
     {
-        case HornetBug:      SetFlag(0x08F6, 0x08, val); break;
+        case HornetBug:      SetFlag(0x08F6, 0x80, val); break;
         case ButterflyBug:   SetFlag(0x09F2, 0x80, val); break;
         case DragonflyBug:   SetFlag(0x09F5, 0x04, val); break;
         case FireflyBug:     SetFlag(0x09F5, 0x20, val); break;
@@ -651,7 +651,7 @@ bool SkywardSwordFile::GetMaterial(Material material)
             return GetFlag(0x0934, 0x80);
         case DuskRelicMaterial:
             return GetFlag(0x0937, 0x01);
-        case Jellyblobmaterial:
+        case JellyBlobMaterial:
             return GetFlag(0x0937, 0x02);
         case MonsterClawMaterial:
             return GetFlag(0x0937, 0x04);
@@ -687,7 +687,7 @@ void SkywardSwordFile::SetMaterial(Material material, bool val)
         case AncientFlowerMaterial:   SetFlag(0x0934, 0x40, val); break;
         case AmberRelicMaterial:      SetFlag(0x0934, 0x80, val); break;
         case DuskRelicMaterial:       SetFlag(0x0937, 0x01, val); break;
-        case Jellyblobmaterial:       SetFlag(0x0937, 0x02, val); break;
+        case JellyBlobMaterial:       SetFlag(0x0937, 0x02, val); break;
         case MonsterClawMaterial:     SetFlag(0x0937, 0x04, val); break;
         case MonsterHornMaterial:     SetFlag(0x0937, 0x08, val); break;
         case OrnamentalSkullMaterial: SetFlag(0x0937, 0x10, val); break;
@@ -896,6 +896,21 @@ bool SkywardSwordFile::IsValidFile(const QString &filepath, Region* outRegion)
     fclose(file);
     *outRegion = region;
     return (region == NTSCURegion || region == NTSCJRegion || region == PALRegion) && size == 0xFBE0;
+}
+
+int SkywardSwordFile::GetAmount(AmountTesting side, int offset) const
+{
+    if (!m_data)
+        return 0;
+    switch(side)
+    {
+        case Left:
+            return (*(int*)(m_data + GetGameOffset() + offset) << 7) & 127;
+        case Right:
+            return *(int*)(m_data + GetGameOffset() + offset) & 127;
+        default:
+            return 0;
+    }
 }
 
 // To support MSVC I have placed these here, why can't Microsoft follow real ANSI Standards? <.<

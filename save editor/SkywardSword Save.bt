@@ -185,7 +185,7 @@ struct GameData
             FSeek(GameOff + 0x0A3C);
             ushort amberRelic;
             FSeek(GameOff + 0x0A44);
-            ushort skyStagBeatle;
+            ushort fireflyStagBeatleAmount;
             ushort unkBug1;
             ushort gerudoDragonFly;
             FSeek(GameOff + 0x0A5E);
