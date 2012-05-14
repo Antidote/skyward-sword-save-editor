@@ -42,14 +42,15 @@ MainWindow::MainWindow(QWidget *parent) :
     m_ui(new Ui::MainWindow),
     m_gameFile(NULL),
     m_curGame(IGameFile::Game1),
-    m_isUpdating(false)
+    m_isUpdating(false),
+    m_isChecking(false)
 {
     m_ui->setupUi(this);
 
     setWindowFlags(Qt::Window | Qt::WindowMinimizeButtonHint);
     SetupActions();
     SetupConnections();
-
+    //qApp->installEventFilter(this);
 
    //m_checkTimer = new QTimer(this);
    // connect(m_checkTimer, SIGNAL(timeout()), this, SLOT(onCheck()));
@@ -108,13 +109,13 @@ void MainWindow::dropEvent(QDropEvent* event)
     statusBar()->clearMessage();
 }
 /*
-bool MainWindow::event(QEvent *event)
+bool MainWindow::eventFilter(QObject* obj, QEvent *evt)
 {
-    if (event->type() == QEvent::Enter)
+    if(obj==qApp && evt->type() == QEvent::WindowActivate)
         onCheck();
 
-    return QMainWindow::event(event);
-}
+    return QMainWindow::eventFilter(obj, evt);
+}*/
 
 // TODO: Need to make this more intelligent.
 void MainWindow::onCheck()
@@ -129,9 +130,8 @@ void MainWindow::onCheck()
             UpdateInfo();
         }
     }
-    //m_checkTimer->start(UPDATE_DELAY);
 }
-*/
+
 void MainWindow::SetupActions()
 {
     // File -> Open

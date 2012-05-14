@@ -60,8 +60,24 @@ GameOff + 0x09A0 - unk
 GameOff + 0x09A1 - unk
 GameOff + 0x09A2 - unk
 GameOff + 0x0A3C - Amber Relic
-GameOff + 0x0A44 - Sky Stag beatle
-GameOff + 0x0A46 - Gerudo DragonFly
+GameOff + 0x0A34 - Golden Skull Goddess Plume amount
+Gameoff + 0x0A36 - Evil Crystal Blue Bird Feather amount
+GameOff + 0x0A38 - Monster Horn Ornamental Skull amount
+GameOff + 0x0A3A - Jelly Blob Monster Claw amount
+GameOff + 0x0A3C - Amber Relic Dusk Relic amount
+GameOff + 0x0A3E - Eldin Ore Ancient Flower amount
+Gameoff + 0x0A40 - Tumble Weed Lizard Tail amount
+GameOff + 0x0A42 - Deku Hornet Larvae Bird Feather amount
+GameOff + 0x0A44 - Sky Stag beetle Starry Firefly amount 
+GameOff + 0x0A46 - Gerudo DragonFly Eldin Roller amount
+GameOff + 0x0A48 - Sand Cicada Lanayru Ant amount
+GameOff + 0x0A4A - Blessed Butterfly Volcanic Ladybug amount
+GameOff + 0x0A4C - Deku Hornet Skyloft Mantis amount
+GameOff + 0x0A4E - Faron Grasshopper Woodland Rhino Beetle
+GameOff + 0x0A50 - Gratitude Crystals
+GameOff + 0x0A52 - unk
+GameOff + 0x0A54 - unk
+GameOff + 0x0A56 - unk
 GameOff + 0x0A5E - Rupees
 GameOff + 0x0A60 - Slingshot ammo. (no it's not a short :P)
 GameOff + 0x0A61 - Slingshot ammo. 
