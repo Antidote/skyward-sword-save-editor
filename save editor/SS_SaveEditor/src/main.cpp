@@ -31,14 +31,14 @@ void loadStyleSheet() {
     QString style;
     /* ...to open the file */
     if(data.open(QFile::ReadOnly)) {
-        /* QTextStream... */
-        QTextStream styleIn(&data);
-        /* ...read file to a string. */
-        style = styleIn.readAll();
-        data.close();
-        /* We'll use qApp macro to get the QApplication pointer
-         * and set the style sheet application wide. */
-        qApp->setStyleSheet(style);
+                 /* QTextStream... */
+                 QTextStream styleIn(&data);
+                 /* ...read file to a string. */
+                 style = styleIn.readAll();
+                 data.close();
+                 /* We'll use qApp macro to get the QApplication pointer
+                  * and set the style sheet application wide. */
+                 qApp->setStyleSheet(style);
     }
 }
 

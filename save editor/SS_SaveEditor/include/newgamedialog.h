@@ -40,7 +40,7 @@ private slots:
     void onRegionChanged(QAbstractButton*);
 private:
     Ui::NewGameDialog* m_ui;
-    SkywardSwordFile::Game     m_game;
+    SkywardSwordFile::Game        m_game;
 };
 
 #endif // NEWGAMEDIALOG_H

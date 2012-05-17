@@ -1,0 +1,19 @@
+---BUGS---
+0x0A44:
+Left - Starry Firefly
+Right - Sky Stag Beetle
+0x0A46:
+Left - Eldin Roller
+Right - Gerudo Dragonfly
+0x0A48:
+Left - Sand Cicada
+Right - Lanayru Ant
+0x0A4A:
+Left - Blessed Butterfly
+Right - Volcanic Ladybug
+0x0A4C:
+Left - Skyloft Mantis
+Right - Deku Hornet
+0x0A4E:
+Left -  Woodland Rhino Beetle
+Right -  Faron Grasshopper

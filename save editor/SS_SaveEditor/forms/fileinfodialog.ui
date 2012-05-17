@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>430</width>
-    <height>216</height>
+    <height>263</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,110 +19,151 @@
   <property name="minimumSize">
    <size>
     <width>430</width>
-    <height>216</height>
+    <height>263</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>430</width>
-    <height>216</height>
+    <height>263</height>
    </size>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2">
-   <item>
-    <widget class="QLabel" name="noFileInfoLbl">
-     <property name="text">
-      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;No File Info&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="scaledContents">
-      <bool>true</bool>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item>
+  <layout class="QGridLayout" name="gridLayout">
+   <property name="margin">
+    <number>4</number>
+   </property>
+   <property name="spacing">
+    <number>2</number>
+   </property>
+   <item row="0" column="0">
     <widget class="QGroupBox" name="fileInfoGrpBox">
      <property name="title">
       <string>FileInfo</string>
      </property>
-     <widget class="QGroupBox" name="groupBox">
-      <property name="geometry">
-       <rect>
-        <x>17</x>
-        <y>25</y>
-        <width>253</width>
-        <height>58</height>
-       </rect>
-      </property>
-      <property name="title">
-       <string>Region</string>
-      </property>
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <item>
-        <widget class="QRadioButton" name="ntscURadioBtn">
-         <property name="text">
-          <string>NTSC-U</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QRadioButton" name="ntscJRadioBtn">
-         <property name="text">
-          <string>NTSC-J</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QRadioButton" name="palRadioBtn">
-         <property name="text">
-          <string>PAL</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QLabel" name="checkSumLbl">
-      <property name="geometry">
-       <rect>
-        <x>17</x>
-        <y>89</y>
-        <width>386</width>
-        <height>17</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLabel" name="adventureCountLbl">
-      <property name="geometry">
-       <rect>
-        <x>17</x>
-        <y>112</y>
-        <width>386</width>
-        <height>17</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLabel" name="currentAdventureLbl">
-      <property name="geometry">
-       <rect>
-        <x>17</x>
-        <y>135</y>
-        <width>386</width>
-        <height>17</height>
-       </rect>
-      </property>
-     </widget>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="bannerImg">
+          <property name="minimumSize">
+           <size>
+            <width>192</width>
+            <height>64</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>192</width>
+            <height>64</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:600;&quot;&gt;NO BANNER&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="scaledContents">
+           <bool>true</bool>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+      <item row="1" column="0">
+       <widget class="QGroupBox" name="groupBox">
+        <property name="title">
+         <string>Region</string>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QRadioButton" name="ntscURadioBtn">
+           <property name="text">
+            <string>NTSC-U</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="ntscJRadioBtn">
+           <property name="text">
+            <string>NTSC-J</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="palRadioBtn">
+           <property name="text">
+            <string>PAL</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="checkSumLbl">
+        <property name="text">
+         <string>Checksum:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="adventureCountLbl">
+        <property name="text">
+         <string>Adventure Count:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="currentAdventureLbl">
+        <property name="text">
+         <string>Current Adventure:</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+     <zorder>groupBox</zorder>
+     <zorder>checkSumLbl</zorder>
+     <zorder>adventureCountLbl</zorder>
+     <zorder>currentAdventureLbl</zorder>
+     <zorder></zorder>
+     <zorder></zorder>
     </widget>
    </item>
-   <item>
+   <item row="1" column="0">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>

@@ -19,8 +19,11 @@
 #include <QFile>
 #include "igamefile.h"
 #include "CRC32.h"
-
+#include <QImage>
+#include "WiiQt/savedatabin.h"
 class QDateTime;
+struct SaveGame;
+
 
 
 #define TICKS_PER_SECOND 60750000
@@ -54,85 +57,79 @@ public:
 
     enum Region
     {
-        NTSCURegion = 0x45554F53,
-        NTSCJRegion = 0x4A554F53,
-        PALRegion   = 0x50554F53
+                 NTSCURegion = 0x45554F53,
+                 NTSCJRegion = 0x4A554F53,
+                 PALRegion   = 0x50554F53
     };
     enum Bug
     {
-        HornetBug,
-        ButterflyBug,
-        DragonflyBug,
-        FireflyBug,
-        RhinoBeetleBug,
-        LadybugBug, // o.o that looks weird
-        SandCicadaBug,
-        StagBeetleBug,
-        GrasshopperBug,
-        MantisBug,
-        AntBug,
-        RollerBug
+                 HornetBug,
+                 ButterflyBug,
+                 DragonflyBug,
+                 FireflyBug,
+                 RhinoBeetleBug,
+                 LadybugBug, // o.o that looks weird
+                 SandCicadaBug,
+                 StagBeetleBug,
+                 GrasshopperBug,
+                 MantisBug,
+                 AntBug,
+                 RollerBug
     };
 
     enum WeaponEquipment
     {
-        SlingshotWeapon,
-        ScattershotWeapon,
-        BugnetWeapon,
-        BigBugnetWeapon,
-        BeetleWeapon,
-        HookBeetleWeapon,
-        QuickBeetleWeapon,
-        ToughBeetleWeapon,
-        BombWeapon,
-        GustBellowsWeapon,
-        WhipWeapon,
-        ClawshotWeapon,
-        BowWeapon,
-        IronBowWeapon,
-        SacredBowWeapon,
-        HarpEquipment,
-        SailClothEquipment,
-        DiggingMitts,
-        MoleMittsEquipment,
-        FireShieldEaringsEquipment,
-        DragonScaleEquipment
+                 SlingshotWeapon,
+                 ScattershotWeapon,
+                 BugnetWeapon,
+                 BigBugnetWeapon,
+                 BeetleWeapon,
+                 HookBeetleWeapon,
+                 QuickBeetleWeapon,
+                 ToughBeetleWeapon,
+                 BombWeapon,
+                 GustBellowsWeapon,
+                 WhipWeapon,
+                 ClawshotWeapon,
+                 BowWeapon,
+                 IronBowWeapon,
+                 SacredBowWeapon,
+                 HarpEquipment,
+                 SailClothEquipment,
+                 DiggingMitts,
+                 MoleMittsEquipment,
+                 FireShieldEaringsEquipment,
+                 DragonScaleEquipment
     };
 
     enum Material
     {
-        HornetLarvaeMaterial,
-        BirdFeatherMaterial,
-        TumbleWeedMaterial,
-        LizardTailMaterial,
-        OreMaterial,
-        AncientFlowerMaterial,
-        AmberRelicMaterial,
-        DuskRelicMaterial,
-        JellyBlobMaterial,
-        MonsterClawMaterial,
-        MonsterHornMaterial,
-        OrnamentalSkullMaterial,
-        EvilCrystalMaterial,
-        BlueBirdFeatherMaterial,
-        GoldenSkullMaterial,
-        GoddessPlumeMaterial
+                 HornetLarvaeMaterial,
+                 BirdFeatherMaterial,
+                 TumbleWeedMaterial,
+                 LizardTailMaterial,
+                 OreMaterial,
+                 AncientFlowerMaterial,
+                 AmberRelicMaterial,
+                 DuskRelicMaterial,
+                 JellyBlobMaterial,
+                 MonsterClawMaterial,
+                 MonsterHornMaterial,
+                 OrnamentalSkullMaterial,
+                 EvilCrystalMaterial,
+                 BlueBirdFeatherMaterial,
+                 GoldenSkullMaterial,
+                 GoddessPlumeMaterial
     };
 
     enum Sword
     {
-        PracticeSword,
-        GoddessSword,
-        LongSword,
-        WhiteSword,
-        MasterSword,
-        TrueMasterSword
-    };
-
-    enum AmountTesting
-    {
-        Left,
-        Right
+                 PracticeSword,
+                 GoddessSword,
+                 LongSword,
+                 WhiteSword,
+                 MasterSword,
+                 TrueMasterSword
     };
 
     SkywardSwordFile(const QString& filepath = NULL, Game game = Game1);
@@ -151,84 +148,95 @@ public:
     /// Checks against the stored checksum for the entire file,
     /// if the file on disk differs from the stored checksum,
     /// the file has changed (should probably use an SHA1 or MD5 hash for the but w/e).
-    bool      HasFileOnDiskChanged();
-    void      Close(); //<! Closes the current file without saving.
-    void      Reload(Game game);
+    bool            HasFileOnDiskChanged();
+    void            Close(); //<! Closes the current file without saving.
+    void            Reload(Game game);
 
-    bool      IsOpen() const;
+    bool            IsOpen() const;
 
     QString   GetFilename() const;
-    void      SetFilename(const QString& filepath);
+    void            SetFilename(const QString& filepath);
 
-    Game      GetGame() const;
-    void      SetGame(Game game);
+    Game            GetGame() const;
+    void            SetGame(Game game);
 
     Region    GetRegion() const;
-    void      SetRegion(Region);
+    void            SetRegion(Region);
     PlayTime  GetPlayTime() const;
-    void      SetPlayTime(PlayTime val);
+    void            SetPlayTime(PlayTime val);
     QDateTime GetSaveTime() const;
-    void      SetSaveTime(QDateTime val);
+    void            SetSaveTime();
     Vector3   GetPlayerPosition() const;
-    void      SetPlayerPosition(float x, float y, float z);
-    void      SetPlayerPosition(Vector3 pos);
+    void            SetPlayerPosition(float x, float y, float z);
+    void            SetPlayerPosition(Vector3 pos);
     Vector3   GetPlayerRotation() const;
-    void      SetPlayerRotation(float roll, float pitch, float yaw);
-    void      SetPlayerRotation(Vector3 rotation);
+    void            SetPlayerRotation(float roll, float pitch, float yaw);
+    void            SetPlayerRotation(Vector3 rotation);
     Vector3   GetCameraPosition() const;
-    void      SetCameraPosition(float x, float y, float z);
-    void      SetCameraPosition(Vector3 position);
+    void            SetCameraPosition(float x, float y, float z);
+    void            SetCameraPosition(Vector3 position);
     Vector3   GetCameraRotation() const;
-    void      SetCameraRotation(float roll, float pitch, float yaw);
-    void      SetCameraRotation(Vector3 rotation);
+    void            SetCameraRotation(float roll, float pitch, float yaw);
+    void            SetCameraRotation(Vector3 rotation);
     QString   GetPlayerName() const;
-    void      SetPlayerName(const QString& name);
-    bool      IsHeroMode() const;
-    void      SetHeroMode(bool val);
-    bool      GetIntroViewed() const;
-    void      SetIntroViewed(bool val);
-    bool      GetSword(Sword sword) const;
-    void      SetSword(Sword sword, bool val);
-    bool      GetEquipment(WeaponEquipment weapon) const;
-    void      SetEquipment(WeaponEquipment, bool val);
-    bool      GetBug(Bug bug) const;
-    void      SetBug(Bug bug, bool val);
-    bool      GetMaterial(Material material);
-    void      SetMaterial(Material material, bool val);
+    void            SetPlayerName(const QString& name);
+    bool            IsHeroMode() const;
+    void            SetHeroMode(bool val);
+    bool            GetIntroViewed() const;
+    void            SetIntroViewed(bool val);
+    bool            GetSword(Sword sword) const;
+    void            SetSword(Sword sword, bool val);
+    bool            GetEquipment(WeaponEquipment weapon) const;
+    void            SetEquipment(WeaponEquipment, bool val);
+    bool            GetBug(Bug bug) const;
+    void            SetBug(Bug bug, bool val);
+    quint32   GetBugQuantity(Bug bug) const;
+    void            SetBugQuantity(Bug bug, quint32 val);
+    bool            GetMaterial(Material material);
+    void            SetMaterial(Material material, bool val);
     ushort    GetRupees() const;
-    void      SetRupees(ushort val);
+    void            SetRupees(ushort val);
     ushort    GetTotalHP() const;
-    void      SetTotalHP(ushort val);
+    void            SetTotalHP(ushort val);
     ushort    GetUnkHP() const;
-    void      SetUnkHP(ushort val);
+    void            SetUnkHP(ushort val);
     ushort    GetCurrentHP() const;
-    void      SetCurrentHP(ushort val);
-    uint      GetChecksum() const;
-    uint      GetRoomID() const;
-    void      SetRoomID(uint val);
+    void            SetCurrentHP(ushort val);
+    uint            GetChecksum() const;
+    uint            GetRoomID() const;
+    void            SetRoomID(uint val);
     QString   GetCurrentMap() const;
-    void      SetCurrentMap(const QString& map);
+    void            SetCurrentMap(const QString& map);
     QString   GetCurrentArea() const;
-    void      SetCurrentArea(const QString& map);
+    void            SetCurrentArea(const QString& map);
     QString   GetCurrentRoom() const;
-    void      SetCurrentRoom(const QString& map);
-    int       GetAmount(AmountTesting side, int offset) const;
+    void            SetCurrentRoom(const QString& map);
 
-    bool      IsNew() const;
-    void      SetNew(bool val);
+    bool            IsNew() const;
+    void            SetNew(bool val);
 
+    void            SetData(char* data);
+    bool            LoadDataBin(const QString& filepath = NULL, Game game = Game1);
+    bool            TestDataBinSave();
+    const QImage&   GetBanner() const;
     static bool IsValidFile(const QString& filepath, Region* region);
 private:
+
+    quint32 GetQuantity(bool isRight, int offset) const;
+    void    SetQuantity(bool isRight, int offset, quint32 val);
     uint    GetGameOffset() const;
     QString ReadNullTermString(int offset) const;
     void    WriteNullTermString(const QString& val, int offset);
     bool    GetFlag(quint32 offset, quint32 flag) const;
     void    SetFlag(quint32 offset, quint32 flag, bool val);
     char*   m_data;
+    QImage  m_banner;
     QString m_filename;
     Game    m_game;
     bool    m_isOpen;
     quint32 m_fileChecksum; // The checksum of the entire file.
+    SaveGame m_saveGame;
+    SaveDataBin m_dataBin;
     CRC32*  m_crcEngine;
 };
 

@@ -9,20 +9,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>730</width>
-    <height>535</height>
+    <width>750</width>
+    <height>550</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>730</width>
-    <height>535</height>
+    <width>750</width>
+    <height>550</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>730</width>
-    <height>535</height>
+    <width>750</width>
+    <height>550</height>
    </size>
   </property>
   <property name="acceptDrops">
@@ -30,9 +30,6 @@
   </property>
   <property name="windowTitle">
    <string>WiiKing2 Editor</string>
-  </property>
-  <property name="styleSheet">
-   <string notr="true"/>
   </property>
   <property name="iconSize">
    <size>
@@ -85,7 +82,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="playerTab">
        <attribute name="title">
@@ -494,6 +491,15 @@
              </item>
              <item>
               <widget class="QDateTimeEdit" name="saveTimeEdit">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="readOnly">
+                <bool>true</bool>
+               </property>
+               <property name="buttonSymbols">
+                <enum>QAbstractSpinBox::NoButtons</enum>
+               </property>
                <property name="dateTime">
                 <datetime>
                  <hour>0</hour>
@@ -512,7 +518,7 @@
                 </date>
                </property>
                <property name="calendarPopup">
-                <bool>true</bool>
+                <bool>false</bool>
                </property>
               </widget>
              </item>
@@ -819,7 +825,7 @@
                </property>
                <property name="icon">
                 <iconset resource="../resources/resources.qrc">
-                 <normaloff>:/weapons/Beetle</normaloff>:/weapons/Beetle</iconset>
+                 <normaloff>:/Weapons/Beetle</normaloff>:/Weapons/Beetle</iconset>
                </property>
                <property name="iconSize">
                 <size>
@@ -842,7 +848,7 @@
                </property>
                <property name="icon">
                 <iconset resource="../resources/resources.qrc">
-                 <normaloff>:/weapons/HookBeetle</normaloff>:/weapons/HookBeetle</iconset>
+                 <normaloff>:/Weapons/HookBeetle</normaloff>:/Weapons/HookBeetle</iconset>
                </property>
                <property name="iconSize">
                 <size>
@@ -865,7 +871,7 @@
                </property>
                <property name="icon">
                 <iconset resource="../resources/resources.qrc">
-                 <normaloff>:/weapons/SpeedBeetle</normaloff>:/weapons/SpeedBeetle</iconset>
+                 <normaloff>:/Weapons/SpeedBeetle</normaloff>:/Weapons/SpeedBeetle</iconset>
                </property>
                <property name="iconSize">
                 <size>
@@ -888,7 +894,7 @@
                </property>
                <property name="icon">
                 <iconset resource="../resources/resources.qrc">
-                 <normaloff>:/weapons/ToughBeetle</normaloff>:/weapons/ToughBeetle</iconset>
+                 <normaloff>:/Weapons/ToughBeetle</normaloff>:/Weapons/ToughBeetle</iconset>
                </property>
                <property name="iconSize">
                 <size>
@@ -920,7 +926,7 @@
                </property>
                <property name="icon">
                 <iconset resource="../resources/resources.qrc">
-                 <normaloff>:/weapons/Bow</normaloff>:/weapons/Bow</iconset>
+                 <normaloff>:/Weapons/Bow</normaloff>:/Weapons/Bow</iconset>
                </property>
                <property name="iconSize">
                 <size>
@@ -937,7 +943,7 @@
                </property>
                <property name="icon">
                 <iconset resource="../resources/resources.qrc">
-                 <normaloff>:/weapons/IronBow</normaloff>:/weapons/IronBow</iconset>
+                 <normaloff>:/Weapons/IronBow</normaloff>:/Weapons/IronBow</iconset>
                </property>
                <property name="iconSize">
                 <size>
@@ -957,7 +963,7 @@
                </property>
                <property name="icon">
                 <iconset resource="../resources/resources.qrc">
-                 <normaloff>:/weapons/SacredBow</normaloff>:/weapons/SacredBow</iconset>
+                 <normaloff>:/Weapons/SacredBow</normaloff>:/Weapons/SacredBow</iconset>
                </property>
                <property name="iconSize">
                 <size>
@@ -997,7 +1003,7 @@
              </property>
              <property name="icon">
               <iconset resource="../resources/resources.qrc">
-               <normaloff>:/weapons/Bugnet</normaloff>:/weapons/Bugnet</iconset>
+               <normaloff>:/Weapons/Bugnet</normaloff>:/Weapons/Bugnet</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -1020,7 +1026,7 @@
              </property>
              <property name="icon">
               <iconset resource="../resources/resources.qrc">
-               <normaloff>:/weapons/BigBugnet</normaloff>:/weapons/BigBugnet</iconset>
+               <normaloff>:/Weapons/BigBugnet</normaloff>:/Weapons/BigBugnet</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -1058,7 +1064,7 @@
              </property>
              <property name="icon">
               <iconset resource="../resources/resources.qrc">
-               <normaloff>:/weapons/SlingShot</normaloff>:/weapons/SlingShot</iconset>
+               <normaloff>:/Weapons/SlingShot</normaloff>:/Weapons/SlingShot</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -1081,7 +1087,7 @@
              </property>
              <property name="icon">
               <iconset resource="../resources/resources.qrc">
-               <normaloff>:/weapons/SlingShot</normaloff>:/weapons/SlingShot</iconset>
+               <normaloff>:/Weapons/SlingShot</normaloff>:/Weapons/SlingShot</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -1109,8 +1115,8 @@
               <string>Fire Shield Earrings</string>
              </property>
              <property name="icon">
-              <iconset>
-               <normaloff>:/equipment/FireShieldEarings</normaloff>:/equipment/FireShieldEarings</iconset>
+              <iconset resource="../resources/resources.qrc">
+               <normaloff>:/Equipment/FireShieldEarings</normaloff>:/Equipment/FireShieldEarings</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -1129,8 +1135,8 @@
               <string>Water Dragon Scale</string>
              </property>
              <property name="icon">
-              <iconset>
-               <normaloff>:/equipment/WaterDragonScale</normaloff>:/equipment/WaterDragonScale</iconset>
+              <iconset resource="../resources/resources.qrc">
+               <normaloff>:/Equipment/WaterDragonScale</normaloff>:/Equipment/WaterDragonScale</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -1168,7 +1174,7 @@
              </property>
              <property name="icon">
               <iconset resource="../resources/resources.qrc">
-               <normaloff>:/weapons/Harp</normaloff>:/weapons/Harp</iconset>
+               <normaloff>:/Weapons/Harp</normaloff>:/Weapons/Harp</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -1191,7 +1197,7 @@
              </property>
              <property name="icon">
               <iconset resource="../resources/resources.qrc">
-               <normaloff>:/weapons/Whip</normaloff>:/weapons/Whip</iconset>
+               <normaloff>:/Weapons/Whip</normaloff>:/Weapons/Whip</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -1214,7 +1220,7 @@
              </property>
              <property name="icon">
               <iconset resource="../resources/resources.qrc">
-               <normaloff>:/weapons/GustBellows</normaloff>:/weapons/GustBellows</iconset>
+               <normaloff>:/Weapons/GustBellows</normaloff>:/Weapons/GustBellows</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -1237,7 +1243,7 @@
              </property>
              <property name="icon">
               <iconset resource="../resources/resources.qrc">
-               <normaloff>:/weapons/DoubleClawshot</normaloff>:/weapons/DoubleClawshot</iconset>
+               <normaloff>:/Weapons/DoubleClawshot</normaloff>:/Weapons/DoubleClawshot</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -1256,8 +1262,8 @@
               <string>Digging Mitts</string>
              </property>
              <property name="icon">
-              <iconset>
-               <normaloff>:/equipment/DiggingMitts</normaloff>:/equipment/DiggingMitts</iconset>
+              <iconset resource="../resources/resources.qrc">
+               <normaloff>:/Equipment/DiggingMitts</normaloff>:/Equipment/DiggingMitts</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -1276,8 +1282,8 @@
               <string>Sail Cloth</string>
              </property>
              <property name="icon">
-              <iconset>
-               <normaloff>:/equipment/SailCloth</normaloff>:/equipment/SailCloth</iconset>
+              <iconset resource="../resources/resources.qrc">
+               <normaloff>:/Equipment/SailCloth</normaloff>:/Equipment/SailCloth</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -1296,8 +1302,8 @@
               <string>Mole Mitts</string>
              </property>
              <property name="icon">
-              <iconset>
-               <normaloff>:/equipment/MoleMitts</normaloff>:/equipment/MoleMitts</iconset>
+              <iconset resource="../resources/resources.qrc">
+               <normaloff>:/Equipment/MoleMitts</normaloff>:/Equipment/MoleMitts</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -1320,7 +1326,7 @@
              </property>
              <property name="icon">
               <iconset resource="../resources/resources.qrc">
-               <normaloff>:/weapons/Bomb</normaloff>:/weapons/Bomb</iconset>
+               <normaloff>:/Weapons/Bomb</normaloff>:/Weapons/Bomb</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -1358,7 +1364,7 @@
              </property>
              <property name="icon">
               <iconset resource="../resources/resources.qrc">
-               <normaloff>:/swords/GoddessSword</normaloff>:/swords/GoddessSword</iconset>
+               <normaloff>:/Swords/GoddessSword</normaloff>:/Swords/GoddessSword</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -1381,7 +1387,7 @@
              </property>
              <property name="icon">
               <iconset resource="../resources/resources.qrc">
-               <normaloff>:/swords/MasterSword</normaloff>:/swords/MasterSword</iconset>
+               <normaloff>:/Swords/MasterSword</normaloff>:/Swords/MasterSword</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -1401,7 +1407,7 @@
              </property>
              <property name="icon">
               <iconset resource="../resources/resources.qrc">
-               <normaloff>:/swords/TrueMasterSword</normaloff>:/swords/TrueMasterSword</iconset>
+               <normaloff>:/Swords/TrueMasterSword</normaloff>:/Swords/TrueMasterSword</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -1424,7 +1430,7 @@
              </property>
              <property name="icon">
               <iconset resource="../resources/resources.qrc">
-               <normaloff>:/swords/LongSword</normaloff>:/swords/LongSword</iconset>
+               <normaloff>:/Swords/LongSword</normaloff>:/Swords/LongSword</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -1444,7 +1450,7 @@
              </property>
              <property name="icon">
               <iconset resource="../resources/resources.qrc">
-               <normaloff>:/swords/GoddessWhiteSword</normaloff>:/swords/GoddessWhiteSword</iconset>
+               <normaloff>:/Swords/GoddessWhiteSword</normaloff>:/Swords/GoddessWhiteSword</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -1467,7 +1473,7 @@
              </property>
              <property name="icon">
               <iconset resource="../resources/resources.qrc">
-               <normaloff>:/swords/PracticeSword</normaloff>:/swords/PracticeSword</iconset>
+               <normaloff>:/Swords/PracticeSword</normaloff>:/Swords/PracticeSword</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -1498,18 +1504,30 @@
          <rect>
           <x>10</x>
           <y>10</y>
-          <width>351</width>
-          <height>181</height>
+          <width>361</width>
+          <height>271</height>
          </rect>
         </property>
         <property name="title">
          <string>Bugs</string>
         </property>
         <layout class="QGridLayout" name="gridLayout_11">
-         <property name="margin">
+         <property name="leftMargin">
+          <number>4</number>
+         </property>
+         <property name="topMargin">
           <number>2</number>
          </property>
-         <property name="spacing">
+         <property name="rightMargin">
+          <number>4</number>
+         </property>
+         <property name="bottomMargin">
+          <number>4</number>
+         </property>
+         <property name="horizontalSpacing">
+          <number>2</number>
+         </property>
+         <property name="verticalSpacing">
           <number>0</number>
          </property>
          <item row="0" column="0">
@@ -1522,7 +1540,7 @@
            </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
-             <normaloff>:/bugs/DekuHornet</normaloff>:/bugs/DekuHornet</iconset>
+             <normaloff>:/Bugs/DekuHornet</normaloff>:/Bugs/DekuHornet</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -1542,7 +1560,7 @@
            </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
-             <normaloff>:/bugs/BlessedButterfly</normaloff>:/bugs/BlessedButterfly</iconset>
+             <normaloff>:/Bugs/BlessedButterfly</normaloff>:/Bugs/BlessedButterfly</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -1562,7 +1580,7 @@
            </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
-             <normaloff>:/bugs/GerudoDragonfly</normaloff>:/bugs/GerudoDragonfly</iconset>
+             <normaloff>:/Bugs/GerudoDragonfly</normaloff>:/Bugs/GerudoDragonfly</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -1582,87 +1600,7 @@
            </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
-             <normaloff>:/bugs/StarryFirefly</normaloff>:/bugs/StarryFirefly</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>64</width>
-             <height>64</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QCheckBox" name="rhinoBeetleChkBox">
-           <property name="toolTip">
-            <string>Woodland Rhino Beetle</string>
-           </property>
-           <property name="statusTip">
-            <string>Woodland Rhino Beetle</string>
-           </property>
-           <property name="icon">
-            <iconset resource="../resources/resources.qrc">
-             <normaloff>:/bugs/WoodlandRhinoBeetle</normaloff>:/bugs/WoodlandRhinoBeetle</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>64</width>
-             <height>64</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QCheckBox" name="ladybugChkBox">
-           <property name="toolTip">
-            <string>Volcanic Ladybug</string>
-           </property>
-           <property name="statusTip">
-            <string>Volcanic Ladybug</string>
-           </property>
-           <property name="icon">
-            <iconset resource="../resources/resources.qrc">
-             <normaloff>:/bugs/VolcanicLadyBug</normaloff>:/bugs/VolcanicLadyBug</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>64</width>
-             <height>64</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="2">
-          <widget class="QCheckBox" name="sandCicadaChkBox">
-           <property name="toolTip">
-            <string>Sand Cicada</string>
-           </property>
-           <property name="statusTip">
-            <string>Sand Cicada</string>
-           </property>
-           <property name="icon">
-            <iconset resource="../resources/resources.qrc">
-             <normaloff>:/bugs/SandCicada</normaloff>:/bugs/SandCicada</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>64</width>
-             <height>64</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="3">
-          <widget class="QCheckBox" name="stagBeetleChkBox">
-           <property name="toolTip">
-            <string>Sky Stag Beetle</string>
-           </property>
-           <property name="statusTip">
-            <string>Sky Stag Beetle</string>
-           </property>
-           <property name="icon">
-            <iconset resource="../resources/resources.qrc">
-             <normaloff>:/bugs/SkyStagBeetle</normaloff>:/bugs/SkyStagBeetle</iconset>
+             <normaloff>:/Bugs/StarryFirefly</normaloff>:/Bugs/StarryFirefly</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -1673,7 +1611,87 @@
           </widget>
          </item>
          <item row="2" column="0">
-          <widget class="QCheckBox" name="grassHopperChkBox">
+          <widget class="QCheckBox" name="rhinoBeetleChkBox">
+           <property name="toolTip">
+            <string>Woodland Rhino Beetle</string>
+           </property>
+           <property name="statusTip">
+            <string>Woodland Rhino Beetle</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../resources/resources.qrc">
+             <normaloff>:/Bugs/WoodlandRhinoBeetle</normaloff>:/Bugs/WoodlandRhinoBeetle</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>64</width>
+             <height>64</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QCheckBox" name="ladybugChkBox">
+           <property name="toolTip">
+            <string>Volcanic Ladybug</string>
+           </property>
+           <property name="statusTip">
+            <string>Volcanic Ladybug</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../resources/resources.qrc">
+             <normaloff>:/Bugs/VolcanicLadyBug</normaloff>:/Bugs/VolcanicLadyBug</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>64</width>
+             <height>64</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="2">
+          <widget class="QCheckBox" name="sandCicadaChkBox">
+           <property name="toolTip">
+            <string>Sand Cicada</string>
+           </property>
+           <property name="statusTip">
+            <string>Sand Cicada</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../resources/resources.qrc">
+             <normaloff>:/Bugs/SandCicada</normaloff>:/Bugs/SandCicada</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>64</width>
+             <height>64</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="3">
+          <widget class="QCheckBox" name="stagBeetleChkBox">
+           <property name="toolTip">
+            <string>Sky Stag Beetle</string>
+           </property>
+           <property name="statusTip">
+            <string>Sky Stag Beetle</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../resources/resources.qrc">
+             <normaloff>:/Bugs/SkyStagBeetle</normaloff>:/Bugs/SkyStagBeetle</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>64</width>
+             <height>64</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0">
+          <widget class="QCheckBox" name="grasshopperChkBox">
            <property name="toolTip">
             <string>Faron Grasshopper</string>
            </property>
@@ -1685,7 +1703,7 @@
            </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
-             <normaloff>:/bugs/FaronGrasshopper</normaloff>:/bugs/FaronGrasshopper</iconset>
+             <normaloff>:/Bugs/FaronGrasshopper</normaloff>:/Bugs/FaronGrasshopper</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -1695,7 +1713,7 @@
            </property>
           </widget>
          </item>
-         <item row="2" column="1">
+         <item row="5" column="1">
           <widget class="QCheckBox" name="mantisChkBox">
            <property name="toolTip">
             <string>Skyloft Mantis</string>
@@ -1705,7 +1723,7 @@
            </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
-             <normaloff>:/bugs/LoftMantis</normaloff>:/bugs/LoftMantis</iconset>
+             <normaloff>:/Bugs/LoftMantis</normaloff>:/Bugs/LoftMantis</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -1715,7 +1733,7 @@
            </property>
           </widget>
          </item>
-         <item row="2" column="2">
+         <item row="5" column="2">
           <widget class="QCheckBox" name="antChkBox">
            <property name="toolTip">
             <string>Lanayru Ant</string>
@@ -1725,7 +1743,7 @@
            </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
-             <normaloff>:/bugs/LanayruAnt</normaloff>:/bugs/LanayruAnt</iconset>
+             <normaloff>:/Bugs/LanayruAnt</normaloff>:/Bugs/LanayruAnt</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -1735,7 +1753,7 @@
            </property>
           </widget>
          </item>
-         <item row="2" column="3">
+         <item row="5" column="3">
           <widget class="QCheckBox" name="eldinRollerChkBox">
            <property name="toolTip">
             <string>Eldin Roller</string>
@@ -1748,7 +1766,7 @@
            </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
-             <normaloff>:/bugs/EldinRoller</normaloff>:/bugs/EldinRoller</iconset>
+             <normaloff>:/Bugs/EldinRoller</normaloff>:/Bugs/EldinRoller</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -1758,26 +1776,206 @@
            </property>
           </widget>
          </item>
+         <item row="1" column="0">
+          <widget class="QSpinBox" name="hornetSpinBox">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="maximum">
+            <number>127</number>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QSpinBox" name="butterflySpinBox">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="maximum">
+            <number>127</number>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QSpinBox" name="dragonflySpinBox">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="maximum">
+            <number>127</number>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="3">
+          <widget class="QSpinBox" name="fireflySpinBox">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="frame">
+            <bool>true</bool>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="buttonSymbols">
+            <enum>QAbstractSpinBox::PlusMinus</enum>
+           </property>
+           <property name="maximum">
+            <number>127</number>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QSpinBox" name="rhinoBeetleSpinBox">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="maximum">
+            <number>127</number>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QSpinBox" name="ladybugSpinBox">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="maximum">
+            <number>127</number>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="2">
+          <widget class="QSpinBox" name="sandCicadaSpinBox">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="maximum">
+            <number>127</number>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="0">
+          <widget class="QSpinBox" name="grasshopperSpinBox">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="maximum">
+            <number>127</number>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="1">
+          <widget class="QSpinBox" name="mantisSpinBox">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="maximum">
+            <number>127</number>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="2">
+          <widget class="QSpinBox" name="antSpinBox">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="maximum">
+            <number>127</number>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="3">
+          <widget class="QSpinBox" name="stagBeetleSpinBox">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="maximum">
+            <number>127</number>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="3">
+          <widget class="QSpinBox" name="eldinRollerSpinBox">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="frame">
+            <bool>true</bool>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="maximum">
+            <number>127</number>
+           </property>
+          </widget>
+         </item>
         </layout>
        </widget>
        <widget class="QGroupBox" name="groupBox_2">
         <property name="geometry">
          <rect>
-          <x>370</x>
+          <x>380</x>
           <y>10</y>
-          <width>331</width>
-          <height>251</height>
+          <width>341</width>
+          <height>381</height>
          </rect>
         </property>
         <property name="title">
          <string>Materials</string>
         </property>
         <layout class="QGridLayout" name="gridLayout_12">
-         <property name="margin">
+         <property name="leftMargin">
+          <number>4</number>
+         </property>
+         <property name="topMargin">
           <number>2</number>
          </property>
+         <property name="rightMargin">
+          <number>4</number>
+         </property>
+         <property name="bottomMargin">
+          <number>4</number>
+         </property>
          <property name="spacing">
-          <number>0</number>
+          <number>2</number>
          </property>
          <item row="0" column="0">
           <widget class="QCheckBox" name="hornetLarvaeChkBox">
@@ -1789,7 +1987,7 @@
            </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
-             <normaloff>:/materials/DekuHornetLarvae</normaloff>:/materials/DekuHornetLarvae</iconset>
+             <normaloff>:/Materials/DekuHornetLarvae</normaloff>:/Materials/DekuHornetLarvae</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -1809,7 +2007,7 @@
            </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
-             <normaloff>:/materials/BirdFeather</normaloff>:/materials/BirdFeather</iconset>
+             <normaloff>:/Materials/BirdFeather</normaloff>:/Materials/BirdFeather</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -1829,7 +2027,7 @@
            </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
-             <normaloff>:/materials/TumbleWeed</normaloff>:/materials/TumbleWeed</iconset>
+             <normaloff>:/Materials/TumbleWeed</normaloff>:/Materials/TumbleWeed</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -1849,7 +2047,7 @@
            </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
-             <normaloff>:/materials/LizardTail</normaloff>:/materials/LizardTail</iconset>
+             <normaloff>:/Materials/LizardTail</normaloff>:/Materials/LizardTail</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -1859,7 +2057,7 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="1" colspan="4">
+         <item row="2" column="1" colspan="4">
           <widget class="QCheckBox" name="ancientFlowerChkBox">
            <property name="toolTip">
             <string>Ancient Flower</string>
@@ -1869,7 +2067,7 @@
            </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
-             <normaloff>:/materials/AncientFlower</normaloff>:/materials/AncientFlower</iconset>
+             <normaloff>:/Materials/AncientFlower</normaloff>:/Materials/AncientFlower</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -1879,7 +2077,7 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="5" colspan="3">
+         <item row="2" column="5" colspan="3">
           <widget class="QCheckBox" name="amberRelicChkBox">
            <property name="toolTip">
             <string>Amber Relic</string>
@@ -1889,7 +2087,7 @@
            </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
-             <normaloff>:/materials/AmberRelic</normaloff>:/materials/AmberRelic</iconset>
+             <normaloff>:/Materials/AmberRelic</normaloff>:/Materials/AmberRelic</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -1899,7 +2097,7 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="8" colspan="3">
+         <item row="2" column="8" colspan="3">
           <widget class="QCheckBox" name="duskRelicChkBox">
            <property name="toolTip">
             <string>Dusk Relic</string>
@@ -1909,7 +2107,7 @@
            </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
-             <normaloff>:/materials/DuskRelic</normaloff>:/materials/DuskRelic</iconset>
+             <normaloff>:/Materials/DuskRelic</normaloff>:/Materials/DuskRelic</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -1919,7 +2117,7 @@
            </property>
           </widget>
          </item>
-         <item row="2" column="0" colspan="3">
+         <item row="4" column="0" colspan="3">
           <widget class="QCheckBox" name="jellyBlobChkBox">
            <property name="toolTip">
             <string>Jelly Blob</string>
@@ -1929,7 +2127,7 @@
            </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
-             <normaloff>:/materials/JellyBlob</normaloff>:/materials/JellyBlob</iconset>
+             <normaloff>:/Materials/JellyBlob</normaloff>:/Materials/JellyBlob</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -1939,7 +2137,7 @@
            </property>
           </widget>
          </item>
-         <item row="2" column="10">
+         <item row="4" column="10">
           <widget class="QCheckBox" name="decoSkullChkBox">
            <property name="toolTip">
             <string>Ornamental Skull</string>
@@ -1949,7 +2147,7 @@
            </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
-             <normaloff>:/materials/OrnamentalSkull</normaloff>:/materials/OrnamentalSkull</iconset>
+             <normaloff>:/Materials/OrnamentalSkull</normaloff>:/Materials/OrnamentalSkull</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -1959,7 +2157,7 @@
            </property>
           </widget>
          </item>
-         <item row="3" column="0" colspan="2">
+         <item row="6" column="0" colspan="2">
           <widget class="QCheckBox" name="evilCrystalChkBox">
            <property name="toolTip">
             <string>Evil Crystal</string>
@@ -1969,7 +2167,7 @@
            </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
-             <normaloff>:/materials/EvilCrystal</normaloff>:/materials/EvilCrystal</iconset>
+             <normaloff>:/Materials/EvilCrystal</normaloff>:/Materials/EvilCrystal</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -1979,7 +2177,7 @@
            </property>
           </widget>
          </item>
-         <item row="3" column="2" colspan="4">
+         <item row="6" column="2" colspan="4">
           <widget class="QCheckBox" name="blueBirdFeatherChkBox">
            <property name="toolTip">
             <string>Blue Bird Feather</string>
@@ -1989,7 +2187,7 @@
            </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
-             <normaloff>:/materials/BlueBirdFeather</normaloff>:/materials/BlueBirdFeather</iconset>
+             <normaloff>:/Materials/BlueBirdFeather</normaloff>:/Materials/BlueBirdFeather</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -1999,7 +2197,7 @@
            </property>
           </widget>
          </item>
-         <item row="3" column="6" colspan="3">
+         <item row="6" column="6" colspan="3">
           <widget class="QCheckBox" name="goldenSkullChkBox">
            <property name="toolTip">
             <string>Golden Skull</string>
@@ -2009,7 +2207,7 @@
            </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
-             <normaloff>:/materials/GoldenSkull</normaloff>:/materials/GoldenSkull</iconset>
+             <normaloff>:/Materials/GoldenSkull</normaloff>:/Materials/GoldenSkull</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -2019,7 +2217,7 @@
            </property>
           </widget>
          </item>
-         <item row="3" column="9" colspan="2">
+         <item row="6" column="9" colspan="2">
           <widget class="QCheckBox" name="goddessPlumeChkBox">
            <property name="toolTip">
             <string>Goddess Plume</string>
@@ -2029,7 +2227,7 @@
            </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
-             <normaloff>:/materials/GoddessPlume</normaloff>:/materials/GoddessPlume</iconset>
+             <normaloff>:/Materials/GoddessPlume</normaloff>:/Materials/GoddessPlume</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -2039,7 +2237,7 @@
            </property>
           </widget>
          </item>
-         <item row="2" column="3">
+         <item row="4" column="3">
           <widget class="QCheckBox" name="monsterClawChkBox">
            <property name="toolTip">
             <string>Monster Claw</string>
@@ -2049,7 +2247,7 @@
            </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
-             <normaloff>:/materials/MonsterClaw</normaloff>:/materials/MonsterClaw</iconset>
+             <normaloff>:/Materials/MonsterClaw</normaloff>:/Materials/MonsterClaw</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -2059,7 +2257,7 @@
            </property>
           </widget>
          </item>
-         <item row="2" column="6">
+         <item row="4" column="6">
           <widget class="QCheckBox" name="monsterHornChkBox">
            <property name="toolTip">
             <string>Monster Horn</string>
@@ -2069,7 +2267,27 @@
            </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
-             <normaloff>:/materials/MonsterHorn</normaloff>:/materials/MonsterHorn</iconset>
+             <normaloff>:/Materials/MonsterHorn</normaloff>:/Materials/MonsterHorn</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>64</width>
+             <height>64</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QCheckBox" name="eldinOreChkBox">
+           <property name="toolTip">
+            <string>Eldin Ore</string>
+           </property>
+           <property name="statusTip">
+            <string>Eldin Ore</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../resources/resources.qrc">
+             <normaloff>:/Materials/EldinOre</normaloff>:/Materials/EldinOre</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -2080,22 +2298,114 @@
           </widget>
          </item>
          <item row="1" column="0">
-          <widget class="QCheckBox" name="eldinOreChkBox">
-           <property name="toolTip">
-            <string>Eldin Ore</string>
+          <widget class="QSpinBox" name="spinBox_11">
+           <property name="maximum">
+            <number>127</number>
            </property>
-           <property name="statusTip">
-            <string>Eldin Ore</string>
+          </widget>
+         </item>
+         <item row="1" column="3">
+          <widget class="QSpinBox" name="spinBox_14">
+           <property name="maximum">
+            <number>127</number>
            </property>
-           <property name="icon">
-            <iconset resource="../resources/resources.qrc">
-             <normaloff>:/materials/EldinOre</normaloff>:/materials/EldinOre</iconset>
+          </widget>
+         </item>
+         <item row="1" column="6">
+          <widget class="QSpinBox" name="spinBox_17">
+           <property name="maximum">
+            <number>127</number>
            </property>
-           <property name="iconSize">
-            <size>
-             <width>64</width>
-             <height>64</height>
-            </size>
+          </widget>
+         </item>
+         <item row="1" column="10">
+          <widget class="QSpinBox" name="spinBox_34">
+           <property name="maximum">
+            <number>127</number>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QSpinBox" name="spinBox_12">
+           <property name="maximum">
+            <number>127</number>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="3">
+          <widget class="QSpinBox" name="spinBox_15">
+           <property name="maximum">
+            <number>127</number>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="6">
+          <widget class="QSpinBox" name="spinBox_33">
+           <property name="maximum">
+            <number>127</number>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="10">
+          <widget class="QSpinBox" name="spinBox_32">
+           <property name="maximum">
+            <number>127</number>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0">
+          <widget class="QSpinBox" name="spinBox_10">
+           <property name="maximum">
+            <number>127</number>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="3">
+          <widget class="QSpinBox" name="spinBox_13">
+           <property name="maximum">
+            <number>127</number>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="6">
+          <widget class="QSpinBox" name="spinBox_18">
+           <property name="maximum">
+            <number>127</number>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="10">
+          <widget class="QSpinBox" name="spinBox_31">
+           <property name="maximum">
+            <number>127</number>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="0">
+          <widget class="QSpinBox" name="spinBox_22">
+           <property name="maximum">
+            <number>127</number>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="3">
+          <widget class="QSpinBox" name="spinBox_24">
+           <property name="maximum">
+            <number>127</number>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="6">
+          <widget class="QSpinBox" name="spinBox_23">
+           <property name="maximum">
+            <number>127</number>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="10">
+          <widget class="QSpinBox" name="spinBox_16">
+           <property name="maximum">
+            <number>127</number>
            </property>
           </widget>
          </item>
@@ -2105,9 +2415,9 @@
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>200</y>
-          <width>351</width>
-          <height>81</height>
+          <y>290</y>
+          <width>251</width>
+          <height>101</height>
          </rect>
         </property>
         <property name="title">
@@ -2130,7 +2440,7 @@
            </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
-             <normaloff>:/questItems/Letter</normaloff>:/questItems/Letter</iconset>
+             <normaloff>:/QuestItems/Letter</normaloff>:/QuestItems/Letter</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -2150,7 +2460,7 @@
            </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
-             <normaloff>:/questItems/BugCage</normaloff>:/questItems/BugCage</iconset>
+             <normaloff>:/QuestItems/BugCage</normaloff>:/QuestItems/BugCage</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -2170,7 +2480,7 @@
            </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
-             <normaloff>:/questItems/Rattle</normaloff>:/questItems/Rattle</iconset>
+             <normaloff>:/QuestItems/Rattle</normaloff>:/QuestItems/Rattle</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -2180,7 +2490,19 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="3">
+        </layout>
+       </widget>
+       <widget class="QWidget" name="layoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>270</x>
+          <y>290</y>
+          <width>93</width>
+          <height>106</height>
+         </rect>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_5">
+         <item>
           <widget class="QCheckBox" name="gratitudeCrystalChkBox">
            <property name="toolTip">
             <string>Gratitude Crystal</string>
@@ -2190,7 +2512,7 @@
            </property>
            <property name="icon">
             <iconset resource="../resources/resources.qrc">
-             <normaloff>:/questItems/GratitudeCrystal</normaloff>:/questItems/GratitudeCrystal</iconset>
+             <normaloff>:/QuestItems/GratitudeCrystal</normaloff>:/QuestItems/GratitudeCrystal</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -2200,341 +2522,12 @@
            </property>
           </widget>
          </item>
-        </layout>
-       </widget>
-       <widget class="QGroupBox" name="groupBox_4">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>290</y>
-          <width>351</width>
-          <height>91</height>
-         </rect>
-        </property>
-        <property name="title">
-         <string>Bugs Amount</string>
-        </property>
-        <layout class="QGridLayout" name="gridLayout_14">
-         <property name="margin">
-          <number>4</number>
-         </property>
-         <property name="spacing">
-          <number>2</number>
-         </property>
-         <item row="0" column="0">
-          <layout class="QHBoxLayout" name="horizontalLayout_2">
-           <item>
-            <widget class="QLabel" name="label_9">
-             <property name="text">
-              <string>TextLabel</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QSpinBox" name="spinBox"/>
-           </item>
-          </layout>
-         </item>
-         <item row="0" column="1">
-          <layout class="QHBoxLayout" name="horizontalLayout_10">
-           <item>
-            <widget class="QLabel" name="label_16">
-             <property name="text">
-              <string>TextLabel</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QSpinBox" name="spinBox_8"/>
-           </item>
-          </layout>
-         </item>
-         <item row="0" column="2">
-          <layout class="QHBoxLayout" name="horizontalLayout_7">
-           <item>
-            <widget class="QLabel" name="label_13">
-             <property name="text">
-              <string>TextLabel</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QSpinBox" name="spinBox_5"/>
-           </item>
-          </layout>
-         </item>
-         <item row="1" column="0">
-          <layout class="QHBoxLayout" name="horizontalLayout_3">
-           <item>
-            <widget class="QLabel" name="label_10">
-             <property name="text">
-              <string>TextLabel</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QSpinBox" name="spinBox_2"/>
-           </item>
-          </layout>
-         </item>
-         <item row="1" column="1">
-          <layout class="QHBoxLayout" name="horizontalLayout_11">
-           <item>
-            <widget class="QLabel" name="label_17">
-             <property name="text">
-              <string>TextLabel</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QSpinBox" name="spinBox_9"/>
-           </item>
-          </layout>
-         </item>
-         <item row="1" column="2">
-          <layout class="QHBoxLayout" name="horizontalLayout_8">
-           <item>
-            <widget class="QLabel" name="label_14">
-             <property name="text">
-              <string>TextLabel</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QSpinBox" name="spinBox_6"/>
-           </item>
-          </layout>
-         </item>
-         <item row="2" column="0">
-          <layout class="QHBoxLayout" name="horizontalLayout_4">
-           <item>
-            <widget class="QLabel" name="label_11">
-             <property name="text">
-              <string>TextLabel</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QSpinBox" name="spinBox_3"/>
-           </item>
-          </layout>
-         </item>
-         <item row="2" column="1">
-          <layout class="QHBoxLayout" name="horizontalLayout_9">
-           <item>
-            <widget class="QLabel" name="label_15">
-             <property name="text">
-              <string>TextLabel</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QSpinBox" name="spinBox_7"/>
-           </item>
-          </layout>
-         </item>
-         <item row="2" column="2">
-          <layout class="QHBoxLayout" name="horizontalLayout_6">
-           <item>
-            <widget class="QLabel" name="label_12">
-             <property name="text">
-              <string>TextLabel</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QSpinBox" name="spinBox_4"/>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QGroupBox" name="groupBox_7">
-        <property name="geometry">
-         <rect>
-          <x>370</x>
-          <y>270</y>
-          <width>331</width>
-          <height>111</height>
-         </rect>
-        </property>
-        <property name="title">
-         <string>Materials</string>
-        </property>
-        <layout class="QGridLayout" name="gridLayout_16">
-         <property name="margin">
-          <number>4</number>
-         </property>
-         <property name="spacing">
-          <number>2</number>
-         </property>
-         <item row="0" column="0">
-          <layout class="QHBoxLayout" name="horizontalLayout_13">
-           <item>
-            <widget class="QLabel" name="label_19">
-             <property name="text">
-              <string>TextLabel</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QSpinBox" name="spinBox_11"/>
-           </item>
-          </layout>
-         </item>
-         <item row="0" column="1">
-          <layout class="QHBoxLayout" name="horizontalLayout_16">
-           <item>
-            <widget class="QLabel" name="label_22">
-             <property name="text">
-              <string>TextLabel</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QSpinBox" name="spinBox_14"/>
-           </item>
-          </layout>
-         </item>
-         <item row="0" column="2">
-          <layout class="QHBoxLayout" name="horizontalLayout_19">
-           <item>
-            <widget class="QLabel" name="label_25">
-             <property name="text">
-              <string>TextLabel</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QSpinBox" name="spinBox_17"/>
-           </item>
-          </layout>
-         </item>
-         <item row="1" column="0">
-          <layout class="QHBoxLayout" name="horizontalLayout_14">
-           <item>
-            <widget class="QLabel" name="label_20">
-             <property name="text">
-              <string>TextLabel</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QSpinBox" name="spinBox_12"/>
-           </item>
-          </layout>
-         </item>
-         <item row="1" column="1">
-          <layout class="QHBoxLayout" name="horizontalLayout_17">
-           <item>
-            <widget class="QLabel" name="label_23">
-             <property name="text">
-              <string>TextLabel</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QSpinBox" name="spinBox_15"/>
-           </item>
-          </layout>
-         </item>
-         <item row="1" column="2">
-          <layout class="QHBoxLayout" name="horizontalLayout_20">
-           <item>
-            <widget class="QLabel" name="label_26">
-             <property name="text">
-              <string>TextLabel</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QSpinBox" name="spinBox_18"/>
-           </item>
-          </layout>
-         </item>
-         <item row="2" column="0">
-          <layout class="QHBoxLayout" name="horizontalLayout_12">
-           <item>
-            <widget class="QLabel" name="label_18">
-             <property name="text">
-              <string>TextLabel</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QSpinBox" name="spinBox_10"/>
-           </item>
-          </layout>
-         </item>
-         <item row="2" column="1">
-          <layout class="QHBoxLayout" name="horizontalLayout_15">
-           <item>
-            <widget class="QLabel" name="label_21">
-             <property name="text">
-              <string>TextLabel</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QSpinBox" name="spinBox_13"/>
-           </item>
-          </layout>
-         </item>
-         <item row="2" column="2">
-          <layout class="QHBoxLayout" name="horizontalLayout_18">
-           <item>
-            <widget class="QLabel" name="label_24">
-             <property name="text">
-              <string>TextLabel</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QSpinBox" name="spinBox_16"/>
-           </item>
-          </layout>
-         </item>
-         <item row="3" column="0">
-          <layout class="QHBoxLayout" name="horizontalLayout_24">
-           <item>
-            <widget class="QLabel" name="label_30">
-             <property name="text">
-              <string>TextLabel</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QSpinBox" name="spinBox_22"/>
-           </item>
-          </layout>
-         </item>
-         <item row="3" column="1">
-          <layout class="QHBoxLayout" name="horizontalLayout_26">
-           <item>
-            <widget class="QLabel" name="label_32">
-             <property name="text">
-              <string>TextLabel</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QSpinBox" name="spinBox_24"/>
-           </item>
-          </layout>
-         </item>
-         <item row="3" column="2">
-          <layout class="QHBoxLayout" name="horizontalLayout_25">
-           <item>
-            <widget class="QLabel" name="label_31">
-             <property name="text">
-              <string>TextLabel</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QSpinBox" name="spinBox_23"/>
-           </item>
-          </layout>
+         <item>
+          <widget class="QSpinBox" name="spinBox">
+           <property name="maximum">
+            <number>127</number>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>
@@ -2548,7 +2541,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>730</width>
+     <width>750</width>
      <height>21</height>
     </rect>
    </property>
@@ -2629,7 +2622,7 @@
   <action name="actionOpen">
    <property name="icon">
     <iconset resource="../resources/resources.qrc">
-     <normaloff>:/icons/Open</normaloff>:/icons/Open</iconset>
+     <normaloff>:/Icons/Open</normaloff>:/Icons/Open</iconset>
    </property>
    <property name="text">
     <string>&amp;Open</string>
@@ -2647,7 +2640,7 @@
    </property>
    <property name="icon">
     <iconset resource="../resources/resources.qrc">
-     <normaloff>:/icons/Game1</normaloff>:/icons/Game1</iconset>
+     <normaloff>:/Icons/Game1</normaloff>:/Icons/Game1</iconset>
    </property>
    <property name="text">
     <string>Game &amp;1</string>
@@ -2659,7 +2652,7 @@
    </property>
    <property name="icon">
     <iconset resource="../resources/resources.qrc">
-     <normaloff>:/icons/Game2</normaloff>:/icons/Game2</iconset>
+     <normaloff>:/Icons/Game2</normaloff>:/Icons/Game2</iconset>
    </property>
    <property name="text">
     <string>Game &amp;2</string>
@@ -2671,7 +2664,7 @@
    </property>
    <property name="icon">
     <iconset resource="../resources/resources.qrc">
-     <normaloff>:/icons/Game3</normaloff>:/icons/Game3</iconset>
+     <normaloff>:/Icons/Game3</normaloff>:/Icons/Game3</iconset>
    </property>
    <property name="text">
     <string>Game &amp;3</string>
@@ -2685,7 +2678,7 @@
   <action name="actionSave">
    <property name="icon">
     <iconset resource="../resources/resources.qrc">
-     <normaloff>:/icons/Save</normaloff>:/icons/Save</iconset>
+     <normaloff>:/Icons/Save</normaloff>:/Icons/Save</iconset>
    </property>
    <property name="text">
     <string>&amp;Save</string>
@@ -2699,7 +2692,7 @@
   <action name="actionClose">
    <property name="icon">
     <iconset resource="../resources/resources.qrc">
-     <normaloff>:/icons/Close</normaloff>:/icons/Close</iconset>
+     <normaloff>:/Icons/Close</normaloff>:/Icons/Close</iconset>
    </property>
    <property name="text">
     <string>&amp;Close</string>
@@ -2708,7 +2701,7 @@
   <action name="actionReload">
    <property name="icon">
     <iconset resource="../resources/resources.qrc">
-     <normaloff>:/icons/Reload</normaloff>:/icons/Reload</iconset>
+     <normaloff>:/Icons/Reload</normaloff>:/Icons/Reload</iconset>
    </property>
    <property name="text">
     <string>Reload</string>
