@@ -11,7 +11,8 @@ public:
         GameNone = -1,
         Game1,
         Game2,
-        Game3
+        Game3,
+        GameCount
     };
 
     virtual bool IsOpen() const=0;

@@ -50,11 +50,7 @@ MainWindow::MainWindow(QWidget *parent) :
     setWindowFlags(Qt::Window | Qt::WindowMinimizeButtonHint);
     SetupActions();
     SetupConnections();
-    //qApp->installEventFilter(this);
-
-   //m_checkTimer = new QTimer(this);
-   // connect(m_checkTimer, SIGNAL(timeout()), this, SLOT(onCheck()));
-   // m_checkTimer->start(UPDATE_DELAY); // set check for ever 5 seconds
+    UpdateInfo();
 }
 
 MainWindow::~MainWindow()
@@ -99,7 +95,6 @@ void MainWindow::dropEvent(QDropEvent* event)
         if (m_curGame == SkywardSwordFile::GameNone)
             m_curGame = SkywardSwordFile::Game1;
 
-
         if (m_gameFile->Open(m_curGame, mimeData->urls()[0].toLocalFile()))
         {
             UpdateInfo();
@@ -112,7 +107,7 @@ void MainWindow::dropEvent(QDropEvent* event)
 bool MainWindow::eventFilter(QObject* obj, QEvent *evt)
 {
     if(obj==qApp && evt->type() == QEvent::WindowActivate)
-        onCheck();
+                 onCheck();
 
     return QMainWindow::eventFilter(obj, evt);
 }*/
@@ -162,99 +157,113 @@ void MainWindow::SetupActions()
 
 void MainWindow::SetupConnections()
 {
-    connect(m_ui->playHoursSpinBox,   SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
-    connect(m_ui->playMinutesSpinBox, SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
-    connect(m_ui->playSecondsSpinBox, SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
-    connect(m_ui->saveTimeEdit,       SIGNAL(dateTimeChanged(QDateTime)),   this, SLOT(onDateTimeChanged(QDateTime)));
-    connect(m_ui->playerXSpinBox,     SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
-    connect(m_ui->playerYSpinBox,     SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
-    connect(m_ui->playerZSpinBox,     SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
-    connect(m_ui->playerRollSpinBox,  SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
-    connect(m_ui->playerPitchSpinBox, SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
-    connect(m_ui->playerYawSpinBox,   SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
-    connect(m_ui->cameraXSpinBox,     SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
-    connect(m_ui->cameraYSpinBox,     SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
-    connect(m_ui->cameraZSpinBox,     SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
-    connect(m_ui->cameraRollSpinBox,  SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
-    connect(m_ui->cameraPitchSpinBox, SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
-    connect(m_ui->cameraYawSpinBox,   SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
-    connect(m_ui->heroModeChkBox,     SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->introViewedChkBox,  SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->nameLineEdit,       SIGNAL(textChanged(QString)), this, SLOT(onTextChanged(QString)));
-    connect(m_ui->curMapLineEdit,     SIGNAL(textChanged(QString)), this, SLOT(onTextChanged(QString)));
-    connect(m_ui->curAreaLineEdit,    SIGNAL(textChanged(QString)), this, SLOT(onTextChanged(QString)));
-    connect(m_ui->curRoomLineEdit,    SIGNAL(textChanged(QString)), this, SLOT(onTextChanged(QString)));
-    connect(m_gameGroup,              SIGNAL(triggered(QAction*)),  this, SLOT(onGameChanged(QAction*)));
-    connect(m_ui->actionOpen,         SIGNAL(triggered()),          this, SLOT(onOpen()));
-    connect(m_ui->createDeleteGameBtn,SIGNAL(clicked()),            this, SLOT(onCreateNewGame()));
-    connect(m_ui->actionSave,         SIGNAL(triggered()),          this, SLOT(onSave()));
-    connect(m_ui->actionSaveAs,       SIGNAL(triggered()),          this, SLOT(onSaveAs()));
-    connect(m_ui->actionClose,        SIGNAL(triggered()),          this, SLOT(onClose()));
-    connect(m_ui->actionReload,       SIGNAL(triggered()),          this, SLOT(onReload()));
-    connect(m_ui->actionExit,         SIGNAL(triggered()),          this, SLOT(close()));
-    connect(m_ui->actionAbout,        SIGNAL(triggered()),          this, SLOT(onAbout()));
-    connect(m_ui->actionAboutQt,      SIGNAL(triggered()),          this, SLOT(onAboutQt()));
-    connect(m_ui->actionFileInfo,     SIGNAL(triggered()),          this, SLOT(onFileInfo()));
-
+    connect(m_ui->playHoursSpinBox,     SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
+    connect(m_ui->playMinutesSpinBox,   SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
+    connect(m_ui->playSecondsSpinBox,   SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
+    connect(m_ui->saveTimeEdit,         SIGNAL(dateTimeChanged(QDateTime)), this, SLOT(onDateTimeChanged(QDateTime)));
+    connect(m_ui->playerXSpinBox,       SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
+    connect(m_ui->playerYSpinBox,       SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
+    connect(m_ui->playerZSpinBox,       SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
+    connect(m_ui->playerRollSpinBox,    SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
+    connect(m_ui->playerPitchSpinBox,   SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
+    connect(m_ui->playerYawSpinBox,     SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
+    connect(m_ui->cameraXSpinBox,       SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
+    connect(m_ui->cameraYSpinBox,       SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
+    connect(m_ui->cameraZSpinBox,       SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
+    connect(m_ui->cameraRollSpinBox,    SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
+    connect(m_ui->cameraPitchSpinBox,   SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
+    connect(m_ui->cameraYawSpinBox,     SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
+    connect(m_ui->heroModeChkBox,       SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->introViewedChkBox,    SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->nameLineEdit,         SIGNAL(textChanged(QString)), this, SLOT(onTextChanged(QString)));
+    connect(m_ui->curMapLineEdit,       SIGNAL(textChanged(QString)), this, SLOT(onTextChanged(QString)));
+    connect(m_ui->curAreaLineEdit,      SIGNAL(textChanged(QString)), this, SLOT(onTextChanged(QString)));
+    connect(m_ui->curRoomLineEdit,      SIGNAL(textChanged(QString)), this, SLOT(onTextChanged(QString)));
+    connect(m_gameGroup,                SIGNAL(triggered(QAction*)),  this, SLOT(onGameChanged(QAction*)));
+    connect(m_ui->actionOpen,           SIGNAL(triggered()),          this, SLOT(onOpen()));
+    connect(m_ui->createDeleteGameBtn,  SIGNAL(clicked()),            this, SLOT(onCreateNewGame()));
+    connect(m_ui->actionSave,           SIGNAL(triggered()),          this, SLOT(onSave()));
+    connect(m_ui->actionSaveAs,         SIGNAL(triggered()),          this, SLOT(onSaveAs()));
+    connect(m_ui->actionClose,          SIGNAL(triggered()),          this, SLOT(onClose()));
+    connect(m_ui->actionReload,         SIGNAL(triggered()),          this, SLOT(onReload()));
+    connect(m_ui->actionExit,           SIGNAL(triggered()),          this, SLOT(close()));
+    connect(m_ui->actionAbout,          SIGNAL(triggered()),          this, SLOT(onAbout()));
+    connect(m_ui->actionAboutQt,        SIGNAL(triggered()),          this, SLOT(onAboutQt()));
+    connect(m_ui->actionFileInfo,       SIGNAL(triggered()),          this, SLOT(onFileInfo()));
     // Swords
-    connect(m_ui->practiceSwdChkBox,  SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->goddessSwdChkBox,   SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->longSwdChkBox,      SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->whiteSwdChkBox,     SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->masterSwdChkBox,    SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->trueMasterSwdChkBox,SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->practiceSwdChkBox,    SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->goddessSwdChkBox,     SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->longSwdChkBox,        SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->whiteSwdChkBox,       SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->masterSwdChkBox,      SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->trueMasterSwdChkBox,  SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
     // Weapons
-    connect(m_ui->slingShotChkBox,    SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->scatterShotChkBox,  SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->bugNetChkBox,       SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->bigBugNetChkBox,    SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->beetleChkBox,       SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->hookBeetleChkBox,   SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->quickBeetleChkBox,  SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->toughBeetleChkBox,  SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->bombChkBox,         SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->gustBellowsChkBox,  SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->whipChkBox,         SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->clawShotChkBox,     SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->bowChkBox,          SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->ironBowChkBox,      SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->sacredBowChkBox,    SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->harpChkBox,         SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->slingShotChkBox,      SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->scatterShotChkBox,    SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->bugNetChkBox,         SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->bigBugNetChkBox,      SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->beetleChkBox,         SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->hookBeetleChkBox,     SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->quickBeetleChkBox,    SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->toughBeetleChkBox,    SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->bombChkBox,           SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->gustBellowsChkBox,    SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->whipChkBox,           SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->clawShotChkBox,       SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->bowChkBox,            SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->ironBowChkBox,        SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->sacredBowChkBox,      SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->harpChkBox,           SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
     // Bugs
-    connect(m_ui->hornetChkBox,       SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->butterflyChkBox,    SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->dragonflyChkBox,    SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->fireflyChkBox,      SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->rhinoBeetleChkBox,  SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->ladybugChkBox,      SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->sandCicadaChkBox,   SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->stagBeetleChkBox,   SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->grassHopperChkBox,  SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->mantisChkBox,       SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->antChkBox,          SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->eldinRollerChkBox,  SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->hornetChkBox,         SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->butterflyChkBox,      SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->dragonflyChkBox,      SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->fireflyChkBox,        SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->rhinoBeetleChkBox,    SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->ladybugChkBox,        SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->sandCicadaChkBox,     SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->stagBeetleChkBox,     SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->grasshopperChkBox,    SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->mantisChkBox,         SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->antChkBox,            SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->eldinRollerChkBox,    SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
     // Materials
-    connect(m_ui->hornetLarvaeChkBox, SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->birdFeatherChkBox,  SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->tumbleWeedChkBox,   SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->lizardTailChkBox,   SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->eldinOreChkBox,     SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->ancientFlowerChkBox,SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->amberRelicChkBox,   SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->duskRelicChkBox,    SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->jellyBlobChkBox,    SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->monsterClawChkBox,  SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->monsterHornChkBox,  SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->decoSkullChkBox,    SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->evilCrystalChkBox,  SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->blueBirdFeatherChkBox,SIGNAL(toggled(bool)),      this, SLOT(onValueChanged()));
-    connect(m_ui->goldenSkullChkBox,  SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->goddessPlumeChkBox, SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
-    connect(m_ui->rupeeSpinBox,       SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
-    connect(m_ui->totalHPSpinBox,     SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
-    connect(m_ui->unkHPSpinBox,       SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
-    connect(m_ui->curHPSpinBox,       SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
-    connect(m_ui->roomIDSpinBox,      SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
+    connect(m_ui->hornetLarvaeChkBox,   SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->birdFeatherChkBox,    SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->tumbleWeedChkBox,     SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->lizardTailChkBox,     SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->eldinOreChkBox,       SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->ancientFlowerChkBox,  SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->amberRelicChkBox,     SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->duskRelicChkBox,      SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->jellyBlobChkBox,      SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->monsterClawChkBox,    SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->monsterHornChkBox,    SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->decoSkullChkBox,      SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->evilCrystalChkBox,    SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->blueBirdFeatherChkBox,SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->goldenSkullChkBox,    SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->goddessPlumeChkBox,   SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->rupeeSpinBox,         SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
+    connect(m_ui->totalHPSpinBox,       SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
+    connect(m_ui->unkHPSpinBox,         SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
+    connect(m_ui->curHPSpinBox,         SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
+    connect(m_ui->roomIDSpinBox,        SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
+
+    // Amounts
+    // Bugs
+    connect(m_ui->hornetSpinBox,     SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
+    connect(m_ui->butterflySpinBox,  SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
+    connect(m_ui->dragonflySpinBox,  SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
+    connect(m_ui->fireflySpinBox,    SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
+    connect(m_ui->rhinoBeetleSpinBox,SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
+    connect(m_ui->ladybugSpinBox,    SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
+    connect(m_ui->sandCicadaSpinBox, SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
+    connect(m_ui->stagBeetleSpinBox, SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
+    connect(m_ui->grasshopperSpinBox,SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
+    connect(m_ui->mantisSpinBox,     SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
+    connect(m_ui->antSpinBox,        SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
+    connect(m_ui->eldinRollerSpinBox,SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
 }
 
 SkywardSwordFile* MainWindow::GetGameFile()
@@ -265,7 +274,7 @@ SkywardSwordFile* MainWindow::GetGameFile()
 void MainWindow::onTextChanged(QString text)
 {
     if (!m_gameFile || !m_gameFile->IsOpen() ||
-         m_isUpdating || m_gameFile->GetGame() == SkywardSwordFile::GameNone)
+        m_isUpdating || m_gameFile->GetGame() == SkywardSwordFile::GameNone)
         return;
 
     if (m_ui->nameLineEdit->isModified())
@@ -299,7 +308,7 @@ void MainWindow::onTextChanged(QString text)
 void MainWindow::onValueChanged()
 {
     if (!m_gameFile || !m_gameFile->IsOpen() ||
-         m_isUpdating || m_gameFile->GetGame() == SkywardSwordFile::GameNone)
+        m_isUpdating || m_gameFile->GetGame() == SkywardSwordFile::GameNone)
         return;
     PlayTime playTime;
     playTime.Hours = m_ui->playHoursSpinBox->value();
@@ -308,7 +317,7 @@ void MainWindow::onValueChanged()
     playTime.RawTicks = (((playTime.Hours * 60) * 60) + (playTime.Minutes * 60) + playTime.Seconds) * TICKS_PER_SECOND;
     m_gameFile->SetPlayTime(playTime);
     m_gameFile->SetPlayerPosition((float)m_ui->playerXSpinBox->value(),    (float)m_ui->playerYSpinBox->value(),     (float)m_ui->playerZSpinBox->value());
-    m_gameFile->SetPlayerRotation((float)m_ui->playerRollSpinBox->value(), (float)m_ui->playerPitchSpinBox->value(), (float)m_ui->playerYawSpinBox->value() );
+    m_gameFile->SetPlayerRotation((float)m_ui->playerRollSpinBox->value(), (float)m_ui->playerPitchSpinBox->value(), (float)m_ui->playerYawSpinBox->value());
     m_gameFile->SetCameraPosition((float)m_ui->cameraXSpinBox->value(),    (float)m_ui->cameraYSpinBox->value(),     (float)m_ui->cameraZSpinBox->value());
     m_gameFile->SetCameraRotation((float)m_ui->cameraRollSpinBox->value(), (float)m_ui->cameraPitchSpinBox->value(), (float)m_ui->cameraYawSpinBox->value());
     m_gameFile->SetHeroMode(m_ui->heroModeChkBox->isChecked());
@@ -351,11 +360,10 @@ void MainWindow::onValueChanged()
     m_gameFile->SetBug(SkywardSwordFile::LadybugBug, m_ui->ladybugChkBox->isChecked());
     m_gameFile->SetBug(SkywardSwordFile::SandCicadaBug, m_ui->sandCicadaChkBox->isChecked());
     m_gameFile->SetBug(SkywardSwordFile::StagBeetleBug, m_ui->stagBeetleChkBox->isChecked());
-    m_gameFile->SetBug(SkywardSwordFile::GrasshopperBug, m_ui->grassHopperChkBox->isChecked());
+    m_gameFile->SetBug(SkywardSwordFile::GrasshopperBug, m_ui->grasshopperChkBox->isChecked());
     m_gameFile->SetBug(SkywardSwordFile::MantisBug, m_ui->mantisChkBox->isChecked());
     m_gameFile->SetBug(SkywardSwordFile::AntBug, m_ui->antChkBox->isChecked());
     m_gameFile->SetBug(SkywardSwordFile::RollerBug, m_ui->eldinRollerChkBox->isChecked());
-    m_gameFile->UpdateChecksum();
     // Materials
     m_gameFile->SetMaterial(SkywardSwordFile::HornetLarvaeMaterial, m_ui->hornetLarvaeChkBox->isChecked());
     m_gameFile->SetMaterial(SkywardSwordFile::BirdFeatherMaterial,  m_ui->birdFeatherChkBox->isChecked());
@@ -373,43 +381,59 @@ void MainWindow::onValueChanged()
     m_gameFile->SetMaterial(SkywardSwordFile::BlueBirdFeatherMaterial, m_ui->blueBirdFeatherChkBox->isChecked());
     m_gameFile->SetMaterial(SkywardSwordFile::GoldenSkullMaterial, m_ui->goldenSkullChkBox->isChecked());
     m_gameFile->SetMaterial(SkywardSwordFile::GoddessPlumeMaterial, m_ui->goddessPlumeChkBox->isChecked());
-    UpdateTitle();
-}
 
-void MainWindow::onDateTimeChanged(QDateTime val)
-{
-    if (!m_gameFile || !m_gameFile->IsOpen() ||
-         m_isUpdating || m_gameFile->GetGame() == SkywardSwordFile::GameNone)
-        return;
+    // Amounts
+    // Bugs
+    m_gameFile->SetBugQuantity(SkywardSwordFile::HornetBug, m_ui->hornetSpinBox->value());
+    m_gameFile->SetBugQuantity(SkywardSwordFile::ButterflyBug, m_ui->butterflySpinBox->value());
+    m_gameFile->SetBugQuantity(SkywardSwordFile::DragonflyBug, m_ui->dragonflySpinBox->value());
+    m_gameFile->SetBugQuantity(SkywardSwordFile::FireflyBug, m_ui->fireflySpinBox->value());
+    m_gameFile->SetBugQuantity(SkywardSwordFile::RhinoBeetleBug, m_ui->rhinoBeetleSpinBox->value());
+    m_gameFile->SetBugQuantity(SkywardSwordFile::LadybugBug, m_ui->ladybugSpinBox->value());
+    m_gameFile->SetBugQuantity(SkywardSwordFile::SandCicadaBug, m_ui->sandCicadaSpinBox->value());
+    m_gameFile->SetBugQuantity(SkywardSwordFile::StagBeetleBug, m_ui->stagBeetleSpinBox->value());
+    m_gameFile->SetBugQuantity(SkywardSwordFile::GrasshopperBug, m_ui->grasshopperSpinBox->value());
+    m_gameFile->SetBugQuantity(SkywardSwordFile::MantisBug, m_ui->mantisSpinBox->value());
+    m_gameFile->SetBugQuantity(SkywardSwordFile::AntBug, m_ui->antSpinBox->value());
+    m_gameFile->SetBugQuantity(SkywardSwordFile::RollerBug, m_ui->eldinRollerSpinBox->value());
 
-    m_gameFile->SetSaveTime(val);
     m_gameFile->UpdateChecksum();
     UpdateTitle();
+    UpdateInfo();
 }
 
 void MainWindow::onOpen()
 {
     QFileDialog fileDialog;
-    QString file = fileDialog.getOpenFileName(this, tr("Open Skyward Sword Save..."), dir, tr("Skyward Sword Save Files (*.sav)"));
-    if (file.size() > 0)
+    QString filename = fileDialog.getOpenFileName(this, tr("Open Skyward Sword Save..."), dir, tr("Skyward Sword Save Files (*.sav);;SaveData (*.bin)"));
+    if (!filename.isEmpty())
     {
         if (m_gameFile == NULL)
             m_gameFile = new SkywardSwordFile();
         else
             m_gameFile->Close();
 
-        if (m_gameFile->Open(m_gameFile->GetGame(), file))
+       /* if (filename.lastIndexOf(".bin") == filename.size() - 4)
+        {
+            //QMessageBox box(QMessageBox::Information, "Disabled", "Data.bin support is currently disabled<br>Sorry for the inconvience", QMessageBox::NoButton, this);
+            //box.exec();
+            //return;
+            m_gameFile->LoadDataBin(filename, m_gameFile->GetGame());
+            m_gameFile->TestDataBinSave();
+        }
+        else*/ if (m_gameFile->Open(m_gameFile->GetGame(), filename))
         {
             if (!m_gameFile->HasValidChecksum())
             {
                 QMessageBox msg(QMessageBox::Warning, tr("CRC32 Mismatch"), tr("The checksum generated does not match the one provided by the file"));
                 msg.exec();
             }
-            m_gameFile->SetGame(SkywardSwordFile::Game1);
-            m_ui->actionGame1->setChecked(true);
-            UpdateInfo();
-            UpdateTitle();
         }
+
+        m_gameFile->SetGame(SkywardSwordFile::Game1);
+        m_ui->actionGame1->setChecked(true);
+        UpdateInfo();
+        UpdateTitle();
     }
 }
 
@@ -431,7 +455,7 @@ void MainWindow::onCreateNewGame()
 void MainWindow::onDeleteGame()
 {
     if (!m_gameFile || !m_gameFile->IsOpen())
-        return;
+                 return;
 
     m_gameFile->DeleteGame(m_curGame);
     UpdateInfo();
@@ -488,14 +512,14 @@ void MainWindow::onFileInfo()
 void MainWindow::onGameChanged(QAction* game)
 {
     if (!m_gameFile || m_isUpdating)
-        return;
+         return;
 
     if (game == m_ui->actionGame1)
-        m_curGame = SkywardSwordFile::Game1;
+         m_curGame = SkywardSwordFile::Game1;
     else if (game == m_ui->actionGame2)
-        m_curGame = SkywardSwordFile::Game2;
+         m_curGame = SkywardSwordFile::Game2;
     else if (game == m_ui->actionGame3)
-        m_curGame = SkywardSwordFile::Game3;
+         m_curGame = SkywardSwordFile::Game3;
 
     m_gameFile->SetGame((SkywardSwordFile::Game)m_curGame);
     UpdateInfo();
@@ -524,7 +548,7 @@ void MainWindow::onReload()
 void MainWindow::onClose()
 {
     if (!m_gameFile || !m_gameFile->IsOpen())
-        return;
+                 return;
     if(m_gameFile->IsModified())
     {
         QString filename = QFileInfo(m_gameFile->GetFilename()).fileName();
@@ -535,10 +559,10 @@ void MainWindow::onClose()
                         QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
         int result = msg.exec();
         if (result == QMessageBox::Yes)
-            onSave();
+           onSave();
 
         if(result == QMessageBox::Cancel)
-            return;
+           return;
     }
 
 
@@ -551,14 +575,16 @@ void MainWindow::onClose()
 
     m_ui->createDeleteGameBtn->setText(tr("Click to create new Adventure"));
     if (m_ui->createDeleteGameBtn->disconnect())
-        connect(m_ui->createDeleteGameBtn, SIGNAL(clicked()), this, SLOT(onCreateNewGame()));
+                 connect(m_ui->createDeleteGameBtn, SIGNAL(clicked()), this, SLOT(onCreateNewGame()));
     UpdateTitle();
+    UpdateInfo();
 }
 
 void MainWindow::UpdateInfo()
 {
+    m_ui->actionFileInfo->setEnabled((m_gameFile != NULL && m_gameFile->IsOpen()));
     if (!m_gameFile || !m_gameFile->IsOpen() ||
-         m_isUpdating || m_gameFile->GetGame() == SkywardSwordFile::GameNone)
+        m_isUpdating || m_gameFile->GetGame() == SkywardSwordFile::GameNone)
         return;
 
     if (!m_gameFile->IsNew())
@@ -632,18 +658,18 @@ void MainWindow::UpdateInfo()
     m_ui->sacredBowChkBox    ->setChecked(m_gameFile->GetEquipment(SkywardSwordFile::SacredBowWeapon));
     m_ui->harpChkBox         ->setChecked(m_gameFile->GetEquipment(SkywardSwordFile::HarpEquipment));
     // Bugs
-    m_ui->hornetChkBox       ->setChecked(m_gameFile->GetBug   (SkywardSwordFile::HornetBug));
-    m_ui->butterflyChkBox    ->setChecked(m_gameFile->GetBug   (SkywardSwordFile::ButterflyBug));
-    m_ui->dragonflyChkBox    ->setChecked(m_gameFile->GetBug   (SkywardSwordFile::DragonflyBug));
-    m_ui->fireflyChkBox      ->setChecked(m_gameFile->GetBug   (SkywardSwordFile::FireflyBug));
-    m_ui->rhinoBeetleChkBox  ->setChecked(m_gameFile->GetBug   (SkywardSwordFile::RhinoBeetleBug));
-    m_ui->ladybugChkBox      ->setChecked(m_gameFile->GetBug   (SkywardSwordFile::LadybugBug));
-    m_ui->sandCicadaChkBox   ->setChecked(m_gameFile->GetBug   (SkywardSwordFile::SandCicadaBug));
-    m_ui->stagBeetleChkBox   ->setChecked(m_gameFile->GetBug   (SkywardSwordFile::StagBeetleBug));
-    m_ui->grassHopperChkBox  ->setChecked(m_gameFile->GetBug   (SkywardSwordFile::GrasshopperBug));
-    m_ui->mantisChkBox       ->setChecked(m_gameFile->GetBug   (SkywardSwordFile::MantisBug));
-    m_ui->antChkBox          ->setChecked(m_gameFile->GetBug   (SkywardSwordFile::AntBug));
-    m_ui->eldinRollerChkBox  ->setChecked(m_gameFile->GetBug   (SkywardSwordFile::RollerBug));
+    m_ui->hornetChkBox       ->setChecked(m_gameFile->GetBug(SkywardSwordFile::HornetBug));
+    m_ui->butterflyChkBox    ->setChecked(m_gameFile->GetBug(SkywardSwordFile::ButterflyBug));
+    m_ui->dragonflyChkBox    ->setChecked(m_gameFile->GetBug(SkywardSwordFile::DragonflyBug));
+    m_ui->fireflyChkBox      ->setChecked(m_gameFile->GetBug(SkywardSwordFile::FireflyBug));
+    m_ui->rhinoBeetleChkBox  ->setChecked(m_gameFile->GetBug(SkywardSwordFile::RhinoBeetleBug));
+    m_ui->ladybugChkBox      ->setChecked(m_gameFile->GetBug(SkywardSwordFile::LadybugBug));
+    m_ui->sandCicadaChkBox   ->setChecked(m_gameFile->GetBug(SkywardSwordFile::SandCicadaBug));
+    m_ui->stagBeetleChkBox   ->setChecked(m_gameFile->GetBug(SkywardSwordFile::StagBeetleBug));
+    m_ui->grasshopperChkBox  ->setChecked(m_gameFile->GetBug(SkywardSwordFile::GrasshopperBug));
+    m_ui->mantisChkBox       ->setChecked(m_gameFile->GetBug(SkywardSwordFile::MantisBug));
+    m_ui->antChkBox          ->setChecked(m_gameFile->GetBug(SkywardSwordFile::AntBug));
+    m_ui->eldinRollerChkBox  ->setChecked(m_gameFile->GetBug(SkywardSwordFile::RollerBug));
     // Materials
     m_ui->hornetLarvaeChkBox  ->setChecked(m_gameFile->GetMaterial(SkywardSwordFile::HornetLarvaeMaterial));
     m_ui->birdFeatherChkBox   ->setChecked(m_gameFile->GetMaterial(SkywardSwordFile::BirdFeatherMaterial));
@@ -661,13 +687,41 @@ void MainWindow::UpdateInfo()
     m_ui->blueBirdFeatherChkBox->setChecked(m_gameFile->GetMaterial(SkywardSwordFile::BlueBirdFeatherMaterial));
     m_ui->goldenSkullChkBox   ->setChecked(m_gameFile->GetMaterial(SkywardSwordFile::GoldenSkullMaterial));
     m_ui->goddessPlumeChkBox  ->setChecked(m_gameFile->GetMaterial(SkywardSwordFile::GoddessPlumeMaterial));
+
+    // Quantities
+    // Bugs
+    m_ui->hornetSpinBox     ->setValue(m_gameFile->GetBugQuantity(SkywardSwordFile::HornetBug));
+    m_ui->hornetSpinBox     ->setEnabled(m_ui->hornetChkBox->isChecked());
+    m_ui->butterflySpinBox  ->setValue(m_gameFile->GetBugQuantity(SkywardSwordFile::ButterflyBug));
+    m_ui->butterflySpinBox  ->setEnabled(m_ui->butterflyChkBox->isChecked());
+    m_ui->dragonflySpinBox  ->setValue(m_gameFile->GetBugQuantity(SkywardSwordFile::DragonflyBug));
+    m_ui->dragonflySpinBox  ->setEnabled(m_ui->dragonflyChkBox->isChecked());
+    m_ui->fireflySpinBox    ->setValue(m_gameFile->GetBugQuantity(SkywardSwordFile::FireflyBug));
+    m_ui->fireflySpinBox    ->setEnabled(m_ui->fireflyChkBox->isChecked());
+    m_ui->rhinoBeetleSpinBox->setValue(m_gameFile->GetBugQuantity(SkywardSwordFile::RhinoBeetleBug));
+    m_ui->rhinoBeetleSpinBox->setEnabled(m_ui->rhinoBeetleChkBox->isChecked());
+    m_ui->ladybugSpinBox    ->setValue(m_gameFile->GetBugQuantity(SkywardSwordFile::LadybugBug));
+    m_ui->ladybugSpinBox    ->setEnabled(m_ui->ladybugChkBox->isChecked());
+    m_ui->sandCicadaSpinBox ->setValue(m_gameFile->GetBugQuantity(SkywardSwordFile::SandCicadaBug));
+    m_ui->sandCicadaSpinBox ->setEnabled(m_ui->sandCicadaChkBox->isChecked());
+    m_ui->stagBeetleSpinBox ->setValue(m_gameFile->GetBugQuantity(SkywardSwordFile::StagBeetleBug));
+    m_ui->stagBeetleSpinBox ->setEnabled(m_ui->stagBeetleChkBox->isChecked());
+    m_ui->grasshopperSpinBox->setValue(m_gameFile->GetBugQuantity(SkywardSwordFile::GrasshopperBug));
+    m_ui->grasshopperSpinBox->setEnabled(m_ui->grasshopperChkBox->isChecked());
+    m_ui->mantisSpinBox     ->setValue(m_gameFile->GetBugQuantity(SkywardSwordFile::MantisBug));
+    m_ui->mantisSpinBox     ->setEnabled(m_ui->mantisChkBox->isChecked());
+    m_ui->antSpinBox        ->setValue(m_gameFile->GetBugQuantity(SkywardSwordFile::AntBug));
+    m_ui->antSpinBox        ->setEnabled(m_ui->antChkBox->isChecked());
+    m_ui->eldinRollerSpinBox->setValue(m_gameFile->GetBugQuantity(SkywardSwordFile::RollerBug));
+    m_ui->eldinRollerSpinBox->setEnabled(m_ui->eldinRollerChkBox->isChecked());
+
     m_isUpdating = false;
 }
 
 void MainWindow::UpdateTitle()
 {
     if (m_gameFile == NULL || !m_gameFile->IsOpen() || m_gameFile->GetGame() == SkywardSwordFile::GameNone)
-        this->setWindowTitle(tr("WiiKing2 Editor"));
+                 this->setWindowTitle(tr("WiiKing2 Editor"));
     else
     {
         QFileInfo fileInfo(m_gameFile->GetFilename());
@@ -676,10 +730,10 @@ void MainWindow::UpdateTitle()
             fileInfo.setFile(QDir(), "Untitled");
 
         this->setWindowTitle(QString(tr("WiiKing2 Editor (%1%2) - Game %3 0x"))
-                             .arg(fileInfo.fileName())
-                             .arg((m_gameFile->IsModified() ? "*" : ""))
-                             .arg(m_gameFile->GetGame() + 1)
-                             .append(QString("").sprintf("%08X", m_gameFile->GetChecksum())));
+                            .arg(fileInfo.fileName())
+                            .arg((m_gameFile->IsModified() ? "*" : ""))
+                            .arg(m_gameFile->GetGame() + 1)
+                            .append(QString("").sprintf("%08X", m_gameFile->GetChecksum())));
     }
 }
 

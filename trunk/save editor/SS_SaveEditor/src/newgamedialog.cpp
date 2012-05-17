@@ -41,22 +41,22 @@ NewGameDialog::~NewGameDialog()
 void NewGameDialog::onRegionChanged(QAbstractButton *button)
 {
     if (button == m_ui->ntscJRadioBtn)
-        m_ui->nameLineEdit->setText(QString::fromUtf8("\u30ea\u30f3\u30af"));
+                 m_ui->nameLineEdit->setText(QString::fromUtf8("\u30ea\u30f3\u30af"));
     if (button == m_ui->ntscURadioBtn || button == m_ui->palRadioBtn)
-        m_ui->nameLineEdit->setText("Link");
+                 m_ui->nameLineEdit->setText("Link");
 }
 
 SkywardSwordFile* NewGameDialog::gameFile(SkywardSwordFile* gameFile)
 {
     if (gameFile == NULL)
-        gameFile = new SkywardSwordFile();
+                 gameFile = new SkywardSwordFile();
 
     if (m_ui->ntscURadioBtn->isChecked())
-        gameFile->SetRegion     (SkywardSwordFile::NTSCURegion);
+                 gameFile->SetRegion        (SkywardSwordFile::NTSCURegion);
     else if (m_ui->ntscJRadioBtn->isChecked())
-        gameFile->SetRegion     (SkywardSwordFile::NTSCJRegion);
+                 gameFile->SetRegion        (SkywardSwordFile::NTSCJRegion);
     else if (m_ui->palRadioBtn->isChecked())
-        gameFile->SetRegion     (SkywardSwordFile::PALRegion);
+                 gameFile->SetRegion        (SkywardSwordFile::PALRegion);
 
     gameFile->CreateNewGame(m_game); // Create a new Game with defaults.
 

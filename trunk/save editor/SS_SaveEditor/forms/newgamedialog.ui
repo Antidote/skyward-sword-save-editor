@@ -28,10 +28,10 @@
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
     <rect>
-     <x>230</x>
-     <y>130</y>
-     <width>81</width>
-     <height>51</height>
+        <x>230</x>
+        <y>130</y>
+        <width>81</width>
+        <height>51</height>
     </rect>
    </property>
    <property name="orientation">
@@ -44,10 +44,10 @@
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
     <rect>
-     <x>220</x>
-     <y>10</y>
-     <width>101</width>
-     <height>96</height>
+        <x>220</x>
+        <y>10</y>
+        <width>101</width>
+        <height>96</height>
     </rect>
    </property>
    <property name="title">
@@ -55,44 +55,44 @@
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QRadioButton" name="ntscURadioBtn">
-      <property name="text">
-       <string>NTSC-U</string>
-      </property>
-      <property name="checked">
-       <bool>true</bool>
-      </property>
-     </widget>
+        <widget class="QRadioButton" name="ntscURadioBtn">
+            <property name="text">
+                <string>NTSC-U</string>
+            </property>
+            <property name="checked">
+                <bool>true</bool>
+            </property>
+        </widget>
     </item>
     <item>
-     <widget class="QRadioButton" name="ntscJRadioBtn">
-      <property name="text">
-       <string>NTSC-J</string>
-      </property>
-     </widget>
+        <widget class="QRadioButton" name="ntscJRadioBtn">
+            <property name="text">
+                <string>NTSC-J</string>
+            </property>
+        </widget>
     </item>
     <item>
-     <widget class="QRadioButton" name="palRadioBtn">
-      <property name="text">
-       <string>PAL</string>
-      </property>
-     </widget>
+        <widget class="QRadioButton" name="palRadioBtn">
+            <property name="text">
+                <string>PAL</string>
+            </property>
+        </widget>
     </item>
    </layout>
   </widget>
   <widget class="QGroupBox" name="groupBox_3">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>201</width>
-     <height>151</height>
+        <x>10</x>
+        <y>10</y>
+        <width>201</width>
+        <height>151</height>
     </rect>
    </property>
    <property name="sizePolicy">
     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-     <horstretch>0</horstretch>
-     <verstretch>0</verstretch>
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
     </sizepolicy>
    </property>
    <property name="title">
@@ -100,88 +100,88 @@
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_2">
     <property name="spacing">
-     <number>0</number>
+        <number>0</number>
     </property>
     <property name="leftMargin">
-     <number>4</number>
+        <number>4</number>
     </property>
     <property name="topMargin">
-     <number>1</number>
+        <number>1</number>
     </property>
     <property name="rightMargin">
-     <number>4</number>
+        <number>4</number>
     </property>
     <property name="bottomMargin">
-     <number>1</number>
+        <number>1</number>
     </property>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_3">
-      <item>
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>Name:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="nameLineEdit">
-        <property name="text">
-         <string>Link</string>
-        </property>
-        <property name="maxLength">
-         <number>12</number>
-        </property>
-        <property name="placeholderText">
-         <string>Link</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <item>
+                <widget class="QLabel" name="label">
+                 <property name="text">
+                  <string>Name:</string>
+                 </property>
+                </widget>
+            </item>
+            <item>
+                <widget class="QLineEdit" name="nameLineEdit">
+                 <property name="text">
+                  <string>Link</string>
+                 </property>
+                 <property name="maxLength">
+                  <number>12</number>
+                 </property>
+                 <property name="placeholderText">
+                  <string>Link</string>
+                 </property>
+                </widget>
+            </item>
+        </layout>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
-      <item>
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>Rupees:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QSpinBox" name="rupeeSpinBox">
-        <property name="maximum">
-         <number>99999</number>
-        </property>
-       </widget>
-      </item>
-     </layout>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <item>
+                <widget class="QLabel" name="label_2">
+                 <property name="text">
+                  <string>Rupees:</string>
+                 </property>
+                </widget>
+            </item>
+            <item>
+                <widget class="QSpinBox" name="rupeeSpinBox">
+                 <property name="maximum">
+                  <number>99999</number>
+                 </property>
+                </widget>
+            </item>
+        </layout>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_4">
-      <item>
-       <widget class="QLabel" name="label_3">
-        <property name="text">
-         <string>Hearts:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QSpinBox" name="hpSpinBox">
-        <property name="wrapping">
-         <bool>false</bool>
-        </property>
-        <property name="frame">
-         <bool>true</bool>
-        </property>
-        <property name="maximum">
-         <number>80</number>
-        </property>
-        <property name="value">
-         <number>24</number>
-        </property>
-       </widget>
-      </item>
-     </layout>
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <item>
+                <widget class="QLabel" name="label_3">
+                 <property name="text">
+                  <string>Hearts:</string>
+                 </property>
+                </widget>
+            </item>
+            <item>
+                <widget class="QSpinBox" name="hpSpinBox">
+                 <property name="wrapping">
+                  <bool>false</bool>
+                 </property>
+                 <property name="frame">
+                  <bool>true</bool>
+                 </property>
+                 <property name="maximum">
+                  <number>80</number>
+                 </property>
+                 <property name="value">
+                  <number>24</number>
+                 </property>
+                </widget>
+            </item>
+        </layout>
     </item>
    </layout>
   </widget>
@@ -195,12 +195,12 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>248</x>
-     <y>254</y>
+        <x>248</x>
+        <y>254</y>
     </hint>
     <hint type="destinationlabel">
-     <x>157</x>
-     <y>274</y>
+        <x>157</x>
+        <y>274</y>
     </hint>
    </hints>
   </connection>
@@ -211,12 +211,12 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>316</x>
-     <y>260</y>
+        <x>316</x>
+        <y>260</y>
     </hint>
     <hint type="destinationlabel">
-     <x>286</x>
-     <y>274</y>
+        <x>286</x>
+        <y>274</y>
     </hint>
    </hints>
   </connection>

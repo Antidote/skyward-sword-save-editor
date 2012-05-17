@@ -19,6 +19,7 @@
 #include "igamefile.h"
 #include "skywardswordfile.h"
 
+#include <QFile>
 #include <QRadioButton>
 
 FileInfoDialog::FileInfoDialog(QWidget *parent, SkywardSwordFile& game) :
@@ -35,18 +36,19 @@ FileInfoDialog::FileInfoDialog(QWidget *parent, SkywardSwordFile& game) :
 
     if (m_gameFile != NULL)
     {
-        m_ui->noFileInfoLbl->hide();
+        if (!m_gameFile->GetBanner().isNull())
+            m_ui->bannerImg->setPixmap(QPixmap::fromImage(m_gameFile->GetBanner()));
         switch(m_gameFile->GetRegion())
         {
-        case SkywardSwordFile::NTSCURegion:
-            m_ui->ntscURadioBtn->setChecked(true);
-            break;
-        case SkywardSwordFile::NTSCJRegion:
-            m_ui->ntscJRadioBtn->setChecked(true);
-            break;
-        case SkywardSwordFile::PALRegion:
-            m_ui->palRadioBtn->setChecked(true);
-            break;
+            case SkywardSwordFile::NTSCURegion:
+                m_ui->ntscURadioBtn->setChecked(true);
+                break;
+            case SkywardSwordFile::NTSCJRegion:
+                m_ui->ntscJRadioBtn->setChecked(true);
+                break;
+            case SkywardSwordFile::PALRegion:
+                m_ui->palRadioBtn->setChecked(true);
+                break;
         }
 
         int count = 0;
@@ -62,7 +64,7 @@ FileInfoDialog::FileInfoDialog(QWidget *parent, SkywardSwordFile& game) :
 
         m_ui->checkSumLbl->setText(tr("Adventure Checksum: 0x").append(QString("").sprintf("%08X", m_gameFile->GetChecksum())));
         m_ui->adventureCountLbl->setText(tr("Adventure Count: %1").arg(count));
-        m_ui->currentAdventureLbl->setText(tr("Current Adventure: %1 - %2").arg(m_gameFile->GetGame() + 1).arg(m_gameFile->GetPlayerName()));
+        m_ui->currentAdventureLbl->setText(m_gameFile->IsNew() ? tr("New Adventure") : tr("Current Adventure: %1 - %2").arg(m_gameFile->GetGame() + 1).arg(m_gameFile->GetPlayerName()));
     }
     else
     {
@@ -82,12 +84,12 @@ FileInfoDialog::~FileInfoDialog()
 void FileInfoDialog::onRegionChanged(QAbstractButton *)
 {
     if (m_gameFile == NULL);
-        return;
+                 return;
 
     if (m_ui->ntscURadioBtn->isChecked())
-        m_gameFile->SetRegion(SkywardSwordFile::NTSCURegion);
+                 m_gameFile->SetRegion(SkywardSwordFile::NTSCURegion);
     else if (m_ui->ntscJRadioBtn->isChecked())
-        m_gameFile->SetRegion(SkywardSwordFile::NTSCJRegion);
+                 m_gameFile->SetRegion(SkywardSwordFile::NTSCJRegion);
     else if (m_ui->palRadioBtn->isChecked())
-        m_gameFile->SetRegion(SkywardSwordFile::PALRegion);
+                 m_gameFile->SetRegion(SkywardSwordFile::PALRegion);
 }

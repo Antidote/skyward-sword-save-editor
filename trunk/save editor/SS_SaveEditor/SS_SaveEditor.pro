@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT                += core gui
 
 TARGET = SS_SaveEditor
 TEMPLATE = app
@@ -17,7 +17,14 @@ SOURCES += \
     src/newgamedialog.cpp \
     src/aboutdialog.cpp \
     src/fileinfodialog.cpp \
-    src/skywardswordfile.cpp
+    src/skywardswordfile.cpp \
+    src/WiiQt/tools.cpp \
+    src/WiiQt/savedatabin.cpp \
+    src/WiiQt/savebanner.cpp \
+    src/WiiQt/ec.cpp \
+    src/WiiQt/bn.cpp \
+    src/WiiQt/aes.c \
+    src/WiiQt/sha1.c
 
 HEADERS  += \
     include/mainwindow.h \
@@ -26,7 +33,20 @@ HEADERS  += \
     include/newgamedialog.h \
     include/aboutdialog.h \
     include/fileinfodialog.h \
-    include/skywardswordfile.h
+    include/skywardswordfile.h \
+    include/WiiQt/tools.h \
+    include/WiiQt/savedatabin.h \
+    include/WiiQt/savebanner.h \
+    include/WiiQt/ec.h \
+    include/WiiQt/bn.h \
+    include/WiiQt/aes.h \
+    src/WiiQt/tools.h \
+    src/WiiQt/savedatabin.h \
+    src/WiiQt/savebanner.h \
+    src/WiiQt/ec.h \
+    src/WiiQt/bn.h \
+    src/WiiQt/aes.h \
+    include/WiiQt/sha1.h
 
 FORMS    += \
     forms/mainwindow.ui \

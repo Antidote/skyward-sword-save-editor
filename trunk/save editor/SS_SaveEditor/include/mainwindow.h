@@ -44,7 +44,6 @@ public:
     SkywardSwordFile* GetGameFile();
 
 private slots:
-    void onDateTimeChanged(QDateTime);
     void onTextChanged(QString text);
     void onValueChanged();
     void onGameChanged(QAction*);
@@ -64,17 +63,16 @@ private:
     void dragEnterEvent(QDragEnterEvent *event);
     void dragLeaveEvent(QDragLeaveEvent *event);
     void dropEvent(QDropEvent *event);
-    //bool eventFilter(QObject *, QEvent *);
     QTimer* m_checkTimer;
     void SetRegion(SkywardSwordFile::Region);
     void ToggleEnabled(bool visible);
     void SetupActions();
     void SetupConnections();
     Ui::MainWindow*   m_ui;
-    SkywardSwordFile*         m_gameFile;
+    SkywardSwordFile*                  m_gameFile;
     SkywardSwordFile::Game    m_curGame;
-    bool              m_isUpdating;
-    bool              m_isChecking;
+    bool                             m_isUpdating;
+    bool                             m_isChecking;
 
     QActionGroup* m_gameGroup;
     QButtonGroup* m_regionGroup;
