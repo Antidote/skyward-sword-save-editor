@@ -22,7 +22,13 @@
 #include <time.h>
 #include "WiiQt/savebanner.h"
 #include "WiiQt/savedatabin.h"
+#include "wiikeys.h"
 
+static const char antiNGID[0x04] = {0x04, 0x34, 0x2E, 0x81};
+static const char antiNGKeyID[0x04] = {0x6A, 0xF0, 0x44, 0x9A};
+static const char antiMac[0x06] = {0x00, 0x17, 0xAB, 0xD6, 0x0E, 0x42};
+static const char antiNGSig[0x3C] = {0x00, 0x39, 0x80, 0x43, 0x25, 0x45, 0x30, 0x7F, 0x63, 0x5E, 0x7B, 0x96, 0x5A, 0x19, 0xE9, 0x11, 0x61, 0xD8, 0x72, 0x4D, 0xF5, 0x36, 0x2A, 0x31, 0xE3, 0xBB, 0xF3, 0x55, 0x51, 0x8C, 0x00, 0xCA, 0x03, 0x06, 0xA1, 0x98, 0x56, 0xD0, 0x2D, 0x55, 0xD6, 0xFB, 0xA3, 0x22, 0x82, 0x16, 0x3F, 0x88, 0xB1, 0xAF, 0x05, 0xFE, 0xFC, 0x9C, 0x31, 0xD7, 0xF3, 0xE0, 0xBE, 0xA5 };
+static const char antiNGPRIV[0x1E] = {0x01, 0x91, 0x93, 0xBE, 0x3E, 0x1E, 0x3C, 0x10, 0x22, 0x8A, 0xDB, 0x7E, 0xFB, 0x6C, 0x94, 0xE5, 0x48, 0x3D, 0x10, 0xEB, 0x73, 0x31, 0x90, 0x3D, 0x1F, 0x3B, 0x72, 0xBB, 0x75, 0x67};
 
 float swapFloat(float val)
 {
@@ -106,6 +112,9 @@ bool SkywardSwordFile::Save(const QString& filename)
     if (filename != NULL)
         m_filename = filename;
 
+    if (filename.lastIndexOf(".bin") == filename.size() - 4)
+        return CreateDataBin();
+
     QString tmpFilename = m_filename;
     tmpFilename = tmpFilename.remove(m_filename.lastIndexOf("."), tmpFilename.length() - tmpFilename.lastIndexOf(".")) + ".tmp";
     FILE* f = fopen(tmpFilename.toAscii(), "wb");
@@ -159,21 +168,52 @@ void SkywardSwordFile::CreateNewGame(SkywardSwordFile::Game game)
     {
         for (int i = 0; i < 3; i++)
         {
-            this->m_game = (Game)i;
-            this->SetNew(true);
-            this->UpdateChecksum();
+            m_game = (Game)i;
+            SetNew(true);
+            UpdateChecksum();
         }
-        this->m_isOpen = true;
+        m_isOpen = true;
     }
 
-    this->m_game = game;
-    this->SetCurrentArea   ("F000");
-    this->SetCurrentRoom   ("F000");
-    this->SetCurrentMap    ("F000");
-    this->SetPlayerPosition(DEFAULT_POS_X, DEFAULT_POS_Y, DEFAULT_POS_Z);
-    this->SetPlayerRotation(0.0f, 0.0f, 0.0f);
-    this->SetCameraPosition(DEFAULT_POS_X, DEFAULT_POS_Y, DEFAULT_POS_Z);
-    this->SetCameraRotation(0.0f, 0.0f, 0.0f);
+    m_game = game;
+    SetSaveTime();
+    SetCurrentArea   ("F000");
+    SetCurrentRoom   ("F000");
+    SetCurrentMap    ("F000");
+    SetPlayerPosition(DEFAULT_POS_X, DEFAULT_POS_Y, DEFAULT_POS_Z);
+    SetPlayerRotation(0.0f, 0.0f, 0.0f);
+    SetCameraPosition(DEFAULT_POS_X, DEFAULT_POS_Y, DEFAULT_POS_Z);
+    SetCameraRotation(0.0f, 0.0f, 0.0f);
+}
+
+void SkywardSwordFile::ExportGame(const QString &filepath, Game game)
+{
+    ExportGame(filepath, game, GetRegion());
+}
+
+void SkywardSwordFile::ExportGame(const QString& filepath, Game game, Region region)
+{
+    if (game == GameNone)
+        game = Game1;
+    char* outBuf = new char[0xFBE0];
+    memcpy(outBuf, (m_data + 0x20 + (0x53C0 * game)), 0x53C0);
+    FILE* out = fopen(filepath.toAscii(), "wb");
+    struct Header
+    {
+        int magic;
+        int version;
+        int game;
+        char padding[0x14];
+    };
+    Header header;
+    header.magic = 0x5641535A;
+    header.version = 0;
+    header.game = region;
+    memset(&header.padding, 0, 0x14);
+
+    fwrite(&header, 1, sizeof(header), out);
+    fwrite(outBuf, 1, 0x53C0, out);
+    fclose(out);
 }
 
 void SkywardSwordFile::DeleteGame(Game game)
@@ -185,7 +225,18 @@ void SkywardSwordFile::DeleteGame(Game game)
     m_game = game;
     memset((uchar*)(m_data + GetGameOffset()), 0, 0x53BC);
     SetNew(true);
-    SetPlayerName("Link");
+    SetSaveTime();
+    switch(GetRegion())
+    {
+        default:
+        case NTSCURegion:
+        case PALRegion:
+            SetPlayerName("Link");
+            break;
+        case NTSCJRegion:
+            SetPlayerName(QString::fromUtf8("\u30ea\u30f3\u30af"));
+            break;
+    }
     UpdateChecksum();
     m_game = oldGame;
 }
@@ -313,6 +364,7 @@ void SkywardSwordFile::SetPlayTime(PlayTime val)
     *(quint64*)(m_data + GetGameOffset()) = qToBigEndian<quint64>(totalSeconds);
 }
 
+static const quint64 TIME_OFFSET = 60750560;
 QDateTime SkywardSwordFile::GetSaveTime() const
 {
     if (!m_data)
@@ -345,7 +397,7 @@ quint64 GetLocalTimeSinceJan1970()
 
 void SkywardSwordFile::SetSaveTime()
 {
-    *(qint64*)(m_data + GetGameOffset() + 0x0008) = qToBigEndian<qint64>((GetLocalTimeSinceJan1970() - 946692560) * 60750560);
+    *(qint64*)(m_data + GetGameOffset() + 0x0008) = qToBigEndian<qint64>((GetLocalTimeSinceJan1970() - SECONDS_TO_2000) * 60749440);
 }
 
 Vector3 SkywardSwordFile::GetPlayerPosition() const
@@ -1069,7 +1121,7 @@ bool SkywardSwordFile::LoadDataBin(const QString& filepath, Game game)
 
     if (file.open(QIODevice::ReadOnly))
     {
-        QByteArray data = file.read(0x1F200);
+        QByteArray data = file.read(file.size());
         m_dataBin = SaveDataBin(data);
         m_saveGame = SaveDataBin::StructFromDataBin(data);
         SaveBanner banner(SaveDataBin::GetBanner(data));
@@ -1089,20 +1141,27 @@ bool SkywardSwordFile::LoadDataBin(const QString& filepath, Game game)
     return false;
 }
 
-bool SkywardSwordFile::TestDataBinSave()
+bool SkywardSwordFile::CreateDataBin()
 {
     if (m_saveGame.entries.size() > 0 && m_data)
     {
-        m_saveGame = DataToSave(m_saveGame, "/wiiking2", QByteArray((const char*)m_data));
+        m_saveGame = DataToSave(m_saveGame, "/wiiking2.sav", QByteArray((const char*)m_data, 0xFBE0));
 
-        QByteArray dataBin = SaveDataBin::DataBinFromSaveStruct(m_saveGame, QByteArray(""), m_dataBin.NgSig(), m_dataBin.NgMac(), m_dataBin.NgID(), m_dataBin.NgKeyID());
+        QByteArray dataBin = SaveDataBin::DataBinFromSaveStruct(m_saveGame, WiiKeys::GetInstance()->GetNGPriv(), WiiKeys::GetInstance()->GetNGSig(), QByteArray(antiMac, 0x06), WiiKeys::GetInstance()->GetNGID(), WiiKeys::GetInstance()->GetNGKeyID());
         foreach (QString s, m_saveGame.entries)
             qDebug() << s;
-        FILE* file = fopen("./data.bin", "wb");
-        char* data = dataBin.data();
-        fwrite(data, 1, 0x1F200, file);
-        fclose(file);
+        qDebug() << dataBin.size();
+        FILE* file = fopen(m_filename.toAscii(), "wb");
+        if (file)
+        {
+            fwrite(dataBin.data(), 1, dataBin.length(), file);
+            fclose(file);
+            return true;
+        }
+        return false;
     }
+
+    return false;
 }
 
 const QImage& SkywardSwordFile::GetBanner() const

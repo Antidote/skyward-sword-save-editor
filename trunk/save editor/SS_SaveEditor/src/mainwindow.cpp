@@ -30,6 +30,7 @@
 #include "newgamedialog.h"
 #include "aboutdialog.h"
 #include "fileinfodialog.h"
+#include "wiikeys.h"
 
 #ifdef DEBUG
 QString dir("D:/Projects/dolphin-emu/Binary/x64/User/Wii/title/00010000/534f5545/data");
@@ -46,6 +47,18 @@ MainWindow::MainWindow(QWidget *parent) :
     m_isChecking(false)
 {
     m_ui->setupUi(this);
+
+    if (!WiiKeys::GetInstance()->Open("./keys.bin"))
+        qDebug() << "No keys.bin";
+    else
+    {
+        qDebug() << "keys.bin found"
+                 << "\nNGPriv: " <<WiiKeys::GetInstance()->GetNGPriv().toHex()
+                 << "\nNGSig: " << WiiKeys::GetInstance()->GetNGSig().toHex()
+                 << "\nNGID: " << hex << WiiKeys::GetInstance()->GetNGID()
+                 << "\nNGKeyID: " << hex << WiiKeys::GetInstance()->GetNGKeyID()
+                 << "\nMac Address: " << WiiKeys::GetInstance()->GetMacAddr().toHex();
+    }
 
     setWindowFlags(Qt::Window | Qt::WindowMinimizeButtonHint);
     SetupActions();
@@ -160,7 +173,6 @@ void MainWindow::SetupConnections()
     connect(m_ui->playHoursSpinBox,     SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
     connect(m_ui->playMinutesSpinBox,   SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
     connect(m_ui->playSecondsSpinBox,   SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
-    connect(m_ui->saveTimeEdit,         SIGNAL(dateTimeChanged(QDateTime)), this, SLOT(onDateTimeChanged(QDateTime)));
     connect(m_ui->playerXSpinBox,       SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
     connect(m_ui->playerYSpinBox,       SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
     connect(m_ui->playerZSpinBox,       SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
@@ -413,25 +425,20 @@ void MainWindow::onOpen()
         else
             m_gameFile->Close();
 
-       /* if (filename.lastIndexOf(".bin") == filename.size() - 4)
+        if (filename.lastIndexOf(".bin") == filename.size() - 4)
         {
-            //QMessageBox box(QMessageBox::Information, "Disabled", "Data.bin support is currently disabled<br>Sorry for the inconvience", QMessageBox::NoButton, this);
-            //box.exec();
-            //return;
             m_gameFile->LoadDataBin(filename, m_gameFile->GetGame());
-            m_gameFile->TestDataBinSave();
         }
-        else*/ if (m_gameFile->Open(m_gameFile->GetGame(), filename))
-        {
-            if (!m_gameFile->HasValidChecksum())
-            {
-                QMessageBox msg(QMessageBox::Warning, tr("CRC32 Mismatch"), tr("The checksum generated does not match the one provided by the file"));
-                msg.exec();
-            }
-        }
-
+        else if (!m_gameFile->Open(m_gameFile->GetGame(), filename))
+            return;
         m_gameFile->SetGame(SkywardSwordFile::Game1);
         m_ui->actionGame1->setChecked(true);
+
+        if (!m_gameFile->HasValidChecksum())
+        {
+            QMessageBox msg(QMessageBox::Warning, tr("CRC32 Mismatch"), tr("The checksum generated does not match the one provided by the file"));
+            msg.exec();
+        }
         UpdateInfo();
         UpdateTitle();
     }
@@ -470,7 +477,7 @@ void MainWindow::onSave()
     if (m_gameFile->GetFilename().size() <= 0)
     {
         QFileDialog fileDialog;
-        QString file = fileDialog.getSaveFileName(this, tr("Save Skyward Sword Save File..."), dir, tr("Skyward Sword Save Files (*.sav)"));
+        QString file = fileDialog.getSaveFileName(this, tr("Save Skyward Sword Save File..."), dir, tr("Skyward Sword Save Files (*.sav);;Wii save (*.bin)"));
         m_gameFile->SetFilename(file);
     }
 

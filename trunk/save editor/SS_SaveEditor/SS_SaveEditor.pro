@@ -24,7 +24,9 @@ SOURCES += \
     src/WiiQt/ec.cpp \
     src/WiiQt/bn.cpp \
     src/WiiQt/aes.c \
-    src/WiiQt/sha1.c
+    src/WiiQt/sha1.c \
+    src/exportquestdialog.cpp \
+    src/wiikeys.cpp
 
 HEADERS  += \
     include/mainwindow.h \
@@ -46,13 +48,16 @@ HEADERS  += \
     src/WiiQt/ec.h \
     src/WiiQt/bn.h \
     src/WiiQt/aes.h \
-    include/WiiQt/sha1.h
+    include/WiiQt/sha1.h \
+    include/exportquestdialog.h \
+    include/wiikeys.h
 
 FORMS    += \
     forms/mainwindow.ui \
     forms/newgamedialog.ui \
     forms/aboutdialog.ui \
-    forms/fileinfodialog.ui
+    forms/fileinfodialog.ui \
+    forms/exportquestdialog.ui
 
 DEFINES += DEBUG
 
