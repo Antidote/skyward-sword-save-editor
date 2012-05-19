@@ -12,6 +12,7 @@ public:
     SaveBanner( QByteArray stuff );
 
 	const QImage &BannerImg() const { return bannerImg; }
+    void          SetBannerImg(const QImage&);
 	const QList< QImage > &IconImgs() const { return iconImgs; }
 
 	const QString &Title() const { return saveTitle; }
