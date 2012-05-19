@@ -1,0 +1,18 @@
+//--------------------------------------
+//--- 010 Editor v3.2.2 Binary Template
+//
+// File:
+// Author:
+// Revision:
+// Purpose:
+//--------------------------------------
+
+
+struct
+{
+    char header[0x80];
+    char data1[0x500];
+    char data2[0x500];
+    char data3[0x500];
+    char tail[0x80];
+}file[2];
