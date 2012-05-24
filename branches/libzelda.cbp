@@ -6,20 +6,24 @@
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
-			<Target title="Debug">
-				<Option output="bin\Debug\libzelda" prefix_auto="1" extension_auto="1" />
+			<Target title="Debug Win32">
+				<Option output="lib\Win32\libzelda-d" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
 				<Option object_output="obj\Debug\" />
-				<Option type="1" />
+				<Option type="2" />
 				<Option compiler="gcc" />
+				<Option createDefFile="1" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
 			</Target>
-			<Target title="Release">
-				<Option output="bin\Release\libzelda" prefix_auto="1" extension_auto="1" />
+			<Target title="Release Win32">
+				<Option output="lib\Win32\libzelda" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
 				<Option object_output="obj\Release\" />
-				<Option type="1" />
+				<Option type="2" />
 				<Option compiler="gcc" />
+				<Option createDefFile="1" />
 				<Compiler>
 					<Add option="-O2" />
 				</Compiler>
@@ -27,10 +31,51 @@
 					<Add option="-s" />
 				</Linker>
 			</Target>
+			<Target title="Debug Wii">
+				<Option output="lib\Wii\libzelda" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option type="2" />
+				<Option compiler="devkitppc_wii" />
+				<Option createDefFile="1" />
+			</Target>
+			<Target title="Release Wii">
+				<Option output="lib\Wii\libzelda" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option type="2" />
+				<Option compiler="devkitppc_wii" />
+				<Option createDefFile="1" />
+			</Target>
+			<Target title="Debug Linux">
+				<Option platforms="Unix;" />
+				<Option output="lib\Linux\libzelda-d" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+			</Target>
+			<Target title="Release Linux">
+				<Option platforms="Unix;" />
+				<Option output="lib\Linux\libzelda" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
+			<Add directory="include" />
 		</Compiler>
+		<Unit filename="include\BinaryReader.hpp" />
+		<Unit filename="include\BinaryWriter.hpp" />
+		<Unit filename="include\Exception.hpp" />
+		<Unit filename="include\FileNotFoundException.hpp" />
+		<Unit filename="include\IOException.hpp" />
+		<Unit filename="include\Stream.hpp" />
+		<Unit filename="include\Types.hpp" />
+		<Unit filename="src\BinaryReader.cpp" />
+		<Unit filename="src\BinaryWriter.cpp" />
+		<Unit filename="src\Stream.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

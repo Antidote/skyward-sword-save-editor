@@ -7,7 +7,7 @@ class IOException : public Exception
 {
 public:
     IOException(const std::string& message) :
-    Exception("IOException occured: " + message)
+    Exception("IOException: " + message)
     {};
 };
 

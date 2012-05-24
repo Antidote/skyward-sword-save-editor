@@ -10,8 +10,8 @@ public:
     BinaryReader(const Stream& stream);
     BinaryReader(const std::string& filename);
 
-    void WriteByte(char byte) {throw "Stream not open for writing";};
-    void WriteBytes(char*, long) {throw "Stream not open for writing";};
+    void WriteByte(Int8 byte);
+    void WriteBytes(Int8*, Int64);
 
     Int16 ReadInt16();
     Uint16 ReadUInt16();
