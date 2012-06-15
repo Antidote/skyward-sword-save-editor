@@ -3,43 +3,26 @@
 #include "FileNotFoundException.hpp"
 
 #include <stdio.h>
+#include <stdlib.h>
 
 BinaryReader::BinaryReader(const Stream& stream) :
     Stream(stream)
 {}
 
-BinaryReader::BinaryReader(const std::string& filename)
-{
-    FILE* in;
-    int length;
-
-    in = fopen(filename.c_str(), "rb");
-    if (!in)
-        throw FileNotFoundException(filename.c_str());
-    fseek(in, 0, SEEK_END);
-    length = ftell(in);
-    fseek(in, 0, SEEK_SET);
-    m_data = new Int8[length];
-
-    fread(m_data, 1, length, in);
-    m_length = length;
-    m_position = 0;
-}
-
 void BinaryReader::WriteByte(Int8)
 {
-    throw IOException(__FILE__": BinaryReader::WriteByte() -> Stream not open for writing");
+    throw IOException("BinaryReader::WriteByte() -> Stream not open for writing");
 }
 
 void BinaryReader::WriteBytes(Int8*, Int64)
 {
-    throw IOException("Stream not open for writing");
+    throw IOException("BinaryReader::WriteBytes() -> Stream not open for writing");
 }
 
 Int16 BinaryReader::ReadInt16()
 {
     if (m_position > m_length || m_position <= 0)
-        throw IOException("Position outside stream bounds: " + m_position);
+        throw IOException("BinaryReader::ReadInt16() -> Position outside stream bounds: " + m_position);
     Int16 ret = *(Int16*)(m_data + m_position);
     m_position += sizeof(Int16);
     return ret;
@@ -48,7 +31,7 @@ Int16 BinaryReader::ReadInt16()
 Uint16 BinaryReader::ReadUInt16()
 {
     if (m_position > m_length || m_position <= 0)
-        throw IOException("Position outside stream bounds: " + m_position);
+        throw IOException("BinaryReader::ReadUint16() -> Position outside stream bounds: " + m_position);
     Uint16 ret = *(Uint16*)(m_data + m_position);
     m_position += sizeof(Uint16);
     return ret;
@@ -57,7 +40,7 @@ Uint16 BinaryReader::ReadUInt16()
 Int32 BinaryReader::ReadInt32()
 {
     if (m_position > m_length || m_position <= 0)
-        throw IOException("BinaryReader::ReadInt32() -> Position outside stream bounds");
+        throw IOException("BinaryReader::ReadUint32() -> Position outside stream bounds");
     Int32 ret = *(Int32*)(m_data + m_position);
     m_position += sizeof(Int32);
     return ret;
@@ -116,7 +99,7 @@ double BinaryReader::ReadDouble()
 bool BinaryReader::ReadBool()
 {
     if (m_position > m_length || m_position <= 0)
-        throw IOException(__FILE__ ":Position outside stream bounds: " + m_position);
+        throw IOException("BinaryReader::ReadBool() -> Position outside stream bounds");
 
     bool ret = *(bool*)(m_data + m_position);
     m_position += sizeof(bool);

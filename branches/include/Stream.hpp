@@ -11,7 +11,7 @@ public:
     Stream();
     Stream(Int8* bytes, Int64 length);
     Stream(Int64 length);
-    Stream(const Stream& stream);
+    Stream(Stream* stream);
     virtual ~Stream();
 
     virtual void WriteByte(Int8 byte);

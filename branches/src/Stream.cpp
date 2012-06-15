@@ -31,14 +31,14 @@ Stream::Stream(Int64 length) :
     memset(m_data, 0, m_length);
 }
 
-Stream::Stream(const Stream& stream)
+Stream::Stream(Stream* stream)
 {
     if (m_data)
         delete[] m_data;
 
-    m_data = stream.m_data;
-    m_position = stream.m_position;
-    m_length = stream.m_length;
+    m_data = stream->m_data;
+    m_position = stream->m_position;
+    m_length = stream->m_length;
 }
 
 Stream::~Stream()

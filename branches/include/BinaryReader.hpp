@@ -8,7 +8,6 @@ class BinaryReader : public Stream
 {
 public:
     BinaryReader(const Stream& stream);
-    BinaryReader(const std::string& filename);
 
     void WriteByte(Int8 byte);
     void WriteBytes(Int8*, Int64);

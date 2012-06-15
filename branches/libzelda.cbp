@@ -70,11 +70,13 @@
 		<Unit filename="include\BinaryWriter.hpp" />
 		<Unit filename="include\Exception.hpp" />
 		<Unit filename="include\FileNotFoundException.hpp" />
+		<Unit filename="include\FileStream.hpp" />
 		<Unit filename="include\IOException.hpp" />
 		<Unit filename="include\Stream.hpp" />
 		<Unit filename="include\Types.hpp" />
 		<Unit filename="src\BinaryReader.cpp" />
 		<Unit filename="src\BinaryWriter.cpp" />
+		<Unit filename="src\FileStream.cpp" />
 		<Unit filename="src\Stream.cpp" />
 		<Extensions>
 			<code_completion />

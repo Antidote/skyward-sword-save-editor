@@ -7,8 +7,7 @@
 class BinaryWriter : public Stream
 {
 public:
-    BinaryWriter(const Stream& stream);
-    BinaryWriter(const std::string& filename);
+    BinaryWriter(Stream* stream);
 
     Int8 ReadByte();
     Int8* ReadBytes(Int64);
