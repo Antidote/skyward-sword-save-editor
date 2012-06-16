@@ -54,7 +54,7 @@ SkywardSwordFile::SkywardSwordFile(const QString& filepath, Game game) :
     m_game(game),
     m_isOpen(false)
 {
-    m_banner = QImage();
+    m_bannerImage = QImage();
     m_crcEngine = new CRC32;
 }
 
@@ -112,7 +112,7 @@ bool SkywardSwordFile::Save(const QString& filename)
     if (filename != NULL)
         m_filename = filename;
 
-    if (filename.lastIndexOf(".bin") == filename.size() - 4)
+    if (m_filename.lastIndexOf(".bin") == m_filename.size() - 4)
         return CreateDataBin();
 
     QString tmpFilename = m_filename;
@@ -283,7 +283,7 @@ void SkywardSwordFile::Close()
     delete[] m_data;
     m_data = NULL;
     m_isOpen = false;
-    m_banner = QImage();
+    m_bannerImage = QImage();
 }
 
 void SkywardSwordFile::Reload(SkywardSwordFile::Game game)
@@ -576,7 +576,7 @@ bool SkywardSwordFile::GetSword(Sword sword) const
         case LongSword:
             return GetFlag(0x09E4, 0x02);
         case WhiteSword:
-            return GetFlag(0x09F3, 0x10);
+            return GetFlag(0x09FB, 0x10);
         case MasterSword:
             return GetFlag(0x09E4, 0x04);
         case TrueMasterSword:
@@ -862,6 +862,25 @@ void SkywardSwordFile::SetMaterial(Material material, bool val)
     }
 }
 
+quint32 SkywardSwordFile::GetGratitudeCrystalAmount()
+{
+    if (!m_data)
+        return 0;
+
+    quint32 ret = (quint32)((qFromBigEndian<quint16>(*(quint16*)(m_data + GetGameOffset() + 0x0A50)) >> 3) & 127);
+
+    return ret;
+}
+
+void SkywardSwordFile::SetGratitudeCrystalAmount(quint32 val)
+{
+    if (!m_data)
+        return;
+
+    val = (quint16)(val << 3);
+    *(quint16*)(m_data + GetGameOffset() + 0x0A50) = qToBigEndian<quint16>((quint16)val);
+}
+
 ushort SkywardSwordFile::GetRupees() const
 {
     if (!m_data)
@@ -1124,8 +1143,8 @@ bool SkywardSwordFile::LoadDataBin(const QString& filepath, Game game)
         QByteArray data = file.read(file.size());
         m_dataBin = SaveDataBin(data);
         m_saveGame = SaveDataBin::StructFromDataBin(data);
-        SaveBanner banner(SaveDataBin::GetBanner(data));
-        m_banner = banner.BannerImg();
+        m_banner = SaveDataBin::GetBanner(data);
+        m_bannerImage = m_banner.BannerImg();
         char* tmpData =  (char*)DataFromSave(m_saveGame, "/wiiking2.sav").data();
         FILE* f = fopen("./tmp.sav", "wb");
         fwrite(tmpData, 1, 0xFBE0, f);
@@ -1164,9 +1183,17 @@ bool SkywardSwordFile::CreateDataBin()
     return false;
 }
 
+QString SkywardSwordFile::GetBannerTitle() const
+{
+    if (m_saveGame.entries.length() > 0)
+    {
+        return m_banner.Title();
+    }
+    return QString("");
+}
 const QImage& SkywardSwordFile::GetBanner() const
 {
-    return m_banner;
+    return m_bannerImage;
 }
 
 // To support MSVC I have placed these here, why can't Microsoft follow real ANSI Standards? <.<

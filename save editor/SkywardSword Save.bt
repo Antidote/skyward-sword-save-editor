@@ -188,6 +188,8 @@ struct GameData
             ushort fireflyStagBeatleAmount;
             ushort unkBug1;
             ushort gerudoDragonFly;
+            FSeek(GameOff + 0x0A50);
+            ushort gratitudeCrystalsAmount<format = bin>;
             FSeek(GameOff + 0x0A5E);
             ushort rupees;
             FSeek(GameOff + 0x1A66);

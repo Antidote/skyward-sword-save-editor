@@ -30,6 +30,7 @@
 #include "newgamedialog.h"
 #include "aboutdialog.h"
 #include "fileinfodialog.h"
+#include "preferencesdialog.h"
 #include "wiikeys.h"
 
 #ifdef DEBUG
@@ -48,16 +49,30 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     m_ui->setupUi(this);
 
-    if (!WiiKeys::GetInstance()->Open("./keys.bin"))
-        qDebug() << "No keys.bin";
+    QSettings settings("WiiKing2", "WiiKing2 Editor");
+
+    if (settings.allKeys().count() > 0)
+    {
+        qDebug() << "Registry entry found, attempting to load...";
+        if(!WiiKeys::GetInstance()->LoadRegistry())
+        {
+            qDebug() << "Couldn't not find 1 or more keys, attempting to load keys.bin...";
+            if (!WiiKeys::GetInstance()->Open("./keys.bin"))
+                qDebug() << "No keys.bin, requires manual entry";
+            else
+                qDebug() << "done";
+        }
+        else
+            qDebug() << "done";
+    }
     else
     {
-        qDebug() << "keys.bin found"
-                 << "\nNGPriv: " <<WiiKeys::GetInstance()->GetNGPriv().toHex()
-                 << "\nNGSig: " << WiiKeys::GetInstance()->GetNGSig().toHex()
-                 << "\nNGID: " << hex << WiiKeys::GetInstance()->GetNGID()
-                 << "\nNGKeyID: " << hex << WiiKeys::GetInstance()->GetNGKeyID()
-                 << "\nMac Address: " << WiiKeys::GetInstance()->GetMacAddr().toHex();
+        qDebug() << "No Registry Entry trying keys.bin";
+
+        if (!WiiKeys::GetInstance()->Open("./keys.bin"))
+            qDebug() << "No keys.bin, requires manual entry";
+        else
+            qDebug() << "done";
     }
 
     setWindowFlags(Qt::Window | Qt::WindowMinimizeButtonHint);
@@ -202,6 +217,7 @@ void MainWindow::SetupConnections()
     connect(m_ui->actionAbout,          SIGNAL(triggered()),          this, SLOT(onAbout()));
     connect(m_ui->actionAboutQt,        SIGNAL(triggered()),          this, SLOT(onAboutQt()));
     connect(m_ui->actionFileInfo,       SIGNAL(triggered()),          this, SLOT(onFileInfo()));
+    connect(m_ui->actionPreferences,    SIGNAL(triggered()),          this, SLOT(onPreferences()));
     // Swords
     connect(m_ui->practiceSwdChkBox,    SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
     connect(m_ui->goddessSwdChkBox,     SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
@@ -264,18 +280,37 @@ void MainWindow::SetupConnections()
 
     // Amounts
     // Bugs
-    connect(m_ui->hornetSpinBox,     SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
-    connect(m_ui->butterflySpinBox,  SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
-    connect(m_ui->dragonflySpinBox,  SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
-    connect(m_ui->fireflySpinBox,    SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
-    connect(m_ui->rhinoBeetleSpinBox,SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
-    connect(m_ui->ladybugSpinBox,    SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
-    connect(m_ui->sandCicadaSpinBox, SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
-    connect(m_ui->stagBeetleSpinBox, SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
-    connect(m_ui->grasshopperSpinBox,SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
-    connect(m_ui->mantisSpinBox,     SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
-    connect(m_ui->antSpinBox,        SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
-    connect(m_ui->eldinRollerSpinBox,SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
+    connect(m_ui->hornetSpinBox,      SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
+    connect(m_ui->butterflySpinBox,   SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
+    connect(m_ui->dragonflySpinBox,   SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
+    connect(m_ui->fireflySpinBox,     SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
+    connect(m_ui->rhinoBeetleSpinBox, SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
+    connect(m_ui->ladybugSpinBox,     SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
+    connect(m_ui->sandCicadaSpinBox,  SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
+    connect(m_ui->stagBeetleSpinBox,  SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
+    connect(m_ui->grasshopperSpinBox, SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
+    connect(m_ui->mantisSpinBox,      SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
+    connect(m_ui->antSpinBox,         SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
+    connect(m_ui->eldinRollerSpinBox, SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
+    // Materials
+    connect(m_ui->hornetLarvaeSpinBox,   SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
+    connect(m_ui->birdFeatherSpinBox,    SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
+    connect(m_ui->tumbleWeedSpinBox,     SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
+    connect(m_ui->lizardTailSpinBox,     SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
+    connect(m_ui->eldinOreSpinBox,       SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
+    connect(m_ui->ancientFlowerSpinBox,  SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
+    connect(m_ui->amberRelicSpinBox,     SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
+    connect(m_ui->duskRelicSpinBox,      SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
+    connect(m_ui->jellyBlobSpinBox,      SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
+    connect(m_ui->monsterClawSpinBox,    SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
+    connect(m_ui->monsterHornSpinBox,    SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
+    connect(m_ui->decoSkullSpinBox,      SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
+    connect(m_ui->evilCrystalSpinBox,    SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
+    connect(m_ui->blueBirdFeatherSpinBox,SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
+    connect(m_ui->goldenSkullSpinBox,    SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
+    connect(m_ui->goddessPlumeSpinBox,   SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
+    // Gratitude Crystal
+    connect(m_ui->gratitudeCrystalSpinBox, SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
 }
 
 SkywardSwordFile* MainWindow::GetGameFile()
@@ -317,275 +352,6 @@ void MainWindow::onTextChanged(QString text)
     UpdateTitle();
 }
 
-void MainWindow::onValueChanged()
-{
-    if (!m_gameFile || !m_gameFile->IsOpen() ||
-        m_isUpdating || m_gameFile->GetGame() == SkywardSwordFile::GameNone)
-        return;
-    PlayTime playTime;
-    playTime.Hours = m_ui->playHoursSpinBox->value();
-    playTime.Minutes = m_ui->playMinutesSpinBox->value();
-    playTime.Seconds = m_ui->playSecondsSpinBox->value();
-    playTime.RawTicks = (((playTime.Hours * 60) * 60) + (playTime.Minutes * 60) + playTime.Seconds) * TICKS_PER_SECOND;
-    m_gameFile->SetPlayTime(playTime);
-    m_gameFile->SetPlayerPosition((float)m_ui->playerXSpinBox->value(),    (float)m_ui->playerYSpinBox->value(),     (float)m_ui->playerZSpinBox->value());
-    m_gameFile->SetPlayerRotation((float)m_ui->playerRollSpinBox->value(), (float)m_ui->playerPitchSpinBox->value(), (float)m_ui->playerYawSpinBox->value());
-    m_gameFile->SetCameraPosition((float)m_ui->cameraXSpinBox->value(),    (float)m_ui->cameraYSpinBox->value(),     (float)m_ui->cameraZSpinBox->value());
-    m_gameFile->SetCameraRotation((float)m_ui->cameraRollSpinBox->value(), (float)m_ui->cameraPitchSpinBox->value(), (float)m_ui->cameraYawSpinBox->value());
-    m_gameFile->SetHeroMode(m_ui->heroModeChkBox->isChecked());
-    m_gameFile->SetIntroViewed(m_ui->introViewedChkBox->isChecked());
-    m_gameFile->SetTotalHP((short)m_ui->totalHPSpinBox->value());
-    m_gameFile->SetUnkHP((short)m_ui->unkHPSpinBox->value());
-    m_gameFile->SetCurrentHP((short)m_ui->curHPSpinBox->value());
-    m_gameFile->SetRoomID((uint)m_ui->roomIDSpinBox->value());
-    m_gameFile->SetRupees((short)m_ui->rupeeSpinBox->value());
-    // Swords
-    m_gameFile->SetSword(SkywardSwordFile::PracticeSword,m_ui->practiceSwdChkBox->isChecked());
-    m_gameFile->SetSword(SkywardSwordFile::GoddessSword, m_ui->goddessSwdChkBox->isChecked());
-    m_gameFile->SetSword(SkywardSwordFile::LongSword, m_ui->longSwdChkBox->isChecked());
-    m_gameFile->SetSword(SkywardSwordFile::WhiteSword, m_ui->whiteSwdChkBox->isChecked());
-    m_gameFile->SetSword(SkywardSwordFile::MasterSword, m_ui->masterSwdChkBox->isChecked());
-    m_gameFile->SetSword(SkywardSwordFile::TrueMasterSword, m_ui->trueMasterSwdChkBox->isChecked());
-    // Weapons
-    m_gameFile->SetEquipment(SkywardSwordFile::SlingshotWeapon, m_ui->slingShotChkBox->isChecked());
-    m_gameFile->SetEquipment(SkywardSwordFile::ScattershotWeapon, m_ui->scatterShotChkBox->isChecked());
-    m_gameFile->SetEquipment(SkywardSwordFile::BugnetWeapon, m_ui->bugNetChkBox->isChecked());
-    m_gameFile->SetEquipment(SkywardSwordFile::BigBugnetWeapon, m_ui->bigBugNetChkBox->isChecked());
-    m_gameFile->SetEquipment(SkywardSwordFile::BeetleWeapon, m_ui->beetleChkBox->isChecked());
-    m_gameFile->SetEquipment(SkywardSwordFile::HookBeetleWeapon, m_ui->hookBeetleChkBox->isChecked());
-    m_gameFile->SetEquipment(SkywardSwordFile::QuickBeetleWeapon, m_ui->quickBeetleChkBox->isChecked());
-    m_gameFile->SetEquipment(SkywardSwordFile::ToughBeetleWeapon, m_ui->toughBeetleChkBox->isChecked());
-    m_gameFile->SetEquipment(SkywardSwordFile::BombWeapon, m_ui->bombChkBox->isChecked());
-    m_gameFile->SetEquipment(SkywardSwordFile::GustBellowsWeapon, m_ui->gustBellowsChkBox->isChecked());
-    m_gameFile->SetEquipment(SkywardSwordFile::WhipWeapon, m_ui->whipChkBox->isChecked());
-    m_gameFile->SetEquipment(SkywardSwordFile::ClawshotWeapon, m_ui->clawShotChkBox->isChecked());
-    m_gameFile->SetEquipment(SkywardSwordFile::BowWeapon, m_ui->bowChkBox->isChecked());
-    m_gameFile->SetEquipment(SkywardSwordFile::IronBowWeapon, m_ui->ironBowChkBox->isChecked());
-    m_gameFile->SetEquipment(SkywardSwordFile::SacredBowWeapon, m_ui->sacredBowChkBox->isChecked());
-    m_gameFile->SetEquipment(SkywardSwordFile::HarpEquipment, m_ui->harpChkBox->isChecked());
-    // Bugs
-    m_gameFile->SetBug(SkywardSwordFile::HornetBug,    m_ui->hornetChkBox->isChecked());
-    m_gameFile->SetBug(SkywardSwordFile::ButterflyBug, m_ui->butterflyChkBox->isChecked());
-    m_gameFile->SetBug(SkywardSwordFile::DragonflyBug, m_ui->dragonflyChkBox->isChecked());
-    m_gameFile->SetBug(SkywardSwordFile::FireflyBug, m_ui->fireflyChkBox->isChecked());
-    m_gameFile->SetBug(SkywardSwordFile::RhinoBeetleBug, m_ui->rhinoBeetleChkBox->isChecked());
-    m_gameFile->SetBug(SkywardSwordFile::LadybugBug, m_ui->ladybugChkBox->isChecked());
-    m_gameFile->SetBug(SkywardSwordFile::SandCicadaBug, m_ui->sandCicadaChkBox->isChecked());
-    m_gameFile->SetBug(SkywardSwordFile::StagBeetleBug, m_ui->stagBeetleChkBox->isChecked());
-    m_gameFile->SetBug(SkywardSwordFile::GrasshopperBug, m_ui->grasshopperChkBox->isChecked());
-    m_gameFile->SetBug(SkywardSwordFile::MantisBug, m_ui->mantisChkBox->isChecked());
-    m_gameFile->SetBug(SkywardSwordFile::AntBug, m_ui->antChkBox->isChecked());
-    m_gameFile->SetBug(SkywardSwordFile::RollerBug, m_ui->eldinRollerChkBox->isChecked());
-    // Materials
-    m_gameFile->SetMaterial(SkywardSwordFile::HornetLarvaeMaterial, m_ui->hornetLarvaeChkBox->isChecked());
-    m_gameFile->SetMaterial(SkywardSwordFile::BirdFeatherMaterial,  m_ui->birdFeatherChkBox->isChecked());
-    m_gameFile->SetMaterial(SkywardSwordFile::TumbleWeedMaterial,   m_ui->tumbleWeedChkBox->isChecked());
-    m_gameFile->SetMaterial(SkywardSwordFile::LizardTailMaterial,   m_ui->lizardTailChkBox->isChecked());
-    m_gameFile->SetMaterial(SkywardSwordFile::OreMaterial,          m_ui->eldinOreChkBox->isChecked());
-    m_gameFile->SetMaterial(SkywardSwordFile::AncientFlowerMaterial,m_ui->ancientFlowerChkBox->isChecked());
-    m_gameFile->SetMaterial(SkywardSwordFile::AmberRelicMaterial,   m_ui->amberRelicChkBox->isChecked());
-    m_gameFile->SetMaterial(SkywardSwordFile::DuskRelicMaterial,    m_ui->duskRelicChkBox->isChecked());
-    m_gameFile->SetMaterial(SkywardSwordFile::JellyBlobMaterial,    m_ui->jellyBlobChkBox->isChecked());
-    m_gameFile->SetMaterial(SkywardSwordFile::MonsterClawMaterial,  m_ui->monsterClawChkBox->isChecked());
-    m_gameFile->SetMaterial(SkywardSwordFile::MonsterHornMaterial,  m_ui->monsterHornChkBox->isChecked());
-    m_gameFile->SetMaterial(SkywardSwordFile::OrnamentalSkullMaterial, m_ui->decoSkullChkBox->isChecked());
-    m_gameFile->SetMaterial(SkywardSwordFile::EvilCrystalMaterial, m_ui->evilCrystalChkBox->isChecked());
-    m_gameFile->SetMaterial(SkywardSwordFile::BlueBirdFeatherMaterial, m_ui->blueBirdFeatherChkBox->isChecked());
-    m_gameFile->SetMaterial(SkywardSwordFile::GoldenSkullMaterial, m_ui->goldenSkullChkBox->isChecked());
-    m_gameFile->SetMaterial(SkywardSwordFile::GoddessPlumeMaterial, m_ui->goddessPlumeChkBox->isChecked());
-
-    // Amounts
-    // Bugs
-    m_gameFile->SetBugQuantity(SkywardSwordFile::HornetBug, m_ui->hornetSpinBox->value());
-    m_gameFile->SetBugQuantity(SkywardSwordFile::ButterflyBug, m_ui->butterflySpinBox->value());
-    m_gameFile->SetBugQuantity(SkywardSwordFile::DragonflyBug, m_ui->dragonflySpinBox->value());
-    m_gameFile->SetBugQuantity(SkywardSwordFile::FireflyBug, m_ui->fireflySpinBox->value());
-    m_gameFile->SetBugQuantity(SkywardSwordFile::RhinoBeetleBug, m_ui->rhinoBeetleSpinBox->value());
-    m_gameFile->SetBugQuantity(SkywardSwordFile::LadybugBug, m_ui->ladybugSpinBox->value());
-    m_gameFile->SetBugQuantity(SkywardSwordFile::SandCicadaBug, m_ui->sandCicadaSpinBox->value());
-    m_gameFile->SetBugQuantity(SkywardSwordFile::StagBeetleBug, m_ui->stagBeetleSpinBox->value());
-    m_gameFile->SetBugQuantity(SkywardSwordFile::GrasshopperBug, m_ui->grasshopperSpinBox->value());
-    m_gameFile->SetBugQuantity(SkywardSwordFile::MantisBug, m_ui->mantisSpinBox->value());
-    m_gameFile->SetBugQuantity(SkywardSwordFile::AntBug, m_ui->antSpinBox->value());
-    m_gameFile->SetBugQuantity(SkywardSwordFile::RollerBug, m_ui->eldinRollerSpinBox->value());
-
-    m_gameFile->UpdateChecksum();
-    UpdateTitle();
-    UpdateInfo();
-}
-
-void MainWindow::onOpen()
-{
-    QFileDialog fileDialog;
-    QString filename = fileDialog.getOpenFileName(this, tr("Open Skyward Sword Save..."), dir, tr("Skyward Sword Save Files (*.sav);;SaveData (*.bin)"));
-    if (!filename.isEmpty())
-    {
-        if (m_gameFile == NULL)
-            m_gameFile = new SkywardSwordFile();
-        else
-            m_gameFile->Close();
-
-        if (filename.lastIndexOf(".bin") == filename.size() - 4)
-        {
-            m_gameFile->LoadDataBin(filename, m_gameFile->GetGame());
-        }
-        else if (!m_gameFile->Open(m_gameFile->GetGame(), filename))
-            return;
-        m_gameFile->SetGame(SkywardSwordFile::Game1);
-        m_ui->actionGame1->setChecked(true);
-
-        if (!m_gameFile->HasValidChecksum())
-        {
-            QMessageBox msg(QMessageBox::Warning, tr("CRC32 Mismatch"), tr("The checksum generated does not match the one provided by the file"));
-            msg.exec();
-        }
-        UpdateInfo();
-        UpdateTitle();
-    }
-}
-
-void MainWindow::onCreateNewGame()
-{
-    NewGameDialog* ngd = new NewGameDialog(this, m_curGame);
-    ngd->setWindowTitle("New Adventure...");
-    ngd->exec();
-    if (ngd->result() == NewGameDialog::Accepted)
-    {
-        SkywardSwordFile* tmpFile = ngd->gameFile(m_gameFile);
-        m_gameFile = tmpFile;
-        UpdateInfo();
-        UpdateTitle();
-    }
-    delete ngd;
-}
-
-void MainWindow::onDeleteGame()
-{
-    if (!m_gameFile || !m_gameFile->IsOpen())
-                 return;
-
-    m_gameFile->DeleteGame(m_curGame);
-    UpdateInfo();
-    UpdateTitle();
-}
-
-void MainWindow::onSave()
-{
-    if (!m_gameFile || !m_gameFile->IsOpen() || m_gameFile->GetGame() == SkywardSwordFile::GameNone)
-        return;
-
-    if (m_gameFile->GetFilename().size() <= 0)
-    {
-        QFileDialog fileDialog;
-        QString file = fileDialog.getSaveFileName(this, tr("Save Skyward Sword Save File..."), dir, tr("Skyward Sword Save Files (*.sav);;Wii save (*.bin)"));
-        m_gameFile->SetFilename(file);
-    }
-
-    if(m_gameFile->Save())
-        m_ui->statusBar->showMessage(tr("Save successful!"));
-    else
-        m_ui->statusBar->showMessage(tr("Unable to save file"));
-
-    m_gameFile->UpdateChecksum();
-    UpdateTitle();
-}
-
-void MainWindow::onSaveAs()
-{
-    if (!m_gameFile)
-        return;
-
-    m_gameFile->SetFilename(QString(tr("")));
-    onSave();
-}
-
-void MainWindow::onAbout()
-{
-    AboutDialog* abt = new AboutDialog(this);
-    abt->exec();
-}
-
-void MainWindow::onAboutQt()
-{
-    QApplication::aboutQt();
-}
-
-void MainWindow::onFileInfo()
-{
-    FileInfoDialog* fid = new FileInfoDialog(this, *m_gameFile);
-    fid->exec();
-}
-
-void MainWindow::onGameChanged(QAction* game)
-{
-    if (!m_gameFile || m_isUpdating)
-         return;
-
-    if (game == m_ui->actionGame1)
-         m_curGame = SkywardSwordFile::Game1;
-    else if (game == m_ui->actionGame2)
-         m_curGame = SkywardSwordFile::Game2;
-    else if (game == m_ui->actionGame3)
-         m_curGame = SkywardSwordFile::Game3;
-
-    m_gameFile->SetGame((SkywardSwordFile::Game)m_curGame);
-    UpdateInfo();
-    UpdateTitle();
-}
-
-void MainWindow::onReload()
-{
-    if (!m_gameFile || !m_gameFile->IsOpen())
-        return;
-
-    m_gameFile->Reload(m_gameFile->GetGame());
-    if(m_gameFile->IsOpen())
-    {
-        UpdateInfo();
-        m_ui->statusBar->showMessage(tr("File successfully reloaded"));
-        UpdateTitle();
-    }
-    else
-    {
-        ClearInfo();
-        m_ui->statusBar->showMessage(tr("Unable to reload file, is it still there?"));
-    }
-}
-
-void MainWindow::onClose()
-{
-    if (!m_gameFile || !m_gameFile->IsOpen())
-                 return;
-    if(m_gameFile->IsModified())
-    {
-        QString filename = QFileInfo(m_gameFile->GetFilename()).fileName();
-        QMessageBox msg(QMessageBox::Information,
-                        "File Modified",
-                        QString("The file \"%1\" has been modified.\n Do you wish to save?")
-                        .arg(filename.isEmpty() ? tr("Untitled") : filename),
-                        QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
-        int result = msg.exec();
-        if (result == QMessageBox::Yes)
-           onSave();
-
-        if(result == QMessageBox::Cancel)
-           return;
-    }
-
-
-    m_gameFile->Close();
-    delete m_gameFile;
-    m_gameFile = NULL;
-
-    ClearInfo();
-    m_ui->tabWidget->setEnabled(false);
-
-    m_ui->createDeleteGameBtn->setText(tr("Click to create new Adventure"));
-    if (m_ui->createDeleteGameBtn->disconnect())
-                 connect(m_ui->createDeleteGameBtn, SIGNAL(clicked()), this, SLOT(onCreateNewGame()));
-    UpdateTitle();
-    UpdateInfo();
-}
 
 void MainWindow::UpdateInfo()
 {
@@ -722,7 +488,350 @@ void MainWindow::UpdateInfo()
     m_ui->eldinRollerSpinBox->setValue(m_gameFile->GetBugQuantity(SkywardSwordFile::RollerBug));
     m_ui->eldinRollerSpinBox->setEnabled(m_ui->eldinRollerChkBox->isChecked());
 
+    // Materials
+    m_ui->hornetLarvaeSpinBox   ->setValue(m_gameFile->GetQuantity(true, 0xA42));
+    m_ui->hornetLarvaeSpinBox   ->setEnabled(m_ui->hornetLarvaeChkBox->isChecked());
+    m_ui->birdFeatherSpinBox    ->setValue(m_gameFile->GetQuantity(false, 0xA42));
+    m_ui->birdFeatherSpinBox    ->setEnabled(m_ui->birdFeatherChkBox->isChecked());
+    m_ui->tumbleWeedSpinBox     ->setValue(m_gameFile->GetQuantity(true, 0xA40));
+    m_ui->tumbleWeedSpinBox     ->setEnabled(m_ui->tumbleWeedChkBox->isChecked());
+    m_ui->lizardTailSpinBox     ->setValue(m_gameFile->GetQuantity(false, 0xA40));
+    m_ui->lizardTailSpinBox     ->setEnabled(m_ui->lizardTailChkBox->isChecked());
+    m_ui->eldinOreSpinBox       ->setValue(m_gameFile->GetQuantity(true, 0xA3E));
+    m_ui->eldinOreSpinBox       ->setEnabled(m_ui->eldinOreChkBox->isChecked());
+    m_ui->ancientFlowerSpinBox  ->setValue(m_gameFile->GetQuantity(false, 0xA3E));
+    m_ui->ancientFlowerSpinBox  ->setEnabled(m_ui->ancientFlowerChkBox->isChecked());
+    m_ui->amberRelicSpinBox     ->setValue(m_gameFile->GetQuantity(true, 0xA3C));
+    m_ui->amberRelicSpinBox     ->setEnabled(m_ui->amberRelicChkBox->isChecked());
+    m_ui->duskRelicSpinBox      ->setValue(m_gameFile->GetQuantity(false, 0xA3C));
+    m_ui->duskRelicSpinBox      ->setEnabled(m_ui->duskRelicChkBox->isChecked());
+    m_ui->jellyBlobSpinBox      ->setValue(m_gameFile->GetQuantity(true, 0xA3A));
+    m_ui->jellyBlobSpinBox      ->setEnabled(m_ui->jellyBlobChkBox->isChecked());
+    m_ui->monsterClawSpinBox    ->setValue(m_gameFile->GetQuantity(false, 0xA3A));
+    m_ui->monsterClawSpinBox    ->setEnabled(m_ui->monsterClawChkBox->isChecked());
+    m_ui->monsterHornSpinBox    ->setValue(m_gameFile->GetQuantity(true, 0xA38));
+    m_ui->monsterHornSpinBox    ->setEnabled(m_ui->monsterHornChkBox->isChecked());
+    m_ui->decoSkullSpinBox      ->setValue(m_gameFile->GetQuantity(false, 0xA38));
+    m_ui->decoSkullSpinBox      ->setEnabled(m_ui->decoSkullChkBox->isChecked());
+    m_ui->evilCrystalSpinBox    ->setValue(m_gameFile->GetQuantity(true, 0xA36));
+    m_ui->evilCrystalSpinBox    ->setEnabled(m_ui->evilCrystalChkBox->isChecked());
+    m_ui->blueBirdFeatherSpinBox->setValue(m_gameFile->GetQuantity(false, 0xA36));
+    m_ui->blueBirdFeatherSpinBox->setEnabled(m_ui->blueBirdFeatherChkBox->isChecked());
+    m_ui->goldenSkullSpinBox    ->setValue(m_gameFile->GetQuantity(true, 0xA34));
+    m_ui->goldenSkullSpinBox    ->setEnabled(m_ui->goldenSkullChkBox->isChecked());
+    m_ui->goddessPlumeSpinBox   ->setValue(m_gameFile->GetQuantity(false, 0xA34));
+    m_ui->goddessPlumeSpinBox   ->setEnabled(m_ui->goddessPlumeChkBox->isChecked());
+
+    m_ui->gratitudeCrystalSpinBox   ->setValue(m_gameFile->GetGratitudeCrystalAmount());
     m_isUpdating = false;
+}
+
+void MainWindow::onValueChanged()
+{
+    if (!m_gameFile || !m_gameFile->IsOpen() ||
+        m_isUpdating || m_gameFile->GetGame() == SkywardSwordFile::GameNone)
+        return;
+    PlayTime playTime;
+    playTime.Hours = m_ui->playHoursSpinBox->value();
+    playTime.Minutes = m_ui->playMinutesSpinBox->value();
+    playTime.Seconds = m_ui->playSecondsSpinBox->value();
+    playTime.RawTicks = (((playTime.Hours * 60) * 60) + (playTime.Minutes * 60) + playTime.Seconds) * TICKS_PER_SECOND;
+    m_gameFile->SetPlayTime(playTime);
+    m_gameFile->SetPlayerPosition((float)m_ui->playerXSpinBox->value(),    (float)m_ui->playerYSpinBox->value(),     (float)m_ui->playerZSpinBox->value());
+    m_gameFile->SetPlayerRotation((float)m_ui->playerRollSpinBox->value(), (float)m_ui->playerPitchSpinBox->value(), (float)m_ui->playerYawSpinBox->value());
+    m_gameFile->SetCameraPosition((float)m_ui->cameraXSpinBox->value(),    (float)m_ui->cameraYSpinBox->value(),     (float)m_ui->cameraZSpinBox->value());
+    m_gameFile->SetCameraRotation((float)m_ui->cameraRollSpinBox->value(), (float)m_ui->cameraPitchSpinBox->value(), (float)m_ui->cameraYawSpinBox->value());
+    m_gameFile->SetHeroMode(m_ui->heroModeChkBox->isChecked());
+    m_gameFile->SetIntroViewed(m_ui->introViewedChkBox->isChecked());
+    m_gameFile->SetTotalHP((short)m_ui->totalHPSpinBox->value());
+    m_gameFile->SetUnkHP((short)m_ui->unkHPSpinBox->value());
+    m_gameFile->SetCurrentHP((short)m_ui->curHPSpinBox->value());
+    m_gameFile->SetRoomID((uint)m_ui->roomIDSpinBox->value());
+    m_gameFile->SetRupees((short)m_ui->rupeeSpinBox->value());
+    // Swords
+    m_gameFile->SetSword(SkywardSwordFile::PracticeSword,m_ui->practiceSwdChkBox->isChecked());
+    m_gameFile->SetSword(SkywardSwordFile::GoddessSword, m_ui->goddessSwdChkBox->isChecked());
+    m_gameFile->SetSword(SkywardSwordFile::LongSword, m_ui->longSwdChkBox->isChecked());
+    m_gameFile->SetSword(SkywardSwordFile::WhiteSword, m_ui->whiteSwdChkBox->isChecked());
+    m_gameFile->SetSword(SkywardSwordFile::MasterSword, m_ui->masterSwdChkBox->isChecked());
+    m_gameFile->SetSword(SkywardSwordFile::TrueMasterSword, m_ui->trueMasterSwdChkBox->isChecked());
+    // Weapons
+    m_gameFile->SetEquipment(SkywardSwordFile::SlingshotWeapon, m_ui->slingShotChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::ScattershotWeapon, m_ui->scatterShotChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::BugnetWeapon, m_ui->bugNetChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::BigBugnetWeapon, m_ui->bigBugNetChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::BeetleWeapon, m_ui->beetleChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::HookBeetleWeapon, m_ui->hookBeetleChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::QuickBeetleWeapon, m_ui->quickBeetleChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::ToughBeetleWeapon, m_ui->toughBeetleChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::BombWeapon, m_ui->bombChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::GustBellowsWeapon, m_ui->gustBellowsChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::WhipWeapon, m_ui->whipChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::ClawshotWeapon, m_ui->clawShotChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::BowWeapon, m_ui->bowChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::IronBowWeapon, m_ui->ironBowChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::SacredBowWeapon, m_ui->sacredBowChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::HarpEquipment, m_ui->harpChkBox->isChecked());
+    // Bugs
+    m_gameFile->SetBug(SkywardSwordFile::HornetBug,    m_ui->hornetChkBox->isChecked());
+    m_gameFile->SetBug(SkywardSwordFile::ButterflyBug, m_ui->butterflyChkBox->isChecked());
+    m_gameFile->SetBug(SkywardSwordFile::DragonflyBug, m_ui->dragonflyChkBox->isChecked());
+    m_gameFile->SetBug(SkywardSwordFile::FireflyBug, m_ui->fireflyChkBox->isChecked());
+    m_gameFile->SetBug(SkywardSwordFile::RhinoBeetleBug, m_ui->rhinoBeetleChkBox->isChecked());
+    m_gameFile->SetBug(SkywardSwordFile::LadybugBug, m_ui->ladybugChkBox->isChecked());
+    m_gameFile->SetBug(SkywardSwordFile::SandCicadaBug, m_ui->sandCicadaChkBox->isChecked());
+    m_gameFile->SetBug(SkywardSwordFile::StagBeetleBug, m_ui->stagBeetleChkBox->isChecked());
+    m_gameFile->SetBug(SkywardSwordFile::GrasshopperBug, m_ui->grasshopperChkBox->isChecked());
+    m_gameFile->SetBug(SkywardSwordFile::MantisBug, m_ui->mantisChkBox->isChecked());
+    m_gameFile->SetBug(SkywardSwordFile::AntBug, m_ui->antChkBox->isChecked());
+    m_gameFile->SetBug(SkywardSwordFile::RollerBug, m_ui->eldinRollerChkBox->isChecked());
+    // Materials
+    m_gameFile->SetMaterial(SkywardSwordFile::HornetLarvaeMaterial, m_ui->hornetLarvaeChkBox->isChecked());
+    m_gameFile->SetMaterial(SkywardSwordFile::BirdFeatherMaterial,  m_ui->birdFeatherChkBox->isChecked());
+    m_gameFile->SetMaterial(SkywardSwordFile::TumbleWeedMaterial,   m_ui->tumbleWeedChkBox->isChecked());
+    m_gameFile->SetMaterial(SkywardSwordFile::LizardTailMaterial,   m_ui->lizardTailChkBox->isChecked());
+    m_gameFile->SetMaterial(SkywardSwordFile::OreMaterial,          m_ui->eldinOreChkBox->isChecked());
+    m_gameFile->SetMaterial(SkywardSwordFile::AncientFlowerMaterial,m_ui->ancientFlowerChkBox->isChecked());
+    m_gameFile->SetMaterial(SkywardSwordFile::AmberRelicMaterial,   m_ui->amberRelicChkBox->isChecked());
+    m_gameFile->SetMaterial(SkywardSwordFile::DuskRelicMaterial,    m_ui->duskRelicChkBox->isChecked());
+    m_gameFile->SetMaterial(SkywardSwordFile::JellyBlobMaterial,    m_ui->jellyBlobChkBox->isChecked());
+    m_gameFile->SetMaterial(SkywardSwordFile::MonsterClawMaterial,  m_ui->monsterClawChkBox->isChecked());
+    m_gameFile->SetMaterial(SkywardSwordFile::MonsterHornMaterial,  m_ui->monsterHornChkBox->isChecked());
+    m_gameFile->SetMaterial(SkywardSwordFile::OrnamentalSkullMaterial, m_ui->decoSkullChkBox->isChecked());
+    m_gameFile->SetMaterial(SkywardSwordFile::EvilCrystalMaterial, m_ui->evilCrystalChkBox->isChecked());
+    m_gameFile->SetMaterial(SkywardSwordFile::BlueBirdFeatherMaterial, m_ui->blueBirdFeatherChkBox->isChecked());
+    m_gameFile->SetMaterial(SkywardSwordFile::GoldenSkullMaterial, m_ui->goldenSkullChkBox->isChecked());
+    m_gameFile->SetMaterial(SkywardSwordFile::GoddessPlumeMaterial, m_ui->goddessPlumeChkBox->isChecked());
+
+    // Amounts
+    // Bugs
+    m_gameFile->SetBugQuantity(SkywardSwordFile::HornetBug, m_ui->hornetSpinBox->value());
+    m_gameFile->SetBugQuantity(SkywardSwordFile::ButterflyBug, m_ui->butterflySpinBox->value());
+    m_gameFile->SetBugQuantity(SkywardSwordFile::DragonflyBug, m_ui->dragonflySpinBox->value());
+    m_gameFile->SetBugQuantity(SkywardSwordFile::FireflyBug, m_ui->fireflySpinBox->value());
+    m_gameFile->SetBugQuantity(SkywardSwordFile::RhinoBeetleBug, m_ui->rhinoBeetleSpinBox->value());
+    m_gameFile->SetBugQuantity(SkywardSwordFile::LadybugBug, m_ui->ladybugSpinBox->value());
+    m_gameFile->SetBugQuantity(SkywardSwordFile::SandCicadaBug, m_ui->sandCicadaSpinBox->value());
+    m_gameFile->SetBugQuantity(SkywardSwordFile::StagBeetleBug, m_ui->stagBeetleSpinBox->value());
+    m_gameFile->SetBugQuantity(SkywardSwordFile::GrasshopperBug, m_ui->grasshopperSpinBox->value());
+    m_gameFile->SetBugQuantity(SkywardSwordFile::MantisBug, m_ui->mantisSpinBox->value());
+    m_gameFile->SetBugQuantity(SkywardSwordFile::AntBug, m_ui->antSpinBox->value());
+    m_gameFile->SetBugQuantity(SkywardSwordFile::RollerBug, m_ui->eldinRollerSpinBox->value());
+    // Materials
+    m_gameFile->SetQuantity(true, 0xA42, m_ui->hornetLarvaeSpinBox->value());
+    m_gameFile->SetQuantity(false, 0xA42, m_ui->birdFeatherSpinBox->value());
+    m_gameFile->SetQuantity(true, 0xA40, m_ui->tumbleWeedSpinBox->value());
+    m_gameFile->SetQuantity(false, 0xA40, m_ui->lizardTailSpinBox->value());
+    m_gameFile->SetQuantity(true, 0xA3E, m_ui->eldinOreSpinBox->value());
+    m_gameFile->SetQuantity(false, 0xA3E, m_ui->ancientFlowerSpinBox->value());
+    m_gameFile->SetQuantity(true, 0xA3C, m_ui->amberRelicSpinBox->value());
+    m_gameFile->SetQuantity(false, 0xA3C, m_ui->duskRelicSpinBox->value());
+    m_gameFile->SetQuantity(true, 0xA3A, m_ui->jellyBlobSpinBox->value());
+    m_gameFile->SetQuantity(false, 0xA3A, m_ui->monsterClawSpinBox->value());
+    m_gameFile->SetQuantity(true, 0xA38, m_ui->monsterHornSpinBox->value());
+    m_gameFile->SetQuantity(false, 0xA38, m_ui->decoSkullSpinBox->value());
+    m_gameFile->SetQuantity(true, 0xA36, m_ui->evilCrystalSpinBox->value());
+    m_gameFile->SetQuantity(false, 0xA36, m_ui->blueBirdFeatherSpinBox->value());
+    m_gameFile->SetQuantity(true, 0xA34, m_ui->goldenSkullSpinBox->value());
+    m_gameFile->SetQuantity(false, 0xA34, m_ui->goddessPlumeSpinBox->value());
+
+    m_gameFile->SetGratitudeCrystalAmount(m_ui->gratitudeCrystalSpinBox->value());
+    m_gameFile->UpdateChecksum();
+    UpdateTitle();
+    UpdateInfo();
+}
+
+void MainWindow::onOpen()
+{
+    QFileDialog fileDialog;
+    QString filename = fileDialog.getOpenFileName(this, tr("Open Skyward Sword Save..."), dir, tr("Skyward Sword Save Files (*.sav);;SaveData (*.bin)"));
+    if (!filename.isEmpty())
+    {
+        if (m_gameFile == NULL)
+            m_gameFile = new SkywardSwordFile();
+        else
+            m_gameFile->Close();
+
+        if (filename.lastIndexOf(".bin") == filename.size() - 4)
+        {
+            m_gameFile->LoadDataBin(filename, m_gameFile->GetGame());
+        }
+        else if (!m_gameFile->Open(m_gameFile->GetGame(), filename))
+            return;
+        m_gameFile->SetGame(SkywardSwordFile::Game1);
+        m_ui->actionGame1->setChecked(true);
+
+        if (!m_gameFile->HasValidChecksum())
+        {
+            QMessageBox msg(QMessageBox::Warning, tr("CRC32 Mismatch"), tr("The checksum generated does not match the one provided by the file"));
+            msg.exec();
+        }
+        UpdateInfo();
+        UpdateTitle();
+    }
+}
+
+void MainWindow::onCreateNewGame()
+{
+    NewGameDialog* ngd = new NewGameDialog(this, m_curGame);
+    ngd->setWindowTitle("New Adventure...");
+    ngd->exec();
+    if (ngd->result() == NewGameDialog::Accepted)
+    {
+        SkywardSwordFile* tmpFile = ngd->gameFile(m_gameFile);
+        m_gameFile = tmpFile;
+        UpdateInfo();
+        UpdateTitle();
+    }
+    delete ngd;
+}
+
+void MainWindow::onDeleteGame()
+{
+    if (!m_gameFile || !m_gameFile->IsOpen())
+                 return;
+
+    m_gameFile->DeleteGame(m_curGame);
+    UpdateInfo();
+    UpdateTitle();
+}
+
+void MainWindow::onSave()
+{
+    if (!m_gameFile || !m_gameFile->IsOpen() || m_gameFile->GetGame() == SkywardSwordFile::GameNone)
+        return;
+
+    if (m_gameFile->GetFilename().size() <= 0)
+    {
+        QFileDialog fileDialog;
+        QString file = fileDialog.getSaveFileName(this, tr("Save Skyward Sword Save File..."), dir, tr("Skyward Sword Save Files (*.sav);;Wii save (*.bin)"));
+        m_gameFile->SetFilename(file);
+    }
+
+    if(m_gameFile->Save())
+        m_ui->statusBar->showMessage(tr("Save successful!"));
+    else
+        m_ui->statusBar->showMessage(tr("Unable to save file"));
+
+    m_gameFile->UpdateChecksum();
+    UpdateTitle();
+}
+
+void MainWindow::onSaveAs()
+{
+    if (!m_gameFile)
+        return;
+
+    m_gameFile->SetFilename(QString(tr("")));
+    onSave();
+}
+
+void MainWindow::onAbout()
+{
+    AboutDialog* abt = new AboutDialog(this);
+    abt->exec();
+}
+
+void MainWindow::onAboutQt()
+{
+    QApplication::aboutQt();
+}
+
+void MainWindow::onFileInfo()
+{
+    FileInfoDialog* fid = new FileInfoDialog(this, *m_gameFile);
+    fid->exec();
+}
+
+void MainWindow::onPreferences()
+{
+    PreferencesDialog* prefDiag = new PreferencesDialog(this);
+    int result = prefDiag->exec();
+
+    QSettings settings("WiiKing2", "WiiKing2 Editor");
+    switch(result)
+    {
+    case QDialog::Accepted:
+        settings.setValue("NGID", QString(QByteArray::fromHex(QString::number(WiiKeys::GetInstance()->GetNGID(), 16).toAscii()).toHex()));
+        settings.setValue("NGKeyID", QString(QByteArray::fromHex(QString::number(WiiKeys::GetInstance()->GetNGKeyID(), 16).toAscii()).toHex()));
+        settings.setValue("NGSig", QString(WiiKeys::GetInstance()->GetNGSig().toHex()));
+        settings.setValue("NGPriv", QString(WiiKeys::GetInstance()->GetNGPriv().toHex()));
+        settings.setValue("WiiMAC", QString(WiiKeys::GetInstance()->GetMacAddr().toHex()));
+        break;
+    default:
+        break;
+    }
+}
+
+void MainWindow::onGameChanged(QAction* game)
+{
+    if (!m_gameFile || m_isUpdating)
+         return;
+
+    if (game == m_ui->actionGame1)
+         m_curGame = SkywardSwordFile::Game1;
+    else if (game == m_ui->actionGame2)
+         m_curGame = SkywardSwordFile::Game2;
+    else if (game == m_ui->actionGame3)
+         m_curGame = SkywardSwordFile::Game3;
+
+    m_gameFile->SetGame((SkywardSwordFile::Game)m_curGame);
+    UpdateInfo();
+    UpdateTitle();
+}
+
+void MainWindow::onReload()
+{
+    if (!m_gameFile || !m_gameFile->IsOpen())
+        return;
+
+    m_gameFile->Reload(m_gameFile->GetGame());
+    if(m_gameFile->IsOpen())
+    {
+        UpdateInfo();
+        m_ui->statusBar->showMessage(tr("File successfully reloaded"));
+        UpdateTitle();
+    }
+    else
+    {
+        ClearInfo();
+        m_ui->statusBar->showMessage(tr("Unable to reload file, is it still there?"));
+    }
+}
+
+void MainWindow::onClose()
+{
+    if (!m_gameFile || !m_gameFile->IsOpen())
+                 return;
+    if(m_gameFile->IsModified())
+    {
+        QString filename = QFileInfo(m_gameFile->GetFilename()).fileName();
+        QMessageBox msg(QMessageBox::Information,
+                        "File Modified",
+                        QString("The file \"%1\" has been modified.\n Do you wish to save?")
+                        .arg(filename.isEmpty() ? tr("Untitled") : filename),
+                        QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
+        int result = msg.exec();
+        if (result == QMessageBox::Yes)
+           onSave();
+
+        if(result == QMessageBox::Cancel)
+           return;
+    }
+
+
+    m_gameFile->Close();
+    delete m_gameFile;
+    m_gameFile = NULL;
+
+    ClearInfo();
+    m_ui->tabWidget->setEnabled(false);
+
+    m_ui->createDeleteGameBtn->setText(tr("Click to create new Adventure"));
+    if (m_ui->createDeleteGameBtn->disconnect())
+                 connect(m_ui->createDeleteGameBtn, SIGNAL(clicked()), this, SLOT(onCreateNewGame()));
+    UpdateTitle();
+    UpdateInfo();
 }
 
 void MainWindow::UpdateTitle()

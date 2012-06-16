@@ -82,7 +82,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="playerTab">
        <attribute name="title">
@@ -2298,112 +2298,112 @@
           </widget>
          </item>
          <item row="1" column="0">
-          <widget class="QSpinBox" name="spinBox_11">
+          <widget class="QSpinBox" name="hornetLarvaeSpinBox">
            <property name="maximum">
             <number>127</number>
            </property>
           </widget>
          </item>
          <item row="1" column="3">
-          <widget class="QSpinBox" name="spinBox_14">
+          <widget class="QSpinBox" name="birdFeatherSpinBox">
            <property name="maximum">
             <number>127</number>
            </property>
           </widget>
          </item>
          <item row="1" column="6">
-          <widget class="QSpinBox" name="spinBox_17">
+          <widget class="QSpinBox" name="tumbleWeedSpinBox">
            <property name="maximum">
             <number>127</number>
            </property>
           </widget>
          </item>
          <item row="1" column="10">
-          <widget class="QSpinBox" name="spinBox_34">
+          <widget class="QSpinBox" name="lizardTailSpinBox">
            <property name="maximum">
             <number>127</number>
            </property>
           </widget>
          </item>
          <item row="3" column="0">
-          <widget class="QSpinBox" name="spinBox_12">
+          <widget class="QSpinBox" name="eldinOreSpinBox">
            <property name="maximum">
             <number>127</number>
            </property>
           </widget>
          </item>
          <item row="3" column="3">
-          <widget class="QSpinBox" name="spinBox_15">
+          <widget class="QSpinBox" name="ancientFlowerSpinBox">
            <property name="maximum">
             <number>127</number>
            </property>
           </widget>
          </item>
          <item row="3" column="6">
-          <widget class="QSpinBox" name="spinBox_33">
+          <widget class="QSpinBox" name="amberRelicSpinBox">
            <property name="maximum">
             <number>127</number>
            </property>
           </widget>
          </item>
          <item row="3" column="10">
-          <widget class="QSpinBox" name="spinBox_32">
+          <widget class="QSpinBox" name="duskRelicSpinBox">
            <property name="maximum">
             <number>127</number>
            </property>
           </widget>
          </item>
          <item row="5" column="0">
-          <widget class="QSpinBox" name="spinBox_10">
+          <widget class="QSpinBox" name="jellyBlobSpinBox">
            <property name="maximum">
             <number>127</number>
            </property>
           </widget>
          </item>
          <item row="5" column="3">
-          <widget class="QSpinBox" name="spinBox_13">
+          <widget class="QSpinBox" name="monsterClawSpinBox">
            <property name="maximum">
             <number>127</number>
            </property>
           </widget>
          </item>
          <item row="5" column="6">
-          <widget class="QSpinBox" name="spinBox_18">
+          <widget class="QSpinBox" name="monsterHornSpinBox">
            <property name="maximum">
             <number>127</number>
            </property>
           </widget>
          </item>
          <item row="5" column="10">
-          <widget class="QSpinBox" name="spinBox_31">
+          <widget class="QSpinBox" name="decoSkullSpinBox">
            <property name="maximum">
             <number>127</number>
            </property>
           </widget>
          </item>
          <item row="7" column="0">
-          <widget class="QSpinBox" name="spinBox_22">
+          <widget class="QSpinBox" name="evilCrystalSpinBox">
            <property name="maximum">
             <number>127</number>
            </property>
           </widget>
          </item>
          <item row="7" column="3">
-          <widget class="QSpinBox" name="spinBox_24">
+          <widget class="QSpinBox" name="blueBirdFeatherSpinBox">
            <property name="maximum">
             <number>127</number>
            </property>
           </widget>
          </item>
          <item row="7" column="6">
-          <widget class="QSpinBox" name="spinBox_23">
+          <widget class="QSpinBox" name="goldenSkullSpinBox">
            <property name="maximum">
             <number>127</number>
            </property>
           </widget>
          </item>
          <item row="7" column="10">
-          <widget class="QSpinBox" name="spinBox_16">
+          <widget class="QSpinBox" name="goddessPlumeSpinBox">
            <property name="maximum">
             <number>127</number>
            </property>
@@ -2421,7 +2421,7 @@
          </rect>
         </property>
         <property name="title">
-         <string>GroupBox</string>
+         <string>Quest Items</string>
         </property>
         <layout class="QGridLayout" name="gridLayout_13">
          <property name="margin">
@@ -2523,7 +2523,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QSpinBox" name="spinBox">
+          <widget class="QSpinBox" name="gratitudeCrystalSpinBox">
            <property name="maximum">
             <number>127</number>
            </property>
@@ -2573,7 +2573,7 @@
      <string>&amp;Edit</string>
     </property>
     <addaction name="actionFileInfo"/>
-    <addaction name="action_Preferences"/>
+    <addaction name="actionPreferences"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_Edit"/>
@@ -2722,7 +2722,7 @@
     <string>File &amp;Info</string>
    </property>
   </action>
-  <action name="action_Preferences">
+  <action name="actionPreferences">
    <property name="text">
     <string>&amp;Preferences</string>
    </property>

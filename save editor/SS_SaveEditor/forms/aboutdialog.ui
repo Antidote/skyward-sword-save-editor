@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>About...</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
@@ -51,7 +51,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Item Icons © Nintendo&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Everything else ↄ Phillip &amp;quot;Antidote&amp;quot; Stephens&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Bomb Image Resized by Xfixium&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Please note that this is still &lt;/span&gt;&lt;span style=&quot; font-size:8pt; font-weight:600; font-style:italic; text-decoration: underline;&quot;&gt;ALPHA SOFTWARE&lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt; and is not recomended for normal use&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Please note that this is still &lt;/span&gt;&lt;span style=&quot; font-size:8pt; font-weight:600; font-style:italic; text-decoration: underline;&quot;&gt;BETA&lt;/span&gt;&lt;span style=&quot; font-size:8pt; font-weight:600; font-style:italic; text-decoration: underline;&quot;&gt; SOFTWARE&lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt; and is not recomended for normal use&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Please report any bugs to the &lt;/span&gt;&lt;a href=&quot;http://code.google.com/p/skyward-sword-save-editor/issues/list&quot;&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:8pt; text-decoration: underline; color:#0000ff;&quot;&gt;Google Code Project Page&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
