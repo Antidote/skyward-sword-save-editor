@@ -59,7 +59,6 @@ GameOff + 0x09FF - unk
 GameOff + 0x09A0 - unk
 GameOff + 0x09A1 - unk
 GameOff + 0x09A2 - unk
-GameOff + 0x0A3C - Amber Relic
 GameOff + 0x0A34 - Golden Skull Goddess Plume amount
 Gameoff + 0x0A36 - Evil Crystal Blue Bird Feather amount
 GameOff + 0x0A38 - Monster Horn Ornamental Skull amount

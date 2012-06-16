@@ -17,3 +17,30 @@ Right - Deku Hornet
 0x0A4E:
 Left -  Woodland Rhino Beetle
 Right -  Faron Grasshopper
+
+
+---Materials (In same order as menu)---
+0xA42:
+Left - Bird Feather
+Right - Deku Hornet larvae
+0xA40:
+Left - Lizard tail
+Right - Tumble Weed
+0xA3E: 
+Left - Ancient Flower
+Right - Eldin Ore
+0xA3C:
+Left - Dusk Relic
+Right - Amber Relic
+0xA3A:
+Left - Monster Claw
+Right - JellyBlob
+0xA38:
+Left - Ornamental Skull
+Right - Monster Horn
+0xA36:
+Left - Blue Bird Feather
+Right - Evil Crystal
+0xA34:
+Left - Goddess Plume
+Right - Golden Skull

@@ -6,6 +6,12 @@
 
 QT                += core gui
 
+VERSION = $$system(svn info -r HEAD . | grep 'Changed\ Rev' | cut -b 19-)
+    !isEmpty(VERSION){
+      VERSION = 0.$${VERSION}
+    }
+VERSTR = '\\"$${VERSION}\\"'  # place quotes around the version string
+DEFINES += VER=\"$${VERSTR}\" # create a VER macro containing the version string
 TARGET = SS_SaveEditor
 TEMPLATE = app
 INCLUDEPATH += include
@@ -26,7 +32,8 @@ SOURCES += \
     src/WiiQt/aes.c \
     src/WiiQt/sha1.c \
     src/exportquestdialog.cpp \
-    src/wiikeys.cpp
+    src/wiikeys.cpp \
+    src/preferencesdialog.cpp
 
 HEADERS  += \
     include/mainwindow.h \
@@ -42,22 +49,18 @@ HEADERS  += \
     include/WiiQt/ec.h \
     include/WiiQt/bn.h \
     include/WiiQt/aes.h \
-    src/WiiQt/tools.h \
-    src/WiiQt/savedatabin.h \
-    src/WiiQt/savebanner.h \
-    src/WiiQt/ec.h \
-    src/WiiQt/bn.h \
-    src/WiiQt/aes.h \
     include/WiiQt/sha1.h \
     include/exportquestdialog.h \
-    include/wiikeys.h
+    include/wiikeys.h \
+    include/preferencesdialog.h
 
 FORMS    += \
     forms/mainwindow.ui \
     forms/newgamedialog.ui \
     forms/aboutdialog.ui \
     forms/fileinfodialog.ui \
-    forms/exportquestdialog.ui
+    forms/exportquestdialog.ui \
+    forms/preferencesdialog.ui
 
 DEFINES += DEBUG
 

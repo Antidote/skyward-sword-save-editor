@@ -37,7 +37,10 @@ FileInfoDialog::FileInfoDialog(QWidget *parent, SkywardSwordFile& game) :
     if (m_gameFile != NULL)
     {
         if (!m_gameFile->GetBanner().isNull())
+        {
             m_ui->bannerImg->setPixmap(QPixmap::fromImage(m_gameFile->GetBanner()));
+            this->setWindowTitle(m_gameFile->GetBannerTitle());
+        }
         switch(m_gameFile->GetRegion())
         {
             case SkywardSwordFile::NTSCURegion:

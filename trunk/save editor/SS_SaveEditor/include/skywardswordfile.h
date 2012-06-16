@@ -21,6 +21,7 @@
 #include "CRC32.h"
 #include <QImage>
 #include "WiiQt/savedatabin.h"
+#include "WiiQt/savebanner.h"
 class QDateTime;
 struct SaveGame;
 
@@ -196,6 +197,8 @@ public:
     void      SetBugQuantity(Bug bug, quint32 val);
     bool      GetMaterial(Material material);
     void      SetMaterial(Material material, bool val);
+    quint32   GetGratitudeCrystalAmount();
+    void      SetGratitudeCrystalAmount(quint32 val);
     ushort    GetRupees() const;
     void      SetRupees(ushort val);
     ushort    GetTotalHP() const;
@@ -220,25 +223,27 @@ public:
     void      SetData(char* data);
     bool      LoadDataBin(const QString& filepath = NULL, Game game = Game1);
     bool      CreateDataBin();
+    QString   GetBannerTitle() const;
     const QImage& GetBanner() const;
     static bool IsValidFile(const QString& filepath, Region* region);
-private:
 
     quint32 GetQuantity(bool isRight, int offset) const;
     void    SetQuantity(bool isRight, int offset, quint32 val);
+private:
     uint    GetGameOffset() const;
     QString ReadNullTermString(int offset) const;
     void    WriteNullTermString(const QString& val, int offset);
     bool    GetFlag(quint32 offset, quint32 flag) const;
     void    SetFlag(quint32 offset, quint32 flag, bool val);
     char*   m_data;
-    QImage  m_banner;
+    QImage  m_bannerImage;
     QString m_filename;
     Game    m_game;
     bool    m_isOpen;
     quint32 m_fileChecksum; // The checksum of the entire file.
     SaveGame m_saveGame;
     SaveDataBin m_dataBin;
+    SaveBanner  m_banner;
     CRC32*  m_crcEngine;
 };
 
