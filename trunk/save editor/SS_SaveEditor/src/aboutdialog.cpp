@@ -22,6 +22,13 @@ AboutDialog::AboutDialog(QWidget *parent) :
 {
     m_ui->setupUi(this);
     connect(m_ui->closeBtn, SIGNAL(clicked()), this, SLOT(close()));
+
+#ifdef SVNREVSTR
+    QString verstr(SVNREVSTR);
+    m_ui->abtText->setText(m_ui->abtText->text().replace("$SVNREVSTR$", (!verstr.isEmpty() ? QString("WiiKing2 Editor Revision: <a href=\"http://code.google.com/p/skyward-sword-save-editor/source/detail?r=%1\">%1</a>").arg(verstr) : QString(""))));
+#else
+    m_ui->abtText->setText(m_ui->abtText->text().replace("$SVNREVSTR$",""));
+#endif
 }
 
 AboutDialog::~AboutDialog()

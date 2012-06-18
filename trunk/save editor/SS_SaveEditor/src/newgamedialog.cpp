@@ -18,7 +18,7 @@
 #include "igamefile.h"
 #include "skywardswordfile.h"
 
-NewGameDialog::NewGameDialog(QWidget *parent, SkywardSwordFile::Game game) :
+NewGameDialog::NewGameDialog(QWidget *parent, SkywardSwordFile::Game game, SkywardSwordFile::Region region) :
     QDialog(parent),
     m_ui(new Ui::NewGameDialog),
     m_game(game)
@@ -31,6 +31,21 @@ NewGameDialog::NewGameDialog(QWidget *parent, SkywardSwordFile::Game game) :
     group->addButton(m_ui->palRadioBtn);
 
     connect(group, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(onRegionChanged(QAbstractButton*)));
+
+    // A bit hacky but it works.
+    switch(region)
+    {
+        case SkywardSwordFile::NTSCURegion:
+            m_ui->ntscURadioBtn->setChecked(true);
+            break;
+        case SkywardSwordFile::NTSCJRegion:
+            m_ui->ntscJRadioBtn->setChecked(true);
+            m_ui->nameLineEdit->setText(QString::fromUtf8("\u30ea\u30f3\u30af"));
+            break;
+        case SkywardSwordFile::PALRegion:
+            m_ui->palRadioBtn->setChecked(true);
+            break;
+    }
 }
 
 NewGameDialog::~NewGameDialog()

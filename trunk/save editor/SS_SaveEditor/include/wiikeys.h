@@ -8,7 +8,8 @@ class WiiKeys
 {
 public:
     bool Open(const QString& filepath);
-    bool LoadRegistry();
+    bool LoadKeys();
+    void SaveKeys();
     bool IsOpen();
 
     QByteArray GetNGPriv() const;
@@ -29,7 +30,6 @@ private:
     char*   m_macAddr;
     quint32 m_ngID;
     quint32 m_ngKeyID;
-    bool    m_isOpen;
     WiiKeys();
     WiiKeys(WiiKeys&){}
 

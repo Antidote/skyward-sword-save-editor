@@ -24,12 +24,6 @@
 #include "WiiQt/savedatabin.h"
 #include "wiikeys.h"
 
-static const char antiNGID[0x04] = {0x04, 0x34, 0x2E, 0x81};
-static const char antiNGKeyID[0x04] = {0x6A, 0xF0, 0x44, 0x9A};
-static const char antiMac[0x06] = {0x00, 0x17, 0xAB, 0xD6, 0x0E, 0x42};
-static const char antiNGSig[0x3C] = {0x00, 0x39, 0x80, 0x43, 0x25, 0x45, 0x30, 0x7F, 0x63, 0x5E, 0x7B, 0x96, 0x5A, 0x19, 0xE9, 0x11, 0x61, 0xD8, 0x72, 0x4D, 0xF5, 0x36, 0x2A, 0x31, 0xE3, 0xBB, 0xF3, 0x55, 0x51, 0x8C, 0x00, 0xCA, 0x03, 0x06, 0xA1, 0x98, 0x56, 0xD0, 0x2D, 0x55, 0xD6, 0xFB, 0xA3, 0x22, 0x82, 0x16, 0x3F, 0x88, 0xB1, 0xAF, 0x05, 0xFE, 0xFC, 0x9C, 0x31, 0xD7, 0xF3, 0xE0, 0xBE, 0xA5 };
-static const char antiNGPRIV[0x1E] = {0x01, 0x91, 0x93, 0xBE, 0x3E, 0x1E, 0x3C, 0x10, 0x22, 0x8A, 0xDB, 0x7E, 0xFB, 0x6C, 0x94, 0xE5, 0x48, 0x3D, 0x10, 0xEB, 0x73, 0x31, 0x90, 0x3D, 0x1F, 0x3B, 0x72, 0xBB, 0x75, 0x67};
-
 float swapFloat(float val)
 {
 #if Q_BYTE_ORDER == Q_LITTLE_ENDIAN
@@ -113,7 +107,15 @@ bool SkywardSwordFile::Save(const QString& filename)
         m_filename = filename;
 
     if (m_filename.lastIndexOf(".bin") == m_filename.size() - 4)
+    {
+#ifdef DEBUG
         return CreateDataBin();
+#else
+            QMessageBox msg(QMessageBox::Warning, "DISABLED", "Data.bin is an experimental feature and support has been disabled in this version");
+            msg.exec();
+            return false;
+#endif
+    }
 
     QString tmpFilename = m_filename;
     tmpFilename = tmpFilename.remove(m_filename.lastIndexOf("."), tmpFilename.length() - tmpFilename.lastIndexOf(".")) + ".tmp";
@@ -1166,7 +1168,7 @@ bool SkywardSwordFile::CreateDataBin()
     {
         m_saveGame = DataToSave(m_saveGame, "/wiiking2.sav", QByteArray((const char*)m_data, 0xFBE0));
 
-        QByteArray dataBin = SaveDataBin::DataBinFromSaveStruct(m_saveGame, WiiKeys::GetInstance()->GetNGPriv(), WiiKeys::GetInstance()->GetNGSig(), QByteArray(antiMac, 0x06), WiiKeys::GetInstance()->GetNGID(), WiiKeys::GetInstance()->GetNGKeyID());
+        QByteArray dataBin = SaveDataBin::DataBinFromSaveStruct(m_saveGame, WiiKeys::GetInstance()->GetNGPriv(), WiiKeys::GetInstance()->GetNGSig(), WiiKeys::GetInstance()->GetMacAddr(), WiiKeys::GetInstance()->GetNGID(), WiiKeys::GetInstance()->GetNGKeyID());
         foreach (QString s, m_saveGame.entries)
             qDebug() << s;
         qDebug() << dataBin.size();

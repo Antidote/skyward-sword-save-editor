@@ -4,18 +4,12 @@
 #
 #-------------------------------------------------
 
-QT                += core gui
+QT += core gui
 
-VERSION = $$system(svn info -r HEAD . | grep 'Changed\ Rev' | cut -b 19-)
-    !isEmpty(VERSION){
-      VERSION = 0.$${VERSION}
-    }
-VERSTR = '\\"$${VERSION}\\"'  # place quotes around the version string
-DEFINES += VER=\"$${VERSTR}\" # create a VER macro containing the version string
 TARGET = SS_SaveEditor
 TEMPLATE = app
 INCLUDEPATH += include
-
+QMAKE_LFLAGS += -static-libgcc
 SOURCES += \
     src/main.cpp\
     src/mainwindow.cpp \
@@ -61,8 +55,6 @@ FORMS    += \
     forms/fileinfodialog.ui \
     forms/exportquestdialog.ui \
     forms/preferencesdialog.ui
-
-DEFINES += DEBUG
 
 RESOURCES += \
     resources/resources.qrc
@@ -114,7 +106,18 @@ OTHER_FILES += \
 
 TRANSLATIONS += \
     resources/languages/ja.ts
-	
+
 win32{
     RC_FILE = resources/mainicon.rc
+}
+
+
+    DEFINES += DEBUG
+CONFIG(debug, debug|release){
+
+    VERSION = $$system(svn info -r HEAD . | grep 'Rev:' | cut -b 19-)
+
+    REVSTR = '\\"$${VERSION}\\"'  # place quotes around the version string
+    DEFINES += SVNREVSTR=\"$${REVSTR}\" # create a VER macro containing the version string
+    #CONFIG += console
 }
