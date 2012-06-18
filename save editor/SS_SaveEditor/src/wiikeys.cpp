@@ -11,8 +11,7 @@ WiiKeys::WiiKeys() :
     m_ngSig(NULL),
     m_macAddr(NULL),
     m_ngID(NULL),
-    m_ngKeyID(NULL),
-    m_isOpen(false)
+    m_ngKeyID(NULL)
 {
 }
 
@@ -39,46 +38,57 @@ bool WiiKeys::Open(const QString &filepath)
             return false;
 
         if (!m_ngPriv)
+        {
             m_ngPriv = new char[0x1E];
+            fseek(f, 0x128, SEEK_SET);
+            fread(m_ngPriv, 1, 0x1E, f);
+        }
         if (!m_ngSig)
+        {
             m_ngSig = new char[0x3C];
+            fseek(f, 0x20C, SEEK_SET);
+            fread(m_ngSig, 1, 0x3C, f);
+        }
 
-        fseek(f, 0x128, SEEK_SET);
-        fread(m_ngPriv, 1, 0x1E, f);
-        fseek(f, 0x124, SEEK_SET);
-        fread(&m_ngID, 1, 0x04, f);
-        m_ngID = qFromBigEndian<quint32>(m_ngID);
-        fseek(f, 0x208, SEEK_SET);
-        fread(&m_ngKeyID, 1,  0x04, f);
-        m_ngKeyID = qFromBigEndian<quint32>(m_ngKeyID);
-        fseek(f, 0x20C, SEEK_SET);
-        fread(m_ngSig, 1, 0x3C, f);
-        m_isOpen = true;
+        if (m_ngID == 0)
+        {
+            fseek(f, 0x124, SEEK_SET);
+            fread(&m_ngID, 1, 0x04, f);
+            m_ngID = qFromBigEndian<quint32>(m_ngID);
+        }
+
+        if (m_ngKeyID == 0)
+        {
+            fseek(f, 0x208, SEEK_SET);
+            fread(&m_ngKeyID, 1,  0x04, f);
+            m_ngKeyID = qFromBigEndian<quint32>(m_ngKeyID);
+        }
         fclose(f);
         return true;
     }
-
-    m_isOpen = false;
     return false;
 }
 
-bool WiiKeys::LoadRegistry()
+bool WiiKeys::LoadKeys()
 {
     QByteArray tmp;
     bool ok = false;
 
-    QSettings settings("WiiKing2", "WiiKing2 Editor");
+    QSettings settings;
 
-    if (!settings.allKeys().count() > 0)
+
+    settings.beginGroup("Keys");
+    foreach(QString s, settings.allKeys())
+        qDebug() << s;
+    if (settings.allKeys().count() <= 0)
         return false;
 
     tmp = QByteArray::fromHex(settings.value("NGID").toByteArray());
-    if (tmp.size() <= 8 && !tmp.isEmpty())
+    if (tmp.size() == 4 && !tmp.isEmpty())
     {
-        qDebug() << tmp.toHex();
         m_ngID = tmp.toHex().toInt(&ok, 16);
         if(ok)
-            qDebug() << "Found NGID Successfully";
+            qDebug() << "Found NGID Successfully: " << tmp.toHex();
         else
         {
             m_ngID = 0;
@@ -88,16 +98,15 @@ bool WiiKeys::LoadRegistry()
     else
     {
         m_ngID = 0;
-        qDebug() << "NGID Malformed";
+        qDebug() << "NGID Not found";
     }
 
     tmp = QByteArray::fromHex(settings.value("NGKeyID").toByteArray());
-    if (tmp.size() <= 8 && !tmp.isEmpty())
+    if (tmp.size() == 4 && !tmp.isEmpty())
     {
-        qDebug() << tmp.toHex();
         m_ngKeyID = tmp.toHex().toInt(&ok, 16);
         if(ok)
-            qDebug() << "Found NGKeyID Successfully";
+            qDebug() << "Found NGKeyID Successfully: " << tmp.toHex();
         else
         {
             m_ngKeyID = 0;
@@ -110,11 +119,10 @@ bool WiiKeys::LoadRegistry()
         qDebug() << "NGKeyID Not found";
     }
     tmp = QByteArray::fromHex(settings.value("NGPriv").toByteArray());
-    if (tmp.size() <= 60 && !tmp.isEmpty())
+    if (tmp.size() == 30 && !tmp.isEmpty())
     {
         SetNGPriv(tmp);
-        qDebug() << tmp.toHex();
-        qDebug() << "Found NGPriv Successfully";
+        qDebug() << "Found NGPriv Successfully: " << tmp.toHex();
     }
     else
     {
@@ -125,26 +133,23 @@ bool WiiKeys::LoadRegistry()
     }
 
     tmp = QByteArray::fromHex(settings.value("NGSig").toByteArray());
-    if (tmp.size() <= 120 && !tmp.isEmpty())
+    if (tmp.size() == 60 && !tmp.isEmpty())
     {
         SetNGSig(tmp);
-        qDebug() << tmp.toHex();
-        qDebug() << "Found NGSig Successfully";
+        qDebug() << "Found NGSig Successfully: " << tmp.toHex();
     }
     else
     {
         if (m_ngSig)
             delete[] m_ngSig;
         m_ngSig = NULL;
-        qDebug() << tmp.toHex();
         qDebug() << "NGSig Not found";
     }
     tmp = QByteArray::fromHex(settings.value("WiiMAC").toByteArray());
-    if (tmp.size() <= 12 && !tmp.isEmpty())
+    if (tmp.size() == 6 && !tmp.isEmpty())
     {
         SetMacAddr(tmp);
-        qDebug() << tmp.toHex();
-        qDebug() << "Found WiiMac Successfully";
+        qDebug() << "Found WiiMac Successfully: " << tmp.toHex();
     }
     else
     {
@@ -154,9 +159,26 @@ bool WiiKeys::LoadRegistry()
         qDebug() << "WiiMAC Not found";
     }
 
-    if (m_ngID > 0 && m_ngKeyID > 0 && m_ngPriv > 0 && m_ngSig > 0 && m_macAddr > 0)
+    settings.endGroup();
+    if (m_ngID > 0 && m_ngKeyID > 0 && m_ngPriv != NULL && m_ngSig != NULL && m_macAddr != NULL)
         return true;
     return false;
+}
+
+void WiiKeys::SaveKeys()
+{
+    QByteArray tmp;
+    QSettings settings;
+    settings.beginGroup("Keys");
+    tmp = QByteArray::fromHex(QString::number(WiiKeys::GetInstance()->GetNGID(), 16).toAscii());
+    qDebug() << tmp.size();
+    settings.setValue("NGID", (tmp.size() == 4 ? tmp.toHex() : QByteArray()));
+    tmp = QByteArray::fromHex(QString::number(WiiKeys::GetInstance()->GetNGKeyID(), 16).toAscii());
+    settings.setValue("NGKeyID", (tmp.size() == 4 ? tmp.toHex() : QByteArray()));
+    settings.setValue("NGSig",  WiiKeys::GetInstance()->GetNGSig().toHex());
+    settings.setValue("NGPriv", WiiKeys::GetInstance()->GetNGPriv().toHex());
+    settings.setValue("WiiMAC", WiiKeys::GetInstance()->GetMacAddr().toHex());
+    settings.endGroup();
 }
 
 QByteArray WiiKeys::GetNGPriv() const

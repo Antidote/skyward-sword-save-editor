@@ -51,10 +51,12 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QSettings settings("WiiKing2", "WiiKing2 Editor");
 
+#ifdef DEBUG
+    m_ui->actionPreferences->setEnabled(true);
     if (settings.allKeys().count() > 0)
     {
         qDebug() << "Registry entry found, attempting to load...";
-        if(!WiiKeys::GetInstance()->LoadRegistry())
+        if(!WiiKeys::GetInstance()->LoadKeys())
         {
             qDebug() << "Couldn't not find 1 or more keys, attempting to load keys.bin...";
             if (!WiiKeys::GetInstance()->Open("./keys.bin"))
@@ -74,7 +76,9 @@ MainWindow::MainWindow(QWidget *parent) :
         else
             qDebug() << "done";
     }
-
+#else
+    m_ui->actionPreferences->setEnabled(false);
+#endif
     setWindowFlags(Qt::Window | Qt::WindowMinimizeButtonHint);
     SetupActions();
     SetupConnections();
@@ -654,7 +658,13 @@ void MainWindow::onOpen()
 
         if (filename.lastIndexOf(".bin") == filename.size() - 4)
         {
+#ifdef DEBUG
             m_gameFile->LoadDataBin(filename, m_gameFile->GetGame());
+#else
+            QMessageBox msg(QMessageBox::Warning, tr("DISABLED"), tr("Data.bin is an experimental feature and support has been disabled in this version"));
+            msg.exec();
+            return;
+#endif
         }
         else if (!m_gameFile->Open(m_gameFile->GetGame(), filename))
             return;
@@ -673,7 +683,7 @@ void MainWindow::onOpen()
 
 void MainWindow::onCreateNewGame()
 {
-    NewGameDialog* ngd = new NewGameDialog(this, m_curGame);
+    NewGameDialog* ngd = new NewGameDialog(this, m_curGame, m_gameFile->GetRegion());
     ngd->setWindowTitle("New Adventure...");
     ngd->exec();
     if (ngd->result() == NewGameDialog::Accepted)
@@ -745,18 +755,15 @@ void MainWindow::onFileInfo()
 
 void MainWindow::onPreferences()
 {
+    QByteArray tmp;
     PreferencesDialog* prefDiag = new PreferencesDialog(this);
     int result = prefDiag->exec();
 
-    QSettings settings("WiiKing2", "WiiKing2 Editor");
+    QSettings settings;
     switch(result)
     {
     case QDialog::Accepted:
-        settings.setValue("NGID", QString(QByteArray::fromHex(QString::number(WiiKeys::GetInstance()->GetNGID(), 16).toAscii()).toHex()));
-        settings.setValue("NGKeyID", QString(QByteArray::fromHex(QString::number(WiiKeys::GetInstance()->GetNGKeyID(), 16).toAscii()).toHex()));
-        settings.setValue("NGSig", QString(WiiKeys::GetInstance()->GetNGSig().toHex()));
-        settings.setValue("NGPriv", QString(WiiKeys::GetInstance()->GetNGPriv().toHex()));
-        settings.setValue("WiiMAC", QString(WiiKeys::GetInstance()->GetMacAddr().toHex()));
+        WiiKeys::GetInstance()->SaveKeys();
         break;
     default:
         break;

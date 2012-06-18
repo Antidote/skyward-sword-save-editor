@@ -44,3 +44,5 @@ Right - Evil Crystal
 0xA34:
 Left - Goddess Plume
 Right - Golden Skull
+
+
