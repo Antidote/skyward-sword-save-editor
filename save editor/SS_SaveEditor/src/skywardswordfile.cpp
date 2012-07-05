@@ -14,15 +14,16 @@
 // along with WiiKing2 Editor.  If not, see <http://www.gnu.org/licenses/>
 
 #include "skywardswordfile.h"
-#include <QtEndian>
+#include "WiiQt/savebanner.h"
+#include "WiiQt/savedatabin.h"
+#include "wiikeys.h"
+#include "checksum.h"
 
+#include <QtEndian>
 #include <QDateTime>
 #include <QDebug>
 #include <QDir>
 #include <time.h>
-#include "WiiQt/savebanner.h"
-#include "WiiQt/savedatabin.h"
-#include "wiikeys.h"
 
 float swapFloat(float val)
 {
@@ -49,7 +50,7 @@ SkywardSwordFile::SkywardSwordFile(const QString& filepath, Game game) :
     m_isOpen(false)
 {
     m_bannerImage = QImage();
-    m_crcEngine = new CRC32;
+    m_checksumEngine = new Checksum;
 }
 
 SkywardSwordFile::~SkywardSwordFile()
@@ -89,7 +90,7 @@ bool SkywardSwordFile::Open(Game game, const QString& filepath)
 
 
         file.read((char*)m_data, 0xFBE0);
-        m_fileChecksum = m_crcEngine->GetCRC32((unsigned const char*)m_data, 0, 0xFBE0);
+        m_fileChecksum = m_checksumEngine->GetCRC32((unsigned const char*)m_data, 0, 0xFBE0);
         file.close();
         m_isOpen = true;
         return true;
@@ -133,7 +134,7 @@ bool SkywardSwordFile::Save(const QString& filename)
         }
         fwrite(m_data, 1, 0xFBE0, f);
         fclose(f);
-        m_fileChecksum = m_crcEngine->GetCRC32((const uchar*)m_data, 0, 0xFBE0);
+        m_fileChecksum = m_checksumEngine->GetCRC32((const uchar*)m_data, 0, 0xFBE0);
 
         f = fopen(tmpFilename.toAscii(), "rb");
         if (f)
@@ -141,7 +142,7 @@ bool SkywardSwordFile::Save(const QString& filename)
             char* tmpBuf = new char[0xFBE0];
             fread(tmpBuf, 1, 0xFBE0, f);
             fclose(f);
-            quint32 tmpChecksum = m_crcEngine->GetCRC32((const quint8*)tmpBuf, 0, 0xFBE0);
+            quint32 tmpChecksum = m_checksumEngine->GetCRC32((const quint8*)tmpBuf, 0, 0xFBE0);
             if (tmpChecksum == m_fileChecksum)
             {
                 QFile file(tmpFilename);
@@ -267,7 +268,7 @@ bool SkywardSwordFile::HasFileOnDiskChanged()
         char* data = new char[0xFBE0];
 
         file.read((char*)data, 0xFBE0);
-        quint32 fileChecksum = m_crcEngine->GetCRC32((unsigned const char*)data, 0, 0xFBE0);
+        quint32 fileChecksum = m_checksumEngine->GetCRC32((unsigned const char*)data, 0, 0xFBE0);
         file.close();
 
         if (fileChecksum != m_fileChecksum)
@@ -304,7 +305,7 @@ bool SkywardSwordFile::HasValidChecksum()
     if (!m_data)
         return false;
 
-    return (*(quint32*)(m_data + GetGameOffset() + 0x53BC) == qFromBigEndian<quint32>(m_crcEngine->GetCRC32((const unsigned char*)m_data, GetGameOffset(), 0x53BC)));
+    return (*(quint32*)(m_data + GetGameOffset() + 0x53BC) == qFromBigEndian<quint32>(m_checksumEngine->GetCRC32((const unsigned char*)m_data, GetGameOffset(), 0x53BC)));
 }
 
 SkywardSwordFile::Game SkywardSwordFile::GetGame() const
@@ -1006,7 +1007,7 @@ void SkywardSwordFile::UpdateChecksum()
     if (!m_data)
         return;
 
-    *(uint*)(m_data + GetGameOffset() + 0x53BC) =  qToBigEndian<quint32>(m_crcEngine->GetCRC32((const unsigned char*)m_data, GetGameOffset(), 0x53BC)); // change it to Big Endian
+    *(uint*)(m_data + GetGameOffset() + 0x53BC) =  qToBigEndian<quint32>(m_checksumEngine->GetCRC32((const unsigned char*)m_data, GetGameOffset(), 0x53BC)); // change it to Big Endian
 }
 
 bool SkywardSwordFile::IsNew() const
@@ -1024,7 +1025,7 @@ void SkywardSwordFile::SetNew(bool val)
 
 bool SkywardSwordFile::IsModified() const
 {
-    quint32 newCrc = m_crcEngine->GetCRC32((const quint8*)m_data, 0, 0xFBE0);
+    quint32 newCrc = m_checksumEngine->GetCRC32((const quint8*)m_data, 0, 0xFBE0);
     return !(newCrc == m_fileChecksum);
 }
 

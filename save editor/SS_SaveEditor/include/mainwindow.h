@@ -69,13 +69,13 @@ private:
     void ToggleEnabled(bool visible);
     void SetupActions();
     void SetupConnections();
-    Ui::MainWindow*   m_ui;
-    SkywardSwordFile*                  m_gameFile;
+    Ui::MainWindow*           m_ui;
+    SkywardSwordFile*         m_gameFile;
     SkywardSwordFile::Game    m_curGame;
-    bool                             m_isUpdating;
-    bool                             m_isChecking;
-    QActionGroup* m_gameGroup;
-    QButtonGroup* m_regionGroup;
+    bool                      m_isUpdating;
+    bool                      m_isChecking;
+    QActionGroup*             m_gameGroup;
+    QButtonGroup*             m_regionGroup;
 };
 
 #endif // MAINWINDOW_H

@@ -18,11 +18,12 @@
 
 #include <QFile>
 #include "igamefile.h"
-#include "CRC32.h"
 #include <QImage>
 #include "WiiQt/savedatabin.h"
 #include "WiiQt/savebanner.h"
+
 class QDateTime;
+class Checksum;
 struct SaveGame;
 
 
@@ -244,7 +245,7 @@ private:
     SaveGame m_saveGame;
     SaveDataBin m_dataBin;
     SaveBanner  m_banner;
-    CRC32*  m_crcEngine;
+    Checksum*  m_checksumEngine;
 };
 
 #endif // GAMEFILE_H
