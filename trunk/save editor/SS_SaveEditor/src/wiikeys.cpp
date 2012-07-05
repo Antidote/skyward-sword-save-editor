@@ -170,14 +170,13 @@ void WiiKeys::SaveKeys()
     QByteArray tmp;
     QSettings settings;
     settings.beginGroup("Keys");
-    tmp = QByteArray::fromHex(QString::number(WiiKeys::GetInstance()->GetNGID(), 16).toAscii());
-    qDebug() << tmp.size();
+    tmp = QByteArray::fromHex(QString::number(m_ngID, 16).toAscii());
     settings.setValue("NGID", (tmp.size() == 4 ? tmp.toHex() : QByteArray()));
-    tmp = QByteArray::fromHex(QString::number(WiiKeys::GetInstance()->GetNGKeyID(), 16).toAscii());
+    tmp = QByteArray::fromHex(QString::number(m_ngKeyID, 16).toAscii());
     settings.setValue("NGKeyID", (tmp.size() == 4 ? tmp.toHex() : QByteArray()));
-    settings.setValue("NGSig",  WiiKeys::GetInstance()->GetNGSig().toHex());
-    settings.setValue("NGPriv", WiiKeys::GetInstance()->GetNGPriv().toHex());
-    settings.setValue("WiiMAC", WiiKeys::GetInstance()->GetMacAddr().toHex());
+    settings.setValue("NGSig",  QByteArray(m_ngSig, 0x3C).toHex());
+    settings.setValue("NGPriv", QByteArray(m_ngPriv, 0x1E).toHex());
+    settings.setValue("WiiMAC", QByteArray(m_macAddr, 0x06).toHex());
     settings.endGroup();
 }
 

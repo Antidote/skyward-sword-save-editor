@@ -13,7 +13,6 @@ QMAKE_LFLAGS += -static-libgcc
 SOURCES += \
     src/main.cpp\
     src/mainwindow.cpp \
-    src/CRC32.cpp \
     src/newgamedialog.cpp \
     src/aboutdialog.cpp \
     src/fileinfodialog.cpp \
@@ -27,12 +26,12 @@ SOURCES += \
     src/WiiQt/sha1.c \
     src/exportquestdialog.cpp \
     src/wiikeys.cpp \
-    src/preferencesdialog.cpp
+    src/preferencesdialog.cpp \
+    src/checksum.cpp
 
 HEADERS  += \
     include/mainwindow.h \
     include/igamefile.h \
-    include/CRC32.h \
     include/newgamedialog.h \
     include/aboutdialog.h \
     include/fileinfodialog.h \
@@ -46,7 +45,8 @@ HEADERS  += \
     include/WiiQt/sha1.h \
     include/exportquestdialog.h \
     include/wiikeys.h \
-    include/preferencesdialog.h
+    include/preferencesdialog.h \
+    include/checksum.h
 
 FORMS    += \
     forms/mainwindow.ui \
@@ -112,8 +112,8 @@ win32{
 }
 
 
-    DEFINES += DEBUG
 CONFIG(debug, debug|release){
+    DEFINES += DEBUG
 
     VERSION = $$system(svn info -r HEAD . | grep 'Rev:' | cut -b 19-)
 

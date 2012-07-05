@@ -493,40 +493,40 @@ void MainWindow::UpdateInfo()
     m_ui->eldinRollerSpinBox->setEnabled(m_ui->eldinRollerChkBox->isChecked());
 
     // Materials
-    m_ui->hornetLarvaeSpinBox   ->setValue(m_gameFile->GetQuantity(true, 0xA42));
-    m_ui->hornetLarvaeSpinBox   ->setEnabled(m_ui->hornetLarvaeChkBox->isChecked());
-    m_ui->birdFeatherSpinBox    ->setValue(m_gameFile->GetQuantity(false, 0xA42));
-    m_ui->birdFeatherSpinBox    ->setEnabled(m_ui->birdFeatherChkBox->isChecked());
-    m_ui->tumbleWeedSpinBox     ->setValue(m_gameFile->GetQuantity(true, 0xA40));
-    m_ui->tumbleWeedSpinBox     ->setEnabled(m_ui->tumbleWeedChkBox->isChecked());
-    m_ui->lizardTailSpinBox     ->setValue(m_gameFile->GetQuantity(false, 0xA40));
-    m_ui->lizardTailSpinBox     ->setEnabled(m_ui->lizardTailChkBox->isChecked());
-    m_ui->eldinOreSpinBox       ->setValue(m_gameFile->GetQuantity(true, 0xA3E));
-    m_ui->eldinOreSpinBox       ->setEnabled(m_ui->eldinOreChkBox->isChecked());
-    m_ui->ancientFlowerSpinBox  ->setValue(m_gameFile->GetQuantity(false, 0xA3E));
-    m_ui->ancientFlowerSpinBox  ->setEnabled(m_ui->ancientFlowerChkBox->isChecked());
-    m_ui->amberRelicSpinBox     ->setValue(m_gameFile->GetQuantity(true, 0xA3C));
-    m_ui->amberRelicSpinBox     ->setEnabled(m_ui->amberRelicChkBox->isChecked());
-    m_ui->duskRelicSpinBox      ->setValue(m_gameFile->GetQuantity(false, 0xA3C));
-    m_ui->duskRelicSpinBox      ->setEnabled(m_ui->duskRelicChkBox->isChecked());
-    m_ui->jellyBlobSpinBox      ->setValue(m_gameFile->GetQuantity(true, 0xA3A));
-    m_ui->jellyBlobSpinBox      ->setEnabled(m_ui->jellyBlobChkBox->isChecked());
-    m_ui->monsterClawSpinBox    ->setValue(m_gameFile->GetQuantity(false, 0xA3A));
-    m_ui->monsterClawSpinBox    ->setEnabled(m_ui->monsterClawChkBox->isChecked());
-    m_ui->monsterHornSpinBox    ->setValue(m_gameFile->GetQuantity(true, 0xA38));
-    m_ui->monsterHornSpinBox    ->setEnabled(m_ui->monsterHornChkBox->isChecked());
-    m_ui->decoSkullSpinBox      ->setValue(m_gameFile->GetQuantity(false, 0xA38));
-    m_ui->decoSkullSpinBox      ->setEnabled(m_ui->decoSkullChkBox->isChecked());
-    m_ui->evilCrystalSpinBox    ->setValue(m_gameFile->GetQuantity(true, 0xA36));
-    m_ui->evilCrystalSpinBox    ->setEnabled(m_ui->evilCrystalChkBox->isChecked());
-    m_ui->blueBirdFeatherSpinBox->setValue(m_gameFile->GetQuantity(false, 0xA36));
-    m_ui->blueBirdFeatherSpinBox->setEnabled(m_ui->blueBirdFeatherChkBox->isChecked());
-    m_ui->goldenSkullSpinBox    ->setValue(m_gameFile->GetQuantity(true, 0xA34));
-    m_ui->goldenSkullSpinBox    ->setEnabled(m_ui->goldenSkullChkBox->isChecked());
-    m_ui->goddessPlumeSpinBox   ->setValue(m_gameFile->GetQuantity(false, 0xA34));
-    m_ui->goddessPlumeSpinBox   ->setEnabled(m_ui->goddessPlumeChkBox->isChecked());
+    m_ui->hornetLarvaeSpinBox    ->setValue(m_gameFile->GetQuantity(true, 0xA42));
+    m_ui->hornetLarvaeSpinBox    ->setEnabled(m_ui->hornetLarvaeChkBox->isChecked());
+    m_ui->birdFeatherSpinBox     ->setValue(m_gameFile->GetQuantity(false, 0xA42));
+    m_ui->birdFeatherSpinBox     ->setEnabled(m_ui->birdFeatherChkBox->isChecked());
+    m_ui->tumbleWeedSpinBox      ->setValue(m_gameFile->GetQuantity(true, 0xA40));
+    m_ui->tumbleWeedSpinBox      ->setEnabled(m_ui->tumbleWeedChkBox->isChecked());
+    m_ui->lizardTailSpinBox      ->setValue(m_gameFile->GetQuantity(false, 0xA40));
+    m_ui->lizardTailSpinBox      ->setEnabled(m_ui->lizardTailChkBox->isChecked());
+    m_ui->eldinOreSpinBox        ->setValue(m_gameFile->GetQuantity(true, 0xA3E));
+    m_ui->eldinOreSpinBox        ->setEnabled(m_ui->eldinOreChkBox->isChecked());
+    m_ui->ancientFlowerSpinBox   ->setValue(m_gameFile->GetQuantity(false, 0xA3E));
+    m_ui->ancientFlowerSpinBox   ->setEnabled(m_ui->ancientFlowerChkBox->isChecked());
+    m_ui->amberRelicSpinBox      ->setValue(m_gameFile->GetQuantity(true, 0xA3C));
+    m_ui->amberRelicSpinBox      ->setEnabled(m_ui->amberRelicChkBox->isChecked());
+    m_ui->duskRelicSpinBox       ->setValue(m_gameFile->GetQuantity(false, 0xA3C));
+    m_ui->duskRelicSpinBox       ->setEnabled(m_ui->duskRelicChkBox->isChecked());
+    m_ui->jellyBlobSpinBox       ->setValue(m_gameFile->GetQuantity(true, 0xA3A));
+    m_ui->jellyBlobSpinBox       ->setEnabled(m_ui->jellyBlobChkBox->isChecked());
+    m_ui->monsterClawSpinBox     ->setValue(m_gameFile->GetQuantity(false, 0xA3A));
+    m_ui->monsterClawSpinBox     ->setEnabled(m_ui->monsterClawChkBox->isChecked());
+    m_ui->monsterHornSpinBox     ->setValue(m_gameFile->GetQuantity(true, 0xA38));
+    m_ui->monsterHornSpinBox     ->setEnabled(m_ui->monsterHornChkBox->isChecked());
+    m_ui->decoSkullSpinBox       ->setValue(m_gameFile->GetQuantity(false, 0xA38));
+    m_ui->decoSkullSpinBox       ->setEnabled(m_ui->decoSkullChkBox->isChecked());
+    m_ui->evilCrystalSpinBox     ->setValue(m_gameFile->GetQuantity(true, 0xA36));
+    m_ui->evilCrystalSpinBox     ->setEnabled(m_ui->evilCrystalChkBox->isChecked());
+    m_ui->blueBirdFeatherSpinBox ->setValue(m_gameFile->GetQuantity(false, 0xA36));
+    m_ui->blueBirdFeatherSpinBox ->setEnabled(m_ui->blueBirdFeatherChkBox->isChecked());
+    m_ui->goldenSkullSpinBox     ->setValue(m_gameFile->GetQuantity(true, 0xA34));
+    m_ui->goldenSkullSpinBox     ->setEnabled(m_ui->goldenSkullChkBox->isChecked());
+    m_ui->goddessPlumeSpinBox    ->setValue(m_gameFile->GetQuantity(false, 0xA34));
+    m_ui->goddessPlumeSpinBox    ->setEnabled(m_ui->goddessPlumeChkBox->isChecked());
 
-    m_ui->gratitudeCrystalSpinBox   ->setValue(m_gameFile->GetGratitudeCrystalAmount());
+    m_ui->gratitudeCrystalSpinBox->setValue(m_gameFile->GetGratitudeCrystalAmount());
     m_isUpdating = false;
 }
 
@@ -676,6 +676,9 @@ void MainWindow::onOpen()
             QMessageBox msg(QMessageBox::Warning, tr("CRC32 Mismatch"), tr("The checksum generated does not match the one provided by the file"));
             msg.exec();
         }
+
+        m_ui->menuRecent->addAction(m_gameFile->GetFilename());
+
         UpdateInfo();
         UpdateTitle();
     }
@@ -755,11 +758,8 @@ void MainWindow::onFileInfo()
 
 void MainWindow::onPreferences()
 {
-    QByteArray tmp;
-    PreferencesDialog* prefDiag = new PreferencesDialog(this);
-    int result = prefDiag->exec();
-
-    QSettings settings;
+    PreferencesDialog prefDiag(this);
+    quint32 result = prefDiag.exec();
     switch(result)
     {
     case QDialog::Accepted:

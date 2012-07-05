@@ -7,11 +7,48 @@
 // Purpose:
 //--------------------------------------
 
+enum <byte> Language
+{
+    LA_English=2,
+    LA_French =3,
+    LA_German =4,
+    LA_Spanish=5,
+    LA_Italian=6
+};
+
+enum <byte> TextMode
+{
+    TM_Slow =0,
+    TM_Normal,
+    TM_Fast
+};
+
+enum <byte> Brightness
+{
+    BR_Dark=0,
+    BR_Normal,
+    BR_Bright
+};
+
+struct SaveData
+{
+    union
+    {
+        struct
+        {
+            char unk;
+            char unk2;
+            TextMode textMode;
+            Brightness brightness;
+        }meta;
+        char data[0x500];
+    }data;
+};
 
 struct
 {
    char header[0x80];
-   char data1[0x500];
+   SaveData data1;
    char data2[0x500];
    char data3[0x500];
    char tail[0x80];

@@ -100,8 +100,3 @@ void PreferencesDialog::accept()
     }
     this->done(QDialog::Accepted);
 }
-
-void PreferencesDialog::reject()
-{
-    this->done(QDialog::Rejected);
-}
