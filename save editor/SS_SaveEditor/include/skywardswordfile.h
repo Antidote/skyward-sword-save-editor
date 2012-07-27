@@ -21,9 +21,9 @@
 #include <QImage>
 #include "WiiQt/savedatabin.h"
 #include "WiiQt/savebanner.h"
+#include "checksum.h"
 
 class QDateTime;
-class Checksum;
 struct SaveGame;
 
 
@@ -110,7 +110,7 @@ public:
                  BirdFeatherMaterial,
                  TumbleWeedMaterial,
                  LizardTailMaterial,
-                 OreMaterial,
+                 EldinOreMaterial,
                  AncientFlowerMaterial,
                  AmberRelicMaterial,
                  DuskRelicMaterial,
@@ -134,6 +134,7 @@ public:
                  TrueMasterSword
     };
 
+    SkywardSwordFile(Region region);
     SkywardSwordFile(const QString& filepath = NULL, Game game = Game1);
     ~SkywardSwordFile();
 
@@ -198,6 +199,8 @@ public:
     void      SetBugQuantity(Bug bug, quint32 val);
     bool      GetMaterial(Material material);
     void      SetMaterial(Material material, bool val);
+    quint32   GetMaterialQuantity(Material material);
+    void      SetMaterialQuantity(Material material, quint32 val);
     quint32   GetGratitudeCrystalAmount();
     void      SetGratitudeCrystalAmount(quint32 val);
     ushort    GetRupees() const;
@@ -228,9 +231,9 @@ public:
     const QImage& GetBanner() const;
     static bool IsValidFile(const QString& filepath, Region* region);
 
+private:
     quint32 GetQuantity(bool isRight, int offset) const;
     void    SetQuantity(bool isRight, int offset, quint32 val);
-private:
     uint    GetGameOffset() const;
     QString ReadNullTermString(int offset) const;
     void    WriteNullTermString(const QString& val, int offset);
@@ -241,11 +244,12 @@ private:
     QString m_filename;
     Game    m_game;
     bool    m_isOpen;
+    bool    m_isDirty;
     quint32 m_fileChecksum; // The checksum of the entire file.
     SaveGame m_saveGame;
     SaveDataBin m_dataBin;
     SaveBanner  m_banner;
-    Checksum*  m_checksumEngine;
+    Checksum  m_checksumEngine;
 };
 
 #endif // GAMEFILE_H

@@ -50,6 +50,6 @@ int main(int argc, char *argv[])
     loadStyleSheet();
     MainWindow w;
     w.show();
-    
+
     return a.exec();
 }
