@@ -43,14 +43,42 @@ float swapFloat(float val)
 #endif
 }
 
+// This constructor allows us to create a new save file.
+SkywardSwordFile::SkywardSwordFile(Region region) :
+    m_isDirty(false)
+{
+    // Gentlemen start your checksum engine!!!
+    m_checksumEngine = Checksum();
+    // Need to create a new buffer so we can make our changes.
+    m_data = new char[0xFBE0];
+    // Zero out the buffer, just to make sure we don't have a 'corrupt' file
+    memset(m_data, 0, 0xFBE0);
+    // Set the region to the specified one.
+    SetRegion(region);
+    // The game expects adress 0x001F to be 0x1D so do so.
+    m_data[0x001F] = 0x1D;
+
+    // Now each game needs to marked as "New" or the game will detect them
+    // Why the game uses a non-zero value for new games is beyond me.
+    for (int i = 0; i < 3; i++)
+    {
+        m_game = (IGameFile::Game)i;
+        SetNew(true);
+    }
+    m_game = IGameFile::Game1;
+    m_isOpen = true;
+    m_bannerImage = QImage();
+}
+
 SkywardSwordFile::SkywardSwordFile(const QString& filepath, Game game) :
     m_data(NULL),
     m_filename(filepath),
     m_game(game),
-    m_isOpen(false)
+    m_isOpen(false),
+    m_isDirty(false)
 {
     m_bannerImage = QImage();
-    m_checksumEngine = new Checksum;
+    m_checksumEngine = Checksum();
 }
 
 SkywardSwordFile::~SkywardSwordFile()
@@ -90,7 +118,7 @@ bool SkywardSwordFile::Open(Game game, const QString& filepath)
 
 
         file.read((char*)m_data, 0xFBE0);
-        m_fileChecksum = m_checksumEngine->GetCRC32((unsigned const char*)m_data, 0, 0xFBE0);
+        m_fileChecksum = m_checksumEngine.GetCRC32((unsigned const char*)m_data, 0, 0xFBE0);
         file.close();
         m_isOpen = true;
         return true;
@@ -134,7 +162,7 @@ bool SkywardSwordFile::Save(const QString& filename)
         }
         fwrite(m_data, 1, 0xFBE0, f);
         fclose(f);
-        m_fileChecksum = m_checksumEngine->GetCRC32((const uchar*)m_data, 0, 0xFBE0);
+        m_fileChecksum = m_checksumEngine.GetCRC32((const uchar*)m_data, 0, 0xFBE0);
 
         f = fopen(tmpFilename.toAscii(), "rb");
         if (f)
@@ -142,7 +170,7 @@ bool SkywardSwordFile::Save(const QString& filename)
             char* tmpBuf = new char[0xFBE0];
             fread(tmpBuf, 1, 0xFBE0, f);
             fclose(f);
-            quint32 tmpChecksum = m_checksumEngine->GetCRC32((const quint8*)tmpBuf, 0, 0xFBE0);
+            quint32 tmpChecksum = m_checksumEngine.GetCRC32((const quint8*)tmpBuf, 0, 0xFBE0);
             if (tmpChecksum == m_fileChecksum)
             {
                 QFile file(tmpFilename);
@@ -268,7 +296,7 @@ bool SkywardSwordFile::HasFileOnDiskChanged()
         char* data = new char[0xFBE0];
 
         file.read((char*)data, 0xFBE0);
-        quint32 fileChecksum = m_checksumEngine->GetCRC32((unsigned const char*)data, 0, 0xFBE0);
+        quint32 fileChecksum = m_checksumEngine.GetCRC32((unsigned const char*)data, 0, 0xFBE0);
         file.close();
 
         if (fileChecksum != m_fileChecksum)
@@ -305,7 +333,7 @@ bool SkywardSwordFile::HasValidChecksum()
     if (!m_data)
         return false;
 
-    return (*(quint32*)(m_data + GetGameOffset() + 0x53BC) == qFromBigEndian<quint32>(m_checksumEngine->GetCRC32((const unsigned char*)m_data, GetGameOffset(), 0x53BC)));
+    return (*(quint32*)(m_data + GetGameOffset() + 0x53BC) == qFromBigEndian<quint32>(m_checksumEngine.GetCRC32((const unsigned char*)m_data, GetGameOffset(), 0x53BC)));
 }
 
 SkywardSwordFile::Game SkywardSwordFile::GetGame() const
@@ -367,7 +395,6 @@ void SkywardSwordFile::SetPlayTime(PlayTime val)
     *(quint64*)(m_data + GetGameOffset()) = qToBigEndian<quint64>(totalSeconds);
 }
 
-static const quint64 TIME_OFFSET = 60750560;
 QDateTime SkywardSwordFile::GetSaveTime() const
 {
     if (!m_data)
@@ -783,7 +810,7 @@ void SkywardSwordFile::SetBugQuantity(Bug bug, quint32 val)
         case DragonflyBug:  SetQuantity(true,  0x0A46, val); break;
         case FireflyBug:    SetQuantity(false, 0x0A44, val); break;
         case RhinoBeetleBug:SetQuantity(false, 0x0A4E, val); break;
-        case LadybugBug:    SetQuantity(true, 0x0A4A, val); break;
+        case LadybugBug:    SetQuantity(true,  0x0A4A, val); break;
         case SandCicadaBug: SetQuantity(false, 0x0A48, val); break;
         case StagBeetleBug: SetQuantity(true,  0x0A44, val); break;
         case GrasshopperBug:SetQuantity(true,  0x0A4E, val); break;
@@ -809,7 +836,7 @@ bool SkywardSwordFile::GetMaterial(Material material)
             return GetFlag(0x0934, 0x08);
         case LizardTailMaterial:
             return GetFlag(0x0934, 0x10);
-        case OreMaterial:
+        case EldinOreMaterial:
             return GetFlag(0x0934, 0x20);
         case AncientFlowerMaterial:
             return GetFlag(0x0934, 0x40);
@@ -849,7 +876,7 @@ void SkywardSwordFile::SetMaterial(Material material, bool val)
         case BirdFeatherMaterial:     SetFlag(0x0934, 0x04, val); break;
         case TumbleWeedMaterial:      SetFlag(0x0934, 0x08, val); break;
         case LizardTailMaterial:      SetFlag(0x0934, 0x10, val); break;
-        case OreMaterial:             SetFlag(0x0934, 0x20, val); break;
+        case EldinOreMaterial:        SetFlag(0x0934, 0x20, val); break;
         case AncientFlowerMaterial:   SetFlag(0x0934, 0x40, val); break;
         case AmberRelicMaterial:      SetFlag(0x0934, 0x80, val); break;
         case DuskRelicMaterial:       SetFlag(0x0937, 0x01, val); break;
@@ -865,13 +892,82 @@ void SkywardSwordFile::SetMaterial(Material material, bool val)
     }
 }
 
-quint32 SkywardSwordFile::GetGratitudeCrystalAmount()
+quint32 SkywardSwordFile::GetMaterialQuantity(Material material)
 {
     if (!m_data)
         return 0;
 
-    quint32 ret = (quint32)((qFromBigEndian<quint16>(*(quint16*)(m_data + GetGameOffset() + 0x0A50)) >> 3) & 127);
+    switch(material)
+    {
+        case HornetLarvaeMaterial:
+            return GetQuantity(true, 0x0A42);
+        case BirdFeatherMaterial:
+            return GetQuantity(false,0x0A42);
+        case TumbleWeedMaterial:
+            return GetQuantity(true, 0x0A40);
+        case LizardTailMaterial:
+            return GetQuantity(false,0x0A40);
+        case EldinOreMaterial:
+            return GetQuantity(true, 0x0A3E);
+        case AncientFlowerMaterial:
+            return GetQuantity(false,0x0A3E);
+        case AmberRelicMaterial:
+            return GetQuantity(true, 0x0A3C);
+        case DuskRelicMaterial:
+            return GetQuantity(false,0x0A3C);
+        case JellyBlobMaterial:
+            return GetQuantity(true, 0x0A3A);
+        case MonsterClawMaterial:
+            return GetQuantity(false,0x0A3A);
+        case MonsterHornMaterial:
+            return GetQuantity(true, 0x0A38);
+        case OrnamentalSkullMaterial:
+            return GetQuantity(false,0x0A38);
+        case EvilCrystalMaterial:
+            return GetQuantity(true, 0x0A36);
+        case BlueBirdFeatherMaterial:
+            return GetQuantity(false,0x0A36);
+        case GoldenSkullMaterial:
+            return GetQuantity(true, 0x0A34);
+        case GoddessPlumeMaterial:
+            return GetQuantity(false,0x0A34);
+        default:
+            return 0;
+    }
+}
 
+void SkywardSwordFile::SetMaterialQuantity(Material material, quint32 val)
+{
+    if (!m_data)
+        return;
+
+    switch(material)
+    {
+        case HornetLarvaeMaterial:   SetQuantity(true,  0x0A42, val); break;
+        case BirdFeatherMaterial:    SetQuantity(false, 0x0A42, val); break;
+        case TumbleWeedMaterial:     SetQuantity(true,  0x0A40, val); break;
+        case LizardTailMaterial:     SetQuantity(false, 0x0A40, val); break;
+        case EldinOreMaterial:       SetQuantity(true,  0x0A3E, val); break;
+        case AncientFlowerMaterial:  SetQuantity(false, 0x0A3E, val); break;
+        case AmberRelicMaterial:     SetQuantity(true,  0x0A3C, val); break;
+        case DuskRelicMaterial:      SetQuantity(false, 0x0A3C, val); break;
+        case JellyBlobMaterial:      SetQuantity(true,  0x0A3A, val); break;
+        case MonsterClawMaterial:    SetQuantity(false, 0x0A3A, val); break;
+        case MonsterHornMaterial:    SetQuantity(true,  0x0A38, val); break;
+        case OrnamentalSkullMaterial:SetQuantity(false, 0x0A38, val); break;
+        case EvilCrystalMaterial:    SetQuantity(true,  0x0A36, val); break;
+        case BlueBirdFeatherMaterial:SetQuantity(false, 0x0A36, val); break;
+        case GoldenSkullMaterial:    SetQuantity(true,  0x0A34, val); break;
+        case GoddessPlumeMaterial:   SetQuantity(false, 0x0A34, val); break;
+        default: return;
+    }
+}
+
+quint32 SkywardSwordFile::GetGratitudeCrystalAmount()
+{
+    if (!m_data)
+        return 0;
+    quint32 ret = (quint32)((qFromBigEndian<quint16>(*(quint16*)(m_data + GetGameOffset() + 0x0A50)) >> 3) & 127);
     return ret;
 }
 
@@ -879,7 +975,6 @@ void SkywardSwordFile::SetGratitudeCrystalAmount(quint32 val)
 {
     if (!m_data)
         return;
-
     val = (quint16)(val << 3);
     *(quint16*)(m_data + GetGameOffset() + 0x0A50) = qToBigEndian<quint16>((quint16)val);
 }
@@ -1007,7 +1102,7 @@ void SkywardSwordFile::UpdateChecksum()
     if (!m_data)
         return;
 
-    *(uint*)(m_data + GetGameOffset() + 0x53BC) =  qToBigEndian<quint32>(m_checksumEngine->GetCRC32((const unsigned char*)m_data, GetGameOffset(), 0x53BC)); // change it to Big Endian
+    *(uint*)(m_data + GetGameOffset() + 0x53BC) =  qToBigEndian<quint32>(m_checksumEngine.GetCRC32((const unsigned char*)m_data, GetGameOffset(), 0x53BC)); // change it to Big Endian
 }
 
 bool SkywardSwordFile::IsNew() const
@@ -1025,7 +1120,9 @@ void SkywardSwordFile::SetNew(bool val)
 
 bool SkywardSwordFile::IsModified() const
 {
-    quint32 newCrc = m_checksumEngine->GetCRC32((const quint8*)m_data, 0, 0xFBE0);
+    // HACK: Is this really a hack? :/
+    quint32 newCrc = ((Checksum*)&m_checksumEngine)->GetCRC32((const quint8*)m_data, 0, 0xFBE0);
+
     return !(newCrc == m_fileChecksum);
 }
 

@@ -83,6 +83,7 @@ MainWindow::MainWindow(QWidget *parent) :
     SetupActions();
     SetupConnections();
     UpdateInfo();
+    UpdateTitle();
 }
 
 MainWindow::~MainWindow()
@@ -452,7 +453,7 @@ void MainWindow::UpdateInfo()
     m_ui->birdFeatherChkBox   ->setChecked(m_gameFile->GetMaterial(SkywardSwordFile::BirdFeatherMaterial));
     m_ui->tumbleWeedChkBox    ->setChecked(m_gameFile->GetMaterial(SkywardSwordFile::TumbleWeedMaterial));
     m_ui->lizardTailChkBox    ->setChecked(m_gameFile->GetMaterial(SkywardSwordFile::LizardTailMaterial));
-    m_ui->eldinOreChkBox      ->setChecked(m_gameFile->GetMaterial(SkywardSwordFile::OreMaterial));
+    m_ui->eldinOreChkBox      ->setChecked(m_gameFile->GetMaterial(SkywardSwordFile::EldinOreMaterial));
     m_ui->ancientFlowerChkBox ->setChecked(m_gameFile->GetMaterial(SkywardSwordFile::AncientFlowerMaterial));
     m_ui->amberRelicChkBox    ->setChecked(m_gameFile->GetMaterial(SkywardSwordFile::AmberRelicMaterial));
     m_ui->duskRelicChkBox     ->setChecked(m_gameFile->GetMaterial(SkywardSwordFile::DuskRelicMaterial));
@@ -493,37 +494,37 @@ void MainWindow::UpdateInfo()
     m_ui->eldinRollerSpinBox->setEnabled(m_ui->eldinRollerChkBox->isChecked());
 
     // Materials
-    m_ui->hornetLarvaeSpinBox    ->setValue(m_gameFile->GetQuantity(true, 0xA42));
+    m_ui->hornetLarvaeSpinBox    ->setValue(m_gameFile->GetMaterialQuantity(SkywardSwordFile::HornetLarvaeMaterial));
     m_ui->hornetLarvaeSpinBox    ->setEnabled(m_ui->hornetLarvaeChkBox->isChecked());
-    m_ui->birdFeatherSpinBox     ->setValue(m_gameFile->GetQuantity(false, 0xA42));
+    m_ui->birdFeatherSpinBox     ->setValue(m_gameFile->GetMaterialQuantity(SkywardSwordFile::BirdFeatherMaterial));
     m_ui->birdFeatherSpinBox     ->setEnabled(m_ui->birdFeatherChkBox->isChecked());
-    m_ui->tumbleWeedSpinBox      ->setValue(m_gameFile->GetQuantity(true, 0xA40));
+    m_ui->tumbleWeedSpinBox      ->setValue(m_gameFile->GetMaterialQuantity(SkywardSwordFile::TumbleWeedMaterial));
     m_ui->tumbleWeedSpinBox      ->setEnabled(m_ui->tumbleWeedChkBox->isChecked());
-    m_ui->lizardTailSpinBox      ->setValue(m_gameFile->GetQuantity(false, 0xA40));
+    m_ui->lizardTailSpinBox      ->setValue(m_gameFile->GetMaterialQuantity(SkywardSwordFile::LizardTailMaterial));
     m_ui->lizardTailSpinBox      ->setEnabled(m_ui->lizardTailChkBox->isChecked());
-    m_ui->eldinOreSpinBox        ->setValue(m_gameFile->GetQuantity(true, 0xA3E));
+    m_ui->eldinOreSpinBox        ->setValue(m_gameFile->GetMaterialQuantity(SkywardSwordFile::EldinOreMaterial));
     m_ui->eldinOreSpinBox        ->setEnabled(m_ui->eldinOreChkBox->isChecked());
-    m_ui->ancientFlowerSpinBox   ->setValue(m_gameFile->GetQuantity(false, 0xA3E));
+    m_ui->ancientFlowerSpinBox   ->setValue(m_gameFile->GetMaterialQuantity(SkywardSwordFile::AncientFlowerMaterial));
     m_ui->ancientFlowerSpinBox   ->setEnabled(m_ui->ancientFlowerChkBox->isChecked());
-    m_ui->amberRelicSpinBox      ->setValue(m_gameFile->GetQuantity(true, 0xA3C));
+    m_ui->amberRelicSpinBox      ->setValue(m_gameFile->GetMaterialQuantity(SkywardSwordFile::AmberRelicMaterial));
     m_ui->amberRelicSpinBox      ->setEnabled(m_ui->amberRelicChkBox->isChecked());
-    m_ui->duskRelicSpinBox       ->setValue(m_gameFile->GetQuantity(false, 0xA3C));
+    m_ui->duskRelicSpinBox       ->setValue(m_gameFile->GetMaterialQuantity(SkywardSwordFile::DuskRelicMaterial));
     m_ui->duskRelicSpinBox       ->setEnabled(m_ui->duskRelicChkBox->isChecked());
-    m_ui->jellyBlobSpinBox       ->setValue(m_gameFile->GetQuantity(true, 0xA3A));
+    m_ui->jellyBlobSpinBox       ->setValue(m_gameFile->GetMaterialQuantity(SkywardSwordFile::JellyBlobMaterial));
     m_ui->jellyBlobSpinBox       ->setEnabled(m_ui->jellyBlobChkBox->isChecked());
-    m_ui->monsterClawSpinBox     ->setValue(m_gameFile->GetQuantity(false, 0xA3A));
+    m_ui->monsterClawSpinBox     ->setValue(m_gameFile->GetMaterialQuantity(SkywardSwordFile::MonsterClawMaterial));
     m_ui->monsterClawSpinBox     ->setEnabled(m_ui->monsterClawChkBox->isChecked());
-    m_ui->monsterHornSpinBox     ->setValue(m_gameFile->GetQuantity(true, 0xA38));
+    m_ui->monsterHornSpinBox     ->setValue(m_gameFile->GetMaterialQuantity(SkywardSwordFile::MonsterHornMaterial));
     m_ui->monsterHornSpinBox     ->setEnabled(m_ui->monsterHornChkBox->isChecked());
-    m_ui->decoSkullSpinBox       ->setValue(m_gameFile->GetQuantity(false, 0xA38));
+    m_ui->decoSkullSpinBox       ->setValue(m_gameFile->GetMaterialQuantity(SkywardSwordFile::OrnamentalSkullMaterial));
     m_ui->decoSkullSpinBox       ->setEnabled(m_ui->decoSkullChkBox->isChecked());
-    m_ui->evilCrystalSpinBox     ->setValue(m_gameFile->GetQuantity(true, 0xA36));
+    m_ui->evilCrystalSpinBox     ->setValue(m_gameFile->GetMaterialQuantity(SkywardSwordFile::EvilCrystalMaterial));
     m_ui->evilCrystalSpinBox     ->setEnabled(m_ui->evilCrystalChkBox->isChecked());
-    m_ui->blueBirdFeatherSpinBox ->setValue(m_gameFile->GetQuantity(false, 0xA36));
+    m_ui->blueBirdFeatherSpinBox ->setValue(m_gameFile->GetMaterialQuantity(SkywardSwordFile::BlueBirdFeatherMaterial));
     m_ui->blueBirdFeatherSpinBox ->setEnabled(m_ui->blueBirdFeatherChkBox->isChecked());
-    m_ui->goldenSkullSpinBox     ->setValue(m_gameFile->GetQuantity(true, 0xA34));
+    m_ui->goldenSkullSpinBox     ->setValue(m_gameFile->GetMaterialQuantity(SkywardSwordFile::GoldenSkullMaterial));
     m_ui->goldenSkullSpinBox     ->setEnabled(m_ui->goldenSkullChkBox->isChecked());
-    m_ui->goddessPlumeSpinBox    ->setValue(m_gameFile->GetQuantity(false, 0xA34));
+    m_ui->goddessPlumeSpinBox    ->setValue(m_gameFile->GetMaterialQuantity(SkywardSwordFile::GoddessPlumeMaterial));
     m_ui->goddessPlumeSpinBox    ->setEnabled(m_ui->goddessPlumeChkBox->isChecked());
 
     m_ui->gratitudeCrystalSpinBox->setValue(m_gameFile->GetGratitudeCrystalAmount());
@@ -553,91 +554,91 @@ void MainWindow::onValueChanged()
     m_gameFile->SetRoomID((uint)m_ui->roomIDSpinBox->value());
     m_gameFile->SetRupees((short)m_ui->rupeeSpinBox->value());
     // Swords
-    m_gameFile->SetSword(SkywardSwordFile::PracticeSword,m_ui->practiceSwdChkBox->isChecked());
-    m_gameFile->SetSword(SkywardSwordFile::GoddessSword, m_ui->goddessSwdChkBox->isChecked());
-    m_gameFile->SetSword(SkywardSwordFile::LongSword, m_ui->longSwdChkBox->isChecked());
-    m_gameFile->SetSword(SkywardSwordFile::WhiteSword, m_ui->whiteSwdChkBox->isChecked());
-    m_gameFile->SetSword(SkywardSwordFile::MasterSword, m_ui->masterSwdChkBox->isChecked());
-    m_gameFile->SetSword(SkywardSwordFile::TrueMasterSword, m_ui->trueMasterSwdChkBox->isChecked());
+    m_gameFile->SetSword(SkywardSwordFile::PracticeSword,  m_ui->practiceSwdChkBox->isChecked());
+    m_gameFile->SetSword(SkywardSwordFile::GoddessSword,   m_ui->goddessSwdChkBox->isChecked());
+    m_gameFile->SetSword(SkywardSwordFile::LongSword,      m_ui->longSwdChkBox->isChecked());
+    m_gameFile->SetSword(SkywardSwordFile::WhiteSword,     m_ui->whiteSwdChkBox->isChecked());
+    m_gameFile->SetSword(SkywardSwordFile::MasterSword,    m_ui->masterSwdChkBox->isChecked());
+    m_gameFile->SetSword(SkywardSwordFile::TrueMasterSword,m_ui->trueMasterSwdChkBox->isChecked());
     // Weapons
-    m_gameFile->SetEquipment(SkywardSwordFile::SlingshotWeapon, m_ui->slingShotChkBox->isChecked());
-    m_gameFile->SetEquipment(SkywardSwordFile::ScattershotWeapon, m_ui->scatterShotChkBox->isChecked());
-    m_gameFile->SetEquipment(SkywardSwordFile::BugnetWeapon, m_ui->bugNetChkBox->isChecked());
-    m_gameFile->SetEquipment(SkywardSwordFile::BigBugnetWeapon, m_ui->bigBugNetChkBox->isChecked());
-    m_gameFile->SetEquipment(SkywardSwordFile::BeetleWeapon, m_ui->beetleChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::SlingshotWeapon,  m_ui->slingShotChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::ScattershotWeapon,m_ui->scatterShotChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::BugnetWeapon,     m_ui->bugNetChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::BigBugnetWeapon,  m_ui->bigBugNetChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::BeetleWeapon,     m_ui->beetleChkBox->isChecked());
     m_gameFile->SetEquipment(SkywardSwordFile::HookBeetleWeapon, m_ui->hookBeetleChkBox->isChecked());
-    m_gameFile->SetEquipment(SkywardSwordFile::QuickBeetleWeapon, m_ui->quickBeetleChkBox->isChecked());
-    m_gameFile->SetEquipment(SkywardSwordFile::ToughBeetleWeapon, m_ui->toughBeetleChkBox->isChecked());
-    m_gameFile->SetEquipment(SkywardSwordFile::BombWeapon, m_ui->bombChkBox->isChecked());
-    m_gameFile->SetEquipment(SkywardSwordFile::GustBellowsWeapon, m_ui->gustBellowsChkBox->isChecked());
-    m_gameFile->SetEquipment(SkywardSwordFile::WhipWeapon, m_ui->whipChkBox->isChecked());
-    m_gameFile->SetEquipment(SkywardSwordFile::ClawshotWeapon, m_ui->clawShotChkBox->isChecked());
-    m_gameFile->SetEquipment(SkywardSwordFile::BowWeapon, m_ui->bowChkBox->isChecked());
-    m_gameFile->SetEquipment(SkywardSwordFile::IronBowWeapon, m_ui->ironBowChkBox->isChecked());
-    m_gameFile->SetEquipment(SkywardSwordFile::SacredBowWeapon, m_ui->sacredBowChkBox->isChecked());
-    m_gameFile->SetEquipment(SkywardSwordFile::HarpEquipment, m_ui->harpChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::QuickBeetleWeapon,m_ui->quickBeetleChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::ToughBeetleWeapon,m_ui->toughBeetleChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::BombWeapon,       m_ui->bombChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::GustBellowsWeapon,m_ui->gustBellowsChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::WhipWeapon,       m_ui->whipChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::ClawshotWeapon,   m_ui->clawShotChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::BowWeapon,        m_ui->bowChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::IronBowWeapon,    m_ui->ironBowChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::SacredBowWeapon,  m_ui->sacredBowChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::HarpEquipment,    m_ui->harpChkBox->isChecked());
     // Bugs
-    m_gameFile->SetBug(SkywardSwordFile::HornetBug,    m_ui->hornetChkBox->isChecked());
-    m_gameFile->SetBug(SkywardSwordFile::ButterflyBug, m_ui->butterflyChkBox->isChecked());
-    m_gameFile->SetBug(SkywardSwordFile::DragonflyBug, m_ui->dragonflyChkBox->isChecked());
-    m_gameFile->SetBug(SkywardSwordFile::FireflyBug, m_ui->fireflyChkBox->isChecked());
-    m_gameFile->SetBug(SkywardSwordFile::RhinoBeetleBug, m_ui->rhinoBeetleChkBox->isChecked());
-    m_gameFile->SetBug(SkywardSwordFile::LadybugBug, m_ui->ladybugChkBox->isChecked());
+    m_gameFile->SetBug(SkywardSwordFile::HornetBug,     m_ui->hornetChkBox->isChecked());
+    m_gameFile->SetBug(SkywardSwordFile::ButterflyBug,  m_ui->butterflyChkBox->isChecked());
+    m_gameFile->SetBug(SkywardSwordFile::DragonflyBug,  m_ui->dragonflyChkBox->isChecked());
+    m_gameFile->SetBug(SkywardSwordFile::FireflyBug,    m_ui->fireflyChkBox->isChecked());
+    m_gameFile->SetBug(SkywardSwordFile::RhinoBeetleBug,m_ui->rhinoBeetleChkBox->isChecked());
+    m_gameFile->SetBug(SkywardSwordFile::LadybugBug,    m_ui->ladybugChkBox->isChecked());
     m_gameFile->SetBug(SkywardSwordFile::SandCicadaBug, m_ui->sandCicadaChkBox->isChecked());
     m_gameFile->SetBug(SkywardSwordFile::StagBeetleBug, m_ui->stagBeetleChkBox->isChecked());
-    m_gameFile->SetBug(SkywardSwordFile::GrasshopperBug, m_ui->grasshopperChkBox->isChecked());
-    m_gameFile->SetBug(SkywardSwordFile::MantisBug, m_ui->mantisChkBox->isChecked());
-    m_gameFile->SetBug(SkywardSwordFile::AntBug, m_ui->antChkBox->isChecked());
-    m_gameFile->SetBug(SkywardSwordFile::RollerBug, m_ui->eldinRollerChkBox->isChecked());
+    m_gameFile->SetBug(SkywardSwordFile::GrasshopperBug,m_ui->grasshopperChkBox->isChecked());
+    m_gameFile->SetBug(SkywardSwordFile::MantisBug,     m_ui->mantisChkBox->isChecked());
+    m_gameFile->SetBug(SkywardSwordFile::AntBug,        m_ui->antChkBox->isChecked());
+    m_gameFile->SetBug(SkywardSwordFile::RollerBug,     m_ui->eldinRollerChkBox->isChecked());
     // Materials
-    m_gameFile->SetMaterial(SkywardSwordFile::HornetLarvaeMaterial, m_ui->hornetLarvaeChkBox->isChecked());
-    m_gameFile->SetMaterial(SkywardSwordFile::BirdFeatherMaterial,  m_ui->birdFeatherChkBox->isChecked());
-    m_gameFile->SetMaterial(SkywardSwordFile::TumbleWeedMaterial,   m_ui->tumbleWeedChkBox->isChecked());
-    m_gameFile->SetMaterial(SkywardSwordFile::LizardTailMaterial,   m_ui->lizardTailChkBox->isChecked());
-    m_gameFile->SetMaterial(SkywardSwordFile::OreMaterial,          m_ui->eldinOreChkBox->isChecked());
-    m_gameFile->SetMaterial(SkywardSwordFile::AncientFlowerMaterial,m_ui->ancientFlowerChkBox->isChecked());
-    m_gameFile->SetMaterial(SkywardSwordFile::AmberRelicMaterial,   m_ui->amberRelicChkBox->isChecked());
-    m_gameFile->SetMaterial(SkywardSwordFile::DuskRelicMaterial,    m_ui->duskRelicChkBox->isChecked());
-    m_gameFile->SetMaterial(SkywardSwordFile::JellyBlobMaterial,    m_ui->jellyBlobChkBox->isChecked());
-    m_gameFile->SetMaterial(SkywardSwordFile::MonsterClawMaterial,  m_ui->monsterClawChkBox->isChecked());
-    m_gameFile->SetMaterial(SkywardSwordFile::MonsterHornMaterial,  m_ui->monsterHornChkBox->isChecked());
-    m_gameFile->SetMaterial(SkywardSwordFile::OrnamentalSkullMaterial, m_ui->decoSkullChkBox->isChecked());
-    m_gameFile->SetMaterial(SkywardSwordFile::EvilCrystalMaterial, m_ui->evilCrystalChkBox->isChecked());
-    m_gameFile->SetMaterial(SkywardSwordFile::BlueBirdFeatherMaterial, m_ui->blueBirdFeatherChkBox->isChecked());
-    m_gameFile->SetMaterial(SkywardSwordFile::GoldenSkullMaterial, m_ui->goldenSkullChkBox->isChecked());
-    m_gameFile->SetMaterial(SkywardSwordFile::GoddessPlumeMaterial, m_ui->goddessPlumeChkBox->isChecked());
+    m_gameFile->SetMaterial(SkywardSwordFile::HornetLarvaeMaterial,   m_ui->hornetLarvaeChkBox->isChecked());
+    m_gameFile->SetMaterial(SkywardSwordFile::BirdFeatherMaterial,    m_ui->birdFeatherChkBox->isChecked());
+    m_gameFile->SetMaterial(SkywardSwordFile::TumbleWeedMaterial,     m_ui->tumbleWeedChkBox->isChecked());
+    m_gameFile->SetMaterial(SkywardSwordFile::LizardTailMaterial,     m_ui->lizardTailChkBox->isChecked());
+    m_gameFile->SetMaterial(SkywardSwordFile::EldinOreMaterial,       m_ui->eldinOreChkBox->isChecked());
+    m_gameFile->SetMaterial(SkywardSwordFile::AncientFlowerMaterial,  m_ui->ancientFlowerChkBox->isChecked());
+    m_gameFile->SetMaterial(SkywardSwordFile::AmberRelicMaterial,     m_ui->amberRelicChkBox->isChecked());
+    m_gameFile->SetMaterial(SkywardSwordFile::DuskRelicMaterial,      m_ui->duskRelicChkBox->isChecked());
+    m_gameFile->SetMaterial(SkywardSwordFile::JellyBlobMaterial,      m_ui->jellyBlobChkBox->isChecked());
+    m_gameFile->SetMaterial(SkywardSwordFile::MonsterClawMaterial,    m_ui->monsterClawChkBox->isChecked());
+    m_gameFile->SetMaterial(SkywardSwordFile::MonsterHornMaterial,    m_ui->monsterHornChkBox->isChecked());
+    m_gameFile->SetMaterial(SkywardSwordFile::OrnamentalSkullMaterial,m_ui->decoSkullChkBox->isChecked());
+    m_gameFile->SetMaterial(SkywardSwordFile::EvilCrystalMaterial,    m_ui->evilCrystalChkBox->isChecked());
+    m_gameFile->SetMaterial(SkywardSwordFile::BlueBirdFeatherMaterial,m_ui->blueBirdFeatherChkBox->isChecked());
+    m_gameFile->SetMaterial(SkywardSwordFile::GoldenSkullMaterial,    m_ui->goldenSkullChkBox->isChecked());
+    m_gameFile->SetMaterial(SkywardSwordFile::GoddessPlumeMaterial,   m_ui->goddessPlumeChkBox->isChecked());
 
     // Amounts
     // Bugs
-    m_gameFile->SetBugQuantity(SkywardSwordFile::HornetBug, m_ui->hornetSpinBox->value());
-    m_gameFile->SetBugQuantity(SkywardSwordFile::ButterflyBug, m_ui->butterflySpinBox->value());
-    m_gameFile->SetBugQuantity(SkywardSwordFile::DragonflyBug, m_ui->dragonflySpinBox->value());
-    m_gameFile->SetBugQuantity(SkywardSwordFile::FireflyBug, m_ui->fireflySpinBox->value());
-    m_gameFile->SetBugQuantity(SkywardSwordFile::RhinoBeetleBug, m_ui->rhinoBeetleSpinBox->value());
-    m_gameFile->SetBugQuantity(SkywardSwordFile::LadybugBug, m_ui->ladybugSpinBox->value());
+    m_gameFile->SetBugQuantity(SkywardSwordFile::HornetBug,     m_ui->hornetSpinBox->value());
+    m_gameFile->SetBugQuantity(SkywardSwordFile::ButterflyBug,  m_ui->butterflySpinBox->value());
+    m_gameFile->SetBugQuantity(SkywardSwordFile::DragonflyBug,  m_ui->dragonflySpinBox->value());
+    m_gameFile->SetBugQuantity(SkywardSwordFile::FireflyBug,    m_ui->fireflySpinBox->value());
+    m_gameFile->SetBugQuantity(SkywardSwordFile::RhinoBeetleBug,m_ui->rhinoBeetleSpinBox->value());
+    m_gameFile->SetBugQuantity(SkywardSwordFile::LadybugBug,    m_ui->ladybugSpinBox->value());
     m_gameFile->SetBugQuantity(SkywardSwordFile::SandCicadaBug, m_ui->sandCicadaSpinBox->value());
     m_gameFile->SetBugQuantity(SkywardSwordFile::StagBeetleBug, m_ui->stagBeetleSpinBox->value());
-    m_gameFile->SetBugQuantity(SkywardSwordFile::GrasshopperBug, m_ui->grasshopperSpinBox->value());
-    m_gameFile->SetBugQuantity(SkywardSwordFile::MantisBug, m_ui->mantisSpinBox->value());
-    m_gameFile->SetBugQuantity(SkywardSwordFile::AntBug, m_ui->antSpinBox->value());
-    m_gameFile->SetBugQuantity(SkywardSwordFile::RollerBug, m_ui->eldinRollerSpinBox->value());
+    m_gameFile->SetBugQuantity(SkywardSwordFile::GrasshopperBug,m_ui->grasshopperSpinBox->value());
+    m_gameFile->SetBugQuantity(SkywardSwordFile::MantisBug,     m_ui->mantisSpinBox->value());
+    m_gameFile->SetBugQuantity(SkywardSwordFile::AntBug,        m_ui->antSpinBox->value());
+    m_gameFile->SetBugQuantity(SkywardSwordFile::RollerBug,     m_ui->eldinRollerSpinBox->value());
     // Materials
-    m_gameFile->SetQuantity(true, 0xA42, m_ui->hornetLarvaeSpinBox->value());
-    m_gameFile->SetQuantity(false, 0xA42, m_ui->birdFeatherSpinBox->value());
-    m_gameFile->SetQuantity(true, 0xA40, m_ui->tumbleWeedSpinBox->value());
-    m_gameFile->SetQuantity(false, 0xA40, m_ui->lizardTailSpinBox->value());
-    m_gameFile->SetQuantity(true, 0xA3E, m_ui->eldinOreSpinBox->value());
-    m_gameFile->SetQuantity(false, 0xA3E, m_ui->ancientFlowerSpinBox->value());
-    m_gameFile->SetQuantity(true, 0xA3C, m_ui->amberRelicSpinBox->value());
-    m_gameFile->SetQuantity(false, 0xA3C, m_ui->duskRelicSpinBox->value());
-    m_gameFile->SetQuantity(true, 0xA3A, m_ui->jellyBlobSpinBox->value());
-    m_gameFile->SetQuantity(false, 0xA3A, m_ui->monsterClawSpinBox->value());
-    m_gameFile->SetQuantity(true, 0xA38, m_ui->monsterHornSpinBox->value());
-    m_gameFile->SetQuantity(false, 0xA38, m_ui->decoSkullSpinBox->value());
-    m_gameFile->SetQuantity(true, 0xA36, m_ui->evilCrystalSpinBox->value());
-    m_gameFile->SetQuantity(false, 0xA36, m_ui->blueBirdFeatherSpinBox->value());
-    m_gameFile->SetQuantity(true, 0xA34, m_ui->goldenSkullSpinBox->value());
-    m_gameFile->SetQuantity(false, 0xA34, m_ui->goddessPlumeSpinBox->value());
+    m_gameFile->SetMaterialQuantity(SkywardSwordFile::HornetLarvaeMaterial,   m_ui->hornetLarvaeSpinBox->value());
+    m_gameFile->SetMaterialQuantity(SkywardSwordFile::BirdFeatherMaterial,    m_ui->birdFeatherSpinBox->value());
+    m_gameFile->SetMaterialQuantity(SkywardSwordFile::TumbleWeedMaterial,     m_ui->tumbleWeedSpinBox->value());
+    m_gameFile->SetMaterialQuantity(SkywardSwordFile::LizardTailMaterial,     m_ui->lizardTailSpinBox->value());
+    m_gameFile->SetMaterialQuantity(SkywardSwordFile::EldinOreMaterial,       m_ui->eldinOreSpinBox->value());
+    m_gameFile->SetMaterialQuantity(SkywardSwordFile::AncientFlowerMaterial,  m_ui->ancientFlowerSpinBox->value());
+    m_gameFile->SetMaterialQuantity(SkywardSwordFile::AmberRelicMaterial,     m_ui->amberRelicSpinBox->value());
+    m_gameFile->SetMaterialQuantity(SkywardSwordFile::DuskRelicMaterial,      m_ui->duskRelicSpinBox->value());
+    m_gameFile->SetMaterialQuantity(SkywardSwordFile::JellyBlobMaterial,      m_ui->jellyBlobSpinBox->value());
+    m_gameFile->SetMaterialQuantity(SkywardSwordFile::MonsterClawMaterial,    m_ui->monsterClawSpinBox->value());
+    m_gameFile->SetMaterialQuantity(SkywardSwordFile::MonsterHornMaterial,    m_ui->monsterHornSpinBox->value());
+    m_gameFile->SetMaterialQuantity(SkywardSwordFile::OrnamentalSkullMaterial,m_ui->decoSkullSpinBox->value());
+    m_gameFile->SetMaterialQuantity(SkywardSwordFile::EvilCrystalMaterial,    m_ui->evilCrystalSpinBox->value());
+    m_gameFile->SetMaterialQuantity(SkywardSwordFile::BlueBirdFeatherMaterial,m_ui->blueBirdFeatherSpinBox->value());
+    m_gameFile->SetMaterialQuantity(SkywardSwordFile::GoldenSkullMaterial,    m_ui->goldenSkullSpinBox->value());
+    m_gameFile->SetMaterialQuantity(SkywardSwordFile::GoddessPlumeMaterial,   m_ui->goddessPlumeSpinBox->value());
 
     m_gameFile->SetGratitudeCrystalAmount(m_ui->gratitudeCrystalSpinBox->value());
     m_gameFile->UpdateChecksum();
@@ -686,6 +687,9 @@ void MainWindow::onOpen()
 
 void MainWindow::onCreateNewGame()
 {
+    if (!m_gameFile)
+        m_gameFile = new SkywardSwordFile();
+
     NewGameDialog* ngd = new NewGameDialog(this, m_curGame, m_gameFile->GetRegion());
     ngd->setWindowTitle("New Adventure...");
     ngd->exec();
@@ -815,7 +819,7 @@ void MainWindow::onClose()
         QString filename = QFileInfo(m_gameFile->GetFilename()).fileName();
         QMessageBox msg(QMessageBox::Information,
                         "File Modified",
-                        QString("The file \"%1\" has been modified.\n Do you wish to save?")
+                        QString(tr("The file \"%1\" has been modified.\n Do you wish to save?"))
                         .arg(filename.isEmpty() ? tr("Untitled") : filename),
                         QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
         int result = msg.exec();
