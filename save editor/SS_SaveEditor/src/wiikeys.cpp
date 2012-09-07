@@ -10,8 +10,8 @@ WiiKeys::WiiKeys() :
     m_ngPriv(NULL),
     m_ngSig(NULL),
     m_macAddr(NULL),
-    m_ngID(NULL),
-    m_ngKeyID(NULL)
+    m_ngID(0),
+    m_ngKeyID(0)
 {
 }
 

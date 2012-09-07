@@ -14,10 +14,14 @@
 // along with WiiKing2 Editor.  If not, see <http://www.gnu.org/licenses/>
 
 #include "skywardswordfile.h"
-#include "WiiQt/savebanner.h"
-#include "WiiQt/savedatabin.h"
+#include "common.h"
+#include "WiiSave.h"
+#include "WiiBanner.h"
+#include "WiiFile.h"
+#include "Exception.hpp"
 #include "wiikeys.h"
 #include "checksum.h"
+#include <QMessageBox>
 
 #include <QtEndian>
 #include <QDateTime>
@@ -25,47 +29,15 @@
 #include <QDir>
 #include <time.h>
 
-float swapFloat(float val)
-{
-#if Q_BYTE_ORDER == Q_LITTLE_ENDIAN
-    float retVal;
-    char* convFloat = (char*) &val;
-    char* retFloat = (char*) &retVal;
-
-    retFloat[0] = convFloat[3];
-    retFloat[1] = convFloat[2];
-    retFloat[2] = convFloat[1];
-    retFloat[3] = convFloat[0];
-
-    return retVal;
-#else
-    return val;
-#endif
-}
-
 // This constructor allows us to create a new save file.
 SkywardSwordFile::SkywardSwordFile(Region region) :
-    m_isDirty(false)
+    m_filename(QString()),
+    m_saveGame(NULL)
 {
     // Gentlemen start your checksum engine!!!
     m_checksumEngine = Checksum();
-    // Need to create a new buffer so we can make our changes.
-    m_data = new char[0xFBE0];
-    // Zero out the buffer, just to make sure we don't have a 'corrupt' file
-    memset(m_data, 0, 0xFBE0);
-    // Set the region to the specified one.
-    SetRegion(region);
-    // The game expects adress 0x001F to be 0x1D so do so.
-    m_data[0x001F] = 0x1D;
 
-    // Now each game needs to marked as "New" or the game will detect them
-    // Why the game uses a non-zero value for new games is beyond me.
-    for (int i = 0; i < 3; i++)
-    {
-        m_game = (IGameFile::Game)i;
-        SetNew(true);
-    }
-    m_game = IGameFile::Game1;
+    CreateEmptyFile(region);
     m_isOpen = true;
     m_bannerImage = QImage();
 }
@@ -75,7 +47,8 @@ SkywardSwordFile::SkywardSwordFile(const QString& filepath, Game game) :
     m_filename(filepath),
     m_game(game),
     m_isOpen(false),
-    m_isDirty(false)
+    m_isDirty(false),
+    m_saveGame(NULL)
 {
     m_bannerImage = QImage();
     m_checksumEngine = Checksum();
@@ -88,40 +61,56 @@ SkywardSwordFile::~SkywardSwordFile()
         delete[] m_data;
         m_data = NULL;
     }
+
+    if (m_saveGame)
+    {
+        delete m_saveGame;
+        m_saveGame = NULL;
+    }
 }
 
 bool SkywardSwordFile::Open(Game game, const QString& filepath)
 {
+    if (m_isOpen)
+        Close();
+
     if (m_game != game)
         m_game = game;
 
-    if (filepath != NULL)
+    if (!filepath.isEmpty())
         m_filename = filepath;
 
-    QFile file(m_filename);
-
-    if (file.open(QIODevice::ReadOnly))
+    if (m_filename.lastIndexOf(".bin") == m_filename.size() - 4)
     {
-        if (file.size() != 0xFBE0)
+       return LoadDataBin(m_filename, game);
+    }
+    else
+    {
+        QFile file(m_filename);
+
+        if (file.open(QIODevice::ReadOnly))
         {
+            if (file.size() != 0xFBE0)
+            {
+                file.close();
+                return false;
+            }
+
+            if (m_data)
+            {
+                delete[] m_data;
+                m_data = NULL;
+            }
+
+            m_data = new char[0xFBE0];
+
+
+            file.read((char*)m_data, 0xFBE0);
+            m_fileChecksum = m_checksumEngine.GetCRC32((unsigned const char*)m_data, 0, 0xFBE0);
             file.close();
-            return false;
+            m_isOpen = true;
+            return true;
         }
-
-        if (m_data)
-        {
-            delete[] m_data;
-            m_data = NULL;
-        }
-
-        m_data = new char[0xFBE0];
-
-
-        file.read((char*)m_data, 0xFBE0);
-        m_fileChecksum = m_checksumEngine.GetCRC32((unsigned const char*)m_data, 0, 0xFBE0);
-        file.close();
-        m_isOpen = true;
-        return true;
     }
 
     return false;
@@ -132,18 +121,18 @@ bool SkywardSwordFile::Save(const QString& filename)
     if (!m_isOpen)
         return false;
 
-    if (filename != NULL)
+    if (!filename.isEmpty())
         m_filename = filename;
 
     if (m_filename.lastIndexOf(".bin") == m_filename.size() - 4)
     {
-#ifdef DEBUG
+//#ifdef DEBUG
         return CreateDataBin();
-#else
+/*#else
             QMessageBox msg(QMessageBox::Warning, "DISABLED", "Data.bin is an experimental feature and support has been disabled in this version");
             msg.exec();
             return false;
-#endif
+#endif*/
     }
 
     QString tmpFilename = m_filename;
@@ -191,8 +180,8 @@ void SkywardSwordFile::CreateNewGame(SkywardSwordFile::Game game)
 {
     if (!m_data)
     {
-        m_data = new char[0xFBE0];
-        memset(m_data, 0, 0xFBE0);
+        // Default to NTSC-U Region
+        CreateEmptyFile(NTSCURegion);
     }
 
     if (m_isOpen == false)
@@ -215,6 +204,27 @@ void SkywardSwordFile::CreateNewGame(SkywardSwordFile::Game game)
     SetPlayerRotation(0.0f, 0.0f, 0.0f);
     SetCameraPosition(DEFAULT_POS_X, DEFAULT_POS_Y, DEFAULT_POS_Z);
     SetCameraRotation(0.0f, 0.0f, 0.0f);
+}
+
+void SkywardSwordFile::CreateEmptyFile(Region region)
+{
+    // Need to create a new buffer so we can make our changes.
+    m_data = new char[0xFBE0];
+    // Zero out the buffer, just to make sure we don't have a 'corrupt' file
+    memset(m_data, 0, 0xFBE0);
+    // Set the region to the specified one.
+    SetRegion(region);
+    // The game expects adress 0x001F to be 0x1D so do so.
+    m_data[0x001F] = 0x1D;
+
+    // Now each game needs to marked as "New" or the game will detect them
+    // Why the game uses a non-zero value for new games is beyond me.
+    for (int i = 0; i < 3; i++)
+    {
+        m_game = (IGameFile::Game)i;
+        SetNew(true);
+    }
+    m_game = IGameFile::Game1;
 }
 
 void SkywardSwordFile::ExportGame(const QString &filepath, Game game)
@@ -311,6 +321,10 @@ void SkywardSwordFile::Close()
     if (!m_data)
         return;
 
+    if (m_saveGame)
+        delete m_saveGame;
+
+    m_saveGame = NULL;
     delete[] m_data;
     m_data = NULL;
     m_isOpen = false;
@@ -1081,6 +1095,21 @@ void SkywardSwordFile::SetCurrentRoom(const QString& map) // Not sure about this
     WriteNullTermString(map, GetGameOffset() + 0x535c);
 }
 
+quint8* SkywardSwordFile::GetSkipData() const
+{
+    if (!m_data)
+        return NULL;
+    quint8* skip = new quint8[0x80];
+    memcpy(skip, (m_data + 0x20 + (0x53BC * 3)), 0x80);
+
+    return skip;
+}
+
+void SkywardSwordFile::SetSkipData(const quint8 *data)
+{
+    memcpy((m_data + 0x20 + (0x53BC * 3)), data, 0x80);
+}
+
 uint SkywardSwordFile::GetChecksum() const
 {
     if (!m_data)
@@ -1137,6 +1166,24 @@ QString SkywardSwordFile::ReadNullTermString(int offset) const
     }
 
     return ret;
+}
+
+void SkywardSwordFile::WriteDataFile(const QString &filepath, char* data, quint64 len)
+{
+    QFileInfo fileInfo("data/" + filepath);
+    if (!fileInfo.exists())
+    {
+        QDir dir;
+        if (!dir.exists(fileInfo.path()))
+            dir.mkdir(fileInfo.path());
+
+        FILE* f = fopen(fileInfo.filePath().toStdString().c_str(), "wb");
+        if (f)
+        {
+            fwrite(data, 1, len, f);
+            fclose(f);
+        }
+    }
 }
 
 void SkywardSwordFile::WriteNullTermString(const QString& val, int offset)
@@ -1233,28 +1280,96 @@ void SkywardSwordFile::SetData(char *data)
 
 bool SkywardSwordFile::LoadDataBin(const QString& filepath, Game game)
 {
-    if (filepath != NULL)
+    if (!filepath.isEmpty())
         m_filename = filepath;
 
-    QFile file(m_filename);
-
-    if (file.open(QIODevice::ReadOnly))
+    try
     {
-        QByteArray data = file.read(file.size());
-        m_dataBin = SaveDataBin(data);
-        m_saveGame = SaveDataBin::StructFromDataBin(data);
-        m_banner = SaveDataBin::GetBanner(data);
-        m_bannerImage = m_banner.BannerImg();
-        char* tmpData =  (char*)DataFromSave(m_saveGame, "/wiiking2.sav").data();
-        FILE* f = fopen("./tmp.sav", "wb");
-        fwrite(tmpData, 1, 0xFBE0, f);
-        fclose(f);
-        if (Open(game, "./tmp.sav"))
+        if (m_saveGame != NULL)
         {
-            m_filename = filepath;
+            delete m_saveGame;
+            m_saveGame = NULL;
+        }
+
+        if (m_data != NULL)
+            delete m_data;
+
+        m_saveGame = new WiiSave(m_filename.toStdString());
+
+        char gameId[5];
+        int tmp = (int)m_saveGame->banner()->gameID() & 0xFFFFFFFF;
+        tmp = qFromBigEndian(tmp);
+        memset(gameId, 0, 5);
+        memcpy(gameId, (char*)&tmp, 4);
+
+        if (tmp == SkywardSwordFile::NTSCURegion || tmp == SkywardSwordFile::NTSCJRegion || tmp == SkywardSwordFile::PALRegion)
+        {
+            m_data = (char*)m_saveGame->getFile("/wiiking2.sav")->data();
+            char permissions = m_saveGame->banner()->permissions();
+            qDebug() << "Banner permissions:";
+            qDebug() << "Group Read: "  << ((permissions & WiiFile::GroupRead) == WiiFile::GroupRead);
+            qDebug() << "Group Write: " << ((permissions & WiiFile::GroupWrite) == WiiFile::GroupWrite);
+            qDebug() << "Owner Read: "  << ((permissions & WiiFile::OwnerRead) == WiiFile::OwnerRead);
+            qDebug() << "Owner Write: " << ((permissions & WiiFile::OwnerWrite) == WiiFile::OwnerWrite);
+            qDebug() << "Other Read: "  << ((permissions & WiiFile::OtherRead) == WiiFile::OtherRead);
+            qDebug() << "Other Write: " << ((permissions & WiiFile::OtherWrite) == WiiFile::OtherWrite);
+            permissions = m_saveGame->getFile("/wiiking2.sav")->permissions();
+            qDebug() << "Wiiking2 permissions:";
+            qDebug() << "Group Read: "  << ((permissions & WiiFile::GroupRead) == WiiFile::GroupRead);
+            qDebug() << "Group Write: " << ((permissions & WiiFile::GroupWrite) == WiiFile::GroupWrite);
+            qDebug() << "Owner Read: "  << ((permissions & WiiFile::OwnerRead) == WiiFile::OwnerRead);
+            qDebug() << "Owner Write: " << ((permissions & WiiFile::OwnerWrite) == WiiFile::OwnerWrite);
+            qDebug() << "Other Read: "  << ((permissions & WiiFile::OtherRead) == WiiFile::OtherRead);
+            qDebug() << "Other Write: " << ((permissions & WiiFile::OtherWrite) == WiiFile::OtherWrite);
+            permissions = m_saveGame->getFile("/skip.dat")->permissions();
+            qDebug() << "Skip permissions:";
+            qDebug() << "Group Read: "  << ((permissions & WiiFile::GroupRead) == WiiFile::GroupRead);
+            qDebug() << "Group Write: " << ((permissions & WiiFile::GroupWrite) == WiiFile::GroupWrite);
+            qDebug() << "Owner Read: "  << ((permissions & WiiFile::OwnerRead) == WiiFile::OwnerRead);
+            qDebug() << "Owner Write: " << ((permissions & WiiFile::OwnerWrite) == WiiFile::OwnerWrite);
+            qDebug() << "Other Read: "  << ((permissions & WiiFile::OtherRead) == WiiFile::OtherRead);
+            qDebug() << "Other Write: " << ((permissions & WiiFile::OtherWrite) == WiiFile::OtherWrite);
+
+            WiiImage* image = m_saveGame->banner()->bannerImage();
+            WriteDataFile(QString("%1/banner.tpl").arg(gameId), (char*)image->data(), 192*64*2);
+
+            for (uint i = 0; i < m_saveGame->banner()->icons().size(); i++)
+            {
+                WiiImage* icon = (WiiImage*)m_saveGame->banner()->icons()[i];
+                WriteDataFile(QString("%1/icon%2.tpl").arg(gameId).arg(i), (char*)icon->data(), icon->width()*icon->height()*2);
+            }
+            QString str = QString::fromUtf8(m_saveGame->banner()->title().c_str());
+            char tmp[64];
+            memset(tmp, 0, 64);
+            memcpy(tmp, (char*)str.utf16(), str.size()*2);
+            WriteDataFile(QString("%1/title.bin").arg(gameId), tmp, 64);
+            str = QString::fromUtf8(m_saveGame->banner()->subtitle().c_str());
+            memset(tmp, 0, 64);
+            memcpy(tmp, (char*)str.utf16(), str.size()*2);
+            WriteDataFile(QString("%1/subtitle.bin").arg(gameId), tmp, 64);
+
+            UpdateChecksum();
+            m_fileChecksum = m_checksumEngine.GetCRC32((const quint8*)m_data, 0, 0xFBE0);
+            m_game = game;
+            m_isOpen = true;
             return true;
         }
-        return false;
+        else
+        {
+            m_isOpen = false;
+            m_game = IGameFile::GameNone;
+            return false;
+        }
+    }
+    catch (Exception e)
+    {
+        QMessageBox msg(QMessageBox::Warning, "Error loading file", e.getMessage().c_str());
+        msg.exec();
+    }
+    catch (std::string what)
+    {
+        QMessageBox msg(QMessageBox::Warning, "Error loading file", what.c_str());
+        msg.exec();
     }
 
     return false;
@@ -1262,38 +1377,135 @@ bool SkywardSwordFile::LoadDataBin(const QString& filepath, Game game)
 
 bool SkywardSwordFile::CreateDataBin()
 {
-    if (m_saveGame.entries.size() > 0 && m_data)
+    if (m_saveGame != NULL)
     {
-        m_saveGame = DataToSave(m_saveGame, "/wiiking2.sav", QByteArray((const char*)m_data, 0xFBE0));
-
-        QByteArray dataBin = SaveDataBin::DataBinFromSaveStruct(m_saveGame, WiiKeys::GetInstance()->GetNGPriv(), WiiKeys::GetInstance()->GetNGSig(), WiiKeys::GetInstance()->GetMacAddr(), WiiKeys::GetInstance()->GetNGID(), WiiKeys::GetInstance()->GetNGKeyID());
-        foreach (QString s, m_saveGame.entries)
-            qDebug() << s;
-        qDebug() << dataBin.size();
-        FILE* file = fopen(m_filename.toAscii(), "wb");
-        if (file)
+        WiiFile* wiiking2 = m_saveGame->getFile("/wiiking2.sav");
+        wiiking2->setData((unsigned char*)m_data);
+        m_saveGame->saveToFile(m_filename.toStdString(), (u8*)WiiKeys::GetInstance()->GetMacAddr().data(), WiiKeys::GetInstance()->GetNGID(),(u8*)WiiKeys::GetInstance()->GetNGPriv().data(), (u8*)WiiKeys::GetInstance()->GetNGSig().data(), WiiKeys::GetInstance()->GetNGKeyID());
+        m_fileChecksum = m_checksumEngine.GetCRC32((unsigned const char*)m_data, 0, 0xFBE0);
+        return true;
+    }
+    else
+    {
+        m_saveGame = new WiiSave();
+        int region = GetRegion();
+        char gameId[5];
+        memset(gameId, 0, 5);
+        memcpy(gameId, (char*)&region, 4);
+        qDebug() << gameId;
+        QFile banner(":/BannerData/banner.tpl");
+        if (banner.open(QFile::ReadOnly))
         {
-            fwrite(dataBin.data(), 1, dataBin.length(), file);
-            fclose(file);
+            QDataStream dataStream(&banner);
+            char* bannerData = new char[192*168*2];
+            dataStream.readRawData(bannerData, 192*168*2);
+            banner.close();
+            WiiBanner* wiiBanner = NULL;
+
+            wiiBanner = new WiiBanner();
+            wiiBanner->setBannerImage(new WiiImage(192, 64, (quint8*)bannerData));
+            quint64 titleId = 0x00010000;
+            quint64 fullId = ((quint64)region << 32)  | qToBigEndian(titleId) >> 32;
+            wiiBanner->setGameID(qFromBigEndian(fullId));
+
+            QFile icon(":/BannerData/icon.tpl");
+            if (icon.open(QFile::ReadOnly))
+            {
+                QDataStream dataStream(&icon);
+                quint8* iconData = new quint8[48*48*2];
+                dataStream.readRawData((char*)iconData, 192*168*2);
+                icon.close();
+                wiiBanner->addIcon(new WiiImage(48, 48, iconData));
+            }
+            else
+            {
+                delete wiiBanner;
+                wiiBanner = NULL;
+                delete m_saveGame;
+                m_saveGame = NULL;
+                return false;
+            }
+
+            QFile title(QString(":/BannerData/%1/title.bin").arg(gameId));
+            if (title.open(QFile::ReadOnly))
+            {
+                QString titleString = QString::fromUtf16((ushort*)title.readAll().data());
+                wiiBanner->setTitle(titleString.toUtf8().data());
+                title.close();
+            }
+            else
+            {
+                delete wiiBanner;
+                wiiBanner = NULL;
+                delete m_saveGame;
+                m_saveGame = NULL;
+                return false;
+            }
+
+            title.setFileName(QString(":/BannerData/%1/subtitle.bin").arg(gameId));
+            if (title.open(QFile::ReadOnly))
+            {
+                QString titleString = QString::fromUtf16((ushort*)title.readAll().data());
+                wiiBanner->setSubtitle(titleString.toUtf8().data());
+                title.close();
+            }
+            else
+            {
+                delete wiiBanner;
+                wiiBanner = NULL;
+                delete m_saveGame;
+                m_saveGame = NULL;
+                return false;
+            }
+
+            wiiBanner->setPermissions(WiiFile::GroupRW | WiiFile::OwnerRW);
+            wiiBanner->setAnimationSpeed(0); // no animations
+            m_saveGame->setBanner(wiiBanner);
+            m_saveGame->addFile("/wiiking2.sav", new WiiFile("wiiking2.sav", WiiFile::GroupRW | WiiFile::OwnerRW, (quint8*)m_data, 0xFBE0));
+            m_saveGame->addFile("/skip.dat", new WiiFile("skip.dat", WiiFile::GroupRW | WiiFile::OwnerRW, GetSkipData(), 0x80));
+            m_saveGame->saveToFile(m_filename.toStdString(), (u8*)WiiKeys::GetInstance()->GetMacAddr().data(), WiiKeys::GetInstance()->GetNGID(),(u8*)WiiKeys::GetInstance()->GetNGPriv().data(), (u8*)WiiKeys::GetInstance()->GetNGSig().data(), WiiKeys::GetInstance()->GetNGKeyID());
+            m_fileChecksum = m_checksumEngine.GetCRC32((unsigned const char*)m_data, 0, 0xFBE0);
+
             return true;
         }
-        return false;
+        else
+        {
+            delete m_saveGame;
+            m_saveGame = NULL;
+            return false;
+        }
     }
-
     return false;
 }
 
 QString SkywardSwordFile::GetBannerTitle() const
 {
-    if (m_saveGame.entries.length() > 0)
+    if (m_saveGame != NULL)
     {
-        return m_banner.Title();
+        return QString::fromUtf8(m_saveGame->banner()->title().c_str());
     }
     return QString("");
 }
-const QImage& SkywardSwordFile::GetBanner() const
+
+const QIcon SkywardSwordFile::GetIcon() const
 {
-    return m_bannerImage;
+    if (!m_saveGame)
+        return QIcon();
+
+    WiiImage* icon = m_saveGame->banner()->getIcon(0);
+    if (!icon)
+        return QIcon();
+    QIcon iconImage(QPixmap::fromImage(ConvertTextureToImage(QByteArray((char*)icon->data(), icon->width()*icon->height()*2), icon->width(), icon->height())));
+    return iconImage;
+}
+
+const QPixmap SkywardSwordFile::GetBanner() const
+{
+    if (!m_saveGame)
+        return QPixmap();
+
+    WiiImage* banner = m_saveGame->banner()->bannerImage();
+    return QPixmap::fromImage(ConvertTextureToImage(QByteArray((char*)banner->data(), banner->width()*banner->height()*2), banner->width(), banner->height()));
 }
 
 // To support MSVC I have placed these here, why can't Microsoft follow real ANSI Standards? <.<

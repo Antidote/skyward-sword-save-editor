@@ -15,6 +15,8 @@ public:
         GameCount
     };
 
+    virtual ~IGameFile(){};
+
     virtual bool IsOpen() const=0;
     virtual void Close() = 0;
     virtual void Reload(Game game) = 0;

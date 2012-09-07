@@ -12,6 +12,7 @@ public:
 protected:
     QValidator::State validate(QString &input, int &pos) const
     {
+        Q_UNUSED(pos)
         input = input.toUpper();
         // match against needed regexp
         QRegExp rx("(?:[0-9a-fA-F]{2})*[0-9a-fA-F]{0,2}");

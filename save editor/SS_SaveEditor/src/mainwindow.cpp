@@ -22,6 +22,7 @@
 #include <QFileDialog>
 #include <QApplication>
 #include <QDropEvent>
+#include <QSettings>
 #include <QUrl>
 #include <QDebug>
 
@@ -105,6 +106,16 @@ void MainWindow::dragEnterEvent(QDragEnterEvent *event)
     {
         event->acceptProposedAction();
         statusBar()->showMessage(QString("File Valid (%1)").arg((region == SkywardSwordFile::NTSCURegion ? "NTSC-U" : region == SkywardSwordFile::NTSCJRegion ? "NTSC-J" : "PAL")));
+    }
+
+    if (event->mimeData()->urls().count() == 1)
+    {
+        QUrl url = event->mimeData()->urls()[0];
+        if (url.toLocalFile().indexOf(".bin") == url.toLocalFile().length() - 4)
+        {
+            event->acceptProposedAction();
+            statusBar()->showMessage(QString("File Valid (Wii Save file)"));
+        }
     }
 }
 
@@ -652,10 +663,10 @@ void MainWindow::onOpen()
     QString filename = fileDialog.getOpenFileName(this, tr("Open Skyward Sword Save..."), dir, tr("Skyward Sword Save Files (*.sav);;SaveData (*.bin)"));
     if (!filename.isEmpty())
     {
-        if (m_gameFile == NULL)
-            m_gameFile = new SkywardSwordFile();
-        else
-            m_gameFile->Close();
+        if (m_gameFile)
+            delete m_gameFile;
+
+        m_gameFile = new SkywardSwordFile;
 
         if (filename.lastIndexOf(".bin") == filename.size() - 4)
         {
@@ -690,13 +701,13 @@ void MainWindow::onCreateNewGame()
     if (!m_gameFile)
         m_gameFile = new SkywardSwordFile();
 
-    NewGameDialog* ngd = new NewGameDialog(this, m_curGame, m_gameFile->GetRegion());
+    NewGameDialog* ngd = new NewGameDialog(this, m_curGame);
     ngd->setWindowTitle("New Adventure...");
     ngd->exec();
     if (ngd->result() == NewGameDialog::Accepted)
     {
-        SkywardSwordFile* tmpFile = ngd->gameFile(m_gameFile);
-        m_gameFile = tmpFile;
+        ngd->gameFile(*m_gameFile);
+
         UpdateInfo();
         UpdateTitle();
     }
@@ -726,9 +737,18 @@ void MainWindow::onSave()
     }
 
     if(m_gameFile->Save())
+    {
         m_ui->statusBar->showMessage(tr("Save successful!"));
+    }
     else
+    {
+        if (!m_oldFilename.isEmpty())
+        {
+            m_gameFile->SetFilename(m_oldFilename);
+            m_oldFilename = "";
+        }
         m_ui->statusBar->showMessage(tr("Unable to save file"));
+    }
 
     m_gameFile->UpdateChecksum();
     UpdateTitle();
@@ -739,6 +759,7 @@ void MainWindow::onSaveAs()
     if (!m_gameFile)
         return;
 
+    m_oldFilename = m_gameFile->GetFilename();
     m_gameFile->SetFilename(QString(tr("")));
     onSave();
 }

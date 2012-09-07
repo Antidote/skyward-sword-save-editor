@@ -82,7 +82,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="playerTab">
        <attribute name="title">
@@ -2545,7 +2545,7 @@
          <rect>
           <x>270</x>
           <y>290</y>
-          <width>93</width>
+          <width>95</width>
           <height>106</height>
          </rect>
         </property>
@@ -2590,7 +2590,7 @@
      <x>0</x>
      <y>0</y>
      <width>750</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
