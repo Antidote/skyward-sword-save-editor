@@ -70,6 +70,7 @@ private:
     void SetupActions();
     void SetupConnections();
     Ui::MainWindow*           m_ui;
+    QString                   m_oldFilename;
     SkywardSwordFile*         m_gameFile;
     SkywardSwordFile::Game    m_curGame;
     bool                      m_isUpdating;

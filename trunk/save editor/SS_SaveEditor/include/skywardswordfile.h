@@ -19,14 +19,13 @@
 #include <QFile>
 #include "igamefile.h"
 #include <QImage>
-#include "WiiQt/savedatabin.h"
-#include "WiiQt/savebanner.h"
+#include <QIcon>
+#include "WiiSave.h"
+#include "WiiBanner.h"
 #include "checksum.h"
 
 class QDateTime;
-struct SaveGame;
-
-
+class WiiSave;
 
 #define TICKS_PER_SECOND 60750000
 #define SECONDS_TO_2000  946684800
@@ -59,88 +58,89 @@ public:
 
     enum Region
     {
-                 NTSCURegion = 0x45554F53,
-                 NTSCJRegion = 0x4A554F53,
-                 PALRegion   = 0x50554F53
+         NTSCURegion = 0x45554F53,
+         NTSCJRegion = 0x4A554F53,
+         PALRegion   = 0x50554F53
     };
     enum Bug
     {
-                 HornetBug,
-                 ButterflyBug,
-                 DragonflyBug,
-                 FireflyBug,
-                 RhinoBeetleBug,
-                 LadybugBug, // o.o that looks weird
-                 SandCicadaBug,
-                 StagBeetleBug,
-                 GrasshopperBug,
-                 MantisBug,
-                 AntBug,
-                 RollerBug
+         HornetBug,
+         ButterflyBug,
+         DragonflyBug,
+         FireflyBug,
+         RhinoBeetleBug,
+         LadybugBug, // o.o that looks weird
+         SandCicadaBug,
+         StagBeetleBug,
+         GrasshopperBug,
+         MantisBug,
+         AntBug,
+         RollerBug
     };
 
     enum WeaponEquipment
     {
-                 SlingshotWeapon,
-                 ScattershotWeapon,
-                 BugnetWeapon,
-                 BigBugnetWeapon,
-                 BeetleWeapon,
-                 HookBeetleWeapon,
-                 QuickBeetleWeapon,
-                 ToughBeetleWeapon,
-                 BombWeapon,
-                 GustBellowsWeapon,
-                 WhipWeapon,
-                 ClawshotWeapon,
-                 BowWeapon,
-                 IronBowWeapon,
-                 SacredBowWeapon,
-                 HarpEquipment,
-                 SailClothEquipment,
-                 DiggingMitts,
-                 MoleMittsEquipment,
-                 FireShieldEaringsEquipment,
-                 DragonScaleEquipment
+     SlingshotWeapon,
+     ScattershotWeapon,
+     BugnetWeapon,
+     BigBugnetWeapon,
+     BeetleWeapon,
+     HookBeetleWeapon,
+     QuickBeetleWeapon,
+     ToughBeetleWeapon,
+     BombWeapon,
+     GustBellowsWeapon,
+     WhipWeapon,
+     ClawshotWeapon,
+     BowWeapon,
+     IronBowWeapon,
+     SacredBowWeapon,
+     HarpEquipment,
+     SailClothEquipment,
+     DiggingMitts,
+     MoleMittsEquipment,
+     FireShieldEaringsEquipment,
+     DragonScaleEquipment
     };
 
     enum Material
     {
-                 HornetLarvaeMaterial,
-                 BirdFeatherMaterial,
-                 TumbleWeedMaterial,
-                 LizardTailMaterial,
-                 EldinOreMaterial,
-                 AncientFlowerMaterial,
-                 AmberRelicMaterial,
-                 DuskRelicMaterial,
-                 JellyBlobMaterial,
-                 MonsterClawMaterial,
-                 MonsterHornMaterial,
-                 OrnamentalSkullMaterial,
-                 EvilCrystalMaterial,
-                 BlueBirdFeatherMaterial,
-                 GoldenSkullMaterial,
-                 GoddessPlumeMaterial
+         HornetLarvaeMaterial,
+         BirdFeatherMaterial,
+         TumbleWeedMaterial,
+         LizardTailMaterial,
+         EldinOreMaterial,
+         AncientFlowerMaterial,
+         AmberRelicMaterial,
+         DuskRelicMaterial,
+         JellyBlobMaterial,
+         MonsterClawMaterial,
+         MonsterHornMaterial,
+         OrnamentalSkullMaterial,
+         EvilCrystalMaterial,
+         BlueBirdFeatherMaterial,
+         GoldenSkullMaterial,
+         GoddessPlumeMaterial
     };
 
     enum Sword
     {
-                 PracticeSword,
-                 GoddessSword,
-                 LongSword,
-                 WhiteSword,
-                 MasterSword,
-                 TrueMasterSword
+         PracticeSword,
+         GoddessSword,
+         LongSword,
+         WhiteSword,
+         MasterSword,
+         TrueMasterSword
     };
 
     SkywardSwordFile(Region region);
     SkywardSwordFile(const QString& filepath = NULL, Game game = Game1);
     ~SkywardSwordFile();
 
-    bool Save(const QString& filename = NULL);
-    bool Open(Game game = GameNone, const QString& filepath=NULL);
+    bool Save(const QString& filepath = "");
+    bool Open(Game game = GameNone, const QString& filepath="");
     void CreateNewGame(Game game);
+    void CreateEmptyFile(Region region);
     void ExportGame(const QString& filepath, Game game = GameNone);
     void ExportGame(const QString& filepath, Game game = GameNone, Region region = NTSCURegion);
     void DeleteGame(Game game = GameNone);
@@ -220,15 +220,18 @@ public:
     void      SetCurrentArea(const QString& map);
     QString   GetCurrentRoom() const;
     void      SetCurrentRoom(const QString& map);
+    quint8*   GetSkipData() const;
+    void      SetSkipData(const quint8* data);
 
     bool      IsNew() const;
     void      SetNew(bool val);
 
     void      SetData(char* data);
-    bool      LoadDataBin(const QString& filepath = NULL, Game game = Game1);
+    bool      LoadDataBin(const QString& filepath = "", Game game = Game1);
     bool      CreateDataBin();
     QString   GetBannerTitle() const;
-    const QImage& GetBanner() const;
+    const QPixmap GetBanner() const;
+    const QIcon  GetIcon() const;
     static bool IsValidFile(const QString& filepath, Region* region);
 
 private:
@@ -236,6 +239,7 @@ private:
     void    SetQuantity(bool isRight, int offset, quint32 val);
     uint    GetGameOffset() const;
     QString ReadNullTermString(int offset) const;
+    void    WriteDataFile(const QString& filepath, char* data, quint64 len);
     void    WriteNullTermString(const QString& val, int offset);
     bool    GetFlag(quint32 offset, quint32 flag) const;
     void    SetFlag(quint32 offset, quint32 flag, bool val);
@@ -246,9 +250,7 @@ private:
     bool    m_isOpen;
     bool    m_isDirty;
     quint32 m_fileChecksum; // The checksum of the entire file.
-    SaveGame m_saveGame;
-    SaveDataBin m_dataBin;
-    SaveBanner  m_banner;
+    WiiSave* m_saveGame;
     Checksum  m_checksumEngine;
 };
 

@@ -78,8 +78,7 @@ GameOff + 0x0A52 - unk
 GameOff + 0x0A54 - unk
 GameOff + 0x0A56 - unk
 GameOff + 0x0A5E - Rupees
-GameOff + 0x0A60 - Slingshot ammo. (no it's not a short :P)
-GameOff + 0x0A61 - Slingshot ammo. 
+GameOff + 0x0A60 - Slingshot ammo
 GameOff + 0x1A66 - Dash Intro and Mia Rescued flag (0x08 = dash, 0x50 = mia rescued or them together to complete both);
 GameOff + 0x1A68 - Unknown flag seems to deal with Horwell and the skyloft intro scene? o.0
 GameOff + 0x1A69 - Skyloft Flags1 (0x00, 0x10, 0x30 and 0x70 are current known values)

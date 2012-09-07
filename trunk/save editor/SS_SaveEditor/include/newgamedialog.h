@@ -31,13 +31,11 @@ class NewGameDialog : public QDialog
     Q_OBJECT
     
 public:
-    explicit NewGameDialog(QWidget *parent = 0, SkywardSwordFile::Game game = SkywardSwordFile::Game1, SkywardSwordFile::Region region = SkywardSwordFile::NTSCURegion);
+    explicit NewGameDialog(QWidget *parent = 0, SkywardSwordFile::Game game = SkywardSwordFile::Game1);
     ~NewGameDialog();
 
-    SkywardSwordFile* gameFile(SkywardSwordFile* gameFile = NULL);
+    void gameFile(SkywardSwordFile& gameFile);
 
-private slots:
-    void onRegionChanged(QAbstractButton*);
 private:
     Ui::NewGameDialog* m_ui;
     SkywardSwordFile::Game        m_game;

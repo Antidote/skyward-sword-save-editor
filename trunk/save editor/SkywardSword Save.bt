@@ -234,9 +234,16 @@ struct GameData
 
 struct
 {
-    char magic[4]; // SOUE
-    uchar padding[0x1B]; // 0x00
-    uchar headerSize; // header size - 2
+    union
+    {
+        struct
+        {
+            char magic[4]; // SOUE
+            uchar padding[0x18]; // 0x00
+            int   headerSize <format = hex>; // header size - 1
+        }headerData;
+        char data[headerData.headerSize - 1];
+    }header;
     local int i;
     for (i = 0; i < 3; i++)
     {

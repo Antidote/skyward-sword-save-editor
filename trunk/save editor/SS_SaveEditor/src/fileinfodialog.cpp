@@ -38,8 +38,11 @@ FileInfoDialog::FileInfoDialog(QWidget *parent, SkywardSwordFile& game) :
     {
         if (!m_gameFile->GetBanner().isNull())
         {
-            m_ui->bannerImg->setPixmap(QPixmap::fromImage(m_gameFile->GetBanner()));
+            QPixmap pixmap = m_gameFile->GetBanner();
+            m_ui->bannerImg->setPixmap(pixmap);
             this->setWindowTitle(m_gameFile->GetBannerTitle());
+
+            this->setWindowIcon(m_gameFile->GetIcon());
         }
         switch(m_gameFile->GetRegion())
         {
@@ -83,10 +86,9 @@ FileInfoDialog::~FileInfoDialog()
     delete m_ui;
 }
 
-
 void FileInfoDialog::onRegionChanged(QAbstractButton *)
 {
-    if (m_gameFile == NULL);
+    if (m_gameFile == NULL)
                  return;
 
     if (m_ui->ntscURadioBtn->isChecked())

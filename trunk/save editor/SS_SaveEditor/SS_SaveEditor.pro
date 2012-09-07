@@ -8,7 +8,11 @@ QT += core gui
 
 TARGET = SS_SaveEditor
 TEMPLATE = app
-INCLUDEPATH += include
+INCLUDEPATH += include \
+           ../LibWiiSave/include \
+           ../libzelda/include
+LIBS += -L../LibWiiSave/lib
+
 QMAKE_LFLAGS += -static-libgcc
 SOURCES += \
     src/main.cpp\
@@ -17,17 +21,25 @@ SOURCES += \
     src/aboutdialog.cpp \
     src/fileinfodialog.cpp \
     src/skywardswordfile.cpp \
-    src/WiiQt/tools.cpp \
-    src/WiiQt/savedatabin.cpp \
-    src/WiiQt/savebanner.cpp \
-    src/WiiQt/ec.cpp \
-    src/WiiQt/bn.cpp \
-    src/WiiQt/aes.c \
-    src/WiiQt/sha1.c \
     src/exportquestdialog.cpp \
     src/wiikeys.cpp \
     src/preferencesdialog.cpp \
-    src/checksum.cpp
+    src/checksum.cpp \
+    ../LibWiiSave/src/WiiSave.cpp \
+    ../LibWiiSave/src/WiiFile.cpp \
+    ../LibWiiSave/src/WiiBanner.cpp \
+    ../LibWiiSave/src/utility.cpp \
+    ../LibWiiSave/src/tools.c \
+    ../LibWiiSave/src/sha1.c \
+    ../LibWiiSave/src/md5.c \
+    ../LibWiiSave/src/ec.cpp \
+    ../LibWiiSave/src/bn.cpp \
+    ../LibWiiSave/src/aes.c \
+    ../libzelda/src/Stream.cpp \
+    ../libzelda/src/FileStream.cpp \
+    ../libzelda/src/BinaryWriter.cpp \
+    ../libzelda/src/BinaryReader.cpp \
+    src/common.cpp
 
 HEADERS  += \
     include/mainwindow.h \
@@ -36,17 +48,26 @@ HEADERS  += \
     include/aboutdialog.h \
     include/fileinfodialog.h \
     include/skywardswordfile.h \
-    include/WiiQt/tools.h \
-    include/WiiQt/savedatabin.h \
-    include/WiiQt/savebanner.h \
-    include/WiiQt/ec.h \
-    include/WiiQt/bn.h \
-    include/WiiQt/aes.h \
-    include/WiiQt/sha1.h \
     include/exportquestdialog.h \
     include/wiikeys.h \
     include/preferencesdialog.h \
-    include/checksum.h
+    include/checksum.h \
+    ../LibWiiSave/include/utf8/unchecked.h \
+    ../LibWiiSave/include/utf8/core.h \
+    ../LibWiiSave/include/utf8/checked.h \
+    ../LibWiiSave/include/sha1.h \
+    ../LibWiiSave/include/md5.h \
+    ../LibWiiSave/include/ec.h \
+    ../LibWiiSave/include/bn.h \
+    ../LibWiiSave/include/aes.h \
+    ../LibWiiSave/include/WiiFile.h \
+    ../LibWiiSave/include/WiiBanner.h \
+    ../LibWiiSave/include/utility.h \
+    ../LibWiiSave/include/utf8.h \
+    ../LibWiiSave/include/tools.h \
+    ../LibWiiSave/include/ZException.h \
+    ../LibWiiSave/include/WiiSave.h \
+    src/common.h
 
 FORMS    += \
     forms/mainwindow.ui \
