@@ -464,6 +464,8 @@ void WiiSave::writeBanner()
 
     for (int i = 0; i <= 32; ++i)
     {
+        if (i >= tmp.size())
+            break;
         u16 chr = tmp[i];
         if (chr != 0xFEFF)
             m_writer->writeInt16(chr);
@@ -478,6 +480,9 @@ void WiiSave::writeBanner()
 
     for (u32 i = 0; i < tmp.size(); ++i)
     {
+        if (i >= tmp.size())
+            break;
+
         u16 chr = tmp[i];
         if (chr != 0xFEFF)
             m_writer->writeInt16(chr);

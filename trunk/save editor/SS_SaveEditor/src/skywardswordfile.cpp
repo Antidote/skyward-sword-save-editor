@@ -381,6 +381,30 @@ void SkywardSwordFile::SetRegion(SkywardSwordFile::Region val)
 {
     if (!m_data)
         return;
+
+    if (m_saveGame)
+    {
+        // Set the strings appropriately
+        char gameId[5];
+        memset(gameId, 0, 5);
+        memcpy(gameId, (char*)&val, 4);
+        QFile title(QString(":/BannerData/%1/title.bin").arg(gameId));
+        if (title.open(QFile::ReadOnly))
+        {
+            QString titleString = QString::fromUtf16((ushort*)title.readAll().data());
+            m_saveGame->banner()->setTitle(titleString.toUtf8().data());
+            title.close();
+        }
+
+        title.setFileName(QString(":/BannerData/%1/subtitle.bin").arg(gameId));
+        if (title.open(QFile::ReadOnly))
+        {
+            QString titleString = QString::fromUtf16((ushort*)title.readAll().data());
+            m_saveGame->banner()->setSubtitle(titleString.toUtf8().data());
+            title.close();
+        }
+    }
+
     *(quint32*)(m_data) = val;
 }
 
@@ -1441,13 +1465,61 @@ QString SkywardSwordFile::GetBannerTitle() const
     {
         return QString::fromUtf8(m_saveGame->banner()->title().c_str());
     }
+
+    int region = GetRegion();
+    char gameId[5];
+
+    memset(gameId, 0, 5);
+    memcpy(gameId, (char*)&region, 4);
+    qDebug() << gameId;
+    QFile title(QString(":/BannerData/%1/title.bin").arg(gameId));
+    if (title.open(QFile::ReadOnly))
+    {
+        QString titleString = QString::fromUtf16((ushort*)title.readAll().data() + '\0');
+        title.close();
+        return titleString;
+    }
+    return QString("");
+}
+
+QString SkywardSwordFile::GetBannerSubtitle() const
+{
+    if (m_saveGame != NULL)
+    {
+        return QString::fromUtf8(m_saveGame->banner()->subtitle().c_str());
+    }
+
+    int region = GetRegion();
+    char gameId[5];
+
+    memset(gameId, 0, 5);
+    memcpy(gameId, (char*)&region, 4);
+    QFile subtitle(QString(":/BannerData/%1/subtitle.bin").arg(gameId));
+    if (subtitle.open(QFile::ReadOnly))
+    {
+        QString titleString = QString::fromUtf16((ushort*)subtitle.readAll().data());
+        subtitle.close();
+        return titleString;
+    }
     return QString("");
 }
 
 const QIcon SkywardSwordFile::GetIcon() const
 {
     if (!m_saveGame)
+    {
+        QFile icon(":/BannerData/icon.tpl");
+        if (icon.open(QFile::ReadOnly))
+        {
+            QDataStream dataStream(&icon);
+            char* iconData = new char[48*48*2];
+            dataStream.readRawData(iconData, 48*48*2);
+            icon.close();
+
+            return QIcon(QPixmap::fromImage(ConvertTextureToImage(QByteArray(iconData, 48*48*2), 48, 48)));
+        }
         return QIcon();
+    }
 
     WiiImage* icon = m_saveGame->banner()->getIcon(0);
     if (!icon)
@@ -1459,7 +1531,19 @@ const QIcon SkywardSwordFile::GetIcon() const
 const QPixmap SkywardSwordFile::GetBanner() const
 {
     if (!m_saveGame)
+    {
+        QFile banner(":/BannerData/banner.tpl");
+        if (banner.open(QFile::ReadOnly))
+        {
+            QDataStream dataStream(&banner);
+            char* bannerData = new char[192*168*2];
+            dataStream.readRawData(bannerData, 192*168*2);
+            banner.close();
+
+            return QPixmap::fromImage(ConvertTextureToImage(QByteArray(bannerData, 192*64*2), 192, 64));
+        }
         return QPixmap();
+    }
 
     WiiImage* banner = m_saveGame->banner()->bannerImage();
     return QPixmap::fromImage(ConvertTextureToImage(QByteArray((char*)banner->data(), banner->width()*banner->height()*2), banner->width(), banner->height()));

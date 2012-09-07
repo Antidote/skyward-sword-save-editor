@@ -230,6 +230,7 @@ public:
     bool      LoadDataBin(const QString& filepath = "", Game game = Game1);
     bool      CreateDataBin();
     QString   GetBannerTitle() const;
+    QString   GetBannerSubtitle() const;
     const QPixmap GetBanner() const;
     const QIcon  GetIcon() const;
     static bool IsValidFile(const QString& filepath, Region* region);

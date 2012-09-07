@@ -60,7 +60,7 @@ QToolBar
 QTabWidget::pane
 {
     top: 1px;
-    background-color: rgb(217, 217, 217);
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(217, 217, 217, 255), stop:1 rgba(249, 249, 249, 255));
     border-radius: 4px;
     border: 1px solid rgb(171, 173, 179);
 }
@@ -155,4 +155,20 @@ QStatusBar
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
     padding:4px;
+}
+
+QCheckBox
+{
+        spacing: 0px;
+}
+
+QCheckBox::indicator
+{
+        width:18px;
+    height: 18px;
+}
+
+QSpinBox, QDoubleSpinBox, QLineEdit, QDateTimeEdit
+{
+    background-color: rgba(227, 227, 227, 255);
 }
