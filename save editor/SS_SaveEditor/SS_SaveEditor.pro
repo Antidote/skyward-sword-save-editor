@@ -13,7 +13,6 @@ INCLUDEPATH += include \
            ../libzelda/include
 LIBS += -L../LibWiiSave/lib
 
-QMAKE_LFLAGS += -static-libgcc
 SOURCES += \
     src/main.cpp\
     src/mainwindow.cpp \
@@ -130,6 +129,10 @@ TRANSLATIONS += \
 
 win32{
     RC_FILE = resources/mainicon.rc
+}
+
+CONFIG (release, release|debug){
+
 }
 
 

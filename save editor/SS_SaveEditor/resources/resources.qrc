@@ -110,9 +110,9 @@
         <file alias="SOUE/subtitle.bin">BannerData/SOUE/subtitle.bin</file>
         <file alias="SOUE/title.bin">BannerData/SOUE/title.bin</file>
         <file alias="SOUJ/subtitle.bin">BannerData/SOUJ/subtitle.bin</file>
-        <file alias="/SOUJ/title.bin">BannerData/SOUJ/title.bin</file>
-        <file>BannerData/SOUP/subtitle.bin</file>
-        <file>BannerData/SOUP/title.bin</file>
+        <file alias="SOUJ/title.bin">BannerData/SOUJ/title.bin</file>
+        <file alias="SOUP/subtitle.bin">BannerData/SOUP/subtitle.bin</file>
+        <file alias="SOUP/title.bin">BannerData/SOUP/title.bin</file>
         <file alias="banner.tpl">BannerData/banner.tpl</file>
         <file alias="icon.tpl">BannerData/icon.tpl</file>
     </qresource>

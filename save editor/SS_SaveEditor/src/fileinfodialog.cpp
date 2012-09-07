@@ -36,14 +36,13 @@ FileInfoDialog::FileInfoDialog(QWidget *parent, SkywardSwordFile& game) :
 
     if (m_gameFile != NULL)
     {
-        if (!m_gameFile->GetBanner().isNull())
-        {
-            QPixmap pixmap = m_gameFile->GetBanner();
-            m_ui->bannerImg->setPixmap(pixmap);
-            this->setWindowTitle(m_gameFile->GetBannerTitle());
+        QPixmap pixmap = m_gameFile->GetBanner();
+        m_ui->bannerImg->setPixmap(pixmap);
+        m_ui->titleLbl->setText("Title: " + m_gameFile->GetBannerTitle());
+        m_ui->subtitleLbl->setText("Subtitle: " + m_gameFile->GetBannerSubtitle());
 
-            this->setWindowIcon(m_gameFile->GetIcon());
-        }
+        this->setWindowIcon(m_gameFile->GetIcon());
+
         switch(m_gameFile->GetRegion())
         {
             case SkywardSwordFile::NTSCURegion:
@@ -97,4 +96,7 @@ void FileInfoDialog::onRegionChanged(QAbstractButton *)
                  m_gameFile->SetRegion(SkywardSwordFile::NTSCJRegion);
     else if (m_ui->palRadioBtn->isChecked())
                  m_gameFile->SetRegion(SkywardSwordFile::PALRegion);
+
+    m_ui->titleLbl->setText("Title: " + m_gameFile->GetBannerTitle());
+    m_ui->subtitleLbl->setText("Subtitle: " + m_gameFile->GetBannerSubtitle());
 }
