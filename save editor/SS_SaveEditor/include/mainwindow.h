@@ -21,6 +21,7 @@
 #include <QDateTime>
 #include <QTimer>
 
+
 class QActionGroup;
 class QButtonGroup;
 class QAbstractButton;
@@ -59,6 +60,7 @@ private slots:
     void onFileInfo();
     void onCheck(); // Checks for changes to file and prompts for an update.
     void onPreferences();
+    void onFileChanged(QString);
 
 private:
     void dragEnterEvent(QDragEnterEvent *event);

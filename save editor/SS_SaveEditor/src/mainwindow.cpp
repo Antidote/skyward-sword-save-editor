@@ -51,8 +51,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_ui->setupUi(this);
 
     QSettings settings("WiiKing2", "WiiKing2 Editor");
-
-#ifdef DEBUG
+//#ifdef DEBUG
     m_ui->actionPreferences->setEnabled(true);
     if (settings.allKeys().count() > 0)
     {
@@ -77,10 +76,9 @@ MainWindow::MainWindow(QWidget *parent) :
         else
             qDebug() << "done";
     }
-#else
-    m_ui->actionPreferences->setEnabled(false);
-#endif
-    setWindowFlags(Qt::Window | Qt::WindowMinimizeButtonHint);
+//#else
+ //   m_ui->actionPreferences->setEnabled(false);
+//#endif
     SetupActions();
     SetupConnections();
     UpdateInfo();
@@ -670,13 +668,14 @@ void MainWindow::onOpen()
 
         if (filename.lastIndexOf(".bin") == filename.size() - 4)
         {
-#ifdef DEBUG
-            m_gameFile->LoadDataBin(filename, m_gameFile->GetGame());
-#else
-            QMessageBox msg(QMessageBox::Warning, tr("DISABLED"), tr("Data.bin is an experimental feature and support has been disabled in this version"));
-            msg.exec();
-            return;
-#endif
+//#ifdef DEBUG
+            if (!m_gameFile->LoadDataBin(filename, m_gameFile->GetGame()))
+                return;
+//#else
+//            QMessageBox msg(QMessageBox::Warning, tr("DISABLED"), tr("Data.bin is an experimental feature and support has been disabled in this version"));
+//            msg.exec();
+//            return;
+//#endif
         }
         else if (!m_gameFile->Open(m_gameFile->GetGame(), filename))
             return;
@@ -720,6 +719,8 @@ void MainWindow::onDeleteGame()
                  return;
 
     m_gameFile->DeleteGame(m_curGame);
+    m_ui->tabWidget->setCurrentIndex(0);
+    ClearInfo();
     UpdateInfo();
     UpdateTitle();
 }
@@ -812,6 +813,15 @@ void MainWindow::onGameChanged(QAction* game)
     UpdateTitle();
 }
 
+void MainWindow::onFileChanged(QString file)
+{
+    QMessageBox msg(QMessageBox::Information, "File Changed", tr("File \"%1\" has been modified, do you wish to reload?").arg(file));
+    int res = msg.exec();
+
+    if (res == QMessageBox::Ok)
+        m_gameFile->Reload(m_gameFile->GetGame());
+}
+
 void MainWindow::onReload()
 {
     if (!m_gameFile || !m_gameFile->IsOpen())
@@ -851,7 +861,6 @@ void MainWindow::onClose()
            return;
     }
 
-
     m_gameFile->Close();
     delete m_gameFile;
     m_gameFile = NULL;
@@ -888,10 +897,26 @@ void MainWindow::UpdateTitle()
 void MainWindow::ClearInfo()
 {
     m_isUpdating = true;
-    m_ui->nameLineEdit->clear();
-    m_ui->rupeeSpinBox->clear();
-    m_ui->totalHPSpinBox->clear();
-    m_ui->unkHPSpinBox->clear();
-    m_ui->curHPSpinBox->clear();
+
+    foreach (QLineEdit* widget, findChildren<QLineEdit*>())
+    {
+        widget->clear();
+    }
+
+    foreach(QSpinBox* widget, findChildren<QSpinBox*>())
+    {
+        widget->clear();
+    }
+
+    foreach(QCheckBox* widget, findChildren<QCheckBox*>())
+    {
+        widget->setChecked(false);
+    }
+
+    foreach(QDateTimeEdit* widget, findChildren<QDateTimeEdit*>())
+    {
+        widget->clear();
+    }
+
     m_isUpdating = false;
 }

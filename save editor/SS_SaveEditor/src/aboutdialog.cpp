@@ -25,7 +25,7 @@ AboutDialog::AboutDialog(QWidget *parent) :
 
 #ifdef SVNREVSTR
     QString verstr(SVNREVSTR);
-    m_ui->abtText->setText(m_ui->abtText->text().replace("$SVNREVSTR$", (!verstr.isEmpty() ? QString("WiiKing2 Editor Revision: <a href=\"http://code.google.com/p/skyward-sword-save-editor/source/detail?r=%1\">%1</a>").arg(verstr) : QString(""))));
+    m_ui->abtText->setText(m_ui->abtText->text().replace("$SVNREVSTR$", (!verstr.isEmpty() ? QString("WiiKing2 Editor Revision: <a href=\"http://code.google.com/p/skyward-sword-save-editor/source/detail?r=%1\">r%1</a>").arg(verstr) : QString(""))));
 #else
     m_ui->abtText->setText(m_ui->abtText->text().replace("$SVNREVSTR$",""));
 #endif
