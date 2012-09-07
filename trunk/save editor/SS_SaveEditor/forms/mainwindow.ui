@@ -31,12 +31,6 @@
   <property name="windowTitle">
    <string>WiiKing2 Editor</string>
   </property>
-  <property name="iconSize">
-   <size>
-    <width>6</width>
-    <height>16</height>
-   </size>
-  </property>
   <property name="unifiedTitleAndToolBarOnMac">
    <bool>true</bool>
   </property>
@@ -82,7 +76,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="playerTab">
        <attribute name="title">

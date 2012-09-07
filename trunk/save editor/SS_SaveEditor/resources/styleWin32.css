@@ -137,8 +137,9 @@ QToolButton
     background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(249, 249, 249, 255), stop:1 rgba(227, 227, 227, 255));
 }
 
-QToolButton:hover, QPushButton:hover
+QToolButton:hover, QPushButton:hover, QTabBar::Tab:hover
 {
+    border-color: rgb(128, 43, 96);
     background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(239, 239, 239, 255), stop:1 rgba(227, 227, 227, 255));
 }
 

@@ -26,12 +26,12 @@ QMenuBar
     padding: 4px;
 }
 
-QMenuBar::item 
+QMenuBar::item
 {
     background:transparent;
  }
 
- QMenuBar::item:selected 
+ QMenuBar::item:selected
 { /* when selected using mouse or keyboard */
      background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(217, 217, 217, 255), stop:1 rgba(249, 249, 249, 255));
      border: 1px solid rgb(171, 173, 179);
@@ -39,9 +39,9 @@ QMenuBar::item
      border-top-right-radius: 4px;
  }
 
-QMenuBar::item:pressed 
+QMenuBar::item:pressed
 {
-     background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(249, 249, 249, 255), stop:1 rgba(217, 217, 217, 255)); 
+     background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(249, 249, 249, 255), stop:1 rgba(217, 217, 217, 255));
      border-bottom:none;
      border-bottom-left-radius:none;
      border-bottom-right-radius:none;
@@ -136,8 +136,9 @@ QToolButton
     background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(249, 249, 249, 255), stop:1 rgba(227, 227, 227, 255));
 }
 
-QToolButton:hover, QPushButton:hover
+QToolButton:hover, QPushButton:hover, QTabBar::Tab:hover
 {
+    border-color: rgb(128, 43, 96);
     background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(239, 239, 239, 255), stop:1 rgba(227, 227, 227, 255));
 }
 

@@ -1305,49 +1305,6 @@ bool SkywardSwordFile::LoadDataBin(const QString& filepath, Game game)
         if (tmp == SkywardSwordFile::NTSCURegion || tmp == SkywardSwordFile::NTSCJRegion || tmp == SkywardSwordFile::PALRegion)
         {
             m_data = (char*)m_saveGame->getFile("/wiiking2.sav")->data();
-            char permissions = m_saveGame->banner()->permissions();
-            qDebug() << "Banner permissions:";
-            qDebug() << "Group Read: "  << ((permissions & WiiFile::GroupRead) == WiiFile::GroupRead);
-            qDebug() << "Group Write: " << ((permissions & WiiFile::GroupWrite) == WiiFile::GroupWrite);
-            qDebug() << "Owner Read: "  << ((permissions & WiiFile::OwnerRead) == WiiFile::OwnerRead);
-            qDebug() << "Owner Write: " << ((permissions & WiiFile::OwnerWrite) == WiiFile::OwnerWrite);
-            qDebug() << "Other Read: "  << ((permissions & WiiFile::OtherRead) == WiiFile::OtherRead);
-            qDebug() << "Other Write: " << ((permissions & WiiFile::OtherWrite) == WiiFile::OtherWrite);
-            permissions = m_saveGame->getFile("/wiiking2.sav")->permissions();
-            qDebug() << "Wiiking2 permissions:";
-            qDebug() << "Group Read: "  << ((permissions & WiiFile::GroupRead) == WiiFile::GroupRead);
-            qDebug() << "Group Write: " << ((permissions & WiiFile::GroupWrite) == WiiFile::GroupWrite);
-            qDebug() << "Owner Read: "  << ((permissions & WiiFile::OwnerRead) == WiiFile::OwnerRead);
-            qDebug() << "Owner Write: " << ((permissions & WiiFile::OwnerWrite) == WiiFile::OwnerWrite);
-            qDebug() << "Other Read: "  << ((permissions & WiiFile::OtherRead) == WiiFile::OtherRead);
-            qDebug() << "Other Write: " << ((permissions & WiiFile::OtherWrite) == WiiFile::OtherWrite);
-            permissions = m_saveGame->getFile("/skip.dat")->permissions();
-            qDebug() << "Skip permissions:";
-            qDebug() << "Group Read: "  << ((permissions & WiiFile::GroupRead) == WiiFile::GroupRead);
-            qDebug() << "Group Write: " << ((permissions & WiiFile::GroupWrite) == WiiFile::GroupWrite);
-            qDebug() << "Owner Read: "  << ((permissions & WiiFile::OwnerRead) == WiiFile::OwnerRead);
-            qDebug() << "Owner Write: " << ((permissions & WiiFile::OwnerWrite) == WiiFile::OwnerWrite);
-            qDebug() << "Other Read: "  << ((permissions & WiiFile::OtherRead) == WiiFile::OtherRead);
-            qDebug() << "Other Write: " << ((permissions & WiiFile::OtherWrite) == WiiFile::OtherWrite);
-
-            WiiImage* image = m_saveGame->banner()->bannerImage();
-            WriteDataFile(QString("%1/banner.tpl").arg(gameId), (char*)image->data(), 192*64*2);
-
-            for (uint i = 0; i < m_saveGame->banner()->icons().size(); i++)
-            {
-                WiiImage* icon = (WiiImage*)m_saveGame->banner()->icons()[i];
-                WriteDataFile(QString("%1/icon%2.tpl").arg(gameId).arg(i), (char*)icon->data(), icon->width()*icon->height()*2);
-            }
-            QString str = QString::fromUtf8(m_saveGame->banner()->title().c_str());
-            char tmp[64];
-            memset(tmp, 0, 64);
-            memcpy(tmp, (char*)str.utf16(), str.size()*2);
-            WriteDataFile(QString("%1/title.bin").arg(gameId), tmp, 64);
-            str = QString::fromUtf8(m_saveGame->banner()->subtitle().c_str());
-            memset(tmp, 0, 64);
-            memcpy(tmp, (char*)str.utf16(), str.size()*2);
-            WriteDataFile(QString("%1/subtitle.bin").arg(gameId), tmp, 64);
-
             UpdateChecksum();
             m_fileChecksum = m_checksumEngine.GetCRC32((const quint8*)m_data, 0, 0xFBE0);
             m_game = game;
