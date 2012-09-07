@@ -66,7 +66,7 @@ HEADERS  += \
     ../LibWiiSave/include/tools.h \
     ../LibWiiSave/include/ZException.h \
     ../LibWiiSave/include/WiiSave.h \
-    src/common.h
+    include/common.h
 
 FORMS    += \
     forms/mainwindow.ui \
