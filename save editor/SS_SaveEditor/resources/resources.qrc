@@ -116,4 +116,13 @@
         <file alias="banner.tpl">BannerData/banner.tpl</file>
         <file alias="icon.tpl">BannerData/icon.tpl</file>
     </qresource>
+    <qresource prefix="/ui">
+        <file alias="CheckBox/CheckBox_checked_clicked">ui/CheckBox/CheckBox_checked_clicked.png</file>
+        <file alias="CheckBox/CheckBox_checked_hover">ui/CheckBox/CheckBox_checked_hover.png</file>
+        <file alias="CheckBox/CheckBox_checked_normal">ui/CheckBox/CheckBox_checked_normal.png</file>
+        <file alias="CheckBox/CheckBox_clicked">ui/CheckBox/CheckBox_clicked.png</file>
+        <file alias="CheckBox/CheckBox_hover">ui/CheckBox/CheckBox_hover.png</file>
+        <file alias="CheckBox/CheckBox_normal">ui/CheckBox/CheckBox_normal.png</file>
+        <file alias="SpinBox/SpinBoxDown_normal">ui/SpinBox/SpinBoxDown_normal.png</file>
+    </qresource>
 </RCC>

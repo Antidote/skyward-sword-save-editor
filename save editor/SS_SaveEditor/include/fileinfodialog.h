@@ -17,7 +17,6 @@
 #define FILEINFODIALOG_H
 
 #include <QDialog>
-
 class SkywardSwordFile;
 class QAbstractButton;
 
@@ -35,9 +34,13 @@ public:
 
 private slots:
     void onRegionChanged(QAbstractButton*);
+    void onAccepted();
 private:
+    enum StringType {Title, Subtitle};
+    QString GetRegionString(int region, StringType type) const;
     Ui::FileInfoDialog *m_ui;
     SkywardSwordFile* m_gameFile;
+    int               m_region;
 };
 
 #endif // FILEINFODIALOG_H

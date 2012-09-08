@@ -78,6 +78,7 @@ FileInfoDialog::FileInfoDialog(QWidget *parent, SkywardSwordFile& game) :
 
 
     connect(group, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(onRegionChanged(QAbstractButton*)));
+    connect(m_ui->buttonBox, SIGNAL(accepted()), this, SLOT(onAccepted()));
 }
 
 FileInfoDialog::~FileInfoDialog()
@@ -87,16 +88,55 @@ FileInfoDialog::~FileInfoDialog()
 
 void FileInfoDialog::onRegionChanged(QAbstractButton *)
 {
-    if (m_gameFile == NULL)
-                 return;
 
     if (m_ui->ntscURadioBtn->isChecked())
-                 m_gameFile->SetRegion(SkywardSwordFile::NTSCURegion);
+        m_region = SkywardSwordFile::NTSCURegion;
     else if (m_ui->ntscJRadioBtn->isChecked())
-                 m_gameFile->SetRegion(SkywardSwordFile::NTSCJRegion);
+        m_region = SkywardSwordFile::NTSCJRegion;
     else if (m_ui->palRadioBtn->isChecked())
-                 m_gameFile->SetRegion(SkywardSwordFile::PALRegion);
+        m_region = SkywardSwordFile::PALRegion;
 
-    m_ui->titleLbl->setText("Title: " + m_gameFile->GetBannerTitle());
-    m_ui->subtitleLbl->setText("Subtitle: " + m_gameFile->GetBannerSubtitle());
+    m_ui->titleLbl->setText("Title: " + GetRegionString(m_region, Title));
+    m_ui->subtitleLbl->setText("Title: " + GetRegionString(m_region, Subtitle));
+}
+
+void FileInfoDialog::onAccepted()
+{
+    if (!m_gameFile)
+        return;
+
+    m_gameFile->SetRegion((SkywardSwordFile::Region)m_region);
+}
+
+QString FileInfoDialog::GetRegionString(int region, StringType type) const
+{
+    if (m_gameFile && (int)m_gameFile->GetRegion() == region)
+    {
+        if (type == Title)
+            return m_gameFile->GetBannerTitle();
+        else
+            return m_gameFile->GetBannerSubtitle();
+    }
+
+    QString file;
+    switch(type)
+    {
+    case Title:
+        file = "title"; break;
+    case Subtitle:
+        file = "subtitle"; break;
+    }
+    char gameId[5];
+    memset(gameId, 0, 5);
+    memcpy(gameId, (char*)&region, 4);
+
+    QFile title(QString(":/BannerData/%1/%2.bin").arg(gameId).arg(file));
+    if (title.open(QFile::ReadOnly))
+    {
+        QString titleString = QString::fromUtf16((ushort*)title.readAll().data());
+        title.close();
+        return titleString;
+    }
+
+    return QString("");
 }
