@@ -102,8 +102,8 @@ void dump_tmd(u8 *tmd)
 	u8 *p;
 
 	printf("       issuer: %s\n", tmd + 0x140);
-	printf("  sys_version: %016llx\n", be64(tmd + 0x0184));
-	printf("     title_id: %016llx\n", be64(tmd + 0x018c));
+    printf("  sys_version: %016llx\n", be64(tmd + 0x0184));
+    printf("     title_id: %016llx\n", be64(tmd + 0x018c));
 	printf("   title_type: %08x\n", be32(tmd + 0x0194));
 	printf("     group_id: %04x\n", be16(tmd + 0x0198));
 	printf("title_version: %04x\n", be16(tmd + 0x01dc));

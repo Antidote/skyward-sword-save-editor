@@ -331,10 +331,10 @@ void SkywardSwordFile::Close()
     m_bannerImage = QImage();
 }
 
-void SkywardSwordFile::Reload(SkywardSwordFile::Game game)
+bool SkywardSwordFile::Reload(SkywardSwordFile::Game game)
 {
     Close();
-    Open(game);
+    return Open(game);
 }
 
 bool SkywardSwordFile::IsOpen() const
@@ -438,7 +438,7 @@ QDateTime SkywardSwordFile::GetSaveTime() const
     if (!m_data)
         return QDateTime::currentDateTime();
     QDateTime tmp(QDate(2000, 1, 1));
-    tmp = tmp.addSecs(qFromBigEndian<quint64>(*(quint64*)(m_data + GetGameOffset() + 0x0008)) / 60750560);
+    tmp = tmp.addSecs(qFromBigEndian(*(quint64*)(m_data + GetGameOffset() + 0x0008)) / 60750546);
     return tmp;
 }
 
@@ -465,7 +465,7 @@ quint64 GetLocalTimeSinceJan1970()
 
 void SkywardSwordFile::SetSaveTime()
 {
-    *(qint64*)(m_data + GetGameOffset() + 0x0008) = qToBigEndian<qint64>((GetLocalTimeSinceJan1970() - SECONDS_TO_2000) * 60749440);
+    *(qint64*)(m_data + GetGameOffset() + 0x0008) = qToBigEndian<qint64>((GetLocalTimeSinceJan1970() - SECONDS_TO_2000) * 60749453.59);
 }
 
 Vector3 SkywardSwordFile::GetPlayerPosition() const

@@ -41,11 +41,8 @@ WiiSave::WiiSave(const std::string& filename) :
 
 WiiSave::~WiiSave()
 {
-    std::cout << "Destroying file instances..." << std::endl;
-
     m_files.clear();
 
-    std::cout << "Destroying banner.bin" << std::endl;
     if (m_banner)
         delete m_banner;
     m_banner = NULL;
@@ -538,7 +535,6 @@ void WiiSave::writeImage(WiiImage* image)
 u32 WiiSave::writeFile(WiiFile* file)
 {
     u32 ret = 0x80;
-    std::cout << file->filename() << std::endl;
 
     m_writer->writeInt32(0x03ADF17E);
     m_writer->writeInt32(file->length());

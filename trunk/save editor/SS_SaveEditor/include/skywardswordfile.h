@@ -155,7 +155,7 @@ public:
     /// the file has changed (should probably use an SHA1 or MD5 hash for the but w/e).
     bool            HasFileOnDiskChanged();
     void            Close(); //<! Closes the current file without saving.
-    void            Reload(Game game);
+    bool            Reload(Game game);
 
     bool            IsOpen() const;
 
