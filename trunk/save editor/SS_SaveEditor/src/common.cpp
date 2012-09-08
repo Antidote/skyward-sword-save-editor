@@ -78,3 +78,5 @@ QImage ConvertTextureToImage( const QByteArray &ba, quint32 w, quint32 h )
     free( bitmapdata );
     return im2;
 }
+
+

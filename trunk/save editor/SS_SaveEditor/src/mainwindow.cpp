@@ -780,6 +780,10 @@ void MainWindow::onFileInfo()
 {
     FileInfoDialog* fid = new FileInfoDialog(this, *m_gameFile);
     fid->exec();
+
+    m_gameFile->UpdateChecksum();
+    UpdateInfo();
+    UpdateTitle();
 }
 
 void MainWindow::onPreferences()

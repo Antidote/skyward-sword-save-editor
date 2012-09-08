@@ -2,9 +2,6 @@
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
-  <property name="enabled">
-   <bool>true</bool>
-  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -18,12 +15,6 @@
   </property>
   <property name="windowTitle">
    <string>WiiKing2 Editor</string>
-  </property>
-  <property name="styleSheet">
-   <string notr="true">Text
-{
-style: Text.Raised;
-}</string>
   </property>
   <property name="unifiedTitleAndToolBarOnMac">
    <bool>true</bool>
@@ -201,11 +192,7 @@ style: Text.Raised;
               </widget>
              </item>
              <item>
-              <widget class="QSpinBox" name="curHPSpinBox">
-               <property name="singleStep">
-                <number>80</number>
-               </property>
-              </widget>
+              <widget class="QSpinBox" name="curHPSpinBox"/>
              </item>
             </layout>
            </item>
@@ -2570,7 +2557,7 @@ style: Text.Raised;
      <x>0</x>
      <y>0</y>
      <width>750</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
