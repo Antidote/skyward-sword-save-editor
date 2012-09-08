@@ -123,6 +123,5 @@
         <file alias="CheckBox/CheckBox_clicked">ui/CheckBox/CheckBox_clicked.png</file>
         <file alias="CheckBox/CheckBox_hover">ui/CheckBox/CheckBox_hover.png</file>
         <file alias="CheckBox/CheckBox_normal">ui/CheckBox/CheckBox_normal.png</file>
-        <file alias="SpinBox/SpinBoxDown_normal">ui/SpinBox/SpinBoxDown_normal.png</file>
     </qresource>
 </RCC>

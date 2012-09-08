@@ -23,6 +23,7 @@
 #include <QApplication>
 #include <QDropEvent>
 #include <QSettings>
+#include <QFileSystemWatcher>
 #include <QUrl>
 #include <QDebug>
 
@@ -48,8 +49,10 @@ MainWindow::MainWindow(QWidget *parent) :
     m_isUpdating(false),
     m_isChecking(false)
 {
-    m_ui->setupUi(this);
+    m_fileWatcher = new QFileSystemWatcher;
+    connect(m_fileWatcher, SIGNAL(fileChanged(QString)), this, SLOT(onFileChanged(QString)));
 
+    m_ui->setupUi(this);
     QSettings settings("WiiKing2", "WiiKing2 Editor");
 //#ifdef DEBUG
     m_ui->actionPreferences->setEnabled(true);
@@ -690,6 +693,11 @@ void MainWindow::onOpen()
 
         m_ui->menuRecent->addAction(m_gameFile->GetFilename());
 
+        foreach(QString file, m_fileWatcher->files())
+            m_fileWatcher->removePath(file);
+
+
+        m_fileWatcher->addPath(filename);
         UpdateInfo();
         UpdateTitle();
     }
@@ -727,6 +735,10 @@ void MainWindow::onDeleteGame()
 
 void MainWindow::onSave()
 {
+
+    foreach(QString file, m_fileWatcher->files())
+        m_fileWatcher->removePath(file);
+
     if (!m_gameFile || !m_gameFile->IsOpen() || m_gameFile->GetGame() == SkywardSwordFile::GameNone)
         return;
 
@@ -751,7 +763,9 @@ void MainWindow::onSave()
         m_ui->statusBar->showMessage(tr("Unable to save file"));
     }
 
+    m_fileWatcher->addPath(m_gameFile->GetFilename());
     m_gameFile->UpdateChecksum();
+    UpdateInfo();
     UpdateTitle();
 }
 
@@ -819,11 +833,23 @@ void MainWindow::onGameChanged(QAction* game)
 
 void MainWindow::onFileChanged(QString file)
 {
-    QMessageBox msg(QMessageBox::Information, "File Changed", tr("File \"%1\" has been modified, do you wish to reload?").arg(file));
+    m_fileWatcher->disconnect();
+    QMessageBox msg(QMessageBox::Information, "File Changed", tr("File at location:\n\"%1\"\nHas been modified, do you wish to reload?").arg(file), QMessageBox::Ok | QMessageBox::Ignore, this);
     int res = msg.exec();
 
     if (res == QMessageBox::Ok)
-        m_gameFile->Reload(m_gameFile->GetGame());
+    {
+        m_fileWatcher->removePath(file);
+        if (m_gameFile->Reload(m_gameFile->GetGame()))
+        {
+            m_fileWatcher->addPath(file);
+            m_gameFile->UpdateChecksum();
+        }
+        UpdateTitle();
+        UpdateInfo();
+    }
+
+    connect(m_fileWatcher, SIGNAL(fileChanged(QString)), this, SLOT(onFileChanged(QString)));
 }
 
 void MainWindow::onReload()
@@ -831,11 +857,15 @@ void MainWindow::onReload()
     if (!m_gameFile || !m_gameFile->IsOpen())
         return;
 
+    foreach (QString file, m_fileWatcher->files())
+        m_fileWatcher->removePath(file);
+
     m_gameFile->Reload(m_gameFile->GetGame());
     if(m_gameFile->IsOpen())
     {
         UpdateInfo();
         m_ui->statusBar->showMessage(tr("File successfully reloaded"));
+        m_fileWatcher->addPath(m_gameFile->GetFilename());
         UpdateTitle();
     }
     else
@@ -847,6 +877,9 @@ void MainWindow::onReload()
 
 void MainWindow::onClose()
 {
+    if (!m_oldFilename.isEmpty() && m_fileWatcher->files().contains(m_oldFilename))
+        m_fileWatcher->removePath(m_oldFilename);
+
     if (!m_gameFile || !m_gameFile->IsOpen())
                  return;
     if(m_gameFile->IsModified())
@@ -865,6 +898,7 @@ void MainWindow::onClose()
            return;
     }
 
+    m_fileWatcher->removePath(m_gameFile->GetFilename());
     m_gameFile->Close();
     delete m_gameFile;
     m_gameFile = NULL;

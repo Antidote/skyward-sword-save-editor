@@ -7,10 +7,14 @@ GameOff + 0x0010 - Player Origin (stored as 6 floats)
 GameOff + 0x0028 - Camera Origin (stored as 6 floats)
 GameOff + 0x08D3 - Location ID (Displays location name on the load screen)
 GameOff + 0x08D4 - Hero's Name (stored as a Big Endian Unicode String)
+GameOff + 0x08E4 - Mission related stuff, could also contain flags for cutscenes, there are 4 available bits left
+GameOff + 0x08E5 - Unknown;
 GameOff + 0x08E6 - Groose Cutscene before retrieving first sword(Need to enter a building to enable or disable it if in skyloft overworld)
-GameOff + 0x08E7 - Zelda skyloft cutscene infront of the statue before the ceremony;
+GameOff + 0x08E7 - Missiona and cutscene flags;
 GameOff + 0x08E8 - Weapons Selectable = 0x20
-GameOff + 0x08E9 - Knight Tunic = 0x10
+GameOff + 0x08E9 - MissionFlags, Knight Tunic = 0x10
+GameOff + 0x08EA - Unk flags, Search for eldin key text
+GameOff + 0x08EB - unk
 GameOff + 0x08EC - Items Stolen (could be other stuff as well);
 GameOff + 0x08EF - Items Stolen (Sword = 0x40, Bugnet and Scale = 0x20, could be other stuff)
 GameOff + 0x08F1 - Z-Target Intro;

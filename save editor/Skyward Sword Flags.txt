@@ -1,4 +1,24 @@
-Flags - GameOff + 0x08D3:
+Flags - Gameoff + 0x08E4:
+0x01 - Return third tablet
+0x02 - Unk
+0x04 - Show new harp to old woman
+0x08 - Unk
+0x10 - Travel to Isle Of songs
+0x20 - Unk
+0x40 - Activate Gate of time
+0x80 - Unk
+
+Flags - Gameoff + 0x08E5:
+0x01 - Unk
+0x02 - unk
+0x04 - Unk
+0x08 - Unk
+0x10 - unk
+0x20 - unk
+0x40 - unk
+0x80 - unk
+
+Flags - GameOff + 0x08E6:
 0x01 - unk
 0x02 - unk
 0x04 - unk
@@ -8,7 +28,117 @@ Flags - GameOff + 0x08D3:
 0x40 - unk
 0x80 - unk
 
-Flags - GameOff + 0x090C:
+Flags - Gameoff + 0x08E7:
+0x01 - Fly to isle of songs to learn third song
+0x02 - unk
+0x04 - Chase after girahim, he's a troll who abducted zelda
+0x08 - Unk
+0x10 - unk
+0x20 - unk
+0x40 - Enter the structure that has appeard underneath the isle of the goddess.
+0x80 - Search for your missing loft wing
+
+Flags - Gameoff + 0x08E8:
+0x01 - Unk
+0x02 - unk
+0x04 - Unk
+0x08 - Unk
+0x10 - unk
+0x20 - Use the slingshot to reach the temple where zelda is. also enables item selection
+0x40 - Ask Water Dragon about the sacred flame.
+0x80 - unk
+
+Flags - Gameoff + 0x08E9:
+0x01 - Follow Fi
+0x02 - Use map to search for loftwing
+0x04 - unk
+0x08 - Unk
+0x10 - Knight Tunic, Fi
+0x20 - unk
+0x40 - unk
+0x80 - Gather Information on zelda from kikwis
+
+Flags - Gameoff + 0x08EA:
+0x01 - Unk
+0x02 - unk
+0x04 - Unk
+0x08 - Unk
+0x10 - unk
+0x20 - unk
+0x40 - unk
+0x80 - Search for the key to the eldin volcano temple
+
+Flags - Gameoff + 0x08EB:
+0x01 - Unk
+0x02 - unk
+0x04 - Unk
+0x08 - Find sacred wather for the water dragon
+0x10 - Explore area behind waterfall
+0x20 - unk
+0x40 - unk
+0x80 - unk
+
+Flags - Gameoff + 0x08EC:
+0x01 - Unk
+0x02 - Look for sacred flame in the ancient cistern
+0x04 - Seach the sandship for the sacred flame
+0x08 - Unk
+0x10 - unk
+0x20 - Search for the three triforce peices in the sky keep
+0x40 - unk
+0x80 - unk
+
+Flags - Gameoff + 0x08ED:
+0x01 - Unk
+0x02 - unk
+0x04 - Unk
+0x08 - Unk
+0x10 - unk
+0x20 - unk
+0x40 - unk
+0x80 - unk
+
+Flags - Gameoff + 0x08EE:
+0x01 - Unk
+0x02 - unk
+0x04 - Unk
+0x08 - Unk
+0x10 - Find the third sacred flame
+0x20 - unk
+0x40 - unk
+0x80 - unk
+
+Flags - Gameoff + 0x08EF:
+0x01 - Gust Bellows Stolen
+0x02 - ClawShot stolen
+0x04 - Whip Stolen
+0x08 - slingshot stolen
+0x10 - BombBag stolen
+0x20 - Bow, Beetle, and Bugnet stolen (o.0)
+0x40 - Sword Stolen
+0x80 - unk
+
+Flags - Gameoff + 0x08F0:
+0x01 - Go to faron woods and search for zelda
+0x02 - unk
+0x04 - Hit game of time with skyward strike
+0x08 - Unk
+0x10 - Defeat girahim in the past, because he's a troll
+0x20 - unk
+0x40 - unk
+0x80 - Search for zelda who seems to have landed safely
+
+Flags - Gameoff + 0x08F1:
+0x01 - Unk
+0x02 - unk
+0x04 - Unk
+0x08 - Unk
+0x10 - unk
+0x20 - unk
+0x40 - unk
+0x80 - unk
+
+Flags - GameOff + 0x09EC:
 0x01 - Claw Shot Stolen
 0x02 - Whip Stolen
 0x04 - Gust Bellows Stolen
@@ -27,6 +157,16 @@ Flags - GameOff + 0x090D:
 0x20 - Sling Shot Stolen
 0x40 - Beetle Stolen
 0x80 - Bombs
+
+Flags - Gameoff + 0x0919:
+0x01 - Unk
+0x02 - Unk
+0x04 - Unk
+0x08 - Unk
+0x10 - Unk
+0x20 - Rattle Returned
+0x40 - Unk
+0x80 - Unk
 
 Flags - GameOff + 0x0934:
 0x01 - unk
@@ -135,6 +275,7 @@ Flags - Gameoff + 0x09F1:
 0x10 - unk
 0x20 - unk
 0x40 - unk
+0x80 - unk
 
 Flags GameOff + 0x09F2:
 0x01 - Practice Sword

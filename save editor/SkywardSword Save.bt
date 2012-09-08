@@ -126,18 +126,21 @@ struct GameData
             FSeek(GameOff + 0x08D3);
             LocationID locationID;
             short name[8];
-            FSeek(GameOff + 0x08E6);
+            uchar missionFlags1;
+            uchar unkFlags1;
             uchar grooseCutscene;
             uchar zeldaSkyloftCutcene1;
             uchar weaponsSelectableFlag;
             uchar knightTunic;
+            uchar unkFlagsEldinKey;
+            uchar unk;
             FSeek(GameOff + 0x08F1);
             char zTargetIntro;
             char unkFlag1[4];
             char dekuHornet; // need to find value
             char unkFlag3;
             char crateIntro;
-            char unkFlags[5];
+            char unkFlags2[5];
             //FSeek(GameOff + 0x08FE);
             byte heroMode; // May also be other things, however if you AND it by 0x08 you get the flag for hero mode
             FSeek(GameOff + 0x090C);

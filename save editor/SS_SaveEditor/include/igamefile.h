@@ -19,7 +19,7 @@ public:
 
     virtual bool IsOpen() const=0;
     virtual void Close() = 0;
-    virtual void Reload(Game game) = 0;
+    virtual bool Reload(Game game) = 0;
     virtual bool Save(const QString& filename = NULL) = 0;
     virtual bool Open(Game game = GameNone, const QString& filepath=NULL) = 0;
     virtual void CreateNewGame(Game game) = 0;

@@ -22,6 +22,7 @@
 #include <QTimer>
 
 
+class QFileSystemWatcher;
 class QActionGroup;
 class QButtonGroup;
 class QAbstractButton;
@@ -79,6 +80,7 @@ private:
     bool                      m_isChecking;
     QActionGroup*             m_gameGroup;
     QButtonGroup*             m_regionGroup;
+    QFileSystemWatcher*       m_fileWatcher;
 };
 
 #endif // MAINWINDOW_H
