@@ -527,6 +527,8 @@ unsigned char * MD5fromFile(unsigned char *dst, const char *src)
 	FILE * file;
 	unsigned int blksize = 0;
 	unsigned int read = 0;
+	unsigned int filesize;
+	unsigned char* buffer;
 
 	file = fopen(src, "rb");
 
@@ -538,14 +540,14 @@ unsigned char * MD5fromFile(unsigned char *dst, const char *src)
 	(void) auth_md5InitCtx(ctx); /* Open a context.	  */
 
 	fseek(file, 0, SEEK_END);
-	unsigned long long filesize = ftell(file);
+    filesize = ftell(file);
 	rewind(file);
 
 	if (filesize < 1048576) //1MB cache for files bigger than 1 MB
 		blksize = filesize;
 	else blksize = 1048576;
 
-	unsigned char * buffer = malloc(blksize);
+	buffer = malloc(blksize);
 
 	if (buffer == NULL)
 	{

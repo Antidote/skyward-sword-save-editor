@@ -25,7 +25,9 @@
 #include <QSettings>
 #include <QFileSystemWatcher>
 #include <QUrl>
+#include "qhexedit2/qhexedit.h"
 #include <QDebug>
+#include <QtEndian>
 
 #include "igamefile.h"
 #include "skywardswordfile.h"
@@ -50,9 +52,11 @@ MainWindow::MainWindow(QWidget *parent) :
     m_isChecking(false)
 {
     m_fileWatcher = new QFileSystemWatcher;
-    connect(m_fileWatcher, SIGNAL(fileChanged(QString)), this, SLOT(onFileChanged(QString)));
-
     m_ui->setupUi(this);
+    m_ui->tabWidget->setCurrentIndex(0);
+    m_ui->tabWidget->setEnabled(false);
+
+
     QSettings settings("WiiKing2", "WiiKing2 Editor");
 //#ifdef DEBUG
     m_ui->actionPreferences->setEnabled(true);
@@ -83,6 +87,7 @@ MainWindow::MainWindow(QWidget *parent) :
  //   m_ui->actionPreferences->setEnabled(false);
 //#endif
     SetupActions();
+    SetupHexEdit();
     SetupConnections();
     UpdateInfo();
     UpdateTitle();
@@ -107,6 +112,7 @@ void MainWindow::dragEnterEvent(QDragEnterEvent *event)
     {
         event->acceptProposedAction();
         statusBar()->showMessage(QString("File Valid (%1)").arg((region == SkywardSwordFile::NTSCURegion ? "NTSC-U" : region == SkywardSwordFile::NTSCJRegion ? "NTSC-J" : "PAL")));
+        return;
     }
 
     if (event->mimeData()->urls().count() == 1)
@@ -116,15 +122,18 @@ void MainWindow::dragEnterEvent(QDragEnterEvent *event)
         {
             event->acceptProposedAction();
             statusBar()->showMessage(QString("File Valid (Wii Save file)"));
+            return;
         }
     }
+
+    statusBar()->showMessage(QString("Invalid File"));
 }
 
 void MainWindow::dragLeaveEvent(QDragLeaveEvent *event)
 {
-    Q_UNUSED(event)
-
     statusBar()->clearMessage();
+
+    QMainWindow::dragLeaveEvent(event);
 }
 
 void MainWindow::dropEvent(QDropEvent* event)
@@ -142,6 +151,7 @@ void MainWindow::dropEvent(QDropEvent* event)
 
         if (m_gameFile->Open(m_curGame, mimeData->urls()[0].toLocalFile()))
         {
+            m_hexEdit->setData(m_gameFile->GetGameData());
             UpdateInfo();
             UpdateTitle();
         }
@@ -156,21 +166,6 @@ bool MainWindow::eventFilter(QObject* obj, QEvent *evt)
 
     return QMainWindow::eventFilter(obj, evt);
 }*/
-
-// TODO: Need to make this more intelligent.
-void MainWindow::onCheck()
-{
-    if (m_gameFile && m_gameFile->IsOpen() && m_gameFile->HasFileOnDiskChanged())
-    {
-        QMessageBox msg(QMessageBox::Question, "File Modified", "The file on disk has been modified outside of the editor, reload?", QMessageBox::Ok | QMessageBox::Cancel, this);
-        int ret = msg.exec();
-        if (ret == QMessageBox::Ok)
-        {
-            m_gameFile->Reload(m_gameFile->GetGame());
-            UpdateInfo();
-        }
-    }
-}
 
 void MainWindow::SetupActions()
 {
@@ -199,9 +194,32 @@ void MainWindow::SetupActions()
     m_gameGroup->addAction(m_ui->actionGame3);
 
 }
+void MainWindow::SetupHexEdit()
+{
+    // Setup the hex edit widget
+    m_hexEdit   = new QHexEdit;
+    m_hexEdit->setOverwriteMode(true);
+    m_hexEdit->setInsertAllowed(false);
+    m_ui->hexEditLayout->addWidget(m_hexEdit);
+
+    // Setup the inspector
+    QStandardItemModel* model = new QStandardItemModel(0, 2, this);
+    model->setHorizontalHeaderItem(0, new QStandardItem("Type"));
+    model->setHorizontalHeaderItem(1, new QStandardItem("Data"));
+    model->appendRow(new QStandardItem("char"));
+    model->appendRow(new QStandardItem("uchar"));
+    model->appendRow(new QStandardItem("int"));
+    model->appendRow(new QStandardItem("uint"));
+    m_ui->inspectorView->setModel(model);
+}
 
 void MainWindow::SetupConnections()
 {
+    connect(m_fileWatcher,              SIGNAL(fileChanged(QString)), this, SLOT(onFileChanged(QString)));
+    connect(m_hexEdit,                  SIGNAL(currentAddressChanged(int)), this, SLOT(onCurrentAdressChanged(int)));
+    connect(m_hexEdit,                  SIGNAL(dataChanged()),        this, SLOT(onHexDataChanged()));
+    connect(m_ui->hexUndoBtn,           SIGNAL(clicked()),            m_hexEdit, SLOT(undo()));
+    connect(m_ui->hexRedoBtn,           SIGNAL(clicked()),            m_hexEdit, SLOT(redo()));
     connect(m_ui->playHoursSpinBox,     SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
     connect(m_ui->playMinutesSpinBox,   SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
     connect(m_ui->playSecondsSpinBox,   SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
@@ -366,9 +384,35 @@ void MainWindow::onTextChanged(QString text)
     }
 
     m_gameFile->UpdateChecksum();
+    m_hexEdit->setData(m_gameFile->GetGameData());
     UpdateTitle();
 }
 
+void MainWindow::onCurrentAdressChanged(int address)
+{
+   qint8 charVal = *(qint8*)(m_hexEdit->data().data() + address);
+   quint8 ucharVal = *(quint8*)(m_hexEdit->data().data() + address);
+   qint32 intVal = qFromBigEndian(*(qint32*)(m_hexEdit->data().data() + address));
+   quint32 uintVal = qFromBigEndian(*(qint32*)(m_hexEdit->data().data() + address));
+
+   ((QStandardItemModel*)m_ui->inspectorView->model())->setItem(0, 1, new QStandardItem(QString("%1").arg((qint32)charVal)));
+   ((QStandardItemModel*)m_ui->inspectorView->model())->setItem(1, 1, new QStandardItem(QString("%1 '%2'").arg((quint32)ucharVal).arg(ucharVal)));
+   ((QStandardItemModel*)m_ui->inspectorView->model())->setItem(2, 1, new QStandardItem(QString("%1").arg(intVal)));
+   ((QStandardItemModel*)m_ui->inspectorView->model())->setItem(3, 1, new QStandardItem(QString("%1").arg(uintVal)));
+}
+
+void MainWindow::onHexDataChanged()
+{
+    if (!m_gameFile)
+        return;
+
+    m_ui->hexRedoBtn->setEnabled(m_hexEdit->undoStack()->canRedo());
+    m_ui->hexUndoBtn->setEnabled(m_hexEdit->undoStack()->canUndo());
+    m_gameFile->SetGameData(m_hexEdit->data());
+    m_gameFile->UpdateChecksum();
+    UpdateInfo();
+    UpdateTitle();
+}
 
 void MainWindow::UpdateInfo()
 {
@@ -540,6 +584,7 @@ void MainWindow::UpdateInfo()
     m_ui->goddessPlumeSpinBox    ->setEnabled(m_ui->goddessPlumeChkBox->isChecked());
 
     m_ui->gratitudeCrystalSpinBox->setValue(m_gameFile->GetGratitudeCrystalAmount());
+
     m_isUpdating = false;
 }
 
@@ -682,6 +727,7 @@ void MainWindow::onOpen()
         }
         else if (!m_gameFile->Open(m_gameFile->GetGame(), filename))
             return;
+
         m_gameFile->SetGame(SkywardSwordFile::Game1);
         m_ui->actionGame1->setChecked(true);
 
@@ -698,6 +744,7 @@ void MainWindow::onOpen()
 
 
         m_fileWatcher->addPath(filename);
+        m_hexEdit->setData(m_gameFile->GetGameData());
         UpdateInfo();
         UpdateTitle();
     }
@@ -717,6 +764,7 @@ void MainWindow::onCreateNewGame()
 
         UpdateInfo();
         UpdateTitle();
+        m_hexEdit->setData(m_gameFile->GetGameData());
     }
     delete ngd;
 }
@@ -731,11 +779,11 @@ void MainWindow::onDeleteGame()
     ClearInfo();
     UpdateInfo();
     UpdateTitle();
+    m_hexEdit->setData(m_gameFile->GetGameData());
 }
 
 void MainWindow::onSave()
 {
-
     foreach(QString file, m_fileWatcher->files())
         m_fileWatcher->removePath(file);
 
@@ -767,6 +815,7 @@ void MainWindow::onSave()
     m_gameFile->UpdateChecksum();
     UpdateInfo();
     UpdateTitle();
+    m_hexEdit->setData(m_gameFile->GetGameData());
 }
 
 void MainWindow::onSaveAs()
@@ -798,6 +847,7 @@ void MainWindow::onFileInfo()
     m_gameFile->UpdateChecksum();
     UpdateInfo();
     UpdateTitle();
+    m_hexEdit->setData(m_gameFile->GetGameData());
 }
 
 void MainWindow::onPreferences()
@@ -829,6 +879,7 @@ void MainWindow::onGameChanged(QAction* game)
     m_gameFile->SetGame((SkywardSwordFile::Game)m_curGame);
     UpdateInfo();
     UpdateTitle();
+    m_hexEdit->setData(m_gameFile->GetGameData());
 }
 
 void MainWindow::onFileChanged(QString file)
@@ -847,6 +898,7 @@ void MainWindow::onFileChanged(QString file)
         }
         UpdateTitle();
         UpdateInfo();
+        m_hexEdit->setData(m_gameFile->GetGameData());
     }
 
     connect(m_fileWatcher, SIGNAL(fileChanged(QString)), this, SLOT(onFileChanged(QString)));
@@ -866,7 +918,10 @@ void MainWindow::onReload()
         UpdateInfo();
         m_ui->statusBar->showMessage(tr("File successfully reloaded"));
         m_fileWatcher->addPath(m_gameFile->GetFilename());
+
         UpdateTitle();
+        m_hexEdit->setData(m_gameFile->GetGameData());
+
     }
     else
     {
@@ -900,6 +955,7 @@ void MainWindow::onClose()
 
     m_fileWatcher->removePath(m_gameFile->GetFilename());
     m_gameFile->Close();
+    m_hexEdit->setData(m_gameFile->GetGameData());
     delete m_gameFile;
     m_gameFile = NULL;
 
@@ -954,6 +1010,11 @@ void MainWindow::ClearInfo()
     foreach(QDateTimeEdit* widget, findChildren<QDateTimeEdit*>())
     {
         widget->clear();
+    }
+
+    foreach(QHexEdit* widget, findChildren<QHexEdit*>())
+    {
+        widget->setData(QByteArray(0x53BC, 0));
     }
 
     m_isUpdating = false;

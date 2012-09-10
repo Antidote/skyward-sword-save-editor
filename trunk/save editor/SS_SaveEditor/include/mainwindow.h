@@ -26,6 +26,7 @@ class QFileSystemWatcher;
 class QActionGroup;
 class QButtonGroup;
 class QAbstractButton;
+class QHexEdit;
 
 namespace Ui {
 class MainWindow;
@@ -59,9 +60,10 @@ private slots:
     void onReload();
     void onClose();
     void onFileInfo();
-    void onCheck(); // Checks for changes to file and prompts for an update.
     void onPreferences();
     void onFileChanged(QString);
+    void onCurrentAdressChanged(int);
+    void onHexDataChanged();
 
 private:
     void dragEnterEvent(QDragEnterEvent *event);
@@ -70,6 +72,7 @@ private:
     QTimer* m_checkTimer;
     void SetRegion(SkywardSwordFile::Region);
     void ToggleEnabled(bool visible);
+    void SetupHexEdit();
     void SetupActions();
     void SetupConnections();
     Ui::MainWindow*           m_ui;
@@ -81,6 +84,7 @@ private:
     QActionGroup*             m_gameGroup;
     QButtonGroup*             m_regionGroup;
     QFileSystemWatcher*       m_fileWatcher;
+    QHexEdit*                 m_hexEdit;
 };
 
 #endif // MAINWINDOW_H

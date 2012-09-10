@@ -1,8 +1,6 @@
 #include "WiiBanner.h"
 #include "utility.h"
 #include <string.h>
-#include <QDebug>
-
 
 WiiImage::WiiImage(u32 width, u32 height, u8* data) :
     m_width(width),

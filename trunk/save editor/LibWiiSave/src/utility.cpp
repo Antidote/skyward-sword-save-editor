@@ -1,4 +1,5 @@
 #include "utility.h"
+#include "tools.h"
 #include <iostream>
 #include <string.h>
 #include "sha1.h"

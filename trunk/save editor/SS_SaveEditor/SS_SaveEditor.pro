@@ -11,7 +11,10 @@ TEMPLATE = app
 INCLUDEPATH += include \
            ../LibWiiSave/include \
            ../libzelda/include
-LIBS += -L../LibWiiSave/lib
+unix:LIBS += -L../LibWiiSave/lib/Linux -lWiiSave -L../libzelda/lib/Linux -lzelda
+win32:LIBS +=  -L../LibWiiSave/lib/Win32 -lWiiSave -L../libzelda/lib/Win32 -lzelda
+
+LIBS +=
 
 SOURCES += \
     src/main.cpp\
@@ -24,21 +27,11 @@ SOURCES += \
     src/wiikeys.cpp \
     src/preferencesdialog.cpp \
     src/checksum.cpp \
-    ../LibWiiSave/src/WiiSave.cpp \
-    ../LibWiiSave/src/WiiFile.cpp \
-    ../LibWiiSave/src/WiiBanner.cpp \
-    ../LibWiiSave/src/utility.cpp \
-    ../LibWiiSave/src/tools.c \
-    ../LibWiiSave/src/sha1.c \
-    ../LibWiiSave/src/md5.c \
-    ../LibWiiSave/src/ec.cpp \
-    ../LibWiiSave/src/bn.cpp \
-    ../LibWiiSave/src/aes.c \
-    ../libzelda/src/Stream.cpp \
-    ../libzelda/src/FileStream.cpp \
-    ../libzelda/src/BinaryWriter.cpp \
-    ../libzelda/src/BinaryReader.cpp \
-    src/common.cpp
+    src/common.cpp \
+    src/qhexedit2/xbytearray.cpp \
+    src/qhexedit2/qhexedit_p.cpp \
+    src/qhexedit2/qhexedit.cpp \
+    src/qhexedit2/commands.cpp
 
 HEADERS  += \
     include/mainwindow.h \
@@ -51,22 +44,11 @@ HEADERS  += \
     include/wiikeys.h \
     include/preferencesdialog.h \
     include/checksum.h \
-    ../LibWiiSave/include/utf8/unchecked.h \
-    ../LibWiiSave/include/utf8/core.h \
-    ../LibWiiSave/include/utf8/checked.h \
-    ../LibWiiSave/include/sha1.h \
-    ../LibWiiSave/include/md5.h \
-    ../LibWiiSave/include/ec.h \
-    ../LibWiiSave/include/bn.h \
-    ../LibWiiSave/include/aes.h \
-    ../LibWiiSave/include/WiiFile.h \
-    ../LibWiiSave/include/WiiBanner.h \
-    ../LibWiiSave/include/utility.h \
-    ../LibWiiSave/include/utf8.h \
-    ../LibWiiSave/include/tools.h \
-    ../LibWiiSave/include/ZException.h \
-    ../LibWiiSave/include/WiiSave.h \
-    include/common.h
+    include/common.h \
+    include/qhexedit2/xbytearray.h \
+    include/qhexedit2/qhexedit_p.h \
+    include/qhexedit2/qhexedit.h \
+    include/qhexedit2/commands.h
 
 FORMS    += \
     forms/mainwindow.ui \
@@ -131,11 +113,6 @@ win32{
     RC_FILE = resources/mainicon.rc
 }
 
-CONFIG (release, release|debug){
-
-}
-
-
 CONFIG(debug, debug|release){
     DEFINES += DEBUG
 
@@ -143,5 +120,4 @@ CONFIG(debug, debug|release){
 
     REVSTR = '\\"$${VERSION}\\"'  # place quotes around the version string
     DEFINES += SVNREVSTR=\"$${REVSTR}\" # create a VER macro containing the version string
-    #CONFIG += console
 }

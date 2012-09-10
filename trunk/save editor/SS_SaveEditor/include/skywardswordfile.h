@@ -55,6 +55,7 @@ public:
     static const float DEFAULT_POS_X;
     static const float DEFAULT_POS_Y;
     static const float DEFAULT_POS_Z;
+    static const ushort JAPANESE_NAME[4];
 
     enum Region
     {
@@ -220,6 +221,8 @@ public:
     void      SetCurrentArea(const QString& map);
     QString   GetCurrentRoom() const;
     void      SetCurrentRoom(const QString& map);
+    void      SetGameData(const QByteArray& data);
+    QByteArray GetGameData();
     quint8*   GetSkipData() const;
     void      SetSkipData(const quint8* data);
 

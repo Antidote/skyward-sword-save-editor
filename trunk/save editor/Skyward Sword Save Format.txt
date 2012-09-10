@@ -10,7 +10,7 @@ GameOff + 0x08D4 - Hero's Name (stored as a Big Endian Unicode String)
 GameOff + 0x08E4 - Mission related stuff, could also contain flags for cutscenes, there are 4 available bits left
 GameOff + 0x08E5 - Unknown;
 GameOff + 0x08E6 - Groose Cutscene before retrieving first sword(Need to enter a building to enable or disable it if in skyloft overworld)
-GameOff + 0x08E7 - Missiona and cutscene flags;
+GameOff + 0x08E7 - Mission and cutscene flags;
 GameOff + 0x08E8 - Weapons Selectable = 0x20
 GameOff + 0x08E9 - MissionFlags, Knight Tunic = 0x10
 GameOff + 0x08EA - Unk flags, Search for eldin key text

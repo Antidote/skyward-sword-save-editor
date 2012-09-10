@@ -1,0 +1,20 @@
+//--------------------------------------
+//--- 010 Editor v3.2.2 Binary Template
+//
+// File:
+// Author:
+// Revision:
+// Purpose:
+//--------------------------------------
+
+
+struct SkipData
+{
+    char data[0x20];
+    int  checksum;
+};
+
+struct
+{
+    SkipData skipData[3];
+}file;
