@@ -181,7 +181,7 @@ void SkywardSwordFile::CreateNewGame(SkywardSwordFile::Game game)
     if (!m_data)
     {
         // Default to NTSC-U Region
-        CreateEmptyFile(NTSCURegion);
+        CreateEmptyFile(NTSCJRegion);
     }
 
     if (m_isOpen == false)
@@ -275,7 +275,7 @@ void SkywardSwordFile::DeleteGame(Game game)
             SetPlayerName("Link");
             break;
         case NTSCJRegion:
-            SetPlayerName(QString::fromUtf8("\u30ea\u30f3\u30af"));
+            SetPlayerName(QString::fromUtf16(JAPANESE_NAME));
             break;
     }
     UpdateChecksum();
@@ -1119,6 +1119,22 @@ void SkywardSwordFile::SetCurrentRoom(const QString& map) // Not sure about this
     WriteNullTermString(map, GetGameOffset() + 0x535c);
 }
 
+void SkywardSwordFile::SetGameData(const QByteArray &data)
+{
+    if (!m_data)
+        return;
+
+    memcpy(m_data + GetGameOffset(), data.data(), data.size());
+}
+
+QByteArray SkywardSwordFile::GetGameData()
+{
+    if (!m_data)
+        return QByteArray(0x53C0, 0);
+
+    return QByteArray(m_data + GetGameOffset(), 0x53BC);
+}
+
 quint8* SkywardSwordFile::GetSkipData() const
 {
     if (!m_data)
@@ -1264,9 +1280,9 @@ quint32 SkywardSwordFile::GetQuantity(bool isRight, int offset) const
             return (quint32)(qFromBigEndian<quint16>((*(quint16*)(m_data + GetGameOffset() + offset))) >> 7) & 127;
         case true:
             return (quint32)(qFromBigEndian<quint16>(*(quint16*)(m_data + GetGameOffset() + offset))) & 127;
-        default:
-            return 0;
     }
+
+    return 0;
 }
 
 void SkywardSwordFile::SetQuantity(bool isRight, int offset, quint32 val)
@@ -1550,7 +1566,7 @@ const QPixmap SkywardSwordFile::GetBanner() const
 }
 
 // To support MSVC I have placed these here, why can't Microsoft follow real ANSI Standards? <.<
-const float SkywardSwordFile::DEFAULT_POS_X = -4798.150391;
-const float SkywardSwordFile::DEFAULT_POS_Y =  1237.629517;
-const float SkywardSwordFile::DEFAULT_POS_Z = -6573.722656;
-
+const float SkywardSwordFile::DEFAULT_POS_X = -4798.150391f;
+const float SkywardSwordFile::DEFAULT_POS_Y =  1237.629517f;
+const float SkywardSwordFile::DEFAULT_POS_Z = -6573.722656f;
+const ushort SkywardSwordFile::JAPANESE_NAME[4] = {0x30ea, 0x30f3, 0x30af, 0};

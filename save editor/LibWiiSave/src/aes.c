@@ -13,9 +13,9 @@
 //#include <stdlib.h>
 #include <string.h>
 
-#define u8 unsigned char       /* 8 bits  */
-#define u32 unsigned long       /* 32 bits */
-#define u64 unsigned long long
+typedef unsigned char u8;      /* 8 bits  */
+typedef unsigned long u32;      /* 32 bits */
+typedef unsigned long long u64;
 
 /* rotates x one bit to the left */
 
@@ -341,6 +341,7 @@ void aes_set_key(u8 *key) {
 // CBC mode decryption
 void aes_decrypt(u8 *iv, u8 *inbuf, u8 *outbuf, unsigned long long len) {
   u8 block[16];
+  u8* ctext_ptr;
   unsigned int blockno = 0, i;
 
   //fprintf( stderr,"aes_decrypt(%p, %p, %p, %lld)\n", iv, inbuf, outbuf, len  );
@@ -357,7 +358,6 @@ void aes_decrypt(u8 *iv, u8 *inbuf, u8 *outbuf, unsigned long long len) {
     //    debug_printf("block %d: fraction = %d\n", blockno, fraction);
     memcpy(block, inbuf + blockno * sizeof(block), fraction);
     decrypt(block);
-    u8 *ctext_ptr;
     if (blockno == 0) ctext_ptr = iv;
     else ctext_ptr = inbuf + (blockno-1) * sizeof(block);
 

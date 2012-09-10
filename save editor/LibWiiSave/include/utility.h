@@ -4,6 +4,10 @@
 #include <string>
 #include "tools.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 bool isEmpty(u8*, size_t);
 
 unsigned short swapU16(unsigned short val );
@@ -17,5 +21,9 @@ void sillyRandom(u8 * rndArea, u8 count);
 u8* getSha1(u8* stuff, u32 stuffSize);
 
 bool isSystemBigEndian();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
