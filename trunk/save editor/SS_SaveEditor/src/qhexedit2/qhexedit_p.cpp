@@ -24,7 +24,7 @@ QHexEditPrivate::QHexEditPrivate(QScrollArea *parent) : QWidget(parent)
     setAddressAreaColor(QColor(0xd4, 0xd4, 0xd4, 0xff));
     setHighlightingColor(QColor(0xff, 0xff, 0x99, 0xff));
     setSelectionColor(QColor(0x6d, 0x9e, 0xff, 0xff));
-    setFont(QFont("Courier", 10));
+    setFont(QFont("Courier New", 10));
 
     _size = 0;
     resetSelection(0);
@@ -700,9 +700,9 @@ void QHexEditPrivate::paintEvent(QPaintEvent *event)
             // render hex value
             if (colIdx == 0)
             {
-                hex = hexBa.mid((lineIdx - firstLineIdx) * 2, 2).prepend(" ").toUpper();
+                hex = hexBa.mid((lineIdx - firstLineIdx) * 2, 2).toUpper();
                 painter.drawText(xPos, yPos, hex);
-                xPos += 3 * _charWidth;
+                xPos += 2 * _charWidth;
             } else {
                 hex = hexBa.mid((lineIdx + colIdx - firstLineIdx) * 2, 2).prepend(" ").toUpper();
                 painter.drawText(xPos, yPos, hex);
@@ -772,6 +772,7 @@ void QHexEditPrivate::setCursorPos(int position)
     // immiadately draw cursor
     _blink = true;
     update();
+    ensureVisible();
     emit currentAddressChanged(_cursorPosition/2);
 }
 

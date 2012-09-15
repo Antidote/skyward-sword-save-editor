@@ -64,6 +64,7 @@ private slots:
     void onFileChanged(QString);
     void onCurrentAdressChanged(int);
     void onHexDataChanged();
+    void onHexGotoAddress();
 
 private:
     void dragEnterEvent(QDragEnterEvent *event);
