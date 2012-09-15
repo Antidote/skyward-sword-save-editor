@@ -1374,6 +1374,13 @@ bool SkywardSwordFile::LoadDataBin(const QString& filepath, Game game)
 
 bool SkywardSwordFile::CreateDataBin()
 {
+    if (!WiiKeys::GetInstance()->IsOpen() || !WiiKeys::GetInstance()->isValid())
+    {
+        QMessageBox msg(QMessageBox::Warning, "Invalid or Missing Keys", "Required keys are either missing or invalid\nPlease check:\nEdit->Preferences\nTo ensure you have valid keys.");
+        msg.exec();
+        return false;
+    }
+
     if (m_saveGame != NULL)
     {
         WiiFile* wiiking2 = m_saveGame->getFile("/wiiking2.sav");
