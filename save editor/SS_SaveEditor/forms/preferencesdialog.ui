@@ -6,128 +6,142 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>588</width>
-    <height>290</height>
+    <width>628</width>
+    <height>241</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>588</width>
+    <height>216</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Preferences...</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout">
-   <item>
-    <layout class="QVBoxLayout" name="verticalLayout_2">
-     <item>
-      <widget class="QGroupBox" name="groupBox">
-       <property name="title">
-        <string>Keys</string>
-       </property>
-       <layout class="QGridLayout" name="gridLayout">
-        <item row="0" column="0">
-         <widget class="QLabel" name="ngIDLbl">
-          <property name="text">
-           <string>NG ID: </string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QLineEdit" name="ngIDLineEdit">
-          <property name="maxLength">
-           <number>8</number>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="ngKeyIDLbl">
-          <property name="text">
-           <string>NG Key ID:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QLineEdit" name="ngKeyIDLineEdit">
-          <property name="maxLength">
-           <number>8</number>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="ngSigLbl">
-          <property name="text">
-           <string>NG Signature:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <layout class="QVBoxLayout" name="ngSigLineEditLayout">
-          <property name="spacing">
-           <number>0</number>
-          </property>
-          <item>
-           <widget class="QLineEdit" name="ngSigPt1LineEdit">
-            <property name="maxLength">
-             <number>60</number>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLineEdit" name="ngSigPt2LineEdit">
-            <property name="text">
-             <string/>
-            </property>
-            <property name="maxLength">
-             <number>60</number>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="ngPrivLbl">
-          <property name="text">
-           <string>NG Private: </string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="1">
-         <widget class="QLineEdit" name="ngPrivLineEdit">
-          <property name="maxLength">
-           <number>60</number>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="0">
-         <widget class="QLabel" name="macAddrLbl">
-          <property name="text">
-           <string>Wii MAC Address:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="1">
-         <widget class="QLineEdit" name="macAddrLineEdit">
-          <property name="maxLength">
-           <number>12</number>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item>
-      <spacer name="verticalSpacer">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>40</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-    </layout>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Keys</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="ngIDLbl">
+        <property name="text">
+         <string>NG ID: </string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="ngIDLineEdit">
+        <property name="font">
+         <font>
+          <family>Courier New</family>
+         </font>
+        </property>
+        <property name="maxLength">
+         <number>8</number>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="ngKeyIDLbl">
+        <property name="text">
+         <string>NG Key ID:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="ngKeyIDLineEdit">
+        <property name="font">
+         <font>
+          <family>Courier New</family>
+         </font>
+        </property>
+        <property name="maxLength">
+         <number>8</number>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="ngPrivLbl">
+        <property name="text">
+         <string>NG Private: </string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QLineEdit" name="ngPrivLineEdit">
+        <property name="font">
+         <font>
+          <family>Courier New</family>
+         </font>
+        </property>
+        <property name="maxLength">
+         <number>60</number>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="macAddrLbl">
+        <property name="text">
+         <string>Wii MAC Address:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QLineEdit" name="macAddrLineEdit">
+        <property name="font">
+         <font>
+          <family>Courier New</family>
+         </font>
+        </property>
+        <property name="maxLength">
+         <number>12</number>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="2">
+       <widget class="QGroupBox" name="groupBox_2">
+        <property name="title">
+         <string>NG Signature</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item>
+          <widget class="QLineEdit" name="ngSigPt1LineEdit">
+           <property name="font">
+            <font>
+             <family>Courier New</family>
+            </font>
+           </property>
+           <property name="maxLength">
+            <number>60</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="ngSigPt2LineEdit">
+           <property name="font">
+            <font>
+             <family>Courier New</family>
+            </font>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="maxLength">
+            <number>60</number>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </item>
-   <item>
+   <item row="0" column="1">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -136,6 +150,19 @@
       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
      </property>
     </widget>
+   </item>
+   <item row="1" column="0">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>1000</height>
+      </size>
+     </property>
+    </spacer>
    </item>
   </layout>
  </widget>

@@ -11,7 +11,8 @@ WiiKeys::WiiKeys() :
     m_ngSig(NULL),
     m_macAddr(NULL),
     m_ngID(0),
-    m_ngKeyID(0)
+    m_ngKeyID(0),
+    m_open(false)
 {
 }
 
@@ -64,6 +65,8 @@ bool WiiKeys::Open(const QString &filepath)
             m_ngKeyID = qFromBigEndian<quint32>(m_ngKeyID);
         }
         fclose(f);
+
+        m_open = true;
         return true;
     }
     return false;
@@ -161,7 +164,8 @@ bool WiiKeys::LoadKeys()
 
     settings.endGroup();
     if (m_ngID > 0 && m_ngKeyID > 0 && m_ngPriv != NULL && m_ngSig != NULL && m_macAddr != NULL)
-        return true;
+        return m_open = true;
+
     return false;
 }
 
@@ -178,6 +182,16 @@ void WiiKeys::SaveKeys()
     settings.setValue("NGPriv", QByteArray(m_ngPriv, 0x1E).toHex());
     settings.setValue("WiiMAC", QByteArray(m_macAddr, 0x06).toHex());
     settings.endGroup();
+}
+
+bool WiiKeys::IsOpen() const
+{
+    return m_open;
+}
+
+bool WiiKeys::isValid() const
+{
+    return (m_ngID > 0 && m_ngKeyID > 0 && m_ngPriv != NULL && m_ngSig != NULL && m_macAddr != NULL);
 }
 
 QByteArray WiiKeys::GetNGPriv() const

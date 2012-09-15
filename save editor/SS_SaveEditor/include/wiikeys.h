@@ -10,7 +10,8 @@ public:
     bool Open(const QString& filepath);
     bool LoadKeys();
     void SaveKeys();
-    bool IsOpen();
+    bool IsOpen() const;
+    bool isValid() const;
 
     QByteArray GetNGPriv() const;
     void       SetNGPriv(const QByteArray& priv);
@@ -24,12 +25,15 @@ public:
     void       SetMacAddr(const QByteArray& mac);
 
     static WiiKeys*   GetInstance();
+
+
 private:
     char*   m_ngPriv;
     char*   m_ngSig;
     char*   m_macAddr;
     quint32 m_ngID;
     quint32 m_ngKeyID;
+    bool    m_open;
     WiiKeys();
     WiiKeys(WiiKeys&){}
 
