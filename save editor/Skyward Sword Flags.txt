@@ -22,7 +22,7 @@ Flags - GameOff + 0x08E6:
 0x01 - unk
 0x02 - unk
 0x04 - unk
-0x08 - Groose cutscene after getting Loft Wing back
+0x08 - Loftwing race
 0x10 - unk
 0x20 - Groose gone
 0x40 - unk
@@ -35,7 +35,7 @@ Flags - Gameoff + 0x08E7:
 0x08 - Unk
 0x10 - unk
 0x20 - unk
-0x40 - Enter the structure that has appeard underneath the isle of the goddess.
+0x40 - Enter the structure that has appeared underneath the isle of the goddess.
 0x80 - Search for your missing loft wing
 
 Flags - Gameoff + 0x08E8:
@@ -53,7 +53,7 @@ Flags - Gameoff + 0x08E9:
 0x02 - Use map to search for loftwing
 0x04 - unk
 0x08 - Unk
-0x10 - Knight Tunic, Fi
+0x10 - Knight Tunic, Fi. if this set and the value of 0x08E6 has been or'd with 0x08 the loftwing is enabled
 0x20 - unk
 0x40 - unk
 0x80 - Gather Information on zelda from kikwis
@@ -168,7 +168,6 @@ Flags - Gameoff + 0x08F4:
 0x40 - unk
 0x80 - Unk
 
-
 Flags - Gameoff + 0x08F5:
 0x01 - Unk
 0x02 - unk
@@ -185,20 +184,150 @@ Flags - Gameoff + 0x08F6:
 0x04 - Unk
 0x08 - Unk
 0x10 - unk
-0x20 - unk
+0x20 - Use completed key to open the door to earth temple
 0x40 - unk
 0x80 - Unk
 
-
-Flags - GameOff + 0x09EC:
-0x01 - Claw Shot Stolen
-0x02 - Whip Stolen
-0x04 - Gust Bellows Stolen
-0x08 - Bow Stolen
-0x10 - Interface Selection
-0x20 - unk
+Flags - Gameoff + 0x08F7:
+0x01 - Unk
+0x02 - unk
+0x04 - Unk
+0x08 - Unk
+0x10 - unk
+0x20 - Unk
 0x40 - unk
-0x80 - unk
+0x80 - Unk
+
+Flags - Gameoff + 0x08F8:
+0x01 - Unk
+0x02 - unk
+0x04 - Unk
+0x08 - Search for zelda in skyview temple
+0x10 - Thunderhead light stream
+0x20 - Unk
+0x40 - unk
+0x80 - Unk
+
+Flags - Gameoff + 0x08F9:
+0x01 - Unk
+0x02 - unk
+0x04 - Unk
+0x08 - Unk
+0x10 - unk
+0x20 - Unk
+0x40 - unk
+0x80 - Look for entrance to lanayru mining facility
+
+Flags - Gameoff + 0x08FA:
+0x01 - Unk
+0x02 - unk
+0x04 - Seal away monster
+0x08 - Unk
+0x10 - Search skyloft for more information about the triforce
+0x20 - Unk
+0x40 - unk
+0x80 - Unk
+
+Flags - Gameoff + 0x08FB: < If this is set to anything but 0x40 Horwell stands around like a derp <.>
+0x01 - Enables getting off loftwing at anytime
+0x02 - unk
+0x04 - Ask the three dragons about the song of the hero
+0x08 - Unk
+0x10 - unk
+0x20 - Unk
+0x40 - Horwell stands above the door waiting for link (the stalker)
+0x80 - Unk
+
+Flags - Gameoff + 0x08FC:
+0x01 - Unk
+0x02 - unk
+0x04 - Use water dragon scale to explore flooded faron woods
+0x08 - Use Fireshield earings to explore new areas
+0x10 - Use Clawshots to investigate lanayru desert
+0x20 - Search for the second stone of trials
+0x40 - Unk
+0x80 - Unk
+
+Flags - Gameoff + 0x08FD:
+0x01 - Unk
+0x02 - unk
+0x04 - Unk
+0x08 - Unk
+0x10 - unk
+0x20 - Unk
+0x40 - unk
+0x80 - Unk
+
+Flags - Gameoff + 0x08FE:
+0x01 - Unk
+0x02 - unk
+0x04 - Unk
+0x08 - Hero Mode
+0x10 - Defeat revived demise in the past
+0x20 - Unk
+0x40 - unk
+0x80 - Unk
+
+Flags - Gameoff + 0x08FF:
+0x01 - Unk
+0x02 - unk
+0x04 - Unk
+0x08 - Unk
+0x10 - unk
+0x20 - Unk
+0x40 - unk
+0x80 - Unk
+
+Flags - Gameoff + 0x0900:
+Goddess Chests
+0x01 - North east of fun fun island (Behind bars)
+0x02 - unk
+0x04 - Unk
+0x08 - East Skyloft chest (on floating island)
+0x10 - West Skyloft chest (dive for it)
+0x20 - West Skyloft chest (on floating island above skyloft, contains Heart piece)
+0x40 - Beedles island (behind the fence, contains rupee medal)
+0x80 - Island of the Bamboo cutting mini game (contains gold rupee)
+
+Flags - Gameoff + 0x0901:
+0x01 - Volcano looking island, (outside ledge, contains heart medal)
+0x02 - Volcano looking island, (inside ledge, contains heart piece)
+0x04 - Unk
+0x08 - Unk
+0x10 - unk
+0x20 - Unk
+0x40 - unk
+0x80 - Unk
+
+Flags - Gameoff + 0x0902:
+0x01 - West Skyloft Chest (on floating island)
+0x02 - unk
+0x04 - Unk
+0x08 - Skyloft Bazaar Goddess Chest 
+0x10 - unk
+0x20 - Unk
+0x40 - unk
+0x80 - Unk
+
+Flags - Gameoff + 0x0903:
+0x01 - Unk
+0x02 - unk
+0x04 - Unk
+0x08 - Unk
+0x10 - unk
+0x20 - Unk
+0x40 - unk
+0x80 - Unk
+
+Flags - Gameoff + 0x0904:
+0x01 - Unk
+0x02 - unk
+0x04 - Unk
+0x08 - Unk
+0x10 - unk
+0x20 - Unk
+0x40 - unk
+0x80 - Unk
 
 Flags - GameOff + 0x090D:
 0x01 - unk
@@ -219,6 +348,16 @@ Flags - Gameoff + 0x0919:
 0x20 - Rattle Returned
 0x40 - Unk
 0x80 - Unk
+
+Flags - GameOff + 0x09EC:
+0x01 - Claw Shot Stolen
+0x02 - Whip Stolen
+0x04 - Gust Bellows Stolen
+0x08 - Bow Stolen
+0x10 - Interface Selection
+0x20 - unk
+0x40 - unk
+0x80 - unk
 
 Flags - GameOff + 0x0934:
 0x01 - unk

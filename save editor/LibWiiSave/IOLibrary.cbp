@@ -6,10 +6,10 @@
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
-			<Target title="Debug">
-				<Option output="lib/libWiiSave-d" prefix_auto="1" extension_auto="1" />
+			<Target title="Debug Win32">
+				<Option output="lib\Win32\libWiiSave-d" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="" />
-				<Option object_output="obj/Debug/" />
+				<Option object_output="obj\Debug\" />
 				<Option type="2" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -20,10 +20,41 @@
 					<Add library="zelda-d" />
 				</Linker>
 			</Target>
-			<Target title="Release">
-				<Option output="lib/libWiiSave" prefix_auto="1" extension_auto="1" />
+			<Target title="Release Win32">
+				<Option platforms="Windows;" />
+				<Option output="lib\Win32\libWiiSave" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="" />
-				<Option object_output="obj/Release/" />
+				<Option object_output="obj\Release\" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="zelda" />
+				</Linker>
+			</Target>
+			<Target title="Debug Linux">
+				<Option platforms="Unix;" />
+				<Option output="lib\Linux\libWiiSave-d" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="obj\Debug\" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+					<Add option="-DDEBUG" />
+				</Compiler>
+				<Linker>
+					<Add library="zelda-d" />
+				</Linker>
+			</Target>
+			<Target title="Release Linux">
+				<Option platforms="Unix;" />
+				<Option output="lib\Linux\libWiiSave" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="obj\Release\" />
 				<Option type="2" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -39,48 +70,49 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 			<Add directory="include" />
-			<Add directory="../libzelda/include" />
+			<Add directory="..\libzelda\include" />
 		</Compiler>
 		<Linker>
-			<Add directory="../libzelda/lib/Linux" />
+			<Add directory="..\libzelda\lib\Linux" />
 		</Linker>
-		<Unit filename="include/WiiBanner.h" />
-		<Unit filename="include/WiiFile.h" />
-		<Unit filename="include/WiiSave.h" />
-		<Unit filename="include/aes.h" />
-		<Unit filename="include/bn.h" />
-		<Unit filename="include/ec.h" />
-		<Unit filename="include/md5.h" />
-		<Unit filename="include/sha1.h" />
-		<Unit filename="include/tools.h" />
-		<Unit filename="include/utf8.h" />
-		<Unit filename="include/utf8/checked.h" />
-		<Unit filename="include/utf8/core.h" />
-		<Unit filename="include/utf8/unchecked.h" />
-		<Unit filename="include/utility.h" />
-		<Unit filename="src/WiiBanner.cpp" />
-		<Unit filename="src/WiiFile.cpp" />
-		<Unit filename="src/WiiSave.cpp" />
-		<Unit filename="src/aes.c">
+		<Unit filename="include\WiiBanner.h" />
+		<Unit filename="include\WiiFile.h" />
+		<Unit filename="include\WiiSave.h" />
+		<Unit filename="include\aes.h" />
+		<Unit filename="include\bn.h" />
+		<Unit filename="include\ec.h" />
+		<Unit filename="include\md5.h" />
+		<Unit filename="include\sha1.h" />
+		<Unit filename="include\tools.h" />
+		<Unit filename="include\utf8.h" />
+		<Unit filename="include\utf8\checked.h" />
+		<Unit filename="include\utf8\core.h" />
+		<Unit filename="include\utf8\unchecked.h" />
+		<Unit filename="include\utility.h" />
+		<Unit filename="src\WiiBanner.cpp" />
+		<Unit filename="src\WiiFile.cpp" />
+		<Unit filename="src\WiiSave.cpp" />
+		<Unit filename="src\aes.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src/bn.cpp" />
-		<Unit filename="src/ec.cpp">
+		<Unit filename="src\bn.cpp" />
+		<Unit filename="src\ec.cpp">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src/md5.c">
+		<Unit filename="src\md5.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src/sha1.c">
+		<Unit filename="src\sha1.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src/tools.c">
+		<Unit filename="src\tools.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src/utility.cpp" />
+		<Unit filename="src\utility.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />
+			<envvars />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

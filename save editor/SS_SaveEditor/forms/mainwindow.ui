@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>969</width>
+    <width>679</width>
     <height>550</height>
    </rect>
   </property>
@@ -170,7 +170,11 @@
               </widget>
              </item>
              <item>
-              <widget class="QSpinBox" name="curHPSpinBox"/>
+              <widget class="QSpinBox" name="curHPSpinBox">
+               <property name="maximum">
+                <number>80</number>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
@@ -214,9 +218,6 @@
                </property>
                <property name="maximum">
                 <double>1000000.000000000000000</double>
-               </property>
-               <property name="singleStep">
-                <double>0.000001000000000</double>
                </property>
                <property name="value">
                 <double>0.000000000000000</double>
@@ -652,6 +653,9 @@
                </property>
                <property name="minimum">
                 <double>-1000000.000000000000000</double>
+               </property>
+               <property name="maximum">
+                <double>1000000.000000000000000</double>
                </property>
                <property name="value">
                 <double>0.000000000000000</double>
@@ -2504,24 +2508,13 @@
         <string>Hex Editor</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_5">
-        <item row="0" column="0">
-         <widget class="QToolButton" name="hexUndoBtn">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="icon">
-           <iconset resource="../resources/resources.qrc">
-            <normaloff>:/Icons/Undo</normaloff>:/Icons/Undo</iconset>
-          </property>
-         </widget>
-        </item>
         <item row="1" column="0" colspan="3">
          <layout class="QHBoxLayout" name="horizontalLayout_2">
           <item>
            <widget class="QGroupBox" name="groupBox_4">
             <property name="maximumSize">
              <size>
-              <width>150</width>
+              <width>200</width>
               <height>16777215</height>
              </size>
             </property>
@@ -2534,14 +2527,11 @@
              </property>
              <item>
               <widget class="QTableView" name="inspectorView">
-               <property name="maximumSize">
-                <size>
-                 <width>150</width>
-                 <height>16777215</height>
-                </size>
+               <property name="editTriggers">
+                <set>QAbstractItemView::NoEditTriggers</set>
                </property>
-               <property name="cornerButtonEnabled">
-                <bool>false</bool>
+               <property name="alternatingRowColors">
+                <bool>true</bool>
                </property>
                <attribute name="horizontalHeaderCascadingSectionResizes">
                 <bool>true</bool>
@@ -2574,6 +2564,73 @@
           </item>
          </layout>
         </item>
+        <item row="2" column="0" colspan="3">
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <item>
+           <widget class="QLineEdit" name="hexGoToLineEdit">
+            <property name="maximumSize">
+             <size>
+              <width>100</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string>Goto specified address (in hex)</string>
+            </property>
+            <property name="statusTip">
+             <string>Goto specified address (in hex)</string>
+            </property>
+            <property name="maxLength">
+             <number>32767</number>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="hexGoToBtn">
+            <property name="toolTip">
+             <string>Goto specified address (in hex)</string>
+            </property>
+            <property name="statusTip">
+             <string>Goto specified address (in hex)</string>
+            </property>
+            <property name="text">
+             <string>Goto Address</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>400</width>
+              <height>0</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item row="0" column="0">
+         <widget class="QToolButton" name="hexUndoBtn">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="icon">
+           <iconset resource="../resources/resources.qrc">
+            <normaloff>:/Icons/Undo</normaloff>:/Icons/Undo</iconset>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0" colspan="3">
+         <widget class="QLabel" name="hexOffsetLbl">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
         <item row="0" column="1">
          <widget class="QToolButton" name="hexRedoBtn">
           <property name="enabled">
@@ -2603,7 +2660,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>969</width>
+     <width>679</width>
      <height>21</height>
     </rect>
    </property>
@@ -2814,6 +2871,128 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <tabstops>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>playHoursSpinBox</tabstop>
+  <tabstop>playMinutesSpinBox</tabstop>
+  <tabstop>playSecondsSpinBox</tabstop>
+  <tabstop>saveTimeEdit</tabstop>
+  <tabstop>curMapLineEdit</tabstop>
+  <tabstop>curAreaLineEdit</tabstop>
+  <tabstop>curRoomLineEdit</tabstop>
+  <tabstop>roomIDSpinBox</tabstop>
+  <tabstop>heroModeChkBox</tabstop>
+  <tabstop>introViewedChkBox</tabstop>
+  <tabstop>nameLineEdit</tabstop>
+  <tabstop>rupeeSpinBox</tabstop>
+  <tabstop>totalHPSpinBox</tabstop>
+  <tabstop>unkHPSpinBox</tabstop>
+  <tabstop>curHPSpinBox</tabstop>
+  <tabstop>cameraXSpinBox</tabstop>
+  <tabstop>cameraYSpinBox</tabstop>
+  <tabstop>cameraZSpinBox</tabstop>
+  <tabstop>cameraRollSpinBox</tabstop>
+  <tabstop>cameraPitchSpinBox</tabstop>
+  <tabstop>cameraYawSpinBox</tabstop>
+  <tabstop>playerXSpinBox</tabstop>
+  <tabstop>playerYSpinBox</tabstop>
+  <tabstop>playerZSpinBox</tabstop>
+  <tabstop>playerRollSpinBox</tabstop>
+  <tabstop>playerPitchSpinBox</tabstop>
+  <tabstop>playerYawSpinBox</tabstop>
+  <tabstop>beetleChkBox</tabstop>
+  <tabstop>hookBeetleChkBox</tabstop>
+  <tabstop>quickBeetleChkBox</tabstop>
+  <tabstop>toughBeetleChkBox</tabstop>
+  <tabstop>bowChkBox</tabstop>
+  <tabstop>ironBowChkBox</tabstop>
+  <tabstop>sacredBowChkBox</tabstop>
+  <tabstop>bugNetChkBox</tabstop>
+  <tabstop>bigBugNetChkBox</tabstop>
+  <tabstop>bombChkBox</tabstop>
+  <tabstop>harpChkBox</tabstop>
+  <tabstop>gustBellowsChkBox</tabstop>
+  <tabstop>clawShotChkBox</tabstop>
+  <tabstop>whipChkBox</tabstop>
+  <tabstop>sailClothChkBox</tabstop>
+  <tabstop>diggingMittsChkBox</tabstop>
+  <tabstop>moleMittsChkBox</tabstop>
+  <tabstop>slingShotChkBox</tabstop>
+  <tabstop>scatterShotChkBox</tabstop>
+  <tabstop>practiceSwdChkBox</tabstop>
+  <tabstop>goddessSwdChkBox</tabstop>
+  <tabstop>longSwdChkBox</tabstop>
+  <tabstop>whiteSwdChkBox</tabstop>
+  <tabstop>masterSwdChkBox</tabstop>
+  <tabstop>trueMasterSwdChkBox</tabstop>
+  <tabstop>hornetChkBox</tabstop>
+  <tabstop>hornetSpinBox</tabstop>
+  <tabstop>butterflyChkBox</tabstop>
+  <tabstop>butterflySpinBox</tabstop>
+  <tabstop>dragonflyChkBox</tabstop>
+  <tabstop>dragonflySpinBox</tabstop>
+  <tabstop>fireflyChkBox</tabstop>
+  <tabstop>fireflySpinBox</tabstop>
+  <tabstop>rhinoBeetleChkBox</tabstop>
+  <tabstop>rhinoBeetleSpinBox</tabstop>
+  <tabstop>ladybugChkBox</tabstop>
+  <tabstop>ladybugSpinBox</tabstop>
+  <tabstop>sandCicadaChkBox</tabstop>
+  <tabstop>sandCicadaSpinBox</tabstop>
+  <tabstop>stagBeetleChkBox</tabstop>
+  <tabstop>stagBeetleSpinBox</tabstop>
+  <tabstop>grasshopperChkBox</tabstop>
+  <tabstop>grasshopperSpinBox</tabstop>
+  <tabstop>mantisChkBox</tabstop>
+  <tabstop>mantisSpinBox</tabstop>
+  <tabstop>antChkBox</tabstop>
+  <tabstop>antSpinBox</tabstop>
+  <tabstop>eldinRollerChkBox</tabstop>
+  <tabstop>eldinRollerSpinBox</tabstop>
+  <tabstop>letterChkBox</tabstop>
+  <tabstop>bugCageChkBox</tabstop>
+  <tabstop>rattleChkBox</tabstop>
+  <tabstop>gratitudeCrystalChkBox</tabstop>
+  <tabstop>gratitudeCrystalSpinBox</tabstop>
+  <tabstop>hornetLarvaeChkBox</tabstop>
+  <tabstop>hornetLarvaeSpinBox</tabstop>
+  <tabstop>birdFeatherChkBox</tabstop>
+  <tabstop>birdFeatherSpinBox</tabstop>
+  <tabstop>tumbleWeedChkBox</tabstop>
+  <tabstop>tumbleWeedSpinBox</tabstop>
+  <tabstop>lizardTailChkBox</tabstop>
+  <tabstop>lizardTailSpinBox</tabstop>
+  <tabstop>eldinOreChkBox</tabstop>
+  <tabstop>eldinOreSpinBox</tabstop>
+  <tabstop>ancientFlowerChkBox</tabstop>
+  <tabstop>ancientFlowerSpinBox</tabstop>
+  <tabstop>amberRelicChkBox</tabstop>
+  <tabstop>amberRelicSpinBox</tabstop>
+  <tabstop>duskRelicChkBox</tabstop>
+  <tabstop>duskRelicSpinBox</tabstop>
+  <tabstop>jellyBlobChkBox</tabstop>
+  <tabstop>jellyBlobSpinBox</tabstop>
+  <tabstop>monsterClawChkBox</tabstop>
+  <tabstop>monsterClawSpinBox</tabstop>
+  <tabstop>monsterHornChkBox</tabstop>
+  <tabstop>monsterHornSpinBox</tabstop>
+  <tabstop>decoSkullChkBox</tabstop>
+  <tabstop>decoSkullSpinBox</tabstop>
+  <tabstop>evilCrystalChkBox</tabstop>
+  <tabstop>evilCrystalSpinBox</tabstop>
+  <tabstop>blueBirdFeatherChkBox</tabstop>
+  <tabstop>blueBirdFeatherSpinBox</tabstop>
+  <tabstop>goldenSkullChkBox</tabstop>
+  <tabstop>goldenSkullSpinBox</tabstop>
+  <tabstop>goddessPlumeChkBox</tabstop>
+  <tabstop>goddessPlumeSpinBox</tabstop>
+  <tabstop>hexUndoBtn</tabstop>
+  <tabstop>hexRedoBtn</tabstop>
+  <tabstop>inspectorView</tabstop>
+  <tabstop>hexGoToLineEdit</tabstop>
+  <tabstop>hexGoToBtn</tabstop>
+  <tabstop>createDeleteGameBtn</tabstop>
+ </tabstops>
  <resources>
   <include location="../resources/resources.qrc"/>
  </resources>

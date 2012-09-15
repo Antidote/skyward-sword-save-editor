@@ -205,11 +205,13 @@ void MainWindow::SetupHexEdit()
     // Setup the inspector
     QStandardItemModel* model = new QStandardItemModel(0, 2, this);
     model->setHorizontalHeaderItem(0, new QStandardItem("Type"));
-    model->setHorizontalHeaderItem(1, new QStandardItem("Data"));
+    model->setHorizontalHeaderItem(1, new QStandardItem("Value"));
     model->appendRow(new QStandardItem("char"));
     model->appendRow(new QStandardItem("uchar"));
-    model->appendRow(new QStandardItem("int"));
-    model->appendRow(new QStandardItem("uint"));
+    model->appendRow(new QStandardItem("int32"));
+    model->appendRow(new QStandardItem("uint32"));
+    model->appendRow(new QStandardItem("int64"));
+    model->appendRow(new QStandardItem("uint64"));
     m_ui->inspectorView->setModel(model);
 }
 
@@ -218,6 +220,7 @@ void MainWindow::SetupConnections()
     connect(m_fileWatcher,              SIGNAL(fileChanged(QString)), this, SLOT(onFileChanged(QString)));
     connect(m_hexEdit,                  SIGNAL(currentAddressChanged(int)), this, SLOT(onCurrentAdressChanged(int)));
     connect(m_hexEdit,                  SIGNAL(dataChanged()),        this, SLOT(onHexDataChanged()));
+    connect(m_ui->hexGoToBtn,           SIGNAL(clicked()),            this, SLOT(onHexGotoAddress()));
     connect(m_ui->hexUndoBtn,           SIGNAL(clicked()),            m_hexEdit, SLOT(undo()));
     connect(m_ui->hexRedoBtn,           SIGNAL(clicked()),            m_hexEdit, SLOT(redo()));
     connect(m_ui->playHoursSpinBox,     SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
@@ -390,15 +393,54 @@ void MainWindow::onTextChanged(QString text)
 
 void MainWindow::onCurrentAdressChanged(int address)
 {
-   qint8 charVal = *(qint8*)(m_hexEdit->data().data() + address);
-   quint8 ucharVal = *(quint8*)(m_hexEdit->data().data() + address);
-   qint32 intVal = qFromBigEndian(*(qint32*)(m_hexEdit->data().data() + address));
-   quint32 uintVal = qFromBigEndian(*(qint32*)(m_hexEdit->data().data() + address));
+   qint8   charVal;
+   quint8  ucharVal;
+   qint32  int32Val;
+   quint32 uint32Val;
+   qint32  int64Val;
+   quint64 uint64Val;
+
+   if ((address + 1) <= m_hexEdit->data().size())
+   {
+       charVal = *(qint8*)(m_hexEdit->data().data() + address);
+       ucharVal = *(quint8*)(m_hexEdit->data().data() + address);
+   }
+   else
+   {
+       charVal = 0;
+       ucharVal = 0;
+   }
+
+   if ((address + 4) <= m_hexEdit->data().size())
+   {
+       int32Val = qFromBigEndian(*(qint32*)(m_hexEdit->data().data() + address));
+       uint32Val = qFromBigEndian(*(qint32*)(m_hexEdit->data().data() + address));
+   }
+   else
+   {
+       int32Val = 0;
+       uint32Val = 0;
+   }
+
+   if ((address + 8) <= m_hexEdit->data().size())
+   {
+       int64Val = qFromBigEndian(*(qint64*)(m_hexEdit->data().data() + address));
+       uint64Val = qFromBigEndian(*(qint64*)(m_hexEdit->data().data() + address));
+   }
+   else
+   {
+       int64Val = 0;
+       uint64Val = 0;
+   }
 
    ((QStandardItemModel*)m_ui->inspectorView->model())->setItem(0, 1, new QStandardItem(QString("%1").arg((qint32)charVal)));
    ((QStandardItemModel*)m_ui->inspectorView->model())->setItem(1, 1, new QStandardItem(QString("%1 '%2'").arg((quint32)ucharVal).arg(ucharVal)));
-   ((QStandardItemModel*)m_ui->inspectorView->model())->setItem(2, 1, new QStandardItem(QString("%1").arg(intVal)));
-   ((QStandardItemModel*)m_ui->inspectorView->model())->setItem(3, 1, new QStandardItem(QString("%1").arg(uintVal)));
+   ((QStandardItemModel*)m_ui->inspectorView->model())->setItem(2, 1, new QStandardItem(QString("%1").arg(int32Val)));
+   ((QStandardItemModel*)m_ui->inspectorView->model())->setItem(3, 1, new QStandardItem(QString("%1").arg(uint32Val)));
+   ((QStandardItemModel*)m_ui->inspectorView->model())->setItem(4, 1, new QStandardItem(QString("%1").arg(int64Val)));
+   ((QStandardItemModel*)m_ui->inspectorView->model())->setItem(5, 1, new QStandardItem(QString("%1").arg(uint64Val)));
+
+   m_ui->hexOffsetLbl->setText(QString("Offset " + QString("%1").arg(address, 4, 16, QLatin1Char('0')).toUpper()));
 }
 
 void MainWindow::onHexDataChanged()
@@ -412,6 +454,27 @@ void MainWindow::onHexDataChanged()
     m_gameFile->UpdateChecksum();
     UpdateInfo();
     UpdateTitle();
+}
+
+void MainWindow::onHexGotoAddress()
+{
+    if (!m_ui->hexGoToLineEdit->text().isEmpty())
+    {
+        bool ok;
+        int ret = m_ui->hexGoToLineEdit->text().toInt(&ok);
+        if (!ok)
+        {
+            ret = m_ui->hexGoToLineEdit->text().toInt(&ok, 16);
+            if (!ok)
+            {
+                statusBar()->showMessage(tr("Invalid Address \"%1\"").arg(m_ui->hexGoToLineEdit->text()));
+                return;
+            }
+        }
+
+        //m_hexEdit->setAddressOffset(ret);
+        m_hexEdit->setCursorPosition(ret);
+    }
 }
 
 void MainWindow::UpdateInfo()
@@ -815,7 +878,9 @@ void MainWindow::onSave()
     m_gameFile->UpdateChecksum();
     UpdateInfo();
     UpdateTitle();
+    int oldPos = m_hexEdit->cursorPosition();
     m_hexEdit->setData(m_gameFile->GetGameData());
+    m_hexEdit->setCursorPosition(oldPos);
 }
 
 void MainWindow::onSaveAs()
