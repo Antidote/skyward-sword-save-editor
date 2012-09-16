@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WiiSave", "WiiSave.vcproj", "{6AB6AB3F-F69D-4F0B-8899-620226931E1A}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libzelda", "..\libzelda\libzelda.vcproj", "{3E0B05A1-DE7E-4EAE-86DF-2FB507E7F1AD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6AB6AB3F-F69D-4F0B-8899-620226931E1A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{6AB6AB3F-F69D-4F0B-8899-620226931E1A}.Debug|Win32.Build.0 = Debug|Win32
+		{6AB6AB3F-F69D-4F0B-8899-620226931E1A}.Release|Win32.ActiveCfg = Release|Win32
+		{6AB6AB3F-F69D-4F0B-8899-620226931E1A}.Release|Win32.Build.0 = Release|Win32
+		{3E0B05A1-DE7E-4EAE-86DF-2FB507E7F1AD}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3E0B05A1-DE7E-4EAE-86DF-2FB507E7F1AD}.Debug|Win32.Build.0 = Debug|Win32
+		{3E0B05A1-DE7E-4EAE-86DF-2FB507E7F1AD}.Release|Win32.ActiveCfg = Release|Win32
+		{3E0B05A1-DE7E-4EAE-86DF-2FB507E7F1AD}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
