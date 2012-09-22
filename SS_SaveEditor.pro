@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT += core gui
+QT += core gui wwwidgets
 
 TARGET = SS_SaveEditor
 TEMPLATE = app
@@ -28,9 +28,11 @@ SOURCES += \
     src/qhexedit2/qhexedit_p.cpp \
     src/qhexedit2/qhexedit.cpp \
     src/qhexedit2/commands.cpp \
-    src/skywardsword/skywardswordfile.cpp \
     src/adventurebase.cpp \
-    src/skywardsword/adventure.cpp
+    src/skywardsword/adventure.cpp \
+    src/menus/menubar.cpp \
+    src/menus/filemenu.cpp \
+    src/skywardsword/savefile.cpp
 
 HEADERS  += \
     include/mainwindow.h \
@@ -45,11 +47,12 @@ HEADERS  += \
     include/qhexedit2/commands.h \
     include/savebase.h \
     include/adventurebase.h \
-    include/skywardsword/skywardswordfile.h \
-    include/skywardsword/adventure.h
+    include/skywardsword/adventure.h \
+    include/skywardsword/savefile.h \
+    include/menus/menubar.h \
+    include/menus/filemenu.h
 
 FORMS    += \
-    forms/mainwindow.ui \
     forms/aboutdialog.ui \
     forms/preferencesdialog.ui
 

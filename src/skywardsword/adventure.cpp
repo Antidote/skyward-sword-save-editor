@@ -1,9 +1,12 @@
 #include "skywardsword/adventure.h"
 #include "qhexedit2/qhexedit.h"
 #include "common.h"
-
+#include <time.h>
 #include <QDateTime>
 #include <QtEndian>
+
+namespace SkywardSword
+{
 
 Adventure::Adventure()
 {
@@ -759,3 +762,5 @@ const float Adventure::DEFAULT_POS_X = -4798.150391f;
 const float Adventure::DEFAULT_POS_Y =  1237.629517f;
 const float Adventure::DEFAULT_POS_Z = -6573.722656f;
 const ushort Adventure::JAPANESE_NAME[4] = {0x30ea, 0x30f3, 0x30af, 0};
+
+} // SkywardSword

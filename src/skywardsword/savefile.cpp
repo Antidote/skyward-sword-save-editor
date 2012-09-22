@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with WiiKing2 Editor.  If not, see <http://www.gnu.org/licenses/>
 
-#include "skywardsword/skywardswordfile.h"
+#include "skywardsword/savefile.h"
 #include "common.h"
 #include "WiiSave.h"
 #include "WiiBanner.h"
@@ -29,27 +29,30 @@
 #include <QDir>
 #include <time.h>
 
+namespace SkywardSword
+{
+
 // This constructor allows us to create a new save file.
-SkywardSwordFile::SkywardSwordFile(Region region)
+SaveFile::SaveFile(Region region)
+{
+    m_region = region;
+}
+
+SaveFile::SaveFile(const QString& filepath, Game game)
+{
+    open(game, filepath);
+}
+
+SaveFile::~SaveFile()
 {
 }
 
-SkywardSwordFile::SkywardSwordFile(const QString& filepath, Game game)
-{
-}
-
-SkywardSwordFile::~SkywardSwordFile()
-{
-}
-
-QString SkywardSwordFile::gameName() const
+QString SaveFile::gameName() const
 {
     return "Skyward Sword";
 }
 
-
-
-bool SkywardSwordFile::isValidFile(const QString &filepath, Region* outRegion)
+bool SaveFile::isValidFile(const QString &filepath, Region* outRegion)
 {
 
     FILE* file = fopen(filepath.toAscii(), "rb");
@@ -64,3 +67,5 @@ bool SkywardSwordFile::isValidFile(const QString &filepath, Region* outRegion)
     *outRegion = region;
     return (region == NTSCURegion || region == NTSCJRegion || region == PALRegion) && size == 0xFBE0;
 }
+
+} // SkywardSword
