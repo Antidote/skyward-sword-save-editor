@@ -17,6 +17,9 @@ class WiiSave;
 #define TICKS_PER_SECOND 60750000
 #define SECONDS_TO_2000  946684800
 
+namespace SkywardSword
+{
+
 struct PlayTime
 {
     int Hours;
@@ -189,5 +192,7 @@ private:
     quint32 m_checksum;
     Checksum m_checksumEngine;
 };
+
+} // SkywardSword
 
 #endif // ADVENTURE_H

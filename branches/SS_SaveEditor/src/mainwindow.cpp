@@ -14,11 +14,17 @@
 // along with WiiKing2 Editor.  If not, see <http://www.gnu.org/licenses/>
 
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "menus/menubar.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
+#ifndef Q_OS_WIN
+    // Set window icon on non windows OSes, kinda redundant to do it on windows
+    this->setWindowIcon(QIcon(":/Icons/Bomb256x256"));
+#endif
+    this->setMenuBar(MenuBar::instance());
+    this->addToolBar(MenuBar::toolBar());
 }
 
 MainWindow::~MainWindow()

@@ -24,8 +24,14 @@
 #include "WiiBanner.h"
 #include "checksum.h"
 
+
+
 class QDateTime;
 class WiiSave;
+
+namespace SkywardSword
+{
+//class Adventure;
 
 #define TICKS_PER_SECOND 60750000
 #define SECONDS_TO_2000  946684800
@@ -48,7 +54,7 @@ struct Vector3
     {}
 };
 
-class SkywardSwordFile : public SaveBase
+class SaveFile : public SaveBase
 {
 public:
     enum Region
@@ -58,18 +64,18 @@ public:
          PALRegion   = 0x50554F53
     };
 
-    SkywardSwordFile(Region region);
-    SkywardSwordFile(const QString& filepath = NULL, Game game = Game1);
-    ~SkywardSwordFile();
+    SaveFile(Region region);
+    SaveFile(const QString& filepath = NULL, Game game = Game1);
+    ~SaveFile();
 
     QString gameName() const;
-    bool save(const QString& filepath = ""){}
-    bool open(Game game = GameNone, const QString& filepath=""){}
-    void createNewGame(Game game){}
-    void createEmptyFile(Region region){}
-    void deleteGame(Game game = GameNone){}
-    void deleteAllGames(){}
-    bool isModified() const{}
+    bool    save(const QString& filepath = ""){}
+    bool    open(Game game = GameNone, const QString& filepath=""){}
+    void    createNewGame(Game game){}
+    void    createEmptyFile(Region region){}
+    void    deleteAdventure(Game game = GameNone){}
+    void    deleteAllGames(){}
+    bool    isModified() const{}
 
     void    close(){} //<! Closes the current file without saving.
     bool    reload(Game game){}
@@ -81,6 +87,8 @@ public:
     static bool isValidFile(const QString &filepath, Region* outRegion);
 
 private:
+    Region m_region;
 };
 
+} // SkywardSword
 #endif // GAMEFILE_H
