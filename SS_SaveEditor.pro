@@ -32,7 +32,9 @@ SOURCES += \
     src/skywardsword/adventure.cpp \
     src/menus/menubar.cpp \
     src/menus/filemenu.cpp \
-    src/skywardsword/savefile.cpp
+    src/skywardsword/savefile.cpp \
+    src/skywardsword/skywardfactory.cpp \
+    src/factorymanager.cpp
 
 HEADERS  += \
     include/mainwindow.h \
@@ -50,7 +52,10 @@ HEADERS  += \
     include/skywardsword/adventure.h \
     include/skywardsword/savefile.h \
     include/menus/menubar.h \
-    include/menus/filemenu.h
+    include/menus/filemenu.h \
+    include/savefactorybase.h \
+    include/skywardsword/skywardfactory.h \
+    include/factorymanager.h
 
 FORMS    += \
     forms/aboutdialog.ui \

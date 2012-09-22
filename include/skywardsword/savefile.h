@@ -17,12 +17,9 @@
 #define SKYWARDSWORDFILE_H
 
 #include <QFile>
-#include "savebase.h"
 #include <QImage>
 #include <QIcon>
-#include "WiiSave.h"
-#include "WiiBanner.h"
-#include "checksum.h"
+#include "skywardsword/adventure.h"
 
 
 
@@ -32,27 +29,6 @@ class WiiSave;
 namespace SkywardSword
 {
 //class Adventure;
-
-#define TICKS_PER_SECOND 60750000
-#define SECONDS_TO_2000  946684800
-
-struct PlayTime
-{
-    int Hours;
-    int Minutes;
-    int Seconds;
-    quint64 RawTicks;
-};
-
-struct Vector3
-{
-    float X;
-    float Y;
-    float Z;
-
-    Vector3(float x, float y, float z) : X(x), Y(y), Z(z)
-    {}
-};
 
 class SaveFile : public SaveBase
 {
@@ -65,24 +41,12 @@ public:
     };
 
     SaveFile(Region region);
-    SaveFile(const QString& filepath = NULL, Game game = Game1);
+    SaveFile(const QString& filepath = NULL);
     ~SaveFile();
 
     QString gameName() const;
-    bool    save(const QString& filepath = ""){}
-    bool    open(Game game = GameNone, const QString& filepath=""){}
-    void    createNewGame(Game game){}
-    void    createEmptyFile(Region region){}
-    void    deleteAdventure(Game game = GameNone){}
-    void    deleteAllGames(){}
-    bool    isModified() const{}
-
-    void    close(){} //<! Closes the current file without saving.
-    bool    reload(Game game){}
-    bool    isOpen() const{}
-
-    QString filename() const{}
-    void    setFilename(const QString& filepath){}
+    bool    save(const QString& filepath = "");
+    bool    open(const QString& filepath="");
 
     static bool isValidFile(const QString &filepath, Region* outRegion);
 

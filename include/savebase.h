@@ -16,21 +16,17 @@ public:
     virtual QString gameName() const=0;
 
     virtual bool isOpen() const=0;
-    virtual void close() = 0;
-    virtual bool reload(int adventureIndex) = 0;
-    virtual bool save(const QString& filename = NULL) = 0;
-    virtual bool open(const QString& filepath=NULL) = 0;
-    virtual void createNewGame(int index) = 0;
-    virtual void deleteAdventure(AdventureBase*) = 0;
-    virtual void deleteAllGames() = 0;
-    virtual bool isModified() const = 0;
+    virtual bool save() = 0 ;
+    virtual bool open() = 0;
+    bool isModified();
 
     QString filename() const;
-    void setFilename(const QString& filepath);
+    void    setFilename(const QString& filepath);
 
-private:
+protected:
     QString m_filename;
-
+    AdventureBase*        m_currentAdventure;
+    QList<AdventureBase*> m_adventures;
 signals:
     void loadFailed(const QString&, const QString&);
     void saveFailed(const QString&, const QString&);

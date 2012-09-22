@@ -14,6 +14,7 @@
 // along with WiiKing2 Editor.  If not, see <http://www.gnu.org/licenses/>
 
 #include "skywardsword/savefile.h"
+#include "skywardsword/adventure.h"
 #include "common.h"
 #include "WiiSave.h"
 #include "WiiBanner.h"
@@ -38,18 +39,82 @@ SaveFile::SaveFile(Region region)
     m_region = region;
 }
 
-SaveFile::SaveFile(const QString& filepath, Game game)
+SaveFile::SaveFile(const QString& filepath)
 {
-    open(game, filepath);
+    open(filepath);
 }
 
 SaveFile::~SaveFile()
 {
+    m_adventures.clear();
 }
 
 QString SaveFile::gameName() const
 {
     return "Skyward Sword";
+}
+
+bool SaveFile::open(const QString &filepath)
+{
+    if (!filepath.isEmpty())
+    {
+        QFile file;
+        file.setFileName(filepath);
+        if (file.exists() && file.open(QFile::ReadOnly))
+        {
+            m_filename = filepath;
+            QByteArray data = file.readAll();
+            m_region = (Region)qFromBigEndian(*(quint32*)(data.data()));
+            if (data.size() == 0xFBE0)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    Adventure adventure;
+                    adventure.setData(data.mid(0x20 + (i*0x53C0), 0x53BC));
+                    quint32 checksum = qFromBigEndian(*(quint32*)(data.data() + (0x20 + (i*0x53C0) + 0x53BC)));
+                    adventure.setChecksum(checksum);
+                    m_adventures.push_back(&adventure);
+                }
+
+                file.close();
+
+                return true;
+            }
+            return false;
+        }
+
+        return false;
+    }
+
+    return false;
+}
+
+bool SaveFile::save(const QString &filepath)
+{
+    if (!filepath.isEmpty())
+    {
+        QFile file(filepath);
+        if (file.open(QFile::WriteOnly))
+        {
+            QByteArray data(0x1D, 0);
+            *(quint32*)(data.data()) = qToBigEndian((quint32)m_region);
+            *(quint32*)(data.data() + 0x001C) = qToBigEndian(29); // Size of the header + 1;
+
+            foreach(AdventureBase* adv, m_adventures)
+            {
+                data.append(adv->data());
+                int checksum = qToBigEndian(adv->checksum());
+                data.append((char*)&checksum, 4);
+            }
+
+            file.write(data);
+            file.close();
+            return true;
+        }
+        return false;
+    }
+
+    return false;
 }
 
 bool SaveFile::isValidFile(const QString &filepath, Region* outRegion)
