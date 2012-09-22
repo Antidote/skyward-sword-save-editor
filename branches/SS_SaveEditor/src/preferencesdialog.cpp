@@ -99,5 +99,5 @@ void PreferencesDialog::accept()
         QByteArray macAddr = QByteArray::fromHex(m_ui->macAddrLineEdit->text().toAscii());
         WiiKeys::GetInstance()->SetMacAddr(macAddr);
     }
-    this->done(QDialog::Accepted);
+    emit accepted();
 }

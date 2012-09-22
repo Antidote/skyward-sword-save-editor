@@ -38,7 +38,7 @@ struct Vector3
     {}
 };
 
-class Adventure : AdventureBase
+class Adventure : public AdventureBase
 {
 public:
     // Default coords for new file
