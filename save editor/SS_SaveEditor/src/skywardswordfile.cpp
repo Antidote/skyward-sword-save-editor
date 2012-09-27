@@ -1013,7 +1013,9 @@ void SkywardSwordFile::SetGratitudeCrystalAmount(quint32 val)
 {
     if (!m_data)
         return;
-    *(quint16*)(m_data + GetGameOffset() + 0x0A50) |= (qToBigEndian<quint16>((quint16)val) << 3);
+    quint16 oldVal = qFromBigEndian<quint16>(*(quint16*)(m_data + GetGameOffset() + 0x0A50)) & 0xFC00;
+    oldVal |= ((quint16)val << 3 & 0x03FF);
+    *(quint16*)(m_data + GetGameOffset() + 0x0A50) = qToBigEndian<quint16>(oldVal);
 }
 
 ushort SkywardSwordFile::GetRupees() const
