@@ -328,7 +328,6 @@ WiiBanner* WiiSave::readBanner()
     banner->setTitle(gameTitle);
     banner->setSubtitle(subTitle);
     banner->setBannerSize(bannerSize);
-    std::cerr << "Banner Size: " << std::hex << bannerSize << std::endl;
     WiiImage* bannerImage = readImage(192, 64);
     banner->setBannerImage(bannerImage);
     banner->setAnimationSpeed(animSpeed);
@@ -388,12 +387,12 @@ WiiFile* WiiSave::readFile()
         return NULL;
     }
 
-    fileLen = m_reader->readUInt32();
+    fileLen     = m_reader->readUInt32();
     permissions = m_reader->readByte();
     attributes  = m_reader->readByte();
     type        = (WiiFile::Type)m_reader->readByte();
     name        = std::string((const char*)m_reader->readBytes(0x45));
-    ret = new WiiFile(std::string(name));
+    ret         = new WiiFile(std::string(name));
     ret->setPermissions(permissions);
     ret->setAttributes(attributes);
     ret->setType((WiiFile::Type)type);
@@ -432,10 +431,6 @@ void WiiSave::readCerts(u32 totalSize)
     u8* hash2 = getSha1(hash, 20);
 
     int ok = check_ec(ngCert, apCert, sig, hash2);
-
-    //if (!ok)
-        //throw IOException("Certificates failed validation!");
-    std::cout << "Ok: " << ok << std::endl;
 }
 
 void WiiSave::writeBanner()
