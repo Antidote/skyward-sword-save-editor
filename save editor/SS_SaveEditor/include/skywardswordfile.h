@@ -203,7 +203,7 @@ public:
     quint32   GetMaterialQuantity(Material material);
     void      SetMaterialQuantity(Material material, quint32 val);
     quint32   GetGratitudeCrystalAmount();
-    void      SetGratitudeCrystalAmount(quint32 val);
+    void      SetGratitudeCrystalAmount(quint16 val);
     ushort    GetRupees() const;
     void      SetRupees(ushort val);
     ushort    GetTotalHP() const;
@@ -221,6 +221,8 @@ public:
     void      SetCurrentArea(const QString& map);
     QString   GetCurrentRoom() const;
     void      SetCurrentRoom(const QString& map);
+    bool      IsNight() const;
+    void      SetNight(const bool val);
     void      SetGameData(const QByteArray& data);
     QByteArray GetGameData();
     quint8*   GetSkipData() const;
@@ -231,7 +233,7 @@ public:
 
     void      SetData(char* data);
     bool      LoadDataBin(const QString& filepath = "", Game game = Game1);
-    bool      CreateDataBin();
+    bool      SaveDataBin();
     QString   GetBannerTitle() const;
     QString   GetBannerSubtitle() const;
     const QPixmap GetBanner() const;

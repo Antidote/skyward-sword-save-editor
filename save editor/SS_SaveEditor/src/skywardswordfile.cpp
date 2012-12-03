@@ -127,7 +127,7 @@ bool SkywardSwordFile::Save(const QString& filename)
     if (m_filename.lastIndexOf(".bin") == m_filename.size() - 4)
     {
 //#ifdef DEBUG
-        return CreateDataBin();
+        return SaveDataBin();
 /*#else
             QMessageBox msg(QMessageBox::Warning, "DISABLED", "Data.bin is an experimental feature and support has been disabled in this version");
             msg.exec();
@@ -181,7 +181,7 @@ void SkywardSwordFile::CreateNewGame(SkywardSwordFile::Game game)
     if (!m_data)
     {
         // Default to NTSC-U Region
-        CreateEmptyFile(NTSCJRegion);
+        CreateEmptyFile(NTSCURegion);
     }
 
     if (m_isOpen == false)
@@ -1009,13 +1009,12 @@ quint32 SkywardSwordFile::GetGratitudeCrystalAmount()
     return ret;
 }
 
-void SkywardSwordFile::SetGratitudeCrystalAmount(quint32 val)
+void SkywardSwordFile::SetGratitudeCrystalAmount(quint16 val)
 {
     if (!m_data)
         return;
     quint16 oldVal = qFromBigEndian<quint16>(*(quint16*)(m_data + GetGameOffset() + 0x0A50)) & 0xFC00;
-    oldVal |= ((quint16)val << 3 & 0x03FF);
-    *(quint16*)(m_data + GetGameOffset() + 0x0A50) = qToBigEndian<quint16>(oldVal);
+    *(quint16*)(m_data + GetGameOffset() + 0x0A50) = qToBigEndian<quint16>(oldVal | (val << 3 & 0x03FF));
 }
 
 ushort SkywardSwordFile::GetRupees() const
@@ -1023,8 +1022,7 @@ ushort SkywardSwordFile::GetRupees() const
     if (!m_data)
         return 0;
 
-    ushort tmp = *(ushort*)(m_data + GetGameOffset() + 0x0A5E);
-    return qFromBigEndian<quint16>(tmp);
+    return qFromBigEndian<quint16>(*(ushort*)(m_data + GetGameOffset() + 0x0A5E));
 }
 
 void SkywardSwordFile::SetRupees(ushort val)
@@ -1141,14 +1139,14 @@ quint8* SkywardSwordFile::GetSkipData() const
     if (!m_data)
         return NULL;
     quint8* skip = new quint8[0x80];
-    memcpy(skip, (m_data + 0x20 + (0x53BC * 3)), 0x80);
+    memcpy(skip, (m_data + 0x20 + (0x53C0 * 3)), 0x80);
 
     return skip;
 }
 
 void SkywardSwordFile::SetSkipData(const quint8 *data)
 {
-    memcpy((m_data + 0x20 + (0x53BC * 3)), data, 0x80);
+    memcpy((m_data + 0x20 + (0x53C0 * 3)), data, 0x80);
 }
 
 uint SkywardSwordFile::GetChecksum() const
@@ -1310,6 +1308,19 @@ void SkywardSwordFile::SetQuantity(bool isRight, int offset, quint32 val)
     }
 }
 
+bool SkywardSwordFile::IsNight() const
+{
+    return (*(quint8*)(m_data + GetGameOffset() + 0x53B3) & 0x01) == 0x01;
+}
+
+void SkywardSwordFile::SetNight(const bool val)
+{
+    if (val)
+        *(quint8*)(m_data + GetGameOffset() + 0x53B3) |= 0x01;
+    else
+        *(quint8*)(m_data + GetGameOffset() + 0x53B3) &= ~0x01;
+}
+
 void SkywardSwordFile::SetData(char *data)
 {
     if (m_data)
@@ -1373,9 +1384,9 @@ bool SkywardSwordFile::LoadDataBin(const QString& filepath, Game game)
     return false;
 }
 
-bool SkywardSwordFile::CreateDataBin()
+bool SkywardSwordFile::SaveDataBin()
 {
-    if (!WiiKeys::GetInstance()->IsOpen() || !WiiKeys::GetInstance()->isValid())
+    if (!WiiKeys::instance()->isOpen() || !WiiKeys::instance()->isValid())
     {
         QMessageBox msg(QMessageBox::Warning, "Invalid or Missing Keys", "Required keys are either missing or invalid\nPlease check:\nEdit->Preferences\nTo ensure you have valid keys.");
         msg.exec();
@@ -1384,9 +1395,11 @@ bool SkywardSwordFile::CreateDataBin()
 
     if (m_saveGame != NULL)
     {
+        qDebug() << "Changing wiiking2.sav data";
         WiiFile* wiiking2 = m_saveGame->getFile("/wiiking2.sav");
         wiiking2->setData((unsigned char*)m_data);
-        m_saveGame->saveToFile(m_filename.toStdString(), (u8*)WiiKeys::GetInstance()->GetMacAddr().data(), WiiKeys::GetInstance()->GetNGID(),(u8*)WiiKeys::GetInstance()->GetNGPriv().data(), (u8*)WiiKeys::GetInstance()->GetNGSig().data(), WiiKeys::GetInstance()->GetNGKeyID());
+        qDebug() << "Done saving to" << m_filename;
+        m_saveGame->saveToFile(m_filename.toStdString(), (u8*)WiiKeys::instance()->macAddr().data(), WiiKeys::instance()->NGID(),(u8*)WiiKeys::instance()->NGPriv().data(), (u8*)WiiKeys::instance()->NGSig().data(), WiiKeys::instance()->NGKeyID());
         m_fileChecksum = m_checksumEngine.GetCRC32((unsigned const char*)m_data, 0, 0xFBE0);
         return true;
     }
@@ -1398,6 +1411,7 @@ bool SkywardSwordFile::CreateDataBin()
         memset(gameId, 0, 5);
         memcpy(gameId, (char*)&region, 4);
         qDebug() << gameId;
+        qDebug() << "Attempting to load embedded banner.tpl";
         QFile banner(":/BannerData/banner.tpl");
         if (banner.open(QFile::ReadOnly))
         {
@@ -1413,17 +1427,21 @@ bool SkywardSwordFile::CreateDataBin()
             quint64 fullId = ((quint64)region << 32)  | qToBigEndian(titleId) >> 32;
             wiiBanner->setGameID(qFromBigEndian(fullId));
 
+            qDebug() << "Got Banner.tpl";
+            qDebug() << "Attempting to load embedded icon.tpl";
             QFile icon(":/BannerData/icon.tpl");
             if (icon.open(QFile::ReadOnly))
             {
                 QDataStream dataStream(&icon);
                 quint8* iconData = new quint8[48*48*2];
-                dataStream.readRawData((char*)iconData, 192*168*2);
+                dataStream.readRawData((char*)iconData, 48*48*2);
                 icon.close();
                 wiiBanner->addIcon(new WiiImage(48, 48, iconData));
+                qDebug() << "Got icon.tpl";
             }
             else
             {
+                qWarning() << "Failed to load icon.tpl bailing out!";
                 delete wiiBanner;
                 wiiBanner = NULL;
                 delete m_saveGame;
@@ -1468,7 +1486,7 @@ bool SkywardSwordFile::CreateDataBin()
             m_saveGame->setBanner(wiiBanner);
             m_saveGame->addFile("/wiiking2.sav", new WiiFile("wiiking2.sav", WiiFile::GroupRW | WiiFile::OwnerRW, (quint8*)m_data, 0xFBE0));
             m_saveGame->addFile("/skip.dat", new WiiFile("skip.dat", WiiFile::GroupRW | WiiFile::OwnerRW, GetSkipData(), 0x80));
-            m_saveGame->saveToFile(m_filename.toStdString(), (u8*)WiiKeys::GetInstance()->GetMacAddr().data(), WiiKeys::GetInstance()->GetNGID(),(u8*)WiiKeys::GetInstance()->GetNGPriv().data(), (u8*)WiiKeys::GetInstance()->GetNGSig().data(), WiiKeys::GetInstance()->GetNGKeyID());
+            m_saveGame->saveToFile(m_filename.toStdString(), (u8*)WiiKeys::instance()->macAddr().data(), WiiKeys::instance()->NGID(),(u8*)WiiKeys::instance()->NGPriv().data(), (u8*)WiiKeys::instance()->NGSig().data(), WiiKeys::instance()->NGKeyID());
             m_fileChecksum = m_checksumEngine.GetCRC32((unsigned const char*)m_data, 0, 0xFBE0);
 
             return true;
@@ -1521,7 +1539,7 @@ QString SkywardSwordFile::GetBannerSubtitle() const
     QFile subtitle(QString(":/BannerData/%1/subtitle.bin").arg(gameId));
     if (subtitle.open(QFile::ReadOnly))
     {
-        QString titleString = QString::fromUtf16((ushort*)subtitle.readAll().data());
+        QString titleString = QString::fromUtf16((ushort*)subtitle.readAll().data() + '\0');
         subtitle.close();
         return titleString;
     }

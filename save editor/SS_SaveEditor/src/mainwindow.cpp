@@ -63,10 +63,10 @@ MainWindow::MainWindow(QWidget *parent) :
     if (settings.allKeys().count() > 0)
     {
         qDebug() << "Registry entry found, attempting to load...";
-        if(!WiiKeys::GetInstance()->LoadKeys())
+        if(!WiiKeys::instance()->loadKeys())
         {
             qDebug() << "Couldn't not find 1 or more keys, attempting to load keys.bin...";
-            if (!WiiKeys::GetInstance()->Open("./keys.bin"))
+            if (!WiiKeys::instance()->open("./keys.bin"))
                 qDebug() << "No keys.bin, requires manual entry";
             else
                 qDebug() << "done";
@@ -78,13 +78,13 @@ MainWindow::MainWindow(QWidget *parent) :
     {
         qDebug() << "No Registry Entry trying keys.bin";
 
-        if (!WiiKeys::GetInstance()->Open("./keys.bin"))
+        if (!WiiKeys::instance()->open("./keys.bin"))
             qDebug() << "No keys.bin, requires manual entry";
         else
             qDebug() << "done";
     }
 //#else
- //   m_ui->actionPreferences->setEnabled(false);
+//   m_ui->actionPreferences->setEnabled(false);
 //#endif
     SetupActions();
     SetupHexEdit();
@@ -238,6 +238,7 @@ void MainWindow::SetupConnections()
     connect(m_ui->cameraRollSpinBox,    SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
     connect(m_ui->cameraPitchSpinBox,   SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
     connect(m_ui->cameraYawSpinBox,     SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
+    connect(m_ui->nightChkbox,          SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
     connect(m_ui->heroModeChkBox,       SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
     connect(m_ui->introViewedChkBox,    SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
     connect(m_ui->nameLineEdit,         SIGNAL(textChanged(QString)), this, SLOT(onTextChanged(QString)));
@@ -528,6 +529,7 @@ void MainWindow::UpdateInfo()
     m_ui->curMapLineEdit     ->setText(m_gameFile->GetCurrentMap());
     m_ui->curAreaLineEdit    ->setText(m_gameFile->GetCurrentArea());
     m_ui->curRoomLineEdit    ->setText(m_gameFile->GetCurrentRoom());
+    m_ui->nightChkbox        ->setChecked(m_gameFile->IsNight());
     m_ui->heroModeChkBox     ->setChecked(m_gameFile->IsHeroMode());
     m_ui->introViewedChkBox  ->setChecked(m_gameFile->GetIntroViewed());
     // Swords
@@ -666,6 +668,7 @@ void MainWindow::onValueChanged()
     m_gameFile->SetPlayerRotation((float)m_ui->playerRollSpinBox->value(), (float)m_ui->playerPitchSpinBox->value(), (float)m_ui->playerYawSpinBox->value());
     m_gameFile->SetCameraPosition((float)m_ui->cameraXSpinBox->value(),    (float)m_ui->cameraYSpinBox->value(),     (float)m_ui->cameraZSpinBox->value());
     m_gameFile->SetCameraRotation((float)m_ui->cameraRollSpinBox->value(), (float)m_ui->cameraPitchSpinBox->value(), (float)m_ui->cameraYawSpinBox->value());
+    m_gameFile->SetNight(m_ui->nightChkbox->isChecked());
     m_gameFile->SetHeroMode(m_ui->heroModeChkBox->isChecked());
     m_gameFile->SetIntroViewed(m_ui->introViewedChkBox->isChecked());
     m_gameFile->SetTotalHP((short)m_ui->totalHPSpinBox->value());
@@ -922,7 +925,7 @@ void MainWindow::onPreferences()
     switch(result)
     {
     case QDialog::Accepted:
-        WiiKeys::GetInstance()->SaveKeys();
+        WiiKeys::instance()->saveKeys();
         break;
     default:
         break;

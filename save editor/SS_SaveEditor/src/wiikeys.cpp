@@ -16,7 +16,7 @@ WiiKeys::WiiKeys() :
 {
 }
 
-bool WiiKeys::Open(const QString &filepath)
+bool WiiKeys::open(const QString &filepath)
 {
     if (filepath.size() <= 0)
         return false;
@@ -72,7 +72,7 @@ bool WiiKeys::Open(const QString &filepath)
     return false;
 }
 
-bool WiiKeys::LoadKeys()
+bool WiiKeys::loadKeys()
 {
     QByteArray tmp;
     bool ok = false;
@@ -124,7 +124,7 @@ bool WiiKeys::LoadKeys()
     tmp = QByteArray::fromHex(settings.value("NGPriv").toByteArray());
     if (tmp.size() == 30 && !tmp.isEmpty())
     {
-        SetNGPriv(tmp);
+        setNGPriv(tmp);
         qDebug() << "Found NGPriv Successfully: " << tmp.toHex();
     }
     else
@@ -138,7 +138,7 @@ bool WiiKeys::LoadKeys()
     tmp = QByteArray::fromHex(settings.value("NGSig").toByteArray());
     if (tmp.size() == 60 && !tmp.isEmpty())
     {
-        SetNGSig(tmp);
+        setNGSig(tmp);
         qDebug() << "Found NGSig Successfully: " << tmp.toHex();
     }
     else
@@ -151,7 +151,7 @@ bool WiiKeys::LoadKeys()
     tmp = QByteArray::fromHex(settings.value("WiiMAC").toByteArray());
     if (tmp.size() == 6 && !tmp.isEmpty())
     {
-        SetMacAddr(tmp);
+        setMacAddr(tmp);
         qDebug() << "Found WiiMac Successfully: " << tmp.toHex();
     }
     else
@@ -169,7 +169,7 @@ bool WiiKeys::LoadKeys()
     return false;
 }
 
-void WiiKeys::SaveKeys()
+void WiiKeys::saveKeys()
 {
     QByteArray tmp;
     QSettings settings;
@@ -184,7 +184,7 @@ void WiiKeys::SaveKeys()
     settings.endGroup();
 }
 
-bool WiiKeys::IsOpen() const
+bool WiiKeys::isOpen() const
 {
     return m_open;
 }
@@ -194,12 +194,12 @@ bool WiiKeys::isValid() const
     return (m_ngID > 0 && m_ngKeyID > 0 && m_ngPriv != NULL && m_ngSig != NULL && m_macAddr != NULL);
 }
 
-QByteArray WiiKeys::GetNGPriv() const
+QByteArray WiiKeys::NGPriv() const
 {
     return QByteArray(m_ngPriv, 0x1E);
 }
 
-void WiiKeys::SetNGPriv(const QByteArray& priv)
+void WiiKeys::setNGPriv(const QByteArray& priv)
 {
     if (m_ngPriv)
         delete[] m_ngPriv;
@@ -208,32 +208,32 @@ void WiiKeys::SetNGPriv(const QByteArray& priv)
     memcpy(m_ngPriv, priv.constData(), priv.size());
 }
 
-quint32 WiiKeys::GetNGID() const
+quint32 WiiKeys::NGID() const
 {
     return m_ngID;
 }
 
-void WiiKeys::SetNGID(const quint32 id)
+void WiiKeys::setNGID(const quint32 id)
 {
     m_ngID = id;
 }
 
-quint32 WiiKeys::GetNGKeyID() const
+quint32 WiiKeys::NGKeyID() const
 {
     return m_ngKeyID;
 }
 
-void WiiKeys::SetNGKeyID(const quint32 keyId)
+void WiiKeys::setNGKeyID(const quint32 keyId)
 {
     m_ngKeyID = keyId;
 }
 
-QByteArray WiiKeys::GetNGSig() const
+QByteArray WiiKeys::NGSig() const
 {
     return QByteArray(m_ngSig, 0x3C);
 }
 
-void WiiKeys::SetNGSig(const QByteArray &sig)
+void WiiKeys::setNGSig(const QByteArray &sig)
 {
     if (m_ngSig)
         delete[] m_ngSig;
@@ -242,12 +242,12 @@ void WiiKeys::SetNGSig(const QByteArray &sig)
     memcpy(m_ngSig, sig.constData(), sig.size());
 }
 
-QByteArray WiiKeys::GetMacAddr() const
+QByteArray WiiKeys::macAddr() const
 {
     return QByteArray(m_macAddr, 0x06);
 }
 
-void WiiKeys::SetMacAddr(const QByteArray &mac)
+void WiiKeys::setMacAddr(const QByteArray &mac)
 {
     if (m_macAddr)
         delete[] m_macAddr;
@@ -256,7 +256,7 @@ void WiiKeys::SetMacAddr(const QByteArray &mac)
     memcpy(m_macAddr, mac.constData(), mac.size());
 }
 
-WiiKeys* WiiKeys::GetInstance()
+WiiKeys* WiiKeys::instance()
 {
     if (m_instance == NULL)
         m_instance = new WiiKeys;

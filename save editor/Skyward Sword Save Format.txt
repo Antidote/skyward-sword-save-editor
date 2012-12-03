@@ -103,6 +103,7 @@ GameOff + 0x53AD - isNew
 GameOff + 0x53AE - Equipped Weapon
 GameOff + 0x53B0 - Deals with Minus button equipment not sure what it does exactly
 GameOff + 0x53B1 - Same as above.
+GameOff + 0x53B3 - isNight
 GameOff + 0x53BC - Checksum
 
 LocationIDs

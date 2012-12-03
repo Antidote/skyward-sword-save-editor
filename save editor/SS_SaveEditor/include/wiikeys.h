@@ -7,24 +7,24 @@
 class WiiKeys
 {
 public:
-    bool Open(const QString& filepath);
-    bool LoadKeys();
-    void SaveKeys();
-    bool IsOpen() const;
+    bool open(const QString& filepath);
+    bool loadKeys();
+    void saveKeys();
+    bool isOpen() const;
     bool isValid() const;
 
-    QByteArray GetNGPriv() const;
-    void       SetNGPriv(const QByteArray& priv);
-    quint32    GetNGID() const;
-    void       SetNGID(const quint32 id);
-    quint32    GetNGKeyID() const;
-    void       SetNGKeyID(const quint32 keyId);
-    QByteArray GetNGSig() const;
-    void       SetNGSig(const QByteArray& sig);
-    QByteArray GetMacAddr() const;
-    void       SetMacAddr(const QByteArray& mac);
+    QByteArray NGPriv() const;
+    void       setNGPriv(const QByteArray& priv);
+    quint32    NGID() const;
+    void       setNGID(const quint32 id);
+    quint32    NGKeyID() const;
+    void       setNGKeyID(const quint32 keyId);
+    QByteArray NGSig() const;
+    void       setNGSig(const QByteArray& sig);
+    QByteArray macAddr() const;
+    void       setMacAddr(const QByteArray& mac);
 
-    static WiiKeys*   GetInstance();
+    static WiiKeys*   instance();
 
 
 private:
