@@ -39,7 +39,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="playerTab">
        <attribute name="title">
@@ -753,7 +753,7 @@
         <string>Equipment</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_9">
-        <item row="0" column="0" rowspan="2">
+        <item row="0" column="0" rowspan="3">
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <item>
            <widget class="QGroupBox" name="beetleGrpBox">
@@ -936,227 +936,6 @@
           </item>
          </layout>
         </item>
-        <item row="0" column="2">
-         <widget class="QGroupBox" name="slingShotGrpBox">
-          <property name="title">
-           <string>Slingshot</string>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_3">
-           <property name="margin">
-            <number>2</number>
-           </property>
-           <property name="spacing">
-            <number>0</number>
-           </property>
-           <item row="0" column="0">
-            <widget class="QCheckBox" name="slingShotChkBox">
-             <property name="toolTip">
-              <string>Slingshot</string>
-             </property>
-             <property name="statusTip">
-              <string>Slingshot</string>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="icon">
-              <iconset resource="../resources/resources.qrc">
-               <normaloff>:/Weapons/SlingShot</normaloff>:/Weapons/SlingShot</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>48</width>
-               <height>48</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QCheckBox" name="scatterShotChkBox">
-             <property name="toolTip">
-              <string>Scattershot</string>
-             </property>
-             <property name="statusTip">
-              <string>Scattershot</string>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="icon">
-              <iconset resource="../resources/resources.qrc">
-               <normaloff>:/Weapons/SlingShot</normaloff>:/Weapons/SlingShot</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>48</width>
-               <height>48</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item row="0" column="3">
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="1" column="2">
-         <widget class="QGroupBox" name="swdGroupBox">
-          <property name="title">
-           <string>Swords</string>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_10">
-           <property name="margin">
-            <number>2</number>
-           </property>
-           <property name="spacing">
-            <number>0</number>
-           </property>
-           <item row="0" column="2">
-            <widget class="QCheckBox" name="goddessSwdChkBox">
-             <property name="toolTip">
-              <string>Goddess Sword</string>
-             </property>
-             <property name="statusTip">
-              <string>Goddess Sword</string>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="icon">
-              <iconset resource="../resources/resources.qrc">
-               <normaloff>:/Swords/GoddessSword</normaloff>:/Swords/GoddessSword</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>32</width>
-               <height>160</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="2">
-            <widget class="QCheckBox" name="masterSwdChkBox">
-             <property name="toolTip">
-              <string>Master Sword</string>
-             </property>
-             <property name="statusTip">
-              <string>Master Sword</string>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="icon">
-              <iconset resource="../resources/resources.qrc">
-               <normaloff>:/Swords/MasterSword</normaloff>:/Swords/MasterSword</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>32</width>
-               <height>160</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="3">
-            <widget class="QCheckBox" name="trueMasterSwdChkBox">
-             <property name="toolTip">
-              <string>True Master Sword</string>
-             </property>
-             <property name="statusTip">
-              <string>True Master Sword</string>
-             </property>
-             <property name="icon">
-              <iconset resource="../resources/resources.qrc">
-               <normaloff>:/Swords/TrueMasterSword</normaloff>:/Swords/TrueMasterSword</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>32</width>
-               <height>160</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="3">
-            <widget class="QCheckBox" name="longSwdChkBox">
-             <property name="toolTip">
-              <string>Goddess Long Sword</string>
-             </property>
-             <property name="statusTip">
-              <string>Goddess Long Sword</string>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="icon">
-              <iconset resource="../resources/resources.qrc">
-               <normaloff>:/Swords/LongSword</normaloff>:/Swords/LongSword</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>32</width>
-               <height>160</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QCheckBox" name="whiteSwdChkBox">
-             <property name="toolTip">
-              <string>Goddess White Sword</string>
-             </property>
-             <property name="statusTip">
-              <string>Goddess White Sword</string>
-             </property>
-             <property name="icon">
-              <iconset resource="../resources/resources.qrc">
-               <normaloff>:/Swords/GoddessWhiteSword</normaloff>:/Swords/GoddessWhiteSword</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>32</width>
-               <height>160</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QCheckBox" name="practiceSwdChkBox">
-             <property name="toolTip">
-              <string>Practice Sword</string>
-             </property>
-             <property name="statusTip">
-              <string>Practice Sword</string>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="icon">
-              <iconset resource="../resources/resources.qrc">
-               <normaloff>:/Swords/PracticeSword</normaloff>:/Swords/PracticeSword</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>32</width>
-               <height>160</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
         <item row="0" column="1">
          <widget class="QGroupBox" name="bugnetGrpBox">
           <property name="title">
@@ -1218,7 +997,81 @@
           </layout>
          </widget>
         </item>
-        <item row="1" column="1">
+        <item row="0" column="2">
+         <widget class="QGroupBox" name="slingShotGrpBox">
+          <property name="title">
+           <string>Slingshot</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_3">
+           <property name="margin">
+            <number>2</number>
+           </property>
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <item row="0" column="0">
+            <widget class="QCheckBox" name="slingShotChkBox">
+             <property name="toolTip">
+              <string>Slingshot</string>
+             </property>
+             <property name="statusTip">
+              <string>Slingshot</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="../resources/resources.qrc">
+               <normaloff>:/Weapons/SlingShot</normaloff>:/Weapons/SlingShot</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>48</width>
+               <height>48</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QCheckBox" name="scatterShotChkBox">
+             <property name="toolTip">
+              <string>Scattershot</string>
+             </property>
+             <property name="statusTip">
+              <string>Scattershot</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="../resources/resources.qrc">
+               <normaloff>:/Weapons/SlingShot</normaloff>:/Weapons/SlingShot</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>48</width>
+               <height>48</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="0" column="4">
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="1" column="1" rowspan="2">
          <widget class="QGroupBox" name="miscGrpBox">
           <property name="title">
            <string>Misc</string>
@@ -1408,18 +1261,202 @@
           </layout>
          </widget>
         </item>
-        <item row="2" column="2">
-         <spacer name="verticalSpacer">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
+        <item row="1" column="2" rowspan="2">
+         <widget class="QGroupBox" name="swdGroupBox">
+          <property name="title">
+           <string>Swords</string>
           </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
+          <layout class="QGridLayout" name="gridLayout_10">
+           <property name="margin">
+            <number>2</number>
+           </property>
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <item row="0" column="2">
+            <widget class="QCheckBox" name="goddessSwdChkBox">
+             <property name="toolTip">
+              <string>Goddess Sword</string>
+             </property>
+             <property name="statusTip">
+              <string>Goddess Sword</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="../resources/resources.qrc">
+               <normaloff>:/Swords/GoddessSword</normaloff>:/Swords/GoddessSword</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>32</width>
+               <height>160</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="2">
+            <widget class="QCheckBox" name="masterSwdChkBox">
+             <property name="toolTip">
+              <string>Master Sword</string>
+             </property>
+             <property name="statusTip">
+              <string>Master Sword</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="../resources/resources.qrc">
+               <normaloff>:/Swords/MasterSword</normaloff>:/Swords/MasterSword</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>32</width>
+               <height>160</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="3">
+            <widget class="QCheckBox" name="trueMasterSwdChkBox">
+             <property name="toolTip">
+              <string>True Master Sword</string>
+             </property>
+             <property name="statusTip">
+              <string>True Master Sword</string>
+             </property>
+             <property name="icon">
+              <iconset resource="../resources/resources.qrc">
+               <normaloff>:/Swords/TrueMasterSword</normaloff>:/Swords/TrueMasterSword</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>32</width>
+               <height>160</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="3">
+            <widget class="QCheckBox" name="longSwdChkBox">
+             <property name="toolTip">
+              <string>Goddess Long Sword</string>
+             </property>
+             <property name="statusTip">
+              <string>Goddess Long Sword</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="../resources/resources.qrc">
+               <normaloff>:/Swords/LongSword</normaloff>:/Swords/LongSword</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>32</width>
+               <height>160</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QCheckBox" name="whiteSwdChkBox">
+             <property name="toolTip">
+              <string>Goddess White Sword</string>
+             </property>
+             <property name="statusTip">
+              <string>Goddess White Sword</string>
+             </property>
+             <property name="icon">
+              <iconset resource="../resources/resources.qrc">
+               <normaloff>:/Swords/GoddessWhiteSword</normaloff>:/Swords/GoddessWhiteSword</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>32</width>
+               <height>160</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QCheckBox" name="practiceSwdChkBox">
+             <property name="toolTip">
+              <string>Practice Sword</string>
+             </property>
+             <property name="statusTip">
+              <string>Practice Sword</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="../resources/resources.qrc">
+               <normaloff>:/Swords/PracticeSword</normaloff>:/Swords/PracticeSword</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>32</width>
+               <height>160</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="0" column="3" rowspan="3">
+         <widget class="QGroupBox" name="groupBox_5">
+          <property name="title">
+           <string>Dragon Items</string>
           </property>
-         </spacer>
+          <layout class="QGridLayout" name="gridLayout_15">
+           <item row="1" column="0">
+            <widget class="QCheckBox" name="fireEaringsChkBox">
+             <property name="icon">
+              <iconset resource="../resources/resources.qrc">
+               <normaloff>:/Equipment/FireShieldEarings</normaloff>:/Equipment/FireShieldEarings</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>48</width>
+               <height>48</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="QCheckBox" name="dragonScaleChkBox">
+             <property name="icon">
+              <iconset resource="../resources/resources.qrc">
+               <normaloff>:/Equipment/WaterDragonScale</normaloff>:/Equipment/WaterDragonScale</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>48</width>
+               <height>48</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <spacer name="verticalSpacer">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
         </item>
        </layout>
       </widget>
@@ -1781,6 +1818,9 @@
              <property name="alignment">
               <set>Qt::AlignCenter</set>
              </property>
+             <property name="buttonSymbols">
+              <enum>QAbstractSpinBox::PlusMinus</enum>
+             </property>
              <property name="maximum">
               <number>127</number>
              </property>
@@ -1794,6 +1834,9 @@
              <property name="alignment">
               <set>Qt::AlignCenter</set>
              </property>
+             <property name="buttonSymbols">
+              <enum>QAbstractSpinBox::PlusMinus</enum>
+             </property>
              <property name="maximum">
               <number>127</number>
              </property>
@@ -1806,6 +1849,9 @@
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
+             </property>
+             <property name="buttonSymbols">
+              <enum>QAbstractSpinBox::PlusMinus</enum>
              </property>
              <property name="maximum">
               <number>127</number>
@@ -1839,6 +1885,9 @@
              <property name="alignment">
               <set>Qt::AlignCenter</set>
              </property>
+             <property name="buttonSymbols">
+              <enum>QAbstractSpinBox::PlusMinus</enum>
+             </property>
              <property name="maximum">
               <number>127</number>
              </property>
@@ -1851,6 +1900,9 @@
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
+             </property>
+             <property name="buttonSymbols">
+              <enum>QAbstractSpinBox::PlusMinus</enum>
              </property>
              <property name="maximum">
               <number>127</number>
@@ -1865,6 +1917,9 @@
              <property name="alignment">
               <set>Qt::AlignCenter</set>
              </property>
+             <property name="buttonSymbols">
+              <enum>QAbstractSpinBox::PlusMinus</enum>
+             </property>
              <property name="maximum">
               <number>127</number>
              </property>
@@ -1877,6 +1932,9 @@
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
+             </property>
+             <property name="buttonSymbols">
+              <enum>QAbstractSpinBox::PlusMinus</enum>
              </property>
              <property name="maximum">
               <number>127</number>
@@ -1891,6 +1949,9 @@
              <property name="alignment">
               <set>Qt::AlignCenter</set>
              </property>
+             <property name="buttonSymbols">
+              <enum>QAbstractSpinBox::PlusMinus</enum>
+             </property>
              <property name="maximum">
               <number>127</number>
              </property>
@@ -1904,6 +1965,9 @@
              <property name="alignment">
               <set>Qt::AlignCenter</set>
              </property>
+             <property name="buttonSymbols">
+              <enum>QAbstractSpinBox::PlusMinus</enum>
+             </property>
              <property name="maximum">
               <number>127</number>
              </property>
@@ -1916,6 +1980,9 @@
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
+             </property>
+             <property name="buttonSymbols">
+              <enum>QAbstractSpinBox::PlusMinus</enum>
              </property>
              <property name="maximum">
               <number>127</number>
@@ -1938,6 +2005,9 @@
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
+             </property>
+             <property name="buttonSymbols">
+              <enum>QAbstractSpinBox::PlusMinus</enum>
              </property>
              <property name="maximum">
               <number>127</number>
@@ -1971,6 +2041,9 @@
           </item>
           <item>
            <widget class="QSpinBox" name="gratitudeCrystalSpinBox">
+            <property name="buttonSymbols">
+             <enum>QAbstractSpinBox::PlusMinus</enum>
+            </property>
             <property name="maximum">
              <number>127</number>
             </property>
@@ -2324,6 +2397,9 @@
              <property name="enabled">
               <bool>false</bool>
              </property>
+             <property name="buttonSymbols">
+              <enum>QAbstractSpinBox::PlusMinus</enum>
+             </property>
              <property name="maximum">
               <number>127</number>
              </property>
@@ -2333,6 +2409,9 @@
             <widget class="QSpinBox" name="birdFeatherSpinBox">
              <property name="enabled">
               <bool>false</bool>
+             </property>
+             <property name="buttonSymbols">
+              <enum>QAbstractSpinBox::PlusMinus</enum>
              </property>
              <property name="maximum">
               <number>127</number>
@@ -2344,6 +2423,9 @@
              <property name="enabled">
               <bool>false</bool>
              </property>
+             <property name="buttonSymbols">
+              <enum>QAbstractSpinBox::PlusMinus</enum>
+             </property>
              <property name="maximum">
               <number>127</number>
              </property>
@@ -2353,6 +2435,9 @@
             <widget class="QSpinBox" name="lizardTailSpinBox">
              <property name="enabled">
               <bool>false</bool>
+             </property>
+             <property name="buttonSymbols">
+              <enum>QAbstractSpinBox::PlusMinus</enum>
              </property>
              <property name="maximum">
               <number>127</number>
@@ -2364,6 +2449,9 @@
              <property name="enabled">
               <bool>false</bool>
              </property>
+             <property name="buttonSymbols">
+              <enum>QAbstractSpinBox::PlusMinus</enum>
+             </property>
              <property name="maximum">
               <number>127</number>
              </property>
@@ -2373,6 +2461,9 @@
             <widget class="QSpinBox" name="ancientFlowerSpinBox">
              <property name="enabled">
               <bool>false</bool>
+             </property>
+             <property name="buttonSymbols">
+              <enum>QAbstractSpinBox::PlusMinus</enum>
              </property>
              <property name="maximum">
               <number>127</number>
@@ -2384,6 +2475,9 @@
              <property name="enabled">
               <bool>false</bool>
              </property>
+             <property name="buttonSymbols">
+              <enum>QAbstractSpinBox::PlusMinus</enum>
+             </property>
              <property name="maximum">
               <number>127</number>
              </property>
@@ -2393,6 +2487,9 @@
             <widget class="QSpinBox" name="duskRelicSpinBox">
              <property name="enabled">
               <bool>false</bool>
+             </property>
+             <property name="buttonSymbols">
+              <enum>QAbstractSpinBox::PlusMinus</enum>
              </property>
              <property name="maximum">
               <number>127</number>
@@ -2404,6 +2501,9 @@
              <property name="enabled">
               <bool>false</bool>
              </property>
+             <property name="buttonSymbols">
+              <enum>QAbstractSpinBox::PlusMinus</enum>
+             </property>
              <property name="maximum">
               <number>127</number>
              </property>
@@ -2413,6 +2513,9 @@
             <widget class="QSpinBox" name="monsterClawSpinBox">
              <property name="enabled">
               <bool>false</bool>
+             </property>
+             <property name="buttonSymbols">
+              <enum>QAbstractSpinBox::PlusMinus</enum>
              </property>
              <property name="maximum">
               <number>127</number>
@@ -2424,6 +2527,9 @@
              <property name="enabled">
               <bool>false</bool>
              </property>
+             <property name="buttonSymbols">
+              <enum>QAbstractSpinBox::PlusMinus</enum>
+             </property>
              <property name="maximum">
               <number>127</number>
              </property>
@@ -2433,6 +2539,9 @@
             <widget class="QSpinBox" name="decoSkullSpinBox">
              <property name="enabled">
               <bool>false</bool>
+             </property>
+             <property name="buttonSymbols">
+              <enum>QAbstractSpinBox::PlusMinus</enum>
              </property>
              <property name="maximum">
               <number>127</number>
@@ -2444,6 +2553,9 @@
              <property name="enabled">
               <bool>false</bool>
              </property>
+             <property name="buttonSymbols">
+              <enum>QAbstractSpinBox::PlusMinus</enum>
+             </property>
              <property name="maximum">
               <number>127</number>
              </property>
@@ -2453,6 +2565,9 @@
             <widget class="QSpinBox" name="blueBirdFeatherSpinBox">
              <property name="enabled">
               <bool>false</bool>
+             </property>
+             <property name="buttonSymbols">
+              <enum>QAbstractSpinBox::PlusMinus</enum>
              </property>
              <property name="maximum">
               <number>127</number>
@@ -2464,6 +2579,9 @@
              <property name="enabled">
               <bool>false</bool>
              </property>
+             <property name="buttonSymbols">
+              <enum>QAbstractSpinBox::PlusMinus</enum>
+             </property>
              <property name="maximum">
               <number>127</number>
              </property>
@@ -2473,6 +2591,9 @@
             <widget class="QSpinBox" name="goddessPlumeSpinBox">
              <property name="enabled">
               <bool>false</bool>
+             </property>
+             <property name="buttonSymbols">
+              <enum>QAbstractSpinBox::PlusMinus</enum>
              </property>
              <property name="maximum">
               <number>127</number>
@@ -2668,7 +2789,7 @@
      <x>0</x>
      <y>0</y>
      <width>705</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
