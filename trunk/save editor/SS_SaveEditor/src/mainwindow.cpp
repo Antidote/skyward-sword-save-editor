@@ -280,7 +280,12 @@ void MainWindow::SetupConnections()
     connect(m_ui->bowChkBox,            SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
     connect(m_ui->ironBowChkBox,        SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
     connect(m_ui->sacredBowChkBox,      SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->diggingMittsChkBox,   SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->moleMittsChkBox,      SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->sailClothChkBox,      SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
     connect(m_ui->harpChkBox,           SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->dragonScaleChkBox,    SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
+    connect(m_ui->fireEaringsChkBox,    SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
     // Bugs
     connect(m_ui->hornetChkBox,         SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
     connect(m_ui->butterflyChkBox,      SIGNAL(toggled(bool)),        this, SLOT(onValueChanged()));
@@ -555,7 +560,12 @@ void MainWindow::UpdateInfo()
     m_ui->bowChkBox          ->setChecked(m_gameFile->GetEquipment(SkywardSwordFile::BowWeapon));
     m_ui->ironBowChkBox      ->setChecked(m_gameFile->GetEquipment(SkywardSwordFile::IronBowWeapon));
     m_ui->sacredBowChkBox    ->setChecked(m_gameFile->GetEquipment(SkywardSwordFile::SacredBowWeapon));
+    m_ui->diggingMittsChkBox ->setChecked(m_gameFile->GetEquipment(SkywardSwordFile::DiggingMittsEquipment));
+    m_ui->moleMittsChkBox    ->setChecked(m_gameFile->GetEquipment(SkywardSwordFile::MoleMittsEquipment));
+    m_ui->sailClothChkBox    ->setChecked(m_gameFile->GetEquipment(SkywardSwordFile::SailClothEquipment));
     m_ui->harpChkBox         ->setChecked(m_gameFile->GetEquipment(SkywardSwordFile::HarpEquipment));
+    m_ui->dragonScaleChkBox  ->setChecked(m_gameFile->GetEquipment(SkywardSwordFile::WaterDragonScaleEquipment));
+    m_ui->fireEaringsChkBox  ->setChecked(m_gameFile->GetEquipment(SkywardSwordFile::FireShieldEaringsEquipment));
     // Bugs
     m_ui->hornetChkBox       ->setChecked(m_gameFile->GetBug(SkywardSwordFile::HornetBug));
     m_ui->butterflyChkBox    ->setChecked(m_gameFile->GetBug(SkywardSwordFile::ButterflyBug));
@@ -684,22 +694,27 @@ void MainWindow::onValueChanged()
     m_gameFile->SetSword(SkywardSwordFile::MasterSword,    m_ui->masterSwdChkBox->isChecked());
     m_gameFile->SetSword(SkywardSwordFile::TrueMasterSword,m_ui->trueMasterSwdChkBox->isChecked());
     // Weapons
-    m_gameFile->SetEquipment(SkywardSwordFile::SlingshotWeapon,  m_ui->slingShotChkBox->isChecked());
-    m_gameFile->SetEquipment(SkywardSwordFile::ScattershotWeapon,m_ui->scatterShotChkBox->isChecked());
-    m_gameFile->SetEquipment(SkywardSwordFile::BugnetWeapon,     m_ui->bugNetChkBox->isChecked());
-    m_gameFile->SetEquipment(SkywardSwordFile::BigBugnetWeapon,  m_ui->bigBugNetChkBox->isChecked());
-    m_gameFile->SetEquipment(SkywardSwordFile::BeetleWeapon,     m_ui->beetleChkBox->isChecked());
-    m_gameFile->SetEquipment(SkywardSwordFile::HookBeetleWeapon, m_ui->hookBeetleChkBox->isChecked());
-    m_gameFile->SetEquipment(SkywardSwordFile::QuickBeetleWeapon,m_ui->quickBeetleChkBox->isChecked());
-    m_gameFile->SetEquipment(SkywardSwordFile::ToughBeetleWeapon,m_ui->toughBeetleChkBox->isChecked());
-    m_gameFile->SetEquipment(SkywardSwordFile::BombWeapon,       m_ui->bombChkBox->isChecked());
-    m_gameFile->SetEquipment(SkywardSwordFile::GustBellowsWeapon,m_ui->gustBellowsChkBox->isChecked());
-    m_gameFile->SetEquipment(SkywardSwordFile::WhipWeapon,       m_ui->whipChkBox->isChecked());
-    m_gameFile->SetEquipment(SkywardSwordFile::ClawshotWeapon,   m_ui->clawShotChkBox->isChecked());
-    m_gameFile->SetEquipment(SkywardSwordFile::BowWeapon,        m_ui->bowChkBox->isChecked());
-    m_gameFile->SetEquipment(SkywardSwordFile::IronBowWeapon,    m_ui->ironBowChkBox->isChecked());
-    m_gameFile->SetEquipment(SkywardSwordFile::SacredBowWeapon,  m_ui->sacredBowChkBox->isChecked());
-    m_gameFile->SetEquipment(SkywardSwordFile::HarpEquipment,    m_ui->harpChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::SlingshotWeapon,      m_ui->slingShotChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::ScattershotWeapon,    m_ui->scatterShotChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::BugnetWeapon,         m_ui->bugNetChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::BigBugnetWeapon,      m_ui->bigBugNetChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::BeetleWeapon,         m_ui->beetleChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::HookBeetleWeapon,     m_ui->hookBeetleChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::QuickBeetleWeapon,    m_ui->quickBeetleChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::ToughBeetleWeapon,    m_ui->toughBeetleChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::BombWeapon,           m_ui->bombChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::GustBellowsWeapon,    m_ui->gustBellowsChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::WhipWeapon,           m_ui->whipChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::ClawshotWeapon,       m_ui->clawShotChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::BowWeapon,            m_ui->bowChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::IronBowWeapon,        m_ui->ironBowChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::DiggingMittsEquipment,m_ui->diggingMittsChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::MoleMittsEquipment,   m_ui->moleMittsChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::SacredBowWeapon,      m_ui->sacredBowChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::SailClothEquipment,   m_ui->sailClothChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::HarpEquipment,        m_ui->harpChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::WaterDragonScaleEquipment,m_ui->dragonScaleChkBox->isChecked());
+    m_gameFile->SetEquipment(SkywardSwordFile::FireShieldEaringsEquipment,m_ui->fireEaringsChkBox->isChecked());
     // Bugs
     m_gameFile->SetBug(SkywardSwordFile::HornetBug,     m_ui->hornetChkBox->isChecked());
     m_gameFile->SetBug(SkywardSwordFile::ButterflyBug,  m_ui->butterflyChkBox->isChecked());

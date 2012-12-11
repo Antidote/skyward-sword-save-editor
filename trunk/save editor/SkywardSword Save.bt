@@ -229,10 +229,18 @@ struct GameData
             char equipedItem;
             char equipedItemCopy;
             char unknown; // Dowsing?
+            char isNight;
+            char unknown;
        }info;
        char rawData[0x53BC];
     }data;
     int checksum <format = hex>;
+};
+
+struct Skip
+{
+    char unk[0x20];
+    uint checksum;
 };
 
 struct
@@ -247,12 +255,7 @@ struct
         }headerData;
         char data[headerData.headerSize - 1];
     }header;
-    local int i;
-    for (i = 0; i < 3; i++)
-    {
-        struct
-        {
-            GameData gameData;
-        }GameData_s;
-    }
+    GameData gameData[3];
+    
+    Skip skip[3];
 }file;

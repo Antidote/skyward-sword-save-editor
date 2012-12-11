@@ -81,27 +81,27 @@ public:
 
     enum WeaponEquipment
     {
-     SlingshotWeapon,
-     ScattershotWeapon,
-     BugnetWeapon,
-     BigBugnetWeapon,
-     BeetleWeapon,
-     HookBeetleWeapon,
-     QuickBeetleWeapon,
-     ToughBeetleWeapon,
-     BombWeapon,
-     GustBellowsWeapon,
-     WhipWeapon,
-     ClawshotWeapon,
-     BowWeapon,
-     IronBowWeapon,
-     SacredBowWeapon,
-     HarpEquipment,
-     SailClothEquipment,
-     DiggingMitts,
-     MoleMittsEquipment,
-     FireShieldEaringsEquipment,
-     DragonScaleEquipment
+         SlingshotWeapon,
+         ScattershotWeapon,
+         BugnetWeapon,
+         BigBugnetWeapon,
+         BeetleWeapon,
+         HookBeetleWeapon,
+         QuickBeetleWeapon,
+         ToughBeetleWeapon,
+         BombWeapon,
+         GustBellowsWeapon,
+         WhipWeapon,
+         ClawshotWeapon,
+         BowWeapon,
+         IronBowWeapon,
+         SacredBowWeapon,
+         HarpEquipment,
+         SailClothEquipment,
+         DiggingMittsEquipment,
+         MoleMittsEquipment,
+         FireShieldEaringsEquipment,
+         WaterDragonScaleEquipment
     };
 
     enum Material

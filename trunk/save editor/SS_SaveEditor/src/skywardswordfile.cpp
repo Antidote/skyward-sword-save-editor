@@ -703,11 +703,21 @@ bool SkywardSwordFile::GetEquipment(WeaponEquipment weapon) const
         case ClawshotWeapon:
             return GetFlag(0x09E4, 0x20);
         case BowWeapon:
-            return GetFlag(0x09E4,0x10);
+            return GetFlag(0x09E4, 0x10);
+        case DiggingMittsEquipment:
+            return GetFlag(0x09E6, 0x40);
+        case WaterDragonScaleEquipment:
+            return GetFlag(0x09E9, 0x20);
+        case MoleMittsEquipment:
+            return GetFlag(0x09EC, 0x02);
         case IronBowWeapon:
             return GetFlag(0x09ED, 0x01);
         case SacredBowWeapon:
             return GetFlag(0x09ED, 0x02);
+        case FireShieldEaringsEquipment:
+            return GetFlag(0x09F3, 0x20);
+        case SailClothEquipment:
+            return GetFlag(0x09F4, 0x01);
         case HarpEquipment:
             return GetFlag(0x09F4, 0x02);
         default:
@@ -722,22 +732,27 @@ void SkywardSwordFile::SetEquipment(WeaponEquipment weapon, bool val)
 
     switch(weapon)
     {
-        case SlingshotWeapon:   SetFlag(0x09E6, 0x10, val); break;
-        case ScattershotWeapon: SetFlag(0x09EC, 0x80, val); break;
-        case BugnetWeapon:      SetFlag(0x09E8, 0x01, val); break;
-        case BigBugnetWeapon:   SetFlag(0x09F2, 0x02, val); break;
-        case BeetleWeapon:      SetFlag(0x09E6, 0x20, val); break;
-        case HookBeetleWeapon:  SetFlag(0x09EB, 0x02, val); break;
-        case QuickBeetleWeapon: SetFlag(0x09EB, 0x04, val); break;
-        case ToughBeetleWeapon: SetFlag(0x09EB, 0x08, val); break;
-        case BombWeapon:        SetFlag(0x09ED, 0x04, val); break;
-        case GustBellowsWeapon: SetFlag(0x09E6, 0x02, val); break;
-        case WhipWeapon:        SetFlag(0x09F3, 0x10, val); break;
-        case ClawshotWeapon:    SetFlag(0x09E4, 0x20, val); break;
-        case BowWeapon:         SetFlag(0x09E4, 0x10, val); break;
-        case IronBowWeapon:     SetFlag(0x09ED, 0x01, val); break;
-        case SacredBowWeapon:   SetFlag(0x09ED, 0x02, val); break;
-        case HarpEquipment:     SetFlag(0x09F4, 0x02, val); break;
+        case SlingshotWeapon:           SetFlag(0x09E6, 0x10, val); break;
+        case ScattershotWeapon:         SetFlag(0x09EC, 0x80, val); break;
+        case BugnetWeapon:              SetFlag(0x09E8, 0x01, val); break;
+        case BigBugnetWeapon:           SetFlag(0x09F2, 0x02, val); break;
+        case BeetleWeapon:              SetFlag(0x09E6, 0x20, val); break;
+        case HookBeetleWeapon:          SetFlag(0x09EB, 0x02, val); break;
+        case QuickBeetleWeapon:         SetFlag(0x09EB, 0x04, val); break;
+        case ToughBeetleWeapon:         SetFlag(0x09EB, 0x08, val); break;
+        case BombWeapon:                SetFlag(0x09ED, 0x04, val); break;
+        case GustBellowsWeapon:         SetFlag(0x09E6, 0x02, val); break;
+        case WhipWeapon:                SetFlag(0x09F3, 0x10, val); break;
+        case ClawshotWeapon:            SetFlag(0x09E4, 0x20, val); break;
+        case BowWeapon:                 SetFlag(0x09E4, 0x10, val); break;
+        case DiggingMittsEquipment:     SetFlag(0x09E6, 0x40, val); break;
+        case WaterDragonScaleEquipment: SetFlag(0x09E9, 0x20, val); break;
+        case MoleMittsEquipment:        SetFlag(0x09EC, 0x02, val); break;
+        case IronBowWeapon:             SetFlag(0x09ED, 0x01, val); break;
+        case SacredBowWeapon:           SetFlag(0x09ED, 0x02, val); break;
+        case FireShieldEaringsEquipment:SetFlag(0x09F3, 0x20, val); break;
+        case SailClothEquipment:        SetFlag(0x09F4, 0x01, val); break;
+        case HarpEquipment:             SetFlag(0x09F4, 0x02, val); break;
         default: return;
     }
 }
