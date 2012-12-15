@@ -757,6 +757,38 @@ void SkywardSwordFile::SetEquipment(WeaponEquipment weapon, bool val)
     }
 }
 
+quint32 SkywardSwordFile::GetAmmo(Ammo type)
+{
+    quint32 val = qFromBigEndian(*(quint32*)(m_data + GetGameOffset() + 0x0A60));
+    quint32 ret = 0;
+
+    switch(type)
+    {
+        case ArrowAmmo: ret = (val >> 0)  & 127; break;
+        case BombAmmo:  ret = (val >> 7)  & 127; break;
+        case SeedAmmo:  ret = (val >> 23) & 127; break;
+    }
+
+    return ret;
+}
+
+void SkywardSwordFile::SetAmmo(Ammo type, quint32 val)
+{
+    quint32 tmp = qFromBigEndian(*(quint32*)(m_data + GetGameOffset() + 0x0A60));
+    quint32 arrows = (tmp >> 0)  & 127;
+    quint32 bombs  = (tmp >> 7)  & 127;
+    quint32 seeds  = (tmp >> 23) & 127;
+
+    switch(type)
+    {
+        case ArrowAmmo: arrows = val & 127; break;
+        case BombAmmo:  bombs  = val & 127; break;
+        case SeedAmmo:  seeds  = val & 127; break;
+    }
+
+   *(quint32*)(m_data + GetGameOffset() + 0x0A60) = qToBigEndian(arrows | (bombs << 7) | (seeds << 23));
+}
+
 bool SkywardSwordFile::GetBug(Bug bug) const
 {
     if (!m_data)

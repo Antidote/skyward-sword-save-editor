@@ -527,3 +527,9 @@ Flags - GameOff + 0x09FB:
 0x20 - Ballad Of the Goddess
 0x40 - Farore's Courage
 0x80 - Nayru's Wisdom
+
+Flags - GameOff + 0x0A50: Shared with Gratitude Crystals
+0x04 = +1 Adventure Pouch
+0x08 = +2 Adventure Pouch
+0x0C = +3 Adventure Pouch
+0x10 = +4 Adventure Pouch
