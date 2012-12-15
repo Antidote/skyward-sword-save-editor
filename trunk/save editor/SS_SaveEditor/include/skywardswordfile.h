@@ -79,6 +79,13 @@ public:
          RollerBug
     };
 
+    enum Ammo
+    {
+        ArrowAmmo,
+        BombAmmo,
+        SeedAmmo
+    };
+
     enum WeaponEquipment
     {
          SlingshotWeapon,
@@ -194,6 +201,8 @@ public:
     void      SetSword(Sword sword, bool val);
     bool      GetEquipment(WeaponEquipment weapon) const;
     void      SetEquipment(WeaponEquipment, bool val);
+    quint32   GetAmmo(Ammo type);
+    void      SetAmmo(Ammo type, quint32 val);
     bool      GetBug(Bug bug) const;
     void      SetBug(Bug bug, bool val);
     quint32   GetBugQuantity(Bug bug) const;

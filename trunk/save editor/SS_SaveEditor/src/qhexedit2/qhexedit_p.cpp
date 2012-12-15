@@ -50,9 +50,9 @@ int QHexEditPrivate::addressOffset()
 void QHexEditPrivate::setData(const QByteArray &data)
 {
     _xData.setData(data);
-    _undoStack->clear();
+    //_undoStack->clear();
     adjust();
-    setCursorPos(0);
+    //setCursorPos(0);
 }
 
 QByteArray QHexEditPrivate::data()
@@ -308,6 +308,7 @@ QUndoStack* QHexEditPrivate::undoStack() const
 {
     return _undoStack;
 }
+
 QString QHexEditPrivate::toRedableString()
 {
     return _xData.toRedableString();

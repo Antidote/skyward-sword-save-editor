@@ -97,7 +97,7 @@ void FileInfoDialog::onRegionChanged(QAbstractButton *)
         m_region = SkywardSwordFile::PALRegion;
 
     m_ui->titleLbl->setText("Title: " + GetRegionString(m_region, Title));
-    m_ui->subtitleLbl->setText("Title: " + GetRegionString(m_region, Subtitle));
+    m_ui->subtitleLbl->setText("Subtitle: " + GetRegionString(m_region, Subtitle));
 }
 
 void FileInfoDialog::onAccepted()

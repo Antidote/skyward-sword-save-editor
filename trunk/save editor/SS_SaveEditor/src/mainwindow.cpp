@@ -323,6 +323,10 @@ void MainWindow::SetupConnections()
     connect(m_ui->roomIDSpinBox,        SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
 
     // Amounts
+    // Ammo
+    connect(m_ui->arrowAmmoSpinBox,   SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
+    connect(m_ui->bombAmmoSpinBox,    SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
+    connect(m_ui->seedAmmoSpinBox,    SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
     // Bugs
     connect(m_ui->hornetSpinBox,      SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
     connect(m_ui->butterflySpinBox,   SIGNAL(valueChanged(int)), this, SLOT(onValueChanged()));
@@ -598,6 +602,14 @@ void MainWindow::UpdateInfo()
     m_ui->goddessPlumeChkBox  ->setChecked(m_gameFile->GetMaterial(SkywardSwordFile::GoddessPlumeMaterial));
 
     // Quantities
+
+    // Ammo
+    m_ui->arrowAmmoSpinBox->setValue(m_gameFile->GetAmmo(SkywardSwordFile::ArrowAmmo));
+    m_ui->arrowAmmoSpinBox->setEnabled(m_ui->bowChkBox->isChecked() || m_ui->ironBowChkBox->isChecked() || m_ui->sacredBowChkBox->isChecked());
+    m_ui->bombAmmoSpinBox->setValue(m_gameFile->GetAmmo(SkywardSwordFile::BombAmmo));
+    m_ui->bombAmmoSpinBox->setEnabled(m_ui->bombChkBox->isChecked());
+    m_ui->seedAmmoSpinBox->setValue(m_gameFile->GetAmmo(SkywardSwordFile::SeedAmmo));
+    m_ui->seedAmmoSpinBox->setEnabled(m_ui->slingShotChkBox->isChecked() || m_ui->scatterShotChkBox->isChecked());
     // Bugs
     m_ui->hornetSpinBox     ->setValue(m_gameFile->GetBugQuantity(SkywardSwordFile::HornetBug));
     m_ui->hornetSpinBox     ->setEnabled(m_ui->hornetChkBox->isChecked());
@@ -747,6 +759,10 @@ void MainWindow::onValueChanged()
     m_gameFile->SetMaterial(SkywardSwordFile::GoddessPlumeMaterial,   m_ui->goddessPlumeChkBox->isChecked());
 
     // Amounts
+    // Ammo
+    m_gameFile->SetAmmo(SkywardSwordFile::ArrowAmmo, m_ui->arrowAmmoSpinBox->value());
+    m_gameFile->SetAmmo(SkywardSwordFile::BombAmmo,  m_ui->bombAmmoSpinBox->value());
+    m_gameFile->SetAmmo(SkywardSwordFile::SeedAmmo,  m_ui->seedAmmoSpinBox->value());
     // Bugs
     m_gameFile->SetBugQuantity(SkywardSwordFile::HornetBug,     m_ui->hornetSpinBox->value());
     m_gameFile->SetBugQuantity(SkywardSwordFile::ButterflyBug,  m_ui->butterflySpinBox->value());
@@ -865,6 +881,7 @@ void MainWindow::onDeleteGame()
 
 void MainWindow::onSave()
 {
+    QString oldFilename = m_gameFile->GetFilename();
     foreach(QString file, m_fileWatcher->files())
         m_fileWatcher->removePath(file);
 
@@ -896,9 +913,13 @@ void MainWindow::onSave()
     m_gameFile->UpdateChecksum();
     UpdateInfo();
     UpdateTitle();
-    int oldPos = m_hexEdit->cursorPosition();
     m_hexEdit->setData(m_gameFile->GetGameData());
-    m_hexEdit->setCursorPosition(oldPos);
+    if (oldFilename != m_gameFile->GetFilename())
+    {
+        m_hexEdit->undoStack()->clear();
+        m_hexEdit->setCursorPosition(0);
+        m_hexEdit->update();
+    }
 }
 
 void MainWindow::onSaveAs()
