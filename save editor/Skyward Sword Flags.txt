@@ -533,3 +533,48 @@ Flags - GameOff + 0x0A50: Shared with Gratitude Crystals
 0x08 = +2 Adventure Pouch
 0x0C = +3 Adventure Pouch
 0x10 = +4 Adventure Pouch
+
+Adventure Pouch Flags:
+0x0024 - Glittering Spores
+0x0036 - Water
+0x0037 - Mushroom Spores
+0x0041 - Guardian Potion
+0x0042 - Guardian Potion+
+0x0046 - Bug Medal
+0x004A - Sacred Water
+0x004E - Heart Potion
+0x004F - Heart Potion+
+0x0051 - Heart Potion++
+0x0054 - Stamina Potion
+0x0055 - Stamina Potion+
+0x0056 - Air Potion
+0x0057 - Air Potion+
+0x0058 - Fairy
+0x0064 - Heart Medal
+0x0065 - Rupee Medal
+0x0066 - Treasure Medal
+0x0067 - Potion Medal
+0x0068 - Cursed Medal
+0x0072 - Life Medal
+0x0074 - Wooden Shield
+0x0075 - Banded Shield
+0x0076 - Braced Shield
+0x0077 - Iron Shield
+0x0078 - Reinforced Shield
+0x0079 - Fortified Shield
+0x007A - Sacred Shield
+0x007B - Divine Shield
+0x007C - Goddess Shield
+0x007D - Hylian Shield
+0x007E - Revitalizing Potion
+0x007F - Revitalizing Potion+
+0x0080 - Small Seed Satchel
+0x0081 - Medium Seed Satchel
+0x0082 - Large Seed Satchel
+0x0083 - Small Quiver
+0x0084 - Medium Quiver
+0x0085 - Large Quiver
+0x0086 - Small Bomb Bag
+0x0087 - Medium Bomb Bag
+0x0088 - Large Bomb Bag
+0x0099 - Empty Bottle
