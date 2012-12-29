@@ -382,6 +382,9 @@ Flags - GameOff + 0x0937:
 0x40 - Blue Bird Feather
 0x80 - Golden Skull
 
+Flags - GameOff + 0x0938
+0x20 - Dowsing
+
 Flags - GameOff + 0x09E4:
 0x01 - Goddess Sword
 0x02 - Goddess Long Sword

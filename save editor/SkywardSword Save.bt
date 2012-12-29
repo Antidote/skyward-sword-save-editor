@@ -88,6 +88,18 @@ enum <byte> LocationID
    TempleOfHylia
 };
 
+struct ItemFlag
+{
+    byte item1:1;
+    byte item2:1;
+    byte item3:1;
+    byte item4:1;
+    byte item5:1;
+    byte item6:1;
+    byte item7:1;
+    byte item8:1;
+};
+
 enum <byte> InterfaceType
 {
     Standard = 0x00,
@@ -156,31 +168,31 @@ struct GameData
             FSeek(GameOff + 0x09D2);
             InterfaceType interfaceType <format = hex>;
             FSeek(GameOff + 0x09E4);
-            uchar itemFlags1;
+            ItemFlag itemFlags1;
             uchar staminaRollHeartItem;
-            uchar itemFlags2;
+            ItemFlag itemFlags2;
             uchar staminaFruit;
-            uchar itemFlags3;
-            uchar itemFlags4;
+            ItemFlag itemFlags3;
+            ItemFlag itemFlags4;
             uchar unk;
-            uchar itemFlags5;
-            uchar itemFlags6;
-            uchar itemFlags7;
+            ItemFlag itemFlags5;
+            ItemFlag itemFlags6;
+            ItemFlag itemFlags7;
             uchar unk;
-            uchar itemFlags8;
+            ItemFlag itemFlags8;
             uchar unk;
-            uchar itemFlags9;
-            uchar itemFlags10;
-            uchar itemFlags11;
-            uchar itemFlags12;
-            uchar itemFlags13;
-            uchar unk;
-            uchar unk;
+            ItemFlag itemFlags9;
+            ItemFlag itemFlags10;
+            ItemFlag itemFlags11;
+            ItemFlag itemFlags12;
+            ItemFlag itemFlags13;
             uchar unk;
             uchar unk;
-            uchar itemFlags14;
-            uchar itemFlags15;
-            uchar itemFlags16;
+            uchar unk;
+            uchar unk;
+            ItemFlag itemFlags14;
+            ItemFlag itemFlags15;
+            ItemFlag itemFlags16;
             uchar unk;
             uchar unk;
             uchar unk;
@@ -255,7 +267,7 @@ struct
         }headerData;
         char data[headerData.headerSize - 1];
     }header;
-    GameData gameData[3];
+    GameData gameData[3] <optimize = false>;
     
     Skip skip[3];
 }file;
