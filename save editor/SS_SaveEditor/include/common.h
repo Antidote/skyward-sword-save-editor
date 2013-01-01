@@ -17,8 +17,15 @@
 #define COMMON_H
 
 #include <QImage>
+#include <QDateTime>
+
+const quint64 SECONDS_TO_2000 = 946684800LL;
+const quint64 TICKS_PER_SECOND = 60750000LL;
 
 float swapFloat(float);
 QImage ConvertTextureToImage( const QByteArray &ba, quint32 w, quint32 h );
+quint64 getWiiTime();
+quint64 toWiiTime(quint64 wiiTime);
+QDateTime fromWiiTime(quint64 wiiTime);
 
 #endif // COMMON_H

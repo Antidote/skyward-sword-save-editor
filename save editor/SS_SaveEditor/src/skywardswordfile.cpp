@@ -140,7 +140,6 @@ bool SkywardSwordFile::Save(const QString& filename)
     FILE* f = fopen(tmpFilename.toAscii(), "wb");
     if (f)
     {
-        SetSaveTime();
         for (int i = 0; i < GameCount; ++i)
         {
             Game oldGame = GetGame();
@@ -196,7 +195,7 @@ void SkywardSwordFile::CreateNewGame(SkywardSwordFile::Game game)
     }
 
     m_game = game;
-    SetSaveTime();
+    SetSaveTime(QDateTime::currentDateTime());
     SetCurrentArea   ("F000");
     SetCurrentRoom   ("F000");
     SetCurrentMap    ("F000");
@@ -266,7 +265,7 @@ void SkywardSwordFile::DeleteGame(Game game)
     m_game = game;
     memset((uchar*)(m_data + GetGameOffset()), 0, 0x53BC);
     SetNew(true);
-    SetSaveTime();
+    SetSaveTime(QDateTime::currentDateTime());
     switch(GetRegion())
     {
         default:
@@ -417,7 +416,6 @@ PlayTime SkywardSwordFile::GetPlayTime() const
     playTime.Hours = ((tmp / TICKS_PER_SECOND) / 60) / 60;
     playTime.Minutes =  ((tmp / TICKS_PER_SECOND) / 60) % 60;
     playTime.Seconds = ((tmp / TICKS_PER_SECOND) % 60);
-    playTime.RawTicks = tmp;
     return playTime;
 }
 
@@ -429,43 +427,20 @@ void SkywardSwordFile::SetPlayTime(PlayTime val)
     quint64 totalSeconds = (val.Hours * 60) * 60;
     totalSeconds += val.Minutes * 60;
     totalSeconds += val.Seconds;
-    totalSeconds *= TICKS_PER_SECOND;
-    *(quint64*)(m_data + GetGameOffset()) = qToBigEndian<quint64>(totalSeconds);
+    *(quint64*)(m_data + GetGameOffset()) = qToBigEndian<quint64>(TICKS_PER_SECOND * totalSeconds);
 }
 
 QDateTime SkywardSwordFile::GetSaveTime() const
 {
     if (!m_data)
         return QDateTime::currentDateTime();
-    QDateTime tmp(QDate(2000, 1, 1));
-    tmp = tmp.addSecs(qFromBigEndian(*(quint64*)(m_data + GetGameOffset() + 0x0008)) / 60750546);
-    return tmp;
+
+    return fromWiiTime(qFromBigEndian(*(quint64*)(m_data + GetGameOffset() + 0x0008)));
 }
 
-quint64 GetLocalTimeSinceJan1970()
+void SkywardSwordFile::SetSaveTime(const QDateTime& time)
 {
-    time_t sysTime, tzDiff, tzDST;
-    struct tm * gmTime;
-
-    time(&sysTime);
-
-    // Account for DST where needed
-    gmTime = localtime(&sysTime);
-    if(gmTime->tm_isdst == 1)
-        tzDST = 3600;
-    else
-        tzDST = 0;
-
-    // Lazy way to get local time in sec
-    gmTime	= gmtime(&sysTime);
-    tzDiff = sysTime - mktime(gmTime);
-
-    return (quint64)(sysTime + tzDiff + tzDST);
-}
-
-void SkywardSwordFile::SetSaveTime()
-{
-    *(qint64*)(m_data + GetGameOffset() + 0x0008) = qToBigEndian<qint64>((GetLocalTimeSinceJan1970() - SECONDS_TO_2000) * 60749453.59);
+    *(qint64*)(m_data + GetGameOffset() + 0x0008) = qToBigEndian<qint64>(toWiiTime(time.toTime_t()));
 }
 
 Vector3 SkywardSwordFile::GetPlayerPosition() const
