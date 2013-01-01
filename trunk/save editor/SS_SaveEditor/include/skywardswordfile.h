@@ -27,15 +27,11 @@
 class QDateTime;
 class WiiSave;
 
-#define TICKS_PER_SECOND 60750000
-#define SECONDS_TO_2000  946684800
-
 struct PlayTime
 {
     int Hours;
     int Minutes;
     int Seconds;
-    quint64 RawTicks;
 };
 
 struct Vector3
@@ -178,7 +174,7 @@ public:
     PlayTime  GetPlayTime() const;
     void      SetPlayTime(PlayTime val);
     QDateTime GetSaveTime() const;
-    void      SetSaveTime();
+    void      SetSaveTime(const QDateTime& time);
     Vector3   GetPlayerPosition() const;
     void      SetPlayerPosition(float x, float y, float z);
     void      SetPlayerPosition(Vector3 pos);

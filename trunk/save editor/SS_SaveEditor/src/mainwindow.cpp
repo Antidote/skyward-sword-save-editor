@@ -226,6 +226,7 @@ void MainWindow::SetupConnections()
     connect(m_ui->playHoursSpinBox,     SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
     connect(m_ui->playMinutesSpinBox,   SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
     connect(m_ui->playSecondsSpinBox,   SIGNAL(valueChanged(int)),    this, SLOT(onValueChanged()));
+    connect(m_ui->saveTimeEdit,         SIGNAL(dateTimeChanged(QDateTime)), this, SLOT(onValueChanged()));
     connect(m_ui->playerXSpinBox,       SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
     connect(m_ui->playerYSpinBox,       SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
     connect(m_ui->playerZSpinBox,       SIGNAL(valueChanged(double)), this, SLOT(onValueChanged()));
@@ -684,12 +685,12 @@ void MainWindow::onValueChanged()
     playTime.Hours = m_ui->playHoursSpinBox->value();
     playTime.Minutes = m_ui->playMinutesSpinBox->value();
     playTime.Seconds = m_ui->playSecondsSpinBox->value();
-    playTime.RawTicks = (((playTime.Hours * 60) * 60) + (playTime.Minutes * 60) + playTime.Seconds) * TICKS_PER_SECOND;
     m_gameFile->SetPlayTime(playTime);
     m_gameFile->SetPlayerPosition((float)m_ui->playerXSpinBox->value(),    (float)m_ui->playerYSpinBox->value(),     (float)m_ui->playerZSpinBox->value());
     m_gameFile->SetPlayerRotation((float)m_ui->playerRollSpinBox->value(), (float)m_ui->playerPitchSpinBox->value(), (float)m_ui->playerYawSpinBox->value());
     m_gameFile->SetCameraPosition((float)m_ui->cameraXSpinBox->value(),    (float)m_ui->cameraYSpinBox->value(),     (float)m_ui->cameraZSpinBox->value());
     m_gameFile->SetCameraRotation((float)m_ui->cameraRollSpinBox->value(), (float)m_ui->cameraPitchSpinBox->value(), (float)m_ui->cameraYawSpinBox->value());
+    m_gameFile->SetSaveTime(m_ui->saveTimeEdit->dateTime());
     m_gameFile->SetNight(m_ui->nightChkbox->isChecked());
     m_gameFile->SetHeroMode(m_ui->heroModeChkBox->isChecked());
     m_gameFile->SetIntroViewed(m_ui->introViewedChkBox->isChecked());
@@ -881,6 +882,9 @@ void MainWindow::onDeleteGame()
 
 void MainWindow::onSave()
 {
+    if (!m_gameFile)
+        return;
+
     QString oldFilename = m_gameFile->GetFilename();
     foreach(QString file, m_fileWatcher->files())
         m_fileWatcher->removePath(file);

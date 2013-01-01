@@ -3,24 +3,25 @@ GameOff = (fileSize == 0xFBE0 ? (fileSize - 0x80) : 0);
 GameOff + 0x00:
 0x01 - Unk
 0x02 - unk
-0x04 - unk
-0x08 - unk
-0x10 - unk
-0x20 - unk
-0x40 - unk
+0x04 - Gaebora and Link converse about Zelda
+0x08 - Fi & Goddess Sword introduction
+0x10 - Fi gives link the first tablet
+0x20 - Gaebora Asks link to save Zelda
+0x40 - Link gets his Knights Tunic
 0x80 - unk
 
 GameOff + 0x01:
 0x01 - Unk
 0x02 - unk
-0x04 - unk
-0x08 - unk
-0x10 - Unk
-0x20 - unk
-0x40 - unk
+0x04 - Zelda, Gaebora and Link cutscene at the Goddess Statue
+0x08 - Zelda taken to the surface cutscene
+0x10 - First Groose Cutscene
+0x20 - Red Loftwing Cutscene
+0x40 - Goddess Statue Cutscene after loftwing race
 0x80 - unk
+
 GameOff + 0x02:
-0x01 - Unk
+0x01 - Sealed Grounds first Improsined Cutscene
 0x02 - unk
 0x04 - unk
 0x08 - unk
@@ -114,7 +115,7 @@ GameOff + 0x0C:
 0x02 - unk
 0x04 - unk
 0x08 - unk
-0x10 - Unk
+0x10 - Faron Woods Intro
 0x20 - unk
 0x40 - unk
 0x80 - unk
@@ -126,7 +127,7 @@ GameOff + 0x0D:
 0x08 - unk
 0x10 - Skyloft Intro
 0x20 - unk
-0x40 - unk
+0x40 - Sealed Grounds Intro
 0x80 - unk
 
 GameOff + 0x0E:

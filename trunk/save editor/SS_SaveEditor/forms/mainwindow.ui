@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>705</width>
-    <height>510</height>
+    <width>722</width>
+    <height>544</height>
    </rect>
   </property>
   <property name="acceptDrops">
@@ -39,7 +39,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="playerTab">
        <attribute name="title">
@@ -400,10 +400,10 @@
              <item>
               <widget class="QDateTimeEdit" name="saveTimeEdit">
                <property name="enabled">
-                <bool>false</bool>
+                <bool>true</bool>
                </property>
                <property name="readOnly">
-                <bool>true</bool>
+                <bool>false</bool>
                </property>
                <property name="buttonSymbols">
                 <enum>QAbstractSpinBox::NoButtons</enum>
@@ -426,7 +426,7 @@
                 </date>
                </property>
                <property name="calendarPopup">
-                <bool>false</bool>
+                <bool>true</bool>
                </property>
               </widget>
              </item>
@@ -2813,7 +2813,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>705</width>
+     <width>722</width>
      <height>21</height>
     </rect>
    </property>
