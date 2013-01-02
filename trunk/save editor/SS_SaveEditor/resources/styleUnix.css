@@ -200,3 +200,9 @@ QSpinBox, QDoubleSpinBox, QLineEdit, QDateTimeEdit
 {
     background-color: rgba(227, 227, 227, 255);
 }
+
+#qt_calendar_navigationbar
+{
+	font-size:16px; width: 150px; left: 20px;
+	background-color:qlineargradient(x1:0, y1:0, x2:0, y2:1, stop: 0 #cccccc, stop: 1 #333333)
+}

@@ -2802,7 +2802,7 @@
     <item>
      <widget class="QPushButton" name="createDeleteGameBtn">
       <property name="text">
-       <string>Click to create new Adventure</string>
+       <string>Click to create a new Adventure</string>
       </property>
      </widget>
     </item>

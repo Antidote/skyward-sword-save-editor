@@ -32,22 +32,19 @@ public:
 
     virtual ~IGameFile(){}
 
-    virtual bool IsOpen() const=0;
-    virtual void Close() = 0;
-    virtual bool Reload(Game game) = 0;
-    virtual bool Save(const QString& filename = NULL) = 0;
-    virtual bool Open(Game game = GameNone, const QString& filepath=NULL) = 0;
-    virtual void CreateNewGame(Game game) = 0;
-    virtual void DeleteGame(Game game = GameNone) = 0;
-    virtual void DeleteAllGames() = 0;
-    virtual void UpdateChecksum() = 0;
-    virtual bool HasValidChecksum() = 0;
-    virtual bool IsModified() const = 0;
-
-    virtual bool HasFileOnDiskChanged() = 0;
-
-    virtual QString GetFilename() const = 0;
-    virtual void SetFilename(const QString& filepath) = 0;
+    virtual bool isOpen() const=0;
+    virtual void close() = 0;
+    virtual bool reload(Game game) = 0;
+    virtual bool save(const QString& filename = NULL) = 0;
+    virtual bool open(Game game = GameNone, const QString& filepath=NULL) = 0;
+    virtual void createNewGame(Game game) = 0;
+    virtual void deleteGame(Game game = GameNone) = 0;
+    virtual void deleteAllGames() = 0;
+    virtual void updateChecksum() = 0;
+    virtual bool hasValidChecksum() = 0;
+    virtual bool isModified() const = 0;
+    virtual QString getFilename() const = 0;
+    virtual void setFilename(const QString& filepath) = 0;
 };
 
 #endif // IGAMEFILE_H

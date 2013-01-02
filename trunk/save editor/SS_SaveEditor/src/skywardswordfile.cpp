@@ -69,10 +69,10 @@ SkywardSwordFile::~SkywardSwordFile()
     }
 }
 
-bool SkywardSwordFile::Open(Game game, const QString& filepath)
+bool SkywardSwordFile::open(Game game, const QString& filepath)
 {
     if (m_isOpen)
-        Close();
+        close();
 
     if (m_game != game)
         m_game = game;
@@ -82,7 +82,7 @@ bool SkywardSwordFile::Open(Game game, const QString& filepath)
 
     if (m_filename.lastIndexOf(".bin") == m_filename.size() - 4)
     {
-       return LoadDataBin(m_filename, game);
+       return loadDataBin(m_filename, game);
     }
     else
     {
@@ -106,7 +106,6 @@ bool SkywardSwordFile::Open(Game game, const QString& filepath)
 
 
             file.read((char*)m_data, 0xFBE0);
-            m_fileChecksum = m_checksumEngine.GetCRC32((unsigned const char*)m_data, 0, 0xFBE0);
             file.close();
             m_isOpen = true;
             return true;
@@ -116,7 +115,7 @@ bool SkywardSwordFile::Open(Game game, const QString& filepath)
     return false;
 }
 
-bool SkywardSwordFile::Save(const QString& filename)
+bool SkywardSwordFile::save(const QString& filename)
 {
     if (!m_isOpen)
         return false;
@@ -127,7 +126,7 @@ bool SkywardSwordFile::Save(const QString& filename)
     if (m_filename.lastIndexOf(".bin") == m_filename.size() - 4)
     {
 //#ifdef DEBUG
-        return SaveDataBin();
+        return saveDataBin();
 /*#else
             QMessageBox msg(QMessageBox::Warning, "DISABLED", "Data.bin is an experimental feature and support has been disabled in this version");
             msg.exec();
@@ -142,15 +141,14 @@ bool SkywardSwordFile::Save(const QString& filename)
     {
         for (int i = 0; i < GameCount; ++i)
         {
-            Game oldGame = GetGame();
-            SetGame((Game)i);
-            if (!HasValidChecksum())
-                UpdateChecksum(); // ensure the file has the correct Checksum
-            SetGame(oldGame);
+            Game oldGame = game();
+            setGame((Game)i);
+            if (!hasValidChecksum())
+                updateChecksum(); // ensure the file has the correct Checksum
+            setGame(oldGame);
         }
         fwrite(m_data, 1, 0xFBE0, f);
         fclose(f);
-        m_fileChecksum = m_checksumEngine.GetCRC32((const uchar*)m_data, 0, 0xFBE0);
 
         f = fopen(tmpFilename.toAscii(), "rb");
         if (f)
@@ -158,10 +156,10 @@ bool SkywardSwordFile::Save(const QString& filename)
             char* tmpBuf = new char[0xFBE0];
             fread(tmpBuf, 1, 0xFBE0, f);
             fclose(f);
-            quint32 tmpChecksum = m_checksumEngine.GetCRC32((const quint8*)tmpBuf, 0, 0xFBE0);
-            if (tmpChecksum == m_fileChecksum)
+            QFile file(tmpFilename);
+            if (file.exists() && file.size() == 0xFBE0)
             {
-                QFile file(tmpFilename);
+
                 file.remove(m_filename);
                 file.rename(tmpFilename, m_filename);
                 file.remove(tmpFilename);
@@ -175,7 +173,7 @@ bool SkywardSwordFile::Save(const QString& filename)
     return false;
 }
 
-void SkywardSwordFile::CreateNewGame(SkywardSwordFile::Game game)
+void SkywardSwordFile::createNewGame(SkywardSwordFile::Game game)
 {
     if (!m_data)
     {
@@ -188,21 +186,21 @@ void SkywardSwordFile::CreateNewGame(SkywardSwordFile::Game game)
         for (int i = 0; i < 3; i++)
         {
             m_game = (Game)i;
-            SetNew(true);
-            UpdateChecksum();
+            setNew(true);
+            updateChecksum();
         }
         m_isOpen = true;
     }
 
     m_game = game;
-    SetSaveTime(QDateTime::currentDateTime());
-    SetCurrentArea   ("F000");
-    SetCurrentRoom   ("F000");
-    SetCurrentMap    ("F000");
-    SetPlayerPosition(DEFAULT_POS_X, DEFAULT_POS_Y, DEFAULT_POS_Z);
-    SetPlayerRotation(0.0f, 0.0f, 0.0f);
-    SetCameraPosition(DEFAULT_POS_X, DEFAULT_POS_Y, DEFAULT_POS_Z);
-    SetCameraRotation(0.0f, 0.0f, 0.0f);
+    setSaveTime(QDateTime::currentDateTime());
+    setCurrentArea   ("F000");
+    setCurrentRoom   ("F000");
+    setCurrentMap    ("F000");
+    setPlayerPosition(DEFAULT_POS_X, DEFAULT_POS_Y, DEFAULT_POS_Z);
+    setPlayerRotation(0.0f, 0.0f, 0.0f);
+    setCameraPosition(DEFAULT_POS_X, DEFAULT_POS_Y, DEFAULT_POS_Z);
+    setCameraRotation(0.0f, 0.0f, 0.0f);
 }
 
 void SkywardSwordFile::CreateEmptyFile(Region region)
@@ -212,7 +210,7 @@ void SkywardSwordFile::CreateEmptyFile(Region region)
     // Zero out the buffer, just to make sure we don't have a 'corrupt' file
     memset(m_data, 0, 0xFBE0);
     // Set the region to the specified one.
-    SetRegion(region);
+    setRegion(region);
     // The game expects adress 0x001F to be 0x1D so do so.
     m_data[0x001F] = 0x1D;
 
@@ -221,17 +219,18 @@ void SkywardSwordFile::CreateEmptyFile(Region region)
     for (int i = 0; i < 3; i++)
     {
         m_game = (IGameFile::Game)i;
-        SetNew(true);
+        setNew(true);
     }
     m_game = IGameFile::Game1;
+    m_isDirty = true;
 }
 
-void SkywardSwordFile::ExportGame(const QString &filepath, Game game)
+void SkywardSwordFile::exportGame(const QString &filepath, Game game)
 {
-    ExportGame(filepath, game, GetRegion());
+    exportGame(filepath, game, region());
 }
 
-void SkywardSwordFile::ExportGame(const QString& filepath, Game game, Region region)
+void SkywardSwordFile::exportGame(const QString& filepath, Game game, Region region)
 {
     if (game == GameNone)
         game = Game1;
@@ -256,66 +255,29 @@ void SkywardSwordFile::ExportGame(const QString& filepath, Game game, Region reg
     fclose(out);
 }
 
-void SkywardSwordFile::DeleteGame(Game game)
+void SkywardSwordFile::deleteGame(Game game)
 {
     if (!m_data)
         return;
 
     Game oldGame = m_game;
     m_game = game;
-    memset((uchar*)(m_data + GetGameOffset()), 0, 0x53BC);
-    SetNew(true);
-    SetSaveTime(QDateTime::currentDateTime());
-    switch(GetRegion())
-    {
-        default:
-        case NTSCURegion:
-        case PALRegion:
-            SetPlayerName("Link");
-            break;
-        case NTSCJRegion:
-            SetPlayerName(QString::fromUtf16(JAPANESE_NAME));
-            break;
-    }
-    UpdateChecksum();
+    memset((uchar*)(m_data + gameOffset()), 0, 0x53BC);
+    setNew(true);
+    updateChecksum();
     m_game = oldGame;
+    m_isDirty = true;
 }
 
-void SkywardSwordFile::DeleteAllGames()
+void SkywardSwordFile::deleteAllGames()
 {
     for (int i = 0; i < 3; i++)
-        DeleteGame((Game)i);
+        deleteGame((Game)i);
+
+    m_isDirty = true;
 }
 
-bool SkywardSwordFile::HasFileOnDiskChanged()
-{
-    if (m_filename.size() <= 0)
-        return false; // Currently working in memory only
-
-    QFile file(m_filename);
-
-    if (file.open(QIODevice::ReadOnly))
-    {
-        // I'm going to go ahead and keep this for now. (Prevents you from accidentally fucking up your save files)
-        if (file.size() != 0xFBE0)
-        {
-            file.close();
-            return false;
-        }
-        char* data = new char[0xFBE0];
-
-        file.read((char*)data, 0xFBE0);
-        quint32 fileChecksum = m_checksumEngine.GetCRC32((unsigned const char*)data, 0, 0xFBE0);
-        file.close();
-
-        if (fileChecksum != m_fileChecksum)
-            return true;
-    }
-
-    return false;
-}
-
-void SkywardSwordFile::Close()
+void SkywardSwordFile::close()
 {
     if (!m_data)
         return;
@@ -328,55 +290,57 @@ void SkywardSwordFile::Close()
     m_data = NULL;
     m_isOpen = false;
     m_bannerImage = QImage();
+    m_isDirty = false;
 }
 
-bool SkywardSwordFile::Reload(SkywardSwordFile::Game game)
+bool SkywardSwordFile::reload(SkywardSwordFile::Game game)
 {
-    Close();
-    return Open(game);
+    close();
+    m_isDirty = false;
+    return open(game);
 }
 
-bool SkywardSwordFile::IsOpen() const
+bool SkywardSwordFile::isOpen() const
 {
     return m_isOpen;
 }
 
-bool SkywardSwordFile::HasValidChecksum()
+bool SkywardSwordFile::hasValidChecksum()
 {
     if (!m_data)
         return false;
 
-    return (*(quint32*)(m_data + GetGameOffset() + 0x53BC) == qFromBigEndian<quint32>(m_checksumEngine.GetCRC32((const unsigned char*)m_data, GetGameOffset(), 0x53BC)));
+    return (*(quint32*)(m_data + gameOffset() + 0x53BC) == qFromBigEndian<quint32>(m_checksumEngine.CRC32((const unsigned char*)m_data, gameOffset(), 0x53BC)));
 }
 
-SkywardSwordFile::Game SkywardSwordFile::GetGame() const
+SkywardSwordFile::Game SkywardSwordFile::game() const
 {
     return m_game;
 }
 
-void SkywardSwordFile::SetGame(Game game)
+void SkywardSwordFile::setGame(Game game)
 {
     m_game = game;
 }
 
-QString SkywardSwordFile::GetFilename() const
+QString SkywardSwordFile::getFilename() const
 {
     return m_filename;
 }
 
-void SkywardSwordFile::SetFilename(const QString &filepath)
+void SkywardSwordFile::setFilename(const QString &filepath)
 {
     m_filename = filepath;
 }
 
-SkywardSwordFile::Region SkywardSwordFile::GetRegion() const
+SkywardSwordFile::Region SkywardSwordFile::region() const
 {
     if (!m_data)
         return NTSCURegion;
     return (Region)(*(quint32*)(m_data));
 }
 
-void SkywardSwordFile::SetRegion(SkywardSwordFile::Region val)
+void SkywardSwordFile::setRegion(SkywardSwordFile::Region val)
 {
     if (!m_data)
         return;
@@ -405,14 +369,15 @@ void SkywardSwordFile::SetRegion(SkywardSwordFile::Region val)
     }
 
     *(quint32*)(m_data) = val;
+    m_isDirty = true;
 }
 
-PlayTime SkywardSwordFile::GetPlayTime() const
+PlayTime SkywardSwordFile::playTime() const
 {
     if (!m_data)
         return PlayTime();
     PlayTime playTime;
-    quint64 tmp = qFromBigEndian<quint64>(*(quint64*)(m_data + GetGameOffset()));
+    quint64 tmp = qFromBigEndian<quint64>(*(quint64*)(m_data + gameOffset()));
     playTime.Hours = ((tmp / TICKS_PER_SECOND) / 60) / 60;
     playTime.Minutes =  ((tmp / TICKS_PER_SECOND) / 60) % 60;
     playTime.Seconds = ((tmp / TICKS_PER_SECOND) % 60);
@@ -420,124 +385,130 @@ PlayTime SkywardSwordFile::GetPlayTime() const
 }
 
 // Sets the current playtime
-void SkywardSwordFile::SetPlayTime(PlayTime val)
+void SkywardSwordFile::setPlayTime(PlayTime val)
 {
     if (!m_data)
         return;
     quint64 totalSeconds = (val.Hours * 60) * 60;
     totalSeconds += val.Minutes * 60;
     totalSeconds += val.Seconds;
-    *(quint64*)(m_data + GetGameOffset()) = qToBigEndian<quint64>(TICKS_PER_SECOND * totalSeconds);
+    *(quint64*)(m_data + gameOffset()) = qToBigEndian<quint64>(TICKS_PER_SECOND * totalSeconds);
+    m_isDirty = true;
 }
 
-QDateTime SkywardSwordFile::GetSaveTime() const
+QDateTime SkywardSwordFile::saveTime() const
 {
     if (!m_data)
         return QDateTime::currentDateTime();
 
-    return fromWiiTime(qFromBigEndian(*(quint64*)(m_data + GetGameOffset() + 0x0008)));
+    return fromWiiTime(qFromBigEndian(*(quint64*)(m_data + gameOffset() + 0x0008)));
 }
 
-void SkywardSwordFile::SetSaveTime(const QDateTime& time)
+void SkywardSwordFile::setSaveTime(const QDateTime& time)
 {
-    *(qint64*)(m_data + GetGameOffset() + 0x0008) = qToBigEndian<qint64>(toWiiTime(time.toTime_t()));
+    *(qint64*)(m_data + gameOffset() + 0x0008) = qToBigEndian<qint64>(toWiiTime(time));
+    m_isDirty = true;
 }
 
-Vector3 SkywardSwordFile::GetPlayerPosition() const
+Vector3 SkywardSwordFile::playerPosition() const
 {
     if (!m_data)
         return Vector3(0.0f, 0.0f, 0.0f);
 
-    return Vector3(swapFloat(*(float*)(m_data + GetGameOffset() + 0x0010)),
-                   swapFloat(*(float*)(m_data + GetGameOffset() + 0x0014)),
-                   swapFloat(*(float*)(m_data + GetGameOffset() + 0x0018)));
+    return Vector3(swapFloat(*(float*)(m_data + gameOffset() + 0x0010)),
+                   swapFloat(*(float*)(m_data + gameOffset() + 0x0014)),
+                   swapFloat(*(float*)(m_data + gameOffset() + 0x0018)));
 }
 
-void SkywardSwordFile::SetPlayerPosition(float x, float y, float z)
+void SkywardSwordFile::setPlayerPosition(float x, float y, float z)
 {
-    SetPlayerPosition(Vector3(x, y, z));
+    setPlayerPosition(Vector3(x, y, z));
 }
 
-void SkywardSwordFile::SetPlayerPosition(Vector3 pos)
+void SkywardSwordFile::setPlayerPosition(Vector3 pos)
 {
     if (!m_data)
         return;
-    *(float*)(m_data + GetGameOffset() + 0x0010) = swapFloat(pos.X);
-    *(float*)(m_data + GetGameOffset() + 0x0014) = swapFloat(pos.Y);
-    *(float*)(m_data + GetGameOffset() + 0x0018) = swapFloat(pos.Z);
+    *(float*)(m_data + gameOffset() + 0x0010) = swapFloat(pos.X);
+    *(float*)(m_data + gameOffset() + 0x0014) = swapFloat(pos.Y);
+    *(float*)(m_data + gameOffset() + 0x0018) = swapFloat(pos.Z);
+    m_isDirty = true;
 }
 
-Vector3 SkywardSwordFile::GetPlayerRotation() const
+Vector3 SkywardSwordFile::playerRotation() const
 {
     if (!m_data)
         return Vector3(0, 0, 0);
-    return Vector3(swapFloat(*(float*)(m_data + GetGameOffset() + 0x001C)),
-                   swapFloat(*(float*)(m_data + GetGameOffset() + 0x0020)),
-                   swapFloat(*(float*)(m_data + GetGameOffset() + 0x0024)));
+    return Vector3(swapFloat(*(float*)(m_data + gameOffset() + 0x001C)),
+                   swapFloat(*(float*)(m_data + gameOffset() + 0x0020)),
+                   swapFloat(*(float*)(m_data + gameOffset() + 0x0024)));
 }
 
-void SkywardSwordFile::SetPlayerRotation(float roll, float pitch, float yaw)
+void SkywardSwordFile::setPlayerRotation(float roll, float pitch, float yaw)
 {
-    SetPlayerRotation(Vector3(roll, pitch, yaw));
+    setPlayerRotation(Vector3(roll, pitch, yaw));
 }
 
-void SkywardSwordFile::SetPlayerRotation(Vector3 rotation)
+void SkywardSwordFile::setPlayerRotation(Vector3 rotation)
 {
     if (!m_data)
         return;
-    *(float*)(m_data + GetGameOffset() + 0x001C) = swapFloat(rotation.X);
-    *(float*)(m_data + GetGameOffset() + 0x0020) = swapFloat(rotation.Y);
-    *(float*)(m_data + GetGameOffset() + 0x0024) = swapFloat(rotation.Z);
+    *(float*)(m_data + gameOffset() + 0x001C) = swapFloat(rotation.X);
+    *(float*)(m_data + gameOffset() + 0x0020) = swapFloat(rotation.Y);
+    *(float*)(m_data + gameOffset() + 0x0024) = swapFloat(rotation.Z);
+    m_isDirty = true;
 }
 
-Vector3 SkywardSwordFile::GetCameraPosition() const
+Vector3 SkywardSwordFile::cameraPosition() const
 {
     if (!m_data)
         return Vector3(0.0f, 0.0f, 0.0f);
-    return Vector3(swapFloat(*(float*)(m_data + GetGameOffset() + 0x0028)),
-                   swapFloat(*(float*)(m_data + GetGameOffset() + 0x002C)),
-                   swapFloat(*(float*)(m_data + GetGameOffset() + 0x0030)));
+    return Vector3(swapFloat(*(float*)(m_data + gameOffset() + 0x0028)),
+                   swapFloat(*(float*)(m_data + gameOffset() + 0x002C)),
+                   swapFloat(*(float*)(m_data + gameOffset() + 0x0030)));
 }
 
-void SkywardSwordFile::SetCameraPosition(float x, float y, float z)
+void SkywardSwordFile::setCameraPosition(float x, float y, float z)
 {
-    SetCameraPosition(Vector3(x, y, z));
+    setCameraPosition(Vector3(x, y, z));
 }
 
-void SkywardSwordFile::SetCameraPosition(Vector3 pos)
+void SkywardSwordFile::setCameraPosition(Vector3 pos)
 {
     if (!m_data)
         return;
-    *(float*)(m_data + GetGameOffset() + 0x0028) = swapFloat(pos.X);
-    *(float*)(m_data + GetGameOffset() + 0x002C) = swapFloat(pos.Y);
-    *(float*)(m_data + GetGameOffset() + 0x0030) = swapFloat(pos.Z);
+    *(float*)(m_data + gameOffset() + 0x0028) = swapFloat(pos.X);
+    *(float*)(m_data + gameOffset() + 0x002C) = swapFloat(pos.Y);
+    *(float*)(m_data + gameOffset() + 0x0030) = swapFloat(pos.Z);
+    m_isDirty = true;
 }
 
-Vector3 SkywardSwordFile::GetCameraRotation() const
+Vector3 SkywardSwordFile::cameraRotation() const
 {
     if (!m_data)
         return Vector3(0.0f, 0.0f, 0.0f);
-    return Vector3(swapFloat(*(float*)(m_data + GetGameOffset() + 0x0034)),
-                   swapFloat(*(float*)(m_data + GetGameOffset() + 0x0038)),
-                   swapFloat(*(float*)(m_data + GetGameOffset() + 0x003C)));
+    return Vector3(swapFloat(*(float*)(m_data + gameOffset() + 0x0034)),
+                   swapFloat(*(float*)(m_data + gameOffset() + 0x0038)),
+                   swapFloat(*(float*)(m_data + gameOffset() + 0x003C)));
 }
 
-void SkywardSwordFile::SetCameraRotation(float roll, float pitch, float yaw)
+void SkywardSwordFile::setCameraRotation(float roll, float pitch, float yaw)
 {
-    SetCameraRotation(Vector3(roll, pitch, yaw));
+    setCameraRotation(Vector3(roll, pitch, yaw));
 }
 
-void SkywardSwordFile::SetCameraRotation(Vector3 rotation)
+void SkywardSwordFile::setCameraRotation(Vector3 rotation)
 {
     if (!m_data)
         return;
 
-    *(float*)(m_data + GetGameOffset() + 0x0034) = swapFloat(rotation.X);
-    *(float*)(m_data + GetGameOffset() + 0x0038) = swapFloat(rotation.Y);
-    *(float*)(m_data + GetGameOffset() + 0x003C) = swapFloat(rotation.Z);
+    *(float*)(m_data + gameOffset() + 0x0034) = swapFloat(rotation.X);
+    *(float*)(m_data + gameOffset() + 0x0038) = swapFloat(rotation.Y);
+    *(float*)(m_data + gameOffset() + 0x003C) = swapFloat(rotation.Z);
+    m_isDirty = true;
 }
 
-QString SkywardSwordFile::GetPlayerName() const
+QString SkywardSwordFile::playerName() const
 {
     if (!m_data)
         return QString("");
@@ -545,14 +516,14 @@ QString SkywardSwordFile::GetPlayerName() const
     ushort tmpName[8];
     for (int i = 0, j=0; i < 8; ++i, j+= 2)
     {
-        tmpName[i] = *(ushort*)(m_data + GetGameOffset() + (0x08D4 + j));
+        tmpName[i] = *(ushort*)(m_data + gameOffset() + (0x08D4 + j));
         tmpName[i] = qFromBigEndian<quint16>(tmpName[i]);
     }
 
     return QString(QString::fromUtf16(tmpName));
 }
 
-void SkywardSwordFile::SetPlayerName(const QString &name)
+void SkywardSwordFile::setPlayerName(const QString &name)
 {
     if (!m_data)
         return;
@@ -561,51 +532,54 @@ void SkywardSwordFile::SetPlayerName(const QString &name)
     {
         if (i > name.length())
         {
-            *(ushort*)(m_data + GetGameOffset() + (0x08D4 + j++)) = 0;
+            *(ushort*)(m_data + gameOffset() + (0x08D4 + j++)) = 0;
             continue;
         }
-        *(ushort*)(m_data + GetGameOffset() + (0x08D4 + j++)) = qToBigEndian<quint16>(name.utf16()[i]);
+        *(ushort*)(m_data + gameOffset() + (0x08D4 + j++)) = qToBigEndian<quint16>(name.utf16()[i]);
     }
-
+    m_isDirty = true;
 }
 
-bool SkywardSwordFile::IsHeroMode() const
+bool SkywardSwordFile::isHeroMode() const
 {
     if (!m_data)
         return false;
 
-    return GetFlag(0x08FE, 0x08);
+    return flag(0x08FE, 0x08);
 }
 
-void SkywardSwordFile::SetHeroMode(bool val)
+void SkywardSwordFile::setHeroMode(bool val)
 {
     if (!m_data)
         return;
 
-    SetFlag(0x08FE, 0x08, val);
+    setFlag(0x08FE, 0x08, val);
+    m_isDirty = true;
 }
 
-bool SkywardSwordFile::GetIntroViewed() const
+bool SkywardSwordFile::introViewed() const
 {
     if (!m_data)
         return false;
 
-    return *(char*)(m_data + GetGameOffset() + 0x0941) != 0;
+    return *(char*)(m_data + gameOffset() + 0x0941) != 0;
 }
 
-void SkywardSwordFile::SetIntroViewed(bool val)
+void SkywardSwordFile::setIntroViewed(bool val)
 {
     if (!m_data)
         return;
 
     if (val)
-        *(char*)(m_data + GetGameOffset() + 0x0941) = 2;
+        *(char*)(m_data + gameOffset() + 0x0941) = 2;
     else
-        *(char*)(m_data + GetGameOffset() + 0x0941) = 0;
+        *(char*)(m_data + gameOffset() + 0x0941) = 0;
+
+    m_isDirty = true;
 }
 
 
-bool SkywardSwordFile::GetSword(Sword sword) const
+bool SkywardSwordFile::sword(Sword sword) const
 {
     if (!m_data)
         return false;
@@ -613,40 +587,42 @@ bool SkywardSwordFile::GetSword(Sword sword) const
     switch(sword)
     {
         case PracticeSword:
-            return GetFlag(0x09F2, 0x01);
+            return flag(0x09F2, 0x01);
         case GoddessSword:
-            return GetFlag(0x09E4, 0x01);
+            return flag(0x09E4, 0x01);
         case LongSword:
-            return GetFlag(0x09E4, 0x02);
+            return flag(0x09E4, 0x02);
         case WhiteSword:
-            return GetFlag(0x09FB, 0x10);
+            return flag(0x09FB, 0x10);
         case MasterSword:
-            return GetFlag(0x09E4, 0x04);
+            return flag(0x09E4, 0x04);
         case TrueMasterSword:
-            return GetFlag(0x09F3, 0x80);
+            return flag(0x09F3, 0x80);
         default:
             return false;
     }
 }
 
-void SkywardSwordFile::SetSword(Sword sword, bool val)
+void SkywardSwordFile::setSword(Sword sword, bool val)
 {
     if (!m_data)
         return;
 
     switch (sword)
     {
-        case PracticeSword:   SetFlag(0x09F2, 0x01, val); break;
-        case GoddessSword:    SetFlag(0x09E4, 0x01, val); break;
-        case LongSword:       SetFlag(0x09E4, 0x02, val); break;
-        case WhiteSword:      SetFlag(0x09FB, 0x10, val); break;
-        case MasterSword:     SetFlag(0x09E4, 0x04, val); break;
-        case TrueMasterSword: SetFlag(0x09F3, 0x80, val); break;
+        case PracticeSword:   setFlag(0x09F2, 0x01, val); break;
+        case GoddessSword:    setFlag(0x09E4, 0x01, val); break;
+        case LongSword:       setFlag(0x09E4, 0x02, val); break;
+        case WhiteSword:      setFlag(0x09FB, 0x10, val); break;
+        case MasterSword:     setFlag(0x09E4, 0x04, val); break;
+        case TrueMasterSword: setFlag(0x09F3, 0x80, val); break;
         default: return;
     }
+
+    m_isDirty = true;
 }
 
-bool SkywardSwordFile::GetEquipment(WeaponEquipment weapon) const
+bool SkywardSwordFile::equipment(WeaponEquipment weapon) const
 {
     if (!m_data)
       return false;
@@ -654,87 +630,88 @@ bool SkywardSwordFile::GetEquipment(WeaponEquipment weapon) const
     switch(weapon)
     {
         case SlingshotWeapon:
-            return GetFlag(0x09E6, 0x10);
+            return flag(0x09E6, 0x10);
         case ScattershotWeapon:
-            return GetFlag(0x09EC, 0x80);
+            return flag(0x09EC, 0x80);
         case BugnetWeapon:
-            return GetFlag(0x09E8, 0x01);
+            return flag(0x09E8, 0x01);
         case BigBugnetWeapon:
-            return GetFlag(0x09F2, 0x02);
+            return flag(0x09F2, 0x02);
         case BeetleWeapon:
-            return GetFlag(0x09E6, 0x20);
+            return flag(0x09E6, 0x20);
         case HookBeetleWeapon:
-            return GetFlag(0x09EB, 0x02);
+            return flag(0x09EB, 0x02);
         case QuickBeetleWeapon:
-            return GetFlag(0x09EB, 0x04);
+            return flag(0x09EB, 0x04);
         case ToughBeetleWeapon:
-            return GetFlag(0x09EB, 0x08);
+            return flag(0x09EB, 0x08);
         case BombWeapon:
-            return GetFlag(0x09ED, 0x04);
+            return flag(0x09ED, 0x04);
         case GustBellowsWeapon:
-            return GetFlag(0x09E6, 0x02);
+            return flag(0x09E6, 0x02);
         case WhipWeapon:
-            return GetFlag(0x09F3, 0x10);
+            return flag(0x09F3, 0x10);
         case ClawshotWeapon:
-            return GetFlag(0x09E4, 0x20);
+            return flag(0x09E4, 0x20);
         case BowWeapon:
-            return GetFlag(0x09E4, 0x10);
+            return flag(0x09E4, 0x10);
         case DiggingMittsEquipment:
-            return GetFlag(0x09E6, 0x40);
+            return flag(0x09E6, 0x40);
         case WaterDragonScaleEquipment:
-            return GetFlag(0x09E9, 0x20);
+            return flag(0x09E9, 0x20);
         case MoleMittsEquipment:
-            return GetFlag(0x09EC, 0x02);
+            return flag(0x09EC, 0x02);
         case IronBowWeapon:
-            return GetFlag(0x09ED, 0x01);
+            return flag(0x09ED, 0x01);
         case SacredBowWeapon:
-            return GetFlag(0x09ED, 0x02);
+            return flag(0x09ED, 0x02);
         case FireShieldEaringsEquipment:
-            return GetFlag(0x09F3, 0x20);
+            return flag(0x09F3, 0x20);
         case SailClothEquipment:
-            return GetFlag(0x09F4, 0x01);
+            return flag(0x09F4, 0x01);
         case HarpEquipment:
-            return GetFlag(0x09F4, 0x02);
+            return flag(0x09F4, 0x02);
         default:
             return false;
     }
 }
 
-void SkywardSwordFile::SetEquipment(WeaponEquipment weapon, bool val)
+void SkywardSwordFile::setEquipment(WeaponEquipment weapon, bool val)
 {
     if (!m_data)
         return;
 
     switch(weapon)
     {
-        case SlingshotWeapon:           SetFlag(0x09E6, 0x10, val); break;
-        case ScattershotWeapon:         SetFlag(0x09EC, 0x80, val); break;
-        case BugnetWeapon:              SetFlag(0x09E8, 0x01, val); break;
-        case BigBugnetWeapon:           SetFlag(0x09F2, 0x02, val); break;
-        case BeetleWeapon:              SetFlag(0x09E6, 0x20, val); break;
-        case HookBeetleWeapon:          SetFlag(0x09EB, 0x02, val); break;
-        case QuickBeetleWeapon:         SetFlag(0x09EB, 0x04, val); break;
-        case ToughBeetleWeapon:         SetFlag(0x09EB, 0x08, val); break;
-        case BombWeapon:                SetFlag(0x09ED, 0x04, val); break;
-        case GustBellowsWeapon:         SetFlag(0x09E6, 0x02, val); break;
-        case WhipWeapon:                SetFlag(0x09F3, 0x10, val); break;
-        case ClawshotWeapon:            SetFlag(0x09E4, 0x20, val); break;
-        case BowWeapon:                 SetFlag(0x09E4, 0x10, val); break;
-        case DiggingMittsEquipment:     SetFlag(0x09E6, 0x40, val); break;
-        case WaterDragonScaleEquipment: SetFlag(0x09E9, 0x20, val); break;
-        case MoleMittsEquipment:        SetFlag(0x09EC, 0x02, val); break;
-        case IronBowWeapon:             SetFlag(0x09ED, 0x01, val); break;
-        case SacredBowWeapon:           SetFlag(0x09ED, 0x02, val); break;
-        case FireShieldEaringsEquipment:SetFlag(0x09F3, 0x20, val); break;
-        case SailClothEquipment:        SetFlag(0x09F4, 0x01, val); break;
-        case HarpEquipment:             SetFlag(0x09F4, 0x02, val); break;
+        case SlingshotWeapon:           setFlag(0x09E6, 0x10, val); break;
+        case ScattershotWeapon:         setFlag(0x09EC, 0x80, val); break;
+        case BugnetWeapon:              setFlag(0x09E8, 0x01, val); break;
+        case BigBugnetWeapon:           setFlag(0x09F2, 0x02, val); break;
+        case BeetleWeapon:              setFlag(0x09E6, 0x20, val); break;
+        case HookBeetleWeapon:          setFlag(0x09EB, 0x02, val); break;
+        case QuickBeetleWeapon:         setFlag(0x09EB, 0x04, val); break;
+        case ToughBeetleWeapon:         setFlag(0x09EB, 0x08, val); break;
+        case BombWeapon:                setFlag(0x09ED, 0x04, val); break;
+        case GustBellowsWeapon:         setFlag(0x09E6, 0x02, val); break;
+        case WhipWeapon:                setFlag(0x09F3, 0x10, val); break;
+        case ClawshotWeapon:            setFlag(0x09E4, 0x20, val); break;
+        case BowWeapon:                 setFlag(0x09E4, 0x10, val); break;
+        case DiggingMittsEquipment:     setFlag(0x09E6, 0x40, val); break;
+        case WaterDragonScaleEquipment: setFlag(0x09E9, 0x20, val); break;
+        case MoleMittsEquipment:        setFlag(0x09EC, 0x02, val); break;
+        case IronBowWeapon:             setFlag(0x09ED, 0x01, val); break;
+        case SacredBowWeapon:           setFlag(0x09ED, 0x02, val); break;
+        case FireShieldEaringsEquipment:setFlag(0x09F3, 0x20, val); break;
+        case SailClothEquipment:        setFlag(0x09F4, 0x01, val); break;
+        case HarpEquipment:             setFlag(0x09F4, 0x02, val); break;
         default: return;
     }
+    m_isDirty = true;
 }
 
-quint32 SkywardSwordFile::GetAmmo(Ammo type)
+quint32 SkywardSwordFile::ammo(Ammo type)
 {
-    quint32 val = qFromBigEndian(*(quint32*)(m_data + GetGameOffset() + 0x0A60));
+    quint32 val = qFromBigEndian(*(quint32*)(m_data + gameOffset() + 0x0A60));
     quint32 ret = 0;
 
     switch(type)
@@ -747,9 +724,9 @@ quint32 SkywardSwordFile::GetAmmo(Ammo type)
     return ret;
 }
 
-void SkywardSwordFile::SetAmmo(Ammo type, quint32 val)
+void SkywardSwordFile::setAmmo(Ammo type, quint32 val)
 {
-    quint32 tmp = qFromBigEndian(*(quint32*)(m_data + GetGameOffset() + 0x0A60));
+    quint32 tmp = qFromBigEndian(*(quint32*)(m_data + gameOffset() + 0x0A60));
     quint32 arrows = (tmp >> 0)  & 127;
     quint32 bombs  = (tmp >> 7)  & 127;
     quint32 seeds  = (tmp >> 23) & 127;
@@ -761,10 +738,11 @@ void SkywardSwordFile::SetAmmo(Ammo type, quint32 val)
         case SeedAmmo:  seeds  = val & 127; break;
     }
 
-   *(quint32*)(m_data + GetGameOffset() + 0x0A60) = qToBigEndian(arrows | (bombs << 7) | (seeds << 23));
+   *(quint32*)(m_data + gameOffset() + 0x0A60) = qToBigEndian(arrows | (bombs << 7) | (seeds << 23));
+    m_isDirty = true;
 }
 
-bool SkywardSwordFile::GetBug(Bug bug) const
+bool SkywardSwordFile::bug(Bug bug) const
 {
     if (!m_data)
         return false;
@@ -772,57 +750,58 @@ bool SkywardSwordFile::GetBug(Bug bug) const
     switch(bug)
     {
         case HornetBug:
-            return GetFlag(0x08F6, 0x80);
+            return flag(0x08F6, 0x80);
         case ButterflyBug:
-            return GetFlag(0x09F2, 0x80);
+            return flag(0x09F2, 0x80);
         case DragonflyBug:
-            return GetFlag(0x09F5, 0x04);
+            return flag(0x09F5, 0x04);
         case FireflyBug:
-            return GetFlag(0x09F5, 0x20);
+            return flag(0x09F5, 0x20);
         case RhinoBeetleBug:
-            return GetFlag(0x09F2, 0x08);
+            return flag(0x09F2, 0x08);
         case LadybugBug:
-            return GetFlag(0x09F2, 0x40);
+            return flag(0x09F2, 0x40);
         case SandCicadaBug:
-            return GetFlag(0x09F5, 0x02);
+            return flag(0x09F5, 0x02);
         case StagBeetleBug:
-            return GetFlag(0x09F5, 0x10);
+            return flag(0x09F5, 0x10);
         case GrasshopperBug:
-            return GetFlag(0x09F2, 0x04);
+            return flag(0x09F2, 0x04);
         case MantisBug:
-            return GetFlag(0x09F2, 0x20);
+            return flag(0x09F2, 0x20);
         case AntBug:
-            return GetFlag(0x09F5, 0x01);
+            return flag(0x09F5, 0x01);
         case RollerBug:
-            return GetFlag(0x09F5, 0x08);
+            return flag(0x09F5, 0x08);
         default:
             return false;
     }
 }
 
-void SkywardSwordFile::SetBug(Bug bug, bool val)
+void SkywardSwordFile::setBug(Bug bug, bool val)
 {
     if (!m_data)
         return;
     switch(bug)
     {
-        case HornetBug:      SetFlag(0x08F6, 0x80, val); break;
-        case ButterflyBug:   SetFlag(0x09F2, 0x80, val); break;
-        case DragonflyBug:   SetFlag(0x09F5, 0x04, val); break;
-        case FireflyBug:     SetFlag(0x09F5, 0x20, val); break;
-        case RhinoBeetleBug: SetFlag(0x09F2, 0x08, val); break;
-        case LadybugBug:     SetFlag(0x09F2, 0x40, val); break;
-        case SandCicadaBug:  SetFlag(0x09F5, 0x02, val); break;
-        case StagBeetleBug:  SetFlag(0x09F5, 0x10, val); break;
-        case GrasshopperBug: SetFlag(0x09F2, 0x04, val); break;
-        case MantisBug:      SetFlag(0x09F2, 0x20, val); break;
-        case AntBug:         SetFlag(0x09F5, 0x01, val); break;
-        case RollerBug:      SetFlag(0x09F5, 0x08, val); break;
+        case HornetBug:      setFlag(0x08F6, 0x80, val); break;
+        case ButterflyBug:   setFlag(0x09F2, 0x80, val); break;
+        case DragonflyBug:   setFlag(0x09F5, 0x04, val); break;
+        case FireflyBug:     setFlag(0x09F5, 0x20, val); break;
+        case RhinoBeetleBug: setFlag(0x09F2, 0x08, val); break;
+        case LadybugBug:     setFlag(0x09F2, 0x40, val); break;
+        case SandCicadaBug:  setFlag(0x09F5, 0x02, val); break;
+        case StagBeetleBug:  setFlag(0x09F5, 0x10, val); break;
+        case GrasshopperBug: setFlag(0x09F2, 0x04, val); break;
+        case MantisBug:      setFlag(0x09F2, 0x20, val); break;
+        case AntBug:         setFlag(0x09F5, 0x01, val); break;
+        case RollerBug:      setFlag(0x09F5, 0x08, val); break;
         default: return;
     }
+    m_isDirty = true;
 }
 
-quint32 SkywardSwordFile::GetBugQuantity(Bug bug) const
+quint32 SkywardSwordFile::bugQuantity(Bug bug) const
 {
     if (!m_data)
         return 0;
@@ -830,58 +809,59 @@ quint32 SkywardSwordFile::GetBugQuantity(Bug bug) const
     switch(bug)
     {
         case HornetBug:
-            return GetQuantity(true,  0x0A4C);
+            return quantity(true,  0x0A4C);
         case ButterflyBug:
-            return GetQuantity(false, 0x0A4A);
+            return quantity(false, 0x0A4A);
         case DragonflyBug:
-            return GetQuantity(true,  0x0A46);
+            return quantity(true,  0x0A46);
         case FireflyBug:
-            return GetQuantity(false, 0x0A44);
+            return quantity(false, 0x0A44);
         case RhinoBeetleBug:
-            return GetQuantity(false, 0x0A4E);
+            return quantity(false, 0x0A4E);
         case LadybugBug:
-            return GetQuantity(true, 0x0A4A);
+            return quantity(true, 0x0A4A);
         case SandCicadaBug:
-            return GetQuantity(false, 0x0A48);
+            return quantity(false, 0x0A48);
         case StagBeetleBug:
-            return GetQuantity(true,  0x0A44);
+            return quantity(true,  0x0A44);
         case GrasshopperBug:
-            return GetQuantity(true,  0x0A4E);
+            return quantity(true,  0x0A4E);
         case MantisBug:
-            return GetQuantity(false, 0x0A4C);
+            return quantity(false, 0x0A4C);
         case AntBug:
-            return GetQuantity(true,  0x0A48);
+            return quantity(true,  0x0A48);
         case RollerBug:
-            return GetQuantity(false, 0x0A46);
+            return quantity(false, 0x0A46);
         default:
             return 0;
     }
 }
 
-void SkywardSwordFile::SetBugQuantity(Bug bug, quint32 val)
+void SkywardSwordFile::setBugQuantity(Bug bug, quint32 val)
 {
     if (!m_data)
         return;
 
     switch(bug)
     {
-        case HornetBug:     SetQuantity(true,  0x0A4C, val); break;
-        case ButterflyBug:  SetQuantity(false, 0x0A4A, val); break;
-        case DragonflyBug:  SetQuantity(true,  0x0A46, val); break;
-        case FireflyBug:    SetQuantity(false, 0x0A44, val); break;
-        case RhinoBeetleBug:SetQuantity(false, 0x0A4E, val); break;
-        case LadybugBug:    SetQuantity(true,  0x0A4A, val); break;
-        case SandCicadaBug: SetQuantity(false, 0x0A48, val); break;
-        case StagBeetleBug: SetQuantity(true,  0x0A44, val); break;
-        case GrasshopperBug:SetQuantity(true,  0x0A4E, val); break;
-        case MantisBug:     SetQuantity(false, 0x0A4C, val); break;
-        case AntBug:        SetQuantity(true,  0x0A48, val); break;
-        case RollerBug:     SetQuantity(false, 0x0A46, val); break;
+        case HornetBug:     setQuantity(true,  0x0A4C, val); break;
+        case ButterflyBug:  setQuantity(false, 0x0A4A, val); break;
+        case DragonflyBug:  setQuantity(true,  0x0A46, val); break;
+        case FireflyBug:    setQuantity(false, 0x0A44, val); break;
+        case RhinoBeetleBug:setQuantity(false, 0x0A4E, val); break;
+        case LadybugBug:    setQuantity(true,  0x0A4A, val); break;
+        case SandCicadaBug: setQuantity(false, 0x0A48, val); break;
+        case StagBeetleBug: setQuantity(true,  0x0A44, val); break;
+        case GrasshopperBug:setQuantity(true,  0x0A4E, val); break;
+        case MantisBug:     setQuantity(false, 0x0A4C, val); break;
+        case AntBug:        setQuantity(true,  0x0A48, val); break;
+        case RollerBug:     setQuantity(false, 0x0A46, val); break;
         default: return;
     }
+    m_isDirty = true;
 }
 
-bool SkywardSwordFile::GetMaterial(Material material)
+bool SkywardSwordFile::material(Material material)
 {
     if (!m_data)
         return false;
@@ -889,70 +869,71 @@ bool SkywardSwordFile::GetMaterial(Material material)
     switch(material)
     {
         case HornetLarvaeMaterial:
-            return GetFlag(0x0934, 0x02);
+            return flag(0x0934, 0x02);
         case BirdFeatherMaterial:
-            return GetFlag(0x0934, 0x04);
+            return flag(0x0934, 0x04);
         case TumbleWeedMaterial:
-            return GetFlag(0x0934, 0x08);
+            return flag(0x0934, 0x08);
         case LizardTailMaterial:
-            return GetFlag(0x0934, 0x10);
+            return flag(0x0934, 0x10);
         case EldinOreMaterial:
-            return GetFlag(0x0934, 0x20);
+            return flag(0x0934, 0x20);
         case AncientFlowerMaterial:
-            return GetFlag(0x0934, 0x40);
+            return flag(0x0934, 0x40);
         case AmberRelicMaterial:
-            return GetFlag(0x0934, 0x80);
+            return flag(0x0934, 0x80);
         case DuskRelicMaterial:
-            return GetFlag(0x0937, 0x01);
+            return flag(0x0937, 0x01);
         case JellyBlobMaterial:
-            return GetFlag(0x0937, 0x02);
+            return flag(0x0937, 0x02);
         case MonsterClawMaterial:
-            return GetFlag(0x0937, 0x04);
+            return flag(0x0937, 0x04);
         case MonsterHornMaterial:
-            return GetFlag(0x0937, 0x08);
+            return flag(0x0937, 0x08);
         case OrnamentalSkullMaterial:
-            return GetFlag(0x0937, 0x10);
+            return flag(0x0937, 0x10);
         case EvilCrystalMaterial:
-            return GetFlag(0x0937, 0x20);
+            return flag(0x0937, 0x20);
         case BlueBirdFeatherMaterial:
-            return GetFlag(0x0937, 0x40);
+            return flag(0x0937, 0x40);
         case GoldenSkullMaterial:
-            return GetFlag(0x0937, 0x80);
+            return flag(0x0937, 0x80);
         case GoddessPlumeMaterial:
-            return GetFlag(0x0936, 0x01);
+            return flag(0x0936, 0x01);
         default:
             return false;
     }
 }
 
-void SkywardSwordFile::SetMaterial(Material material, bool val)
+void SkywardSwordFile::setMaterial(Material material, bool val)
 {
     if (!m_data)
         return;
 
     switch(material)
     {
-        case HornetLarvaeMaterial:    SetFlag(0x0934, 0x02, val); break;
-        case BirdFeatherMaterial:     SetFlag(0x0934, 0x04, val); break;
-        case TumbleWeedMaterial:      SetFlag(0x0934, 0x08, val); break;
-        case LizardTailMaterial:      SetFlag(0x0934, 0x10, val); break;
-        case EldinOreMaterial:        SetFlag(0x0934, 0x20, val); break;
-        case AncientFlowerMaterial:   SetFlag(0x0934, 0x40, val); break;
-        case AmberRelicMaterial:      SetFlag(0x0934, 0x80, val); break;
-        case DuskRelicMaterial:       SetFlag(0x0937, 0x01, val); break;
-        case JellyBlobMaterial:       SetFlag(0x0937, 0x02, val); break;
-        case MonsterClawMaterial:     SetFlag(0x0937, 0x04, val); break;
-        case MonsterHornMaterial:     SetFlag(0x0937, 0x08, val); break;
-        case OrnamentalSkullMaterial: SetFlag(0x0937, 0x10, val); break;
-        case EvilCrystalMaterial:     SetFlag(0x0937, 0x20, val); break;
-        case BlueBirdFeatherMaterial: SetFlag(0x0937, 0x40, val); break;
-        case GoldenSkullMaterial:     SetFlag(0x0937, 0x80, val); break;
-        case GoddessPlumeMaterial:    SetFlag(0x0936, 0x01, val); break;
+        case HornetLarvaeMaterial:    setFlag(0x0934, 0x02, val); break;
+        case BirdFeatherMaterial:     setFlag(0x0934, 0x04, val); break;
+        case TumbleWeedMaterial:      setFlag(0x0934, 0x08, val); break;
+        case LizardTailMaterial:      setFlag(0x0934, 0x10, val); break;
+        case EldinOreMaterial:        setFlag(0x0934, 0x20, val); break;
+        case AncientFlowerMaterial:   setFlag(0x0934, 0x40, val); break;
+        case AmberRelicMaterial:      setFlag(0x0934, 0x80, val); break;
+        case DuskRelicMaterial:       setFlag(0x0937, 0x01, val); break;
+        case JellyBlobMaterial:       setFlag(0x0937, 0x02, val); break;
+        case MonsterClawMaterial:     setFlag(0x0937, 0x04, val); break;
+        case MonsterHornMaterial:     setFlag(0x0937, 0x08, val); break;
+        case OrnamentalSkullMaterial: setFlag(0x0937, 0x10, val); break;
+        case EvilCrystalMaterial:     setFlag(0x0937, 0x20, val); break;
+        case BlueBirdFeatherMaterial: setFlag(0x0937, 0x40, val); break;
+        case GoldenSkullMaterial:     setFlag(0x0937, 0x80, val); break;
+        case GoddessPlumeMaterial:    setFlag(0x0936, 0x01, val); break;
         default: return;
     }
+    m_isDirty = true;
 }
 
-quint32 SkywardSwordFile::GetMaterialQuantity(Material material)
+quint32 SkywardSwordFile::materialQuantity(Material material)
 {
     if (!m_data)
         return 0;
@@ -960,203 +941,213 @@ quint32 SkywardSwordFile::GetMaterialQuantity(Material material)
     switch(material)
     {
         case HornetLarvaeMaterial:
-            return GetQuantity(true, 0x0A42);
+            return quantity(true, 0x0A42);
         case BirdFeatherMaterial:
-            return GetQuantity(false,0x0A42);
+            return quantity(false,0x0A42);
         case TumbleWeedMaterial:
-            return GetQuantity(true, 0x0A40);
+            return quantity(true, 0x0A40);
         case LizardTailMaterial:
-            return GetQuantity(false,0x0A40);
+            return quantity(false,0x0A40);
         case EldinOreMaterial:
-            return GetQuantity(true, 0x0A3E);
+            return quantity(true, 0x0A3E);
         case AncientFlowerMaterial:
-            return GetQuantity(false,0x0A3E);
+            return quantity(false,0x0A3E);
         case AmberRelicMaterial:
-            return GetQuantity(true, 0x0A3C);
+            return quantity(true, 0x0A3C);
         case DuskRelicMaterial:
-            return GetQuantity(false,0x0A3C);
+            return quantity(false,0x0A3C);
         case JellyBlobMaterial:
-            return GetQuantity(true, 0x0A3A);
+            return quantity(true, 0x0A3A);
         case MonsterClawMaterial:
-            return GetQuantity(false,0x0A3A);
+            return quantity(false,0x0A3A);
         case MonsterHornMaterial:
-            return GetQuantity(true, 0x0A38);
+            return quantity(true, 0x0A38);
         case OrnamentalSkullMaterial:
-            return GetQuantity(false,0x0A38);
+            return quantity(false,0x0A38);
         case EvilCrystalMaterial:
-            return GetQuantity(true, 0x0A36);
+            return quantity(true, 0x0A36);
         case BlueBirdFeatherMaterial:
-            return GetQuantity(false,0x0A36);
+            return quantity(false,0x0A36);
         case GoldenSkullMaterial:
-            return GetQuantity(true, 0x0A34);
+            return quantity(true, 0x0A34);
         case GoddessPlumeMaterial:
-            return GetQuantity(false,0x0A34);
+            return quantity(false,0x0A34);
         default:
             return 0;
     }
 }
 
-void SkywardSwordFile::SetMaterialQuantity(Material material, quint32 val)
+void SkywardSwordFile::setMaterialQuantity(Material material, quint32 val)
 {
     if (!m_data)
         return;
 
     switch(material)
     {
-        case HornetLarvaeMaterial:   SetQuantity(true,  0x0A42, val); break;
-        case BirdFeatherMaterial:    SetQuantity(false, 0x0A42, val); break;
-        case TumbleWeedMaterial:     SetQuantity(true,  0x0A40, val); break;
-        case LizardTailMaterial:     SetQuantity(false, 0x0A40, val); break;
-        case EldinOreMaterial:       SetQuantity(true,  0x0A3E, val); break;
-        case AncientFlowerMaterial:  SetQuantity(false, 0x0A3E, val); break;
-        case AmberRelicMaterial:     SetQuantity(true,  0x0A3C, val); break;
-        case DuskRelicMaterial:      SetQuantity(false, 0x0A3C, val); break;
-        case JellyBlobMaterial:      SetQuantity(true,  0x0A3A, val); break;
-        case MonsterClawMaterial:    SetQuantity(false, 0x0A3A, val); break;
-        case MonsterHornMaterial:    SetQuantity(true,  0x0A38, val); break;
-        case OrnamentalSkullMaterial:SetQuantity(false, 0x0A38, val); break;
-        case EvilCrystalMaterial:    SetQuantity(true,  0x0A36, val); break;
-        case BlueBirdFeatherMaterial:SetQuantity(false, 0x0A36, val); break;
-        case GoldenSkullMaterial:    SetQuantity(true,  0x0A34, val); break;
-        case GoddessPlumeMaterial:   SetQuantity(false, 0x0A34, val); break;
+        case HornetLarvaeMaterial:   setQuantity(true,  0x0A42, val); break;
+        case BirdFeatherMaterial:    setQuantity(false, 0x0A42, val); break;
+        case TumbleWeedMaterial:     setQuantity(true,  0x0A40, val); break;
+        case LizardTailMaterial:     setQuantity(false, 0x0A40, val); break;
+        case EldinOreMaterial:       setQuantity(true,  0x0A3E, val); break;
+        case AncientFlowerMaterial:  setQuantity(false, 0x0A3E, val); break;
+        case AmberRelicMaterial:     setQuantity(true,  0x0A3C, val); break;
+        case DuskRelicMaterial:      setQuantity(false, 0x0A3C, val); break;
+        case JellyBlobMaterial:      setQuantity(true,  0x0A3A, val); break;
+        case MonsterClawMaterial:    setQuantity(false, 0x0A3A, val); break;
+        case MonsterHornMaterial:    setQuantity(true,  0x0A38, val); break;
+        case OrnamentalSkullMaterial:setQuantity(false, 0x0A38, val); break;
+        case EvilCrystalMaterial:    setQuantity(true,  0x0A36, val); break;
+        case BlueBirdFeatherMaterial:setQuantity(false, 0x0A36, val); break;
+        case GoldenSkullMaterial:    setQuantity(true,  0x0A34, val); break;
+        case GoddessPlumeMaterial:   setQuantity(false, 0x0A34, val); break;
         default: return;
     }
+    m_isDirty = true;
 }
 
-quint32 SkywardSwordFile::GetGratitudeCrystalAmount()
+quint32 SkywardSwordFile::gratitudeCrystalAmount()
 {
     if (!m_data)
         return 0;
-    quint32 ret = (quint32)((qFromBigEndian<quint16>(*(quint16*)(m_data + GetGameOffset() + 0x0A50)) >> 3) & 127);
+    quint32 ret = (quint32)((qFromBigEndian<quint16>(*(quint16*)(m_data + gameOffset() + 0x0A50)) >> 3) & 127);
     return ret;
 }
 
-void SkywardSwordFile::SetGratitudeCrystalAmount(quint16 val)
+void SkywardSwordFile::setGratitudeCrystalAmount(quint16 val)
 {
     if (!m_data)
         return;
-    quint16 oldVal = qFromBigEndian<quint16>(*(quint16*)(m_data + GetGameOffset() + 0x0A50)) & 0xFC00;
-    *(quint16*)(m_data + GetGameOffset() + 0x0A50) = qToBigEndian<quint16>(oldVal | (val << 3 & 0x03FF));
+    quint16 oldVal = qFromBigEndian<quint16>(*(quint16*)(m_data + gameOffset() + 0x0A50)) & 0xFC00;
+    *(quint16*)(m_data + gameOffset() + 0x0A50) = qToBigEndian<quint16>(oldVal | (val << 3 & 0x03FF));
+    m_isDirty = true;
 }
 
-ushort SkywardSwordFile::GetRupees() const
+ushort SkywardSwordFile::rupees() const
 {
     if (!m_data)
         return 0;
 
-    return qFromBigEndian<quint16>(*(ushort*)(m_data + GetGameOffset() + 0x0A5E));
+    return qFromBigEndian<quint16>(*(ushort*)(m_data + gameOffset() + 0x0A5E));
 }
 
-void SkywardSwordFile::SetRupees(ushort val)
+void SkywardSwordFile::setRupees(ushort val)
 {
     if (!m_data)
         return;
-    *(ushort*)(m_data + GetGameOffset() + 0x0A5E) = qToBigEndian<quint16>(val);
+    *(ushort*)(m_data + gameOffset() + 0x0A5E) = qToBigEndian<quint16>(val);
+    m_isDirty = true;
 }
 
-ushort SkywardSwordFile::GetTotalHP() const
+ushort SkywardSwordFile::totalHP() const
 {
     if (!m_data)
         return 0;
-    return qToBigEndian<quint16>(*(ushort*)(m_data + GetGameOffset() + 0x5302));
+    return qToBigEndian<quint16>(*(ushort*)(m_data + gameOffset() + 0x5302));
 }
 
-void SkywardSwordFile::SetTotalHP(ushort val)
+void SkywardSwordFile::setTotalHP(ushort val)
 {
     if (!m_data)
         return;
 
-    *(ushort*)(m_data + GetGameOffset() + 0x5302) = qToBigEndian<quint16>(val);
+    *(ushort*)(m_data + gameOffset() + 0x5302) = qToBigEndian<quint16>(val);
+    m_isDirty = true;
 }
 
-ushort SkywardSwordFile::GetUnkHP() const
-{
-    if (!m_data)
-        return 0;
-
-    return qFromBigEndian<quint16>(*(ushort*)(m_data + GetGameOffset() + 0x5304));
-}
-
-void SkywardSwordFile::SetUnkHP(ushort val)
-{
-    if (!m_data)
-        return;
-
-    *(ushort*)(m_data + GetGameOffset() + 0x5304) = qToBigEndian<quint16>(val);
-}
-
-ushort SkywardSwordFile::GetCurrentHP() const
+ushort SkywardSwordFile::unkHP() const
 {
     if (!m_data)
         return 0;
 
-    return qFromBigEndian<quint16>(*(quint16*)(m_data + GetGameOffset() + 0x5306));
+    return qFromBigEndian<quint16>(*(ushort*)(m_data + gameOffset() + 0x5304));
 }
 
-void SkywardSwordFile::SetCurrentHP(ushort val)
-{
-    if (!m_data)
-        return;
-    *(ushort*)(m_data + GetGameOffset() + 0x5306) = qToBigEndian<quint16>(val);
-}
-
-uint SkywardSwordFile::GetRoomID() const
-{
-    return (uint)(*(uchar*)(m_data + GetGameOffset() + 0x5309));
-}
-
-void SkywardSwordFile::SetRoomID(uint val)
-{
-    *(uchar*)(m_data + GetGameOffset() + 0x5309) = (uchar)val;
-}
-
-QString SkywardSwordFile::GetCurrentMap() const
-{
-    return ReadNullTermString(GetGameOffset() + 0x531c);
-}
-
-void SkywardSwordFile::SetCurrentMap(const QString& map)
-{
-    WriteNullTermString(map, GetGameOffset() + 0x531c);
-}
-
-QString SkywardSwordFile::GetCurrentArea() const
-{
-    return ReadNullTermString(GetGameOffset() + 0x533c);
-}
-
-void SkywardSwordFile::SetCurrentArea(const QString& map)
-{
-    WriteNullTermString(map, GetGameOffset() + 0x533c);
-}
-
-QString SkywardSwordFile::GetCurrentRoom() const // Not sure about this one
-{
-    return ReadNullTermString(GetGameOffset() + 0x535c);
-}
-
-void SkywardSwordFile::SetCurrentRoom(const QString& map) // Not sure about this one
-{
-    WriteNullTermString(map, GetGameOffset() + 0x535c);
-}
-
-void SkywardSwordFile::SetGameData(const QByteArray &data)
+void SkywardSwordFile::setUnkHP(ushort val)
 {
     if (!m_data)
         return;
 
-    memcpy(m_data + GetGameOffset(), data.data(), data.size());
+    *(ushort*)(m_data + gameOffset() + 0x5304) = qToBigEndian<quint16>(val);
+    m_isDirty = true;
 }
 
-QByteArray SkywardSwordFile::GetGameData()
+ushort SkywardSwordFile::currentHP() const
+{
+    if (!m_data)
+        return 0;
+
+    return qFromBigEndian<quint16>(*(quint16*)(m_data + gameOffset() + 0x5306));
+}
+
+void SkywardSwordFile::setCurrentHP(ushort val)
+{
+    if (!m_data)
+        return;
+    *(ushort*)(m_data + gameOffset() + 0x5306) = qToBigEndian<quint16>(val);
+    m_isDirty = true;
+}
+
+uint SkywardSwordFile::roomID() const
+{
+    return (uint)(*(uchar*)(m_data + gameOffset() + 0x5309));
+}
+
+void SkywardSwordFile::setRoomID(uint val)
+{
+    *(uchar*)(m_data + gameOffset() + 0x5309) = (uchar)val;
+    m_isDirty = true;
+}
+
+QString SkywardSwordFile::currentMap() const
+{
+    return readNullTermString(gameOffset() + 0x531c);
+}
+
+void SkywardSwordFile::setCurrentMap(const QString& map)
+{
+    writeNullTermString(map, gameOffset() + 0x531c);
+    m_isDirty = true;
+}
+
+QString SkywardSwordFile::currentArea() const
+{
+    return readNullTermString(gameOffset() + 0x533c);
+}
+
+void SkywardSwordFile::setCurrentArea(const QString& map)
+{
+    writeNullTermString(map, gameOffset() + 0x533c);
+    m_isDirty = true;
+}
+
+QString SkywardSwordFile::currentRoom() const // Not sure about this one
+{
+    return readNullTermString(gameOffset() + 0x535c);
+}
+
+void SkywardSwordFile::setCurrentRoom(const QString& map) // Not sure about this one
+{
+    writeNullTermString(map, gameOffset() + 0x535c);
+    m_isDirty = true;
+}
+
+void SkywardSwordFile::setGameData(const QByteArray &data)
+{
+    if (!m_data)
+        return;
+
+    memcpy(m_data + gameOffset(), data.data(), data.size());
+}
+
+QByteArray SkywardSwordFile::gameData()
 {
     if (!m_data)
         return QByteArray(0x53C0, 0);
 
-    return QByteArray(m_data + GetGameOffset(), 0x53BC);
+    return QByteArray(m_data + gameOffset(), 0x53BC);
 }
 
-quint8* SkywardSwordFile::GetSkipData() const
+quint8* SkywardSwordFile::skipData() const
 {
     if (!m_data)
         return NULL;
@@ -1166,20 +1157,21 @@ quint8* SkywardSwordFile::GetSkipData() const
     return skip;
 }
 
-void SkywardSwordFile::SetSkipData(const quint8 *data)
+void SkywardSwordFile::setSkipData(const quint8 *data)
 {
     memcpy((m_data + 0x20 + (0x53C0 * 3)), data, 0x80);
+    m_isDirty = true;
 }
 
-uint SkywardSwordFile::GetChecksum() const
+uint SkywardSwordFile::checksum() const
 {
     if (!m_data)
         return 0;
 
-    return qFromBigEndian<quint32>(*(quint32*)(m_data + GetGameOffset() + 0x53bc));
+    return qFromBigEndian<quint32>(*(quint32*)(m_data + gameOffset() + 0x53bc));
 }
 
-uint SkywardSwordFile::GetGameOffset() const
+uint SkywardSwordFile::gameOffset() const
 {
     if (!m_data)
         return 0;
@@ -1187,36 +1179,34 @@ uint SkywardSwordFile::GetGameOffset() const
     return (0x20 + (0x53C0 * m_game));
 }
 
-void SkywardSwordFile::UpdateChecksum()
+void SkywardSwordFile::updateChecksum()
 {
     if (!m_data)
         return;
 
-    *(uint*)(m_data + GetGameOffset() + 0x53BC) =  qToBigEndian<quint32>(m_checksumEngine.GetCRC32((const unsigned char*)m_data, GetGameOffset(), 0x53BC)); // change it to Big Endian
+    *(uint*)(m_data + gameOffset() + 0x53BC) =  qToBigEndian<quint32>(m_checksumEngine.CRC32((const unsigned char*)m_data, gameOffset(), 0x53BC)); // change it to Big Endian
 }
 
-bool SkywardSwordFile::IsNew() const
+bool SkywardSwordFile::isNew() const
 {
     if (!m_data)
         return true;
 
-    return (*(char*)(m_data + GetGameOffset() + 0x53AD)) != 0;
+    return (*(char*)(m_data + gameOffset() + 0x53AD)) != 0;
 }
 
-void SkywardSwordFile::SetNew(bool val)
+void SkywardSwordFile::setNew(bool val)
 {
-    *(char*)(m_data + GetGameOffset() + 0x53AD) = val;
+    *(char*)(m_data + gameOffset() + 0x53AD) = val;
+    m_isDirty = true;
 }
 
-bool SkywardSwordFile::IsModified() const
+bool SkywardSwordFile::isModified() const
 {
-    // HACK: Is this really a hack? :/
-    quint32 newCrc = ((Checksum*)&m_checksumEngine)->GetCRC32((const quint8*)m_data, 0, 0xFBE0);
-
-    return !(newCrc == m_fileChecksum);
+    return m_isDirty;
 }
 
-QString SkywardSwordFile::ReadNullTermString(int offset) const
+QString SkywardSwordFile::readNullTermString(int offset) const
 {
     QString ret("");
     char c = m_data[offset];
@@ -1229,7 +1219,7 @@ QString SkywardSwordFile::ReadNullTermString(int offset) const
     return ret;
 }
 
-void SkywardSwordFile::WriteDataFile(const QString &filepath, char* data, quint64 len)
+void SkywardSwordFile::writeDataFile(const QString &filepath, char* data, quint64 len)
 {
     QFileInfo fileInfo("data/" + filepath);
     if (!fileInfo.exists())
@@ -1247,7 +1237,7 @@ void SkywardSwordFile::WriteDataFile(const QString &filepath, char* data, quint6
     }
 }
 
-void SkywardSwordFile::WriteNullTermString(const QString& val, int offset)
+void SkywardSwordFile::writeNullTermString(const QString& val, int offset)
 {
     if (!m_data)
         return;
@@ -1262,20 +1252,20 @@ void SkywardSwordFile::WriteNullTermString(const QString& val, int offset)
     m_data[offset++] = '\0';
 }
 
-bool SkywardSwordFile::GetFlag(quint32 offset, quint32 flag) const
+bool SkywardSwordFile::flag(quint32 offset, quint32 flag) const
 {
-    return (*(char*)(m_data + GetGameOffset() + offset) & flag) == flag;
+    return (*(char*)(m_data + gameOffset() + offset) & flag) == flag;
 }
 
-void SkywardSwordFile::SetFlag(quint32 offset, quint32 flag, bool val)
+void SkywardSwordFile::setFlag(quint32 offset, quint32 flag, bool val)
 {
     if (val)
-        *(char*)(m_data + GetGameOffset() + offset) |= flag;
+        *(char*)(m_data + gameOffset() + offset) |= flag;
     else
-        *(char*)(m_data + GetGameOffset() + offset) &= ~flag;
+        *(char*)(m_data + gameOffset() + offset) &= ~flag;
 }
 
-bool SkywardSwordFile::IsValidFile(const QString &filepath, Region* outRegion)
+bool SkywardSwordFile::isValidFile(const QString &filepath, Region* outRegion)
 {
 
     FILE* file = fopen(filepath.toAscii(), "rb");
@@ -1291,59 +1281,59 @@ bool SkywardSwordFile::IsValidFile(const QString &filepath, Region* outRegion)
     return (region == NTSCURegion || region == NTSCJRegion || region == PALRegion) && size == 0xFBE0;
 }
 
-quint32 SkywardSwordFile::GetQuantity(bool isRight, int offset) const
+quint32 SkywardSwordFile::quantity(bool isRight, int offset) const
 {
     if (!m_data)
         return 0;
     switch(isRight)
     {
         case false:
-            return (quint32)(qFromBigEndian<quint16>((*(quint16*)(m_data + GetGameOffset() + offset))) >> 7) & 127;
+            return (quint32)(qFromBigEndian<quint16>((*(quint16*)(m_data + gameOffset() + offset))) >> 7) & 127;
         case true:
-            return (quint32)(qFromBigEndian<quint16>(*(quint16*)(m_data + GetGameOffset() + offset))) & 127;
+            return (quint32)(qFromBigEndian<quint16>(*(quint16*)(m_data + gameOffset() + offset))) & 127;
     }
 
     return 0;
 }
 
-void SkywardSwordFile::SetQuantity(bool isRight, int offset, quint32 val)
+void SkywardSwordFile::setQuantity(bool isRight, int offset, quint32 val)
 {
     if (!m_data)
         return;
 
-    quint16 oldVal = qFromBigEndian<quint16>(*(quint16*)(m_data + GetGameOffset() + offset));
+    quint16 oldVal = qFromBigEndian<quint16>(*(quint16*)(m_data + gameOffset() + offset));
     switch(isRight)
     {
         case false:
         {
             quint16 newVal = (oldVal&127)|(((quint16)val << 7));
-            *(quint16*)(m_data + GetGameOffset() + offset) = qToBigEndian<quint16>(newVal);
+            *(quint16*)(m_data + gameOffset() + offset) = qToBigEndian<quint16>(newVal);
         }
         break;
         case true:
         {
             oldVal = (oldVal >> 7) & 127;
             quint16 newVal = (val|(oldVal << 7));
-            *(quint16*)(m_data + GetGameOffset() + offset) = qToBigEndian<quint16>(newVal);
+            *(quint16*)(m_data + gameOffset() + offset) = qToBigEndian<quint16>(newVal);
         }
         break;
     }
 }
 
-bool SkywardSwordFile::IsNight() const
+bool SkywardSwordFile::isNight() const
 {
-    return (*(quint8*)(m_data + GetGameOffset() + 0x53B3) & 0x01) == 0x01;
+    return (*(quint8*)(m_data + gameOffset() + 0x53B3) & 0x01) == 0x01;
 }
 
-void SkywardSwordFile::SetNight(const bool val)
+void SkywardSwordFile::setNight(const bool val)
 {
     if (val)
-        *(quint8*)(m_data + GetGameOffset() + 0x53B3) |= 0x01;
+        *(quint8*)(m_data + gameOffset() + 0x53B3) |= 0x01;
     else
-        *(quint8*)(m_data + GetGameOffset() + 0x53B3) &= ~0x01;
+        *(quint8*)(m_data + gameOffset() + 0x53B3) &= ~0x01;
 }
 
-void SkywardSwordFile::SetData(char *data)
+void SkywardSwordFile::setData(char *data)
 {
     if (m_data)
         delete[] m_data;
@@ -1352,11 +1342,12 @@ void SkywardSwordFile::SetData(char *data)
     m_isOpen = true;
 }
 
-bool SkywardSwordFile::LoadDataBin(const QString& filepath, Game game)
+bool SkywardSwordFile::loadDataBin(const QString& filepath, Game game)
 {
     if (!filepath.isEmpty())
         m_filename = filepath;
 
+    m_isDirty = false;
     try
     {
         if (m_saveGame != NULL)
@@ -1379,8 +1370,7 @@ bool SkywardSwordFile::LoadDataBin(const QString& filepath, Game game)
         if (tmp == SkywardSwordFile::NTSCURegion || tmp == SkywardSwordFile::NTSCJRegion || tmp == SkywardSwordFile::PALRegion)
         {
             m_data = (char*)m_saveGame->getFile("/wiiking2.sav")->data();
-            UpdateChecksum();
-            m_fileChecksum = m_checksumEngine.GetCRC32((const quint8*)m_data, 0, 0xFBE0);
+            updateChecksum();
             m_game = game;
             m_isOpen = true;
             return true;
@@ -1406,7 +1396,7 @@ bool SkywardSwordFile::LoadDataBin(const QString& filepath, Game game)
     return false;
 }
 
-bool SkywardSwordFile::SaveDataBin()
+bool SkywardSwordFile::saveDataBin()
 {
     if (!WiiKeys::instance()->isOpen() || !WiiKeys::instance()->isValid())
     {
@@ -1415,23 +1405,23 @@ bool SkywardSwordFile::SaveDataBin()
         return false;
     }
 
+    m_isDirty = false;
     if (m_saveGame != NULL)
     {
         qDebug() << "Changing wiiking2.sav data";
         WiiFile* wiiking2 = m_saveGame->getFile("/wiiking2.sav");
         wiiking2->setData((unsigned char*)m_data);
         qDebug() << "Done saving to" << m_filename;
-        m_saveGame->saveToFile(m_filename.toStdString(), (u8*)WiiKeys::instance()->macAddr().data(), WiiKeys::instance()->NGID(),(u8*)WiiKeys::instance()->NGPriv().data(), (u8*)WiiKeys::instance()->NGSig().data(), WiiKeys::instance()->NGKeyID());
-        m_fileChecksum = m_checksumEngine.GetCRC32((unsigned const char*)m_data, 0, 0xFBE0);
+        m_saveGame->saveToFile(m_filename.toStdString(), (u8*)WiiKeys::instance()->macAddr().data(), WiiKeys::instance()->NGID(),(u8*)WiiKeys::instance()->NGPriv().data(), (u8*)WiiKeys::instance()->NGSig().data(), WiiKeys::instance()->NGKeyID());       
         return true;
     }
     else
     {
         m_saveGame = new WiiSave();
-        int region = GetRegion();
+        int r = region();
         char gameId[5];
         memset(gameId, 0, 5);
-        memcpy(gameId, (char*)&region, 4);
+        memcpy(gameId, (char*)&r, 4);
         qDebug() << gameId;
         qDebug() << "Attempting to load embedded banner.tpl";
         QFile banner(":/BannerData/banner.tpl");
@@ -1446,7 +1436,7 @@ bool SkywardSwordFile::SaveDataBin()
             wiiBanner = new WiiBanner();
             wiiBanner->setBannerImage(new WiiImage(192, 64, (quint8*)bannerData));
             quint64 titleId = 0x00010000;
-            quint64 fullId = ((quint64)region << 32)  | qToBigEndian(titleId) >> 32;
+            quint64 fullId = ((quint64)r << 32)  | qToBigEndian(titleId) >> 32;
             wiiBanner->setGameID(qFromBigEndian(fullId));
 
             qDebug() << "Got Banner.tpl";
@@ -1507,10 +1497,10 @@ bool SkywardSwordFile::SaveDataBin()
             wiiBanner->setAnimationSpeed(0); // no animations
             m_saveGame->setBanner(wiiBanner);
             m_saveGame->addFile("/wiiking2.sav", new WiiFile("wiiking2.sav", WiiFile::GroupRW | WiiFile::OwnerRW, (quint8*)m_data, 0xFBE0));
-            m_saveGame->addFile("/skip.dat", new WiiFile("skip.dat", WiiFile::GroupRW | WiiFile::OwnerRW, GetSkipData(), 0x80));
+            m_saveGame->addFile("/skip.dat", new WiiFile("skip.dat", WiiFile::GroupRW | WiiFile::OwnerRW, skipData(), 0x80));
             m_saveGame->saveToFile(m_filename.toStdString(), (u8*)WiiKeys::instance()->macAddr().data(), WiiKeys::instance()->NGID(),(u8*)WiiKeys::instance()->NGPriv().data(), (u8*)WiiKeys::instance()->NGSig().data(), WiiKeys::instance()->NGKeyID());
-            m_fileChecksum = m_checksumEngine.GetCRC32((unsigned const char*)m_data, 0, 0xFBE0);
-
+            delete m_saveGame;
+            m_saveGame = NULL;
             return true;
         }
         else
@@ -1523,18 +1513,18 @@ bool SkywardSwordFile::SaveDataBin()
     return false;
 }
 
-QString SkywardSwordFile::GetBannerTitle() const
+QString SkywardSwordFile::bannerTitle() const
 {
     if (m_saveGame != NULL)
     {
         return QString::fromUtf8(m_saveGame->banner()->title().c_str());
     }
 
-    int region = GetRegion();
+    int r = region();
     char gameId[5];
 
     memset(gameId, 0, 5);
-    memcpy(gameId, (char*)&region, 4);
+    memcpy(gameId, (char*)&r, 4);
     qDebug() << gameId;
     QFile title(QString(":/BannerData/%1/title.bin").arg(gameId));
     if (title.open(QFile::ReadOnly))
@@ -1546,18 +1536,18 @@ QString SkywardSwordFile::GetBannerTitle() const
     return QString("");
 }
 
-QString SkywardSwordFile::GetBannerSubtitle() const
+QString SkywardSwordFile::bannerSubtitle() const
 {
     if (m_saveGame != NULL)
     {
         return QString::fromUtf8(m_saveGame->banner()->subtitle().c_str());
     }
 
-    int region = GetRegion();
+    int r = region();
     char gameId[5];
 
     memset(gameId, 0, 5);
-    memcpy(gameId, (char*)&region, 4);
+    memcpy(gameId, (char*)&r, 4);
     QFile subtitle(QString(":/BannerData/%1/subtitle.bin").arg(gameId));
     if (subtitle.open(QFile::ReadOnly))
     {
@@ -1568,7 +1558,7 @@ QString SkywardSwordFile::GetBannerSubtitle() const
     return QString("");
 }
 
-const QIcon SkywardSwordFile::GetIcon() const
+const QIcon SkywardSwordFile::icon() const
 {
     if (!m_saveGame)
     {
@@ -1580,7 +1570,7 @@ const QIcon SkywardSwordFile::GetIcon() const
             dataStream.readRawData(iconData, 48*48*2);
             icon.close();
 
-            return QIcon(QPixmap::fromImage(ConvertTextureToImage(QByteArray(iconData, 48*48*2), 48, 48)));
+            return QIcon(QPixmap::fromImage(convertTextureToImage(QByteArray(iconData, 48*48*2), 48, 48)));
         }
         return QIcon();
     }
@@ -1588,11 +1578,11 @@ const QIcon SkywardSwordFile::GetIcon() const
     WiiImage* icon = m_saveGame->banner()->getIcon(0);
     if (!icon)
         return QIcon();
-    QIcon iconImage(QPixmap::fromImage(ConvertTextureToImage(QByteArray((char*)icon->data(), icon->width()*icon->height()*2), icon->width(), icon->height())));
+    QIcon iconImage(QPixmap::fromImage(convertTextureToImage(QByteArray((char*)icon->data(), icon->width()*icon->height()*2), icon->width(), icon->height())));
     return iconImage;
 }
 
-const QPixmap SkywardSwordFile::GetBanner() const
+const QPixmap SkywardSwordFile::banner() const
 {
     if (!m_saveGame)
     {
@@ -1604,13 +1594,13 @@ const QPixmap SkywardSwordFile::GetBanner() const
             dataStream.readRawData(bannerData, 192*168*2);
             banner.close();
 
-            return QPixmap::fromImage(ConvertTextureToImage(QByteArray(bannerData, 192*64*2), 192, 64));
+            return QPixmap::fromImage(convertTextureToImage(QByteArray(bannerData, 192*64*2), 192, 64));
         }
         return QPixmap();
     }
 
     WiiImage* banner = m_saveGame->banner()->bannerImage();
-    return QPixmap::fromImage(ConvertTextureToImage(QByteArray((char*)banner->data(), banner->width()*banner->height()*2), banner->width(), banner->height()));
+    return QPixmap::fromImage(convertTextureToImage(QByteArray((char*)banner->data(), banner->width()*banner->height()*2), banner->width(), banner->height()));
 }
 
 // To support MSVC I have placed these here, why can't Microsoft follow real ANSI Standards? <.<

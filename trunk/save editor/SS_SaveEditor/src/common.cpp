@@ -36,7 +36,7 @@ float swapFloat(float val)
 #endif
 }
 
-int ConvertRGB5A3ToBitMap(quint8* tplbuf, quint8** bitmapdata, quint32 width, quint32 height)
+int convertRGB5A3ToBitMap(quint8* tplbuf, quint8** bitmapdata, quint32 width, quint32 height)
 {
         quint32 x, y;
         quint32 x1, y1;
@@ -79,11 +79,11 @@ int ConvertRGB5A3ToBitMap(quint8* tplbuf, quint8** bitmapdata, quint32 width, qu
         return outsz;
 }
 
-QImage ConvertTextureToImage( const QByteArray &ba, quint32 w, quint32 h )
+QImage convertTextureToImage( const QByteArray &ba, quint32 w, quint32 h )
 {
     //qDebug() << "SaveBanner::ConvertTextureToImage" << ba.size() << hex << w << h;
     quint8* bitmapdata = NULL;//this will hold the converted image
-    int ret = ConvertRGB5A3ToBitMap( (quint8*)ba.constData(), &bitmapdata, w, h );
+    int ret = convertRGB5A3ToBitMap( (quint8*)ba.constData(), &bitmapdata, w, h );
     if( !ret )
     {
         qWarning() << "SaveBanner::ConvertTextureToImage -> error converting image";
@@ -116,12 +116,12 @@ quint64 getWiiTime()
     return (quint64)(TICKS_PER_SECOND * ((sysTime + tzDiff + tzDST) - SECONDS_TO_2000));
 }
 
-quint64 toWiiTime(quint64 wiiTime)
+quint64 toWiiTime(QDateTime time)
 {
     time_t sysTime, tzDiff, tzDST;
     struct tm * gmTime;
 
-    sysTime = (time_t)wiiTime;
+    sysTime = time.toTime_t();
     // Account for DST where needed
     gmTime = localtime(&sysTime);
     if(gmTime->tm_isdst == 1)

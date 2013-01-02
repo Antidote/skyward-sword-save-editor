@@ -31,7 +31,9 @@ SOURCES += \
     src/qhexedit2/xbytearray.cpp \
     src/qhexedit2/qhexedit_p.cpp \
     src/qhexedit2/qhexedit.cpp \
-    src/qhexedit2/commands.cpp
+    src/qhexedit2/commands.cpp \
+    src/newfiledialog.cpp \
+	src/gameinfowidget.cpp
 
 HEADERS  += \
     include/mainwindow.h \
@@ -48,7 +50,9 @@ HEADERS  += \
     include/qhexedit2/xbytearray.h \
     include/qhexedit2/qhexedit_p.h \
     include/qhexedit2/qhexedit.h \
-    include/qhexedit2/commands.h
+    include/qhexedit2/commands.h \
+    include/newfiledialog.h \
+    include/gameinfowidget.h
 
 FORMS    += \
     forms/mainwindow.ui \
@@ -56,7 +60,9 @@ FORMS    += \
     forms/aboutdialog.ui \
     forms/fileinfodialog.ui \
     forms/exportquestdialog.ui \
-    forms/preferencesdialog.ui
+    forms/preferencesdialog.ui \
+    forms/newfiledialog.ui \
+	forms/gameinfowidget.ui
 
 RESOURCES += \
     resources/resources.qrc

@@ -27,6 +27,7 @@ class QActionGroup;
 class QButtonGroup;
 class QAbstractButton;
 class QHexEdit;
+class NewFileDialog;
 
 namespace Ui {
 class MainWindow;
@@ -41,10 +42,10 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     
-    void UpdateInfo();
-    void UpdateTitle(); // any reason these are exposed?
-    void ClearInfo();
-    SkywardSwordFile* GetGameFile();
+    void updateInfo();
+    void updateTitle(); // any reason these are exposed?
+    void clearInfo();
+    SkywardSwordFile* gameFile();
 
 private slots:
     void onTextChanged(QString text);
@@ -53,6 +54,7 @@ private slots:
     void onCreateNewGame();
     void onDeleteGame();
     void onOpen();
+    void onNew();
     void onSave();
     void onSaveAs();
     void onAbout();
@@ -67,15 +69,15 @@ private slots:
     void onHexGotoAddress();
 
 private:
+    void toggleWidgetStates();
     void dragEnterEvent(QDragEnterEvent *event);
     void dragLeaveEvent(QDragLeaveEvent *event);
     void dropEvent(QDropEvent *event);
     QTimer* m_checkTimer;
-    void SetRegion(SkywardSwordFile::Region);
-    void ToggleEnabled(bool visible);
-    void SetupHexEdit();
-    void SetupActions();
-    void SetupConnections();
+    void setRegion(SkywardSwordFile::Region);
+    void setupHexEdit();
+    void setupActions();
+    void setupConnections();
     Ui::MainWindow*           m_ui;
     QString                   m_oldFilename;
     SkywardSwordFile*         m_gameFile;
@@ -86,6 +88,7 @@ private:
     QButtonGroup*             m_regionGroup;
     QFileSystemWatcher*       m_fileWatcher;
     QHexEdit*                 m_hexEdit;
+    NewFileDialog*            m_newFileDialog;
 };
 
 #endif // MAINWINDOW_H
