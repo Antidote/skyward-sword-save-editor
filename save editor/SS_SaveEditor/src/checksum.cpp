@@ -19,15 +19,15 @@ Checksum::Checksum()
 {
     for( int codes = 0; codes <= 0xFF; codes++ )
     {
-                 m_crcTable[codes] = Reflect( codes, 8 ) << 24;
+         m_crcTable[codes] = reflect( codes, 8 ) << 24;
 
-                 for( int iPos = 0; iPos < 8; iPos++ )
-                     m_crcTable[codes] = ( m_crcTable[codes] << 1 ) ^ ( m_crcTable[codes] & (1 << 31) ? CRC32_POLYNOMIAL : 0 );
-                     m_crcTable[codes] = Reflect( m_crcTable[codes], 32 );
+         for( int iPos = 0; iPos < 8; iPos++ )
+             m_crcTable[codes] = ( m_crcTable[codes] << 1 ) ^ ( m_crcTable[codes] & (1 << 31) ? CRC32_POLYNOMIAL : 0 );
+             m_crcTable[codes] = reflect( m_crcTable[codes], 32 );
     }
 }
 
-quint32 Checksum::Reflect( quint32 reflect, char c )
+quint32 Checksum::reflect( quint32 reflect, char c )
 {
     quint32 value = 0;
 
@@ -42,7 +42,7 @@ quint32 Checksum::Reflect( quint32 reflect, char c )
     return value;
 }
 
-quint32 Checksum::GetCRC32(const quint8 *data, quint64 pos, quint64 length )
+quint32 Checksum::CRC32(const quint8 *data, quint64 pos, quint64 length )
 {
     quint32 CRC = 0xFFFFFFFF;
     while( length-- )
@@ -51,7 +51,7 @@ quint32 Checksum::GetCRC32(const quint8 *data, quint64 pos, quint64 length )
    return CRC ^ 0xFFFFFFFF;
 }
 
-quint16 Checksum::GetChecksum16(const quint8 *data, quint64 pos, quint64 length)
+quint16 Checksum::checksum16(const quint8 *data, quint64 pos, quint64 length)
 {
     quint16 sum = 0;
 

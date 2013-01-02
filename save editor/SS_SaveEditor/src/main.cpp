@@ -19,6 +19,9 @@
 #include <QString>
 #include <QTextStream>
 #include "mainwindow.h"
+#include <QCalendarWidget>
+#include <QPushButton>
+#include <QDebug>
 
 
 void loadStyleSheet() {
@@ -45,6 +48,14 @@ void loadStyleSheet() {
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    QCalendarWidget widget;
+    QWidget* nav = widget.findChild<QWidget*>(QString("qt_calendar_navigationbar"));
+    foreach(QObject* child, nav->children())
+    {
+        QWidget* w = (QWidget*)child;
+        if (w)
+            qDebug() << child->objectName();
+    }
     a.setOrganizationName("WiiKing2");
     a.setApplicationName("WiiKing2 Editor");
     loadStyleSheet();

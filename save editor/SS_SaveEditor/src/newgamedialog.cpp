@@ -37,15 +37,15 @@ void NewGameDialog::gameFile(SkywardSwordFile& gameFile)
     if (tmpFile == NULL)
         tmpFile = new SkywardSwordFile(SkywardSwordFile::NTSCURegion);
 
-    tmpFile->CreateNewGame(m_game); // Create a new Game with defaults.
+    tmpFile->createNewGame(m_game); // Create a new Game with defaults.
 
-    tmpFile->SetPlayerName (m_ui->nameLineEdit->text());
-    tmpFile->SetRupees     (m_ui->rupeeSpinBox->value());
-    tmpFile->SetTotalHP    (m_ui->hpSpinBox->value());
-    tmpFile->SetCurrentHP  (m_ui->hpSpinBox->value());
-    tmpFile->SetUnkHP      (m_ui->hpSpinBox->value());
-    tmpFile->SetNew        (false);
-    tmpFile->UpdateChecksum();
+    tmpFile->setPlayerName (m_ui->nameLineEdit->text());
+    tmpFile->setRupees     (m_ui->rupeeSpinBox->value());
+    tmpFile->setTotalHP    (m_ui->hpSpinBox->value());
+    tmpFile->setCurrentHP  (m_ui->hpSpinBox->value());
+    tmpFile->setUnkHP      (m_ui->hpSpinBox->value());
+    tmpFile->setNew        (false);
+    tmpFile->updateChecksum();
 
     gameFile = *tmpFile;
 }

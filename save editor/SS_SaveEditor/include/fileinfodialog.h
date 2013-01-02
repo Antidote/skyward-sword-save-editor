@@ -37,7 +37,7 @@ private slots:
     void onAccepted();
 private:
     enum StringType {Title, Subtitle};
-    QString GetRegionString(int region, StringType type) const;
+    QString regionString(int region, StringType type) const;
     Ui::FileInfoDialog *m_ui;
     SkywardSwordFile* m_gameFile;
     int               m_region;

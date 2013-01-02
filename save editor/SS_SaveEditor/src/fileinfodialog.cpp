@@ -36,14 +36,14 @@ FileInfoDialog::FileInfoDialog(QWidget *parent, SkywardSwordFile& game) :
 
     if (m_gameFile != NULL)
     {
-        QPixmap pixmap = m_gameFile->GetBanner();
+        QPixmap pixmap = m_gameFile->banner();
         m_ui->bannerImg->setPixmap(pixmap);
-        m_ui->titleLbl->setText("Title: " + m_gameFile->GetBannerTitle());
-        m_ui->subtitleLbl->setText("Subtitle: " + m_gameFile->GetBannerSubtitle());
+        m_ui->titleLbl->setText("Title: " + m_gameFile->bannerTitle());
+        m_ui->subtitleLbl->setText("Subtitle: " + m_gameFile->bannerSubtitle());
 
-        this->setWindowIcon(m_gameFile->GetIcon());
+        this->setWindowIcon(m_gameFile->icon());
 
-        switch(m_gameFile->GetRegion())
+        switch(m_gameFile->region())
         {
             case SkywardSwordFile::NTSCURegion:
                 m_ui->ntscURadioBtn->setChecked(true);
@@ -58,18 +58,18 @@ FileInfoDialog::FileInfoDialog(QWidget *parent, SkywardSwordFile& game) :
 
         int count = 0;
 
-        SkywardSwordFile::Game oldGame = m_gameFile->GetGame();
+        SkywardSwordFile::Game oldGame = m_gameFile->game();
         for (int i = 0; i < 3; i++)
         {
-            m_gameFile->SetGame((SkywardSwordFile::Game)i);
-            if (!m_gameFile->IsNew())
+            m_gameFile->setGame((SkywardSwordFile::Game)i);
+            if (!m_gameFile->isNew())
                 count++;
         }
-        m_gameFile->SetGame(oldGame);
+        m_gameFile->setGame(oldGame);
 
-        m_ui->checkSumLbl->setText(tr("Adventure Checksum: 0x").append(QString("").sprintf("%08X", m_gameFile->GetChecksum())));
+        m_ui->checkSumLbl->setText(tr("Adventure Checksum: 0x").append(QString("").sprintf("%08X", m_gameFile->checksum())));
         m_ui->adventureCountLbl->setText(tr("Adventure Count: %1").arg(count));
-        m_ui->currentAdventureLbl->setText(m_gameFile->IsNew() ? tr("New Adventure") : tr("Current Adventure: %1 - %2").arg(m_gameFile->GetGame() + 1).arg(m_gameFile->GetPlayerName()));
+        m_ui->currentAdventureLbl->setText(m_gameFile->isNew() ? tr("New Adventure") : tr("Current Adventure: %1 - %2").arg(m_gameFile->game() + 1).arg(m_gameFile->playerName()));
     }
     else
     {
@@ -96,8 +96,8 @@ void FileInfoDialog::onRegionChanged(QAbstractButton *)
     else if (m_ui->palRadioBtn->isChecked())
         m_region = SkywardSwordFile::PALRegion;
 
-    m_ui->titleLbl->setText("Title: " + GetRegionString(m_region, Title));
-    m_ui->subtitleLbl->setText("Subtitle: " + GetRegionString(m_region, Subtitle));
+    m_ui->titleLbl->setText("Title: " + regionString(m_region, Title));
+    m_ui->subtitleLbl->setText("Subtitle: " + regionString(m_region, Subtitle));
 }
 
 void FileInfoDialog::onAccepted()
@@ -105,17 +105,17 @@ void FileInfoDialog::onAccepted()
     if (!m_gameFile)
         return;
 
-    m_gameFile->SetRegion((SkywardSwordFile::Region)m_region);
+    m_gameFile->setRegion((SkywardSwordFile::Region)m_region);
 }
 
-QString FileInfoDialog::GetRegionString(int region, StringType type) const
+QString FileInfoDialog::regionString(int region, StringType type) const
 {
-    if (m_gameFile && (int)m_gameFile->GetRegion() == region)
+    if (m_gameFile && (int)m_gameFile->region() == region)
     {
         if (type == Title)
-            return m_gameFile->GetBannerTitle();
+            return m_gameFile->bannerTitle();
         else
-            return m_gameFile->GetBannerSubtitle();
+            return m_gameFile->bannerSubtitle();
     }
 
     QString file;

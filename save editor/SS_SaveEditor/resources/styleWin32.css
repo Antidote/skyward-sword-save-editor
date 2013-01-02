@@ -202,7 +202,26 @@ QCheckBox::indicator
     height: 18px;
 }
 
-QSpinBox, QDoubleSpinBox, QLineEdit, QDateTimeEdit
+QSpinBox, QDoubleSpinBox, QLineEdit
 {
     background-color: rgba(227, 227, 227, 255);
+}
+
+#qt_calendar_navigationbar
+{
+	border: 1px solid rgb(171, 173, 179);
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+	background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(239, 239, 239, 255), stop:1 rgba(157, 157, 157, 255));
+}
+
+#qt_calendar_calendarview
+{
+	color:white;
+	background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:1 rgba(239, 239, 239, 255), stop:0 rgba(157, 157, 157, 255));
+}
+
+#qt_calendar_yearbutton, #qt_calendar_monthbutton
+{
+	color:black;
 }

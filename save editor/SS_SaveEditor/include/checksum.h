@@ -24,10 +24,10 @@ class Checksum
 {
 public:
     Checksum();
-    quint32 GetCRC32(const quint8* data, quint64 pos, quint64 length); //!< Used by Skyward Sword just a basic CRC32 with default Polynomial.
-    quint16 GetChecksum16(const quint8* data, quint64 pos, quint64 length); //!< Used by the oracle games.
+    quint32 CRC32(const quint8* data, quint64 pos, quint64 length); //!< Used by Skyward Sword just a basic CRC32 with default Polynomial.
+    quint16 checksum16(const quint8* data, quint64 pos, quint64 length); //!< Used by the oracle games.
 private:
-    quint32 Reflect( quint32 reflect, char cChar );
+    quint32 reflect(quint32 reflect, char c);
     quint32 m_crcTable[256];
 };
 
