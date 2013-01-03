@@ -88,8 +88,15 @@ MainWindow::MainWindow(QWidget *parent) :
     setupActions();
     setupHexEdit();
     setupConnections();
+    // Now check to see if the user started the program with a commandline
+    if (qApp->argc() > 1)
+        // Attempt to open the file
+    {
+        m_gameFile = new SkywardSwordFile(qApp->arguments()[1]);
+    }
     updateInfo();
     updateTitle();
+    toggleWidgetStates();
 }
 
 MainWindow::~MainWindow()
@@ -121,6 +128,7 @@ void MainWindow::dragEnterEvent(QDragEnterEvent *event)
         {
             event->acceptProposedAction();
             statusBar()->showMessage(QString("File Valid (Wii Save file)"));
+
             return;
         }
     }
@@ -505,6 +513,7 @@ void MainWindow::updateInfo()
 
         m_ui->tabWidget->setEnabled(false);
     }
+    toggleWidgetStates();
 
     m_isUpdating = true;
     // Player Stats
@@ -823,7 +832,7 @@ void MainWindow::onOpen()
             msg.exec();
         }
 
-        m_ui->menuRecent->addAction(m_gameFile->getFilename());
+        m_ui->menuRecent->addAction(m_gameFile->filename());
 
         foreach(QString file, m_fileWatcher->files())
             m_fileWatcher->removePath(file);
@@ -833,6 +842,7 @@ void MainWindow::onOpen()
         m_hexEdit->setData(m_gameFile->gameData());
         updateInfo();
         updateTitle();
+        updateMRU();
     }
 }
 
@@ -889,14 +899,14 @@ void MainWindow::onSave()
     if (!m_gameFile)
         return;
 
-    QString oldFilename = m_gameFile->getFilename();
+    QString oldFilename = m_gameFile->filename();
     foreach(QString file, m_fileWatcher->files())
         m_fileWatcher->removePath(file);
 
     if (!m_gameFile || !m_gameFile->isOpen() || m_gameFile->game() == SkywardSwordFile::GameNone)
         return;
 
-    if (m_gameFile->getFilename().size() <= 0)
+    if (m_gameFile->filename().size() <= 0)
     {
         QFileDialog fileDialog;
         QString file = fileDialog.getSaveFileName(this, tr("Save Skyward Sword Save File..."), dir, tr("Skyward Sword Save Files (*.sav);;Wii save (*.bin)"));
@@ -917,12 +927,12 @@ void MainWindow::onSave()
         m_ui->statusBar->showMessage(tr("Unable to save file"));
     }
 
-    m_fileWatcher->addPath(m_gameFile->getFilename());
+    m_fileWatcher->addPath(m_gameFile->filename());
     m_gameFile->updateChecksum();
     updateInfo();
     updateTitle();
     m_hexEdit->setData(m_gameFile->gameData());
-    if (oldFilename != m_gameFile->getFilename())
+    if (oldFilename != m_gameFile->filename())
     {
         m_hexEdit->undoStack()->clear();
         m_hexEdit->setCursorPosition(0);
@@ -935,7 +945,7 @@ void MainWindow::onSaveAs()
     if (!m_gameFile)
         return;
 
-    m_oldFilename = m_gameFile->getFilename();
+    m_oldFilename = m_gameFile->filename();
     m_gameFile->setFilename(QString(tr("")));
     onSave();
 }
@@ -1029,7 +1039,7 @@ void MainWindow::onReload()
     {
         updateInfo();
         m_ui->statusBar->showMessage(tr("File successfully reloaded"));
-        m_fileWatcher->addPath(m_gameFile->getFilename());
+        m_fileWatcher->addPath(m_gameFile->filename());
 
         updateTitle();
         m_hexEdit->setData(m_gameFile->gameData());
@@ -1051,7 +1061,7 @@ void MainWindow::onClose()
                  return;
     if(m_gameFile->isModified())
     {
-        QString filename = QFileInfo(m_gameFile->getFilename()).fileName();
+        QString filename = QFileInfo(m_gameFile->filename()).fileName();
         QMessageBox msg(QMessageBox::Information,
                         "File Modified",
                         QString(tr("The file \"%1\" has been modified.\n Do you wish to save?"))
@@ -1065,7 +1075,7 @@ void MainWindow::onClose()
            return;
     }
 
-    m_fileWatcher->removePath(m_gameFile->getFilename());
+    m_fileWatcher->removePath(m_gameFile->filename());
     m_gameFile->close();
     m_hexEdit->setData(m_gameFile->gameData());
     delete m_gameFile;
@@ -1100,13 +1110,31 @@ void MainWindow::toggleWidgetStates()
     }
 }
 
+void MainWindow::updateMRU()
+{
+    QSettings settings;
+    settings.beginGroup("MRU");
+    QStringList files = settings.value("files", "").toString().split("?");
+    if (files.contains(m_gameFile->filename()))
+    {
+        files.removeAt(files.indexOf(m_gameFile->filename()));
+        files.push_front(m_gameFile->filename());
+    }
+    else
+        files.push_front(m_gameFile->filename());
+
+    files.removeDuplicates(); // Make sure there are no duplicates
+    settings.setValue("files", files.join("?"));
+    settings.endGroup();
+}
+
 void MainWindow::updateTitle()
 {
     if (m_gameFile == NULL || !m_gameFile->isOpen() || m_gameFile->game() == SkywardSwordFile::GameNone)
                  this->setWindowTitle(tr("WiiKing2 Editor"));
     else
     {
-        QFileInfo fileInfo(m_gameFile->getFilename());
+        QFileInfo fileInfo(m_gameFile->filename());
         //HACK: Does this count as a hack?
         if (fileInfo.fileName().isEmpty())
             fileInfo.setFile(QDir(), "Untitled");
@@ -1149,4 +1177,33 @@ void MainWindow::clearInfo()
     }
 
     m_isUpdating = false;
+}
+
+
+
+void MainWindow::closeEvent(QCloseEvent* e)
+{
+    if (m_gameFile && m_gameFile->isModified())
+    {
+        QString filename = (m_gameFile->filename().isEmpty() ? "Untitled" : QFileInfo(m_gameFile->filename()).fileName());
+        QMessageBox msg(QMessageBox::Question, "Confirm?", QString("The file \"<b>%1</b>\" has been modified.\nDo you wish to save?").arg(filename), QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
+        quint32 result = msg.exec();
+
+        switch(result)
+        {
+        case QMessageBox::Yes:
+            onSave();
+            e->accept();
+            break;
+        case QMessageBox::No:
+            e->accept();
+            break;
+        case QMessageBox::Cancel:
+            e->ignore();
+        default:
+            e->accept();
+        }
+    }
+
+    e->accept();
 }

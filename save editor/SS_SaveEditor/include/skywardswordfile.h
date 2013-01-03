@@ -158,7 +158,7 @@ public:
 
     bool      isOpen() const;
 
-    QString   getFilename() const;
+    QString   filename() const;
     void      setFilename(const QString& filepath);
 
     Game      game() const;

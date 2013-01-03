@@ -8,6 +8,8 @@ namespace Ui {
 class NewFileDialog;
 }
 
+class GameInfoWidget;
+
 class NewFileDialog : public QDialog
 {
     Q_OBJECT
@@ -20,7 +22,10 @@ public:
     
 private:
     Ui::NewFileDialog *m_ui;
-    QToolBox* m_gameToolBox;
+    QToolBox*       m_gameToolBox;
+    GameInfoWidget* m_game1Widget;
+    GameInfoWidget* m_game2Widget;
+    GameInfoWidget* m_game3Widget;
 };
 
 #endif // NEWFILEDIALOG_H
