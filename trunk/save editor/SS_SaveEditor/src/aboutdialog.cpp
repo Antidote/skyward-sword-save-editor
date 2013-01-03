@@ -15,7 +15,7 @@
 
 #include "aboutdialog.h"
 #include "ui_aboutdialog.h"
-#include "svnrev.h"
+#include "../svn_template/svnrev.h"
 
 AboutDialog::AboutDialog(QWidget *parent) :
     QDialog(parent),

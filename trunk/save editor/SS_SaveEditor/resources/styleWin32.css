@@ -127,7 +127,7 @@ QGroupBox::title
 {
     subcontrol-origin: margin;
     left: +5px;
-	padding: 1px 4px;
+    padding: 1px 4px;
     background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(249, 249, 249, 255), stop:1 rgba(227, 227, 227, 255));
     border: 1px solid rgb(171, 173, 179);
     border-top-left-radius: 4px;
@@ -144,30 +144,30 @@ QToolButton
 
 QCheckBox::indicator:unchecked
 {
-  image: url(:/ui/CheckBox/CheckBox_normal);
+    image: url(:/ui/CheckBox/CheckBox_normal);
 }
 
 QCheckBox::indicator:unchecked:hover
 {
-  image: url(:/ui/CheckBox/CheckBox_hover);
+    image: url(:/ui/CheckBox/CheckBox_hover);
 }
 QCheckBox::indicator:unchecked:pressed
 {
-  image: url(:/ui/CheckBox/CheckBox_clicked);
+    image: url(:/ui/CheckBox/CheckBox_clicked);
 }
 
 QCheckBox::indicator:checked
 {
-  image: url(:/ui/CheckBox/CheckBox_checked_normal);
+    image: url(:/ui/CheckBox/CheckBox_checked_normal);
 }
 
 QCheckBox::indicator:checked:hover
 {
-  image: url(:/ui/CheckBox/CheckBox_checked_hover);
+    image: url(:/ui/CheckBox/CheckBox_checked_hover);
 }
 QCheckBox::indicator:checked:pressed
 {
-  image: url(:/ui/CheckBox/CheckBox_checked_clicked);
+    image: url(:/ui/CheckBox/CheckBox_checked_clicked);
 }
 
 QToolButton:hover, QPushButton:hover, QTabBar::Tab:hover
@@ -209,19 +209,15 @@ QSpinBox, QDoubleSpinBox, QLineEdit
 
 #qt_calendar_navigationbar
 {
-	border: 1px solid rgb(171, 173, 179);
+    padding: 16px 8px;
+    border: 1px solid rgb(171, 173, 179);
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
-	background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(239, 239, 239, 255), stop:1 rgba(157, 157, 157, 255));
+    background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(239, 239, 239, 255), stop:1 rgba(157, 157, 157, 255));
 }
 
-#qt_calendar_calendarview
+#qt_calendar_yearbutton, #qt_calendar_monthbutton, #qt_calendar_yearedit
 {
-	color:white;
-	background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:1 rgba(239, 239, 239, 255), stop:0 rgba(157, 157, 157, 255));
-}
-
-#qt_calendar_yearbutton, #qt_calendar_monthbutton
-{
-	color:black;
+    color:black;
+    padding: 2px 8px;
 }

@@ -67,8 +67,11 @@ private slots:
     void onCurrentAdressChanged(int);
     void onHexDataChanged();
     void onHexGotoAddress();
+    void closeEvent(QCloseEvent* e);
 
 private:
+    bool askOnClose();
+    void updateMRU();
     void toggleWidgetStates();
     void dragEnterEvent(QDragEnterEvent *event);
     void dragLeaveEvent(QDragLeaveEvent *event);

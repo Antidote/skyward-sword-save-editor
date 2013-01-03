@@ -15,8 +15,12 @@ public:
     explicit GameInfoWidget(QWidget *parent = 0);
     ~GameInfoWidget();
     
+    QString playerName()      const;
+    quint32 rupees()          const;
+    quint32 heartContainers() const;
+    quint32 currentHealth()   const;
 private:
-    Ui::GameInfoWidget *ui;
+    Ui::GameInfoWidget *m_ui;
 };
 
 #endif // GAMEINFOWIDGET_H

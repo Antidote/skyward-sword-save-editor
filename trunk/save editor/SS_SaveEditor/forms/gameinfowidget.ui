@@ -15,22 +15,22 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="2" column="1">
-    <widget class="QSpinBox" name="spinBox"/>
+    <widget class="QSpinBox" name="heartContainersSpinBox"/>
    </item>
    <item row="3" column="1">
-    <widget class="QSpinBox" name="spinBox_2"/>
+    <widget class="QSpinBox" name="currentHealthSpinBox"/>
    </item>
    <item row="2" column="0">
-    <widget class="QLabel" name="label">
+    <widget class="QLabel" name="heartContainersLbl">
      <property name="text">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Heart Containers:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
     </widget>
    </item>
    <item row="3" column="0">
-    <widget class="QLabel" name="label_2">
+    <widget class="QLabel" name="currentHealthLbl">
      <property name="text">
-      <string>TextLabel</string>
+      <string>Current Health:</string>
      </property>
     </widget>
    </item>

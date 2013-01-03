@@ -6,6 +6,22 @@
 
 QT += core gui
 
+
+win32:CONFIG(debug, debug|release){
+    system("..\\svn_template\\SubWCRev.exe ..\\..\\ ..\\svn_template\\svnrev_template.h ..\\svn_template\\svnrev.h")
+}
+
+unix:CONFIG(debug, debug|release){
+    system("../svn_template/makesvnrev.sh")
+}
+
+CONFIG(debug, debug|release){
+    DEFINES += DEBUG
+}
+CONFIG(release, release|debug){
+    DEFINES -= DEBUG
+}
+
 TARGET = SS_SaveEditor
 TEMPLATE = app
 INCLUDEPATH += include \
@@ -110,23 +126,13 @@ OTHER_FILES += \
     resources/equipment/Wallets/Mediu Wallet.png \
     resources/equipment/Wallets/Giant Wallet.png \
     resources/equipment/Wallets/Big Wallet.png \
-    resources/mainicon.rc
+    resources/mainicon.rc \
+    resources/styleWin32.css \
+    resources/styleUnix.css
 
 TRANSLATIONS += \
     resources/languages/ja.ts
 
 win32{
     RC_FILE = resources/mainicon.rc
-}
-
-win32:CONFIG(debug, debug|release){
-    DEFINES += DEBUG
-
-    system("..\\svn_template\\SubWCRev.exe ..\\..\\ ..\\svn_template\\svnrev_template.h .\\svnrev.h")
-}
-
-unix:CONFIG(debug, debug|release){
-    DEFINES += DEBUG
-
-    system("../svn_template/makesvnrev.sh")
 }

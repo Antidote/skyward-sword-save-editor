@@ -13,23 +13,13 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_2">
-   <item row="2" column="0">
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-     </property>
-    </widget>
-   </item>
+  <layout class="QGridLayout" name="mainGridLayout">
    <item row="0" column="0">
     <widget class="QGroupBox" name="regionBox">
      <property name="title">
       <string>Region</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout">
+     <layout class="QGridLayout" name="regionGridLayout">
       <item row="0" column="0">
        <widget class="QRadioButton" name="ntscURadioBtn">
         <property name="text">
@@ -54,38 +44,18 @@
      </layout>
     </widget>
    </item>
-   <item row="1" column="0">
-    <widget class="QToolBox" name="gameToolBox">
-     <property name="currentIndex">
-      <number>0</number>
+   <item row="2" column="0">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
      </property>
-     <widget class="QWidget" name="game1Page">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>382</width>
-        <height>143</height>
-       </rect>
-      </property>
-      <attribute name="label">
-       <string>Game 1</string>
-      </attribute>
-     </widget>
-     <widget class="QWidget" name="game2Page">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>382</width>
-        <height>143</height>
-       </rect>
-      </property>
-      <attribute name="label">
-       <string>Game 2</string>
-      </attribute>
-     </widget>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
     </widget>
+   </item>
+   <item row="1" column="0">
+    <layout class="QVBoxLayout" name="toolBoxLayout"/>
    </item>
   </layout>
  </widget>

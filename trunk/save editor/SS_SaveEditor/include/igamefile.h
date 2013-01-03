@@ -43,7 +43,7 @@ public:
     virtual void updateChecksum() = 0;
     virtual bool hasValidChecksum() = 0;
     virtual bool isModified() const = 0;
-    virtual QString getFilename() const = 0;
+    virtual QString filename() const = 0;
     virtual void setFilename(const QString& filepath) = 0;
 };
 

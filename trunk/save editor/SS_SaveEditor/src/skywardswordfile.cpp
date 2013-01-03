@@ -52,6 +52,7 @@ SkywardSwordFile::SkywardSwordFile(const QString& filepath, Game game) :
 {
     m_bannerImage = QImage();
     m_checksumEngine = Checksum();
+    open(game, filepath);
 }
 
 SkywardSwordFile::~SkywardSwordFile()
@@ -323,7 +324,7 @@ void SkywardSwordFile::setGame(Game game)
     m_game = game;
 }
 
-QString SkywardSwordFile::getFilename() const
+QString SkywardSwordFile::filename() const
 {
     return m_filename;
 }
