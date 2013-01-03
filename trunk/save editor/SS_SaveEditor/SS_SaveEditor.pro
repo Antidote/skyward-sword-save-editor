@@ -119,11 +119,8 @@ win32{
     RC_FILE = resources/mainicon.rc
 }
 
-CONFIG(debug, debug|release){
+win32:CONFIG(debug, debug|release){
     DEFINES += DEBUG
 
-    VERSION = $$system(svn info -r HEAD . | grep 'Rev:' | cut -b 19-)
-
-    REVSTR = '\\"$${VERSION}\\"'  # place quotes around the version string
-    DEFINES += SVNREVSTR=\"$${REVSTR}\" # create a VER macro containing the version string
+    system("..\\svn_template\\SubWCRev.exe .\\ ..\\svn_template\\svnrev_template.h .\\svnrev.h")
 }
