@@ -122,5 +122,11 @@ win32{
 win32:CONFIG(debug, debug|release){
     DEFINES += DEBUG
 
-    system("..\\svn_template\\SubWCRev.exe .\\ ..\\svn_template\\svnrev_template.h .\\svnrev.h")
+    system("..\\svn_template\\SubWCRev.exe ..\\..\\ ..\\svn_template\\svnrev_template.h .\\svnrev.h")
+}
+
+unix:CONFIG(debug, debug|release){
+    DEFINES += DEBUG
+
+    system("../svn_template/makesvnrev.sh")
 }
