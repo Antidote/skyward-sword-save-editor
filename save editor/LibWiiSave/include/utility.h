@@ -2,23 +2,23 @@
 #define __UTILITY_H__
 
 #include <string>
-#include "tools.h"
+#include <Types.hpp>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-bool isEmpty(u8*, size_t);
+bool isEmpty(Uint8*, size_t);
 
-unsigned short swapU16(unsigned short val );
-         short swap16 (short val );
-unsigned int   swapU32(unsigned int val);
-         int   swap32 (int val );
-    long long  swap64 (long long val);
+Uint16 swapU16(Uint16 val);
+ Int16 swap16 ( Int16 val);
+Uint32 swapU32(Uint32 val);
+ Int32 swap32 ( Int32 val);
+ Int64 swap64 ( Int64 val);
 
-void sillyRandom(u8 * rndArea, u8 count);
+void sillyRandom(Uint8 * rndArea, Uint8 count);
 
-u8* getSha1(u8* stuff, u32 stuffSize);
+Uint8* getSha1(Uint8* stuff, Uint32 stuffSize);
 
 bool isSystemBigEndian();
 

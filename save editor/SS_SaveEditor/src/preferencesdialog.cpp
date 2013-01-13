@@ -16,6 +16,7 @@
 #include "preferencesdialog.h"
 #include "ui_preferencesdialog.h"
 #include "wiikeys.h"
+#include "settingsmanager.h"
 #include <QDebug>
 
 class HexValidator : public QValidator
@@ -44,6 +45,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
 {
     m_ui->setupUi(this);
 
+    // Key Settings
     m_ui->ngIDLineEdit->setValidator(new HexValidator(this));
     m_ui->ngKeyIDLineEdit->setValidator(new HexValidator(this));
     m_ui->ngSigPt1LineEdit->setValidator(new HexValidator(this));
@@ -58,6 +60,20 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     m_ui->macAddrLineEdit->setText(WiiKeys::instance()->macAddr().toHex());
     connect(m_ui->ngSigPt1LineEdit, SIGNAL(textChanged(QString)), this, SLOT(onTextChanged(QString)));
     connect(m_ui->ngSigPt2LineEdit, SIGNAL(textChanged(QString)), this, SLOT(onTextChanged(QString)));
+
+    // Region Settings
+    SettingsManager* settings = SettingsManager::instance();
+
+    switch(settings->defaultRegion())
+    {
+        case SettingsManager::NTSCU: m_ui->ntscURB->setChecked(true); break;
+        case SettingsManager::NTSCJ: m_ui->ntscJRB->setChecked(true); break;
+        case SettingsManager::PAL:   m_ui->palRB  ->setChecked(true); break;
+    }
+
+    m_ui->ntscUNameLE->setText(settings->defaultPlayerNameForRegion(SettingsManager::NTSCU));
+    m_ui->ntscJNameLE->setText(settings->defaultPlayerNameForRegion(SettingsManager::NTSCJ));
+    m_ui->palNameLE  ->setText(settings->defaultPlayerNameForRegion(SettingsManager::PAL  ));
 }
 
 PreferencesDialog::~PreferencesDialog()
@@ -114,5 +130,19 @@ void PreferencesDialog::accept()
         QByteArray macAddr = QByteArray::fromHex(m_ui->macAddrLineEdit->text().toAscii());
         WiiKeys::instance()->setMacAddr(macAddr);
     }
+
+    SettingsManager* settings = SettingsManager::instance();
+
+    QString regionBtn = m_ui->regionBtnGrp->checkedButton()->objectName();
+    settings->setDefaultRegion(regionBtn == "ntscURB" ? SettingsManager::NTSCU :
+                              (regionBtn == "ntscJRB" ? SettingsManager::NTSCJ :
+                               SettingsManager::PAL));
+
+    if (m_ui->ntscUNameLE->isModified() && !m_ui->ntscUNameLE->text().isEmpty())
+        settings->setDefaultPlayerNameForRegion(SettingsManager::NTSCU, m_ui->ntscUNameLE->text());
+    if (m_ui->ntscJNameLE->isModified() && !m_ui->ntscJNameLE->text().isEmpty())
+        settings->setDefaultPlayerNameForRegion(SettingsManager::NTSCJ, m_ui->ntscJNameLE->text());
+    if (m_ui->palNameLE->isModified() && !m_ui->palNameLE->text().isEmpty())
+        settings->setDefaultPlayerNameForRegion(SettingsManager::PAL, m_ui->palNameLE->text());
     this->done(QDialog::Accepted);
 }

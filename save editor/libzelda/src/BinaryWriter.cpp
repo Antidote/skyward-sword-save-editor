@@ -95,7 +95,7 @@ void BinaryWriter::writeUInt32(Uint32 val)
         throw IOException("BinaryWriter::WriteUInt32() -> Position outside stream bounds");
 
     if ((!isSystemBigEndian() && m_endian == Stream::BigEndian) || (isSystemBigEndian() && m_endian == Stream::LittleEndian))
-        val = swap64(val);
+        val = swap32(val);
 
     *(Uint32*)(m_data + m_position) = val;
     m_position += sizeof(Uint32);

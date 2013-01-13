@@ -2,24 +2,30 @@
 #include "utility.h"
 #include <string.h>
 
-WiiImage::WiiImage(u32 width, u32 height, u8* data) :
+WiiImage::WiiImage(Uint32 width, Uint32 height, Uint8* data) :
     m_width(width),
     m_height(height),
     m_data(data)
 {
 }
+WiiImage::~WiiImage()
+{
+    if (m_data)
+        delete[] m_data;
+    m_data = NULL;
+}
 
-u8* WiiImage::data()
+Uint8* WiiImage::data()
 {
     return m_data;
 }
 
-u32 WiiImage::width() const
+Uint32 WiiImage::width() const
 {
     return m_width;
 }
 
-u32 WiiImage::height() const
+Uint32 WiiImage::height() const
 {
     return m_height;
 }
@@ -34,7 +40,7 @@ WiiBanner::WiiBanner() :
 {
 }
 
-WiiBanner::WiiBanner(int gameId, const std::string& title,
+WiiBanner::WiiBanner(Uint32 gameId, const std::string& title,
                      const std::string& subtitle, WiiImage* banner, std::vector<WiiImage*> icons) :
     m_gameId(gameId),
     m_banner(banner),
@@ -52,12 +58,12 @@ WiiBanner::~WiiBanner()
     m_icons.clear();
 }
 
-void WiiBanner::setGameID(u64 id)
+void WiiBanner::setGameID(Uint64 id)
 {
     m_gameId = id;
 }
 
-u64 WiiBanner::gameID() const
+Uint64 WiiBanner::gameID() const
 {
     return m_gameId;
 }
@@ -86,7 +92,7 @@ void WiiBanner::addIcon(WiiImage* icon)
     m_icons.push_back(icon);
 }
 
-void WiiBanner::setIcon(int id, WiiImage* icon)
+void WiiBanner::setIcon(Uint32 id, WiiImage* icon)
 {
     if (m_icons[id] != NULL)
     {
@@ -95,7 +101,7 @@ void WiiBanner::setIcon(int id, WiiImage* icon)
     }
 }
 
-WiiImage* WiiBanner::getIcon(int id) const
+WiiImage* WiiBanner::getIcon(Uint32 id) const
 {
     if (!m_icons[id])
         return NULL;
@@ -117,42 +123,42 @@ WiiImage* WiiBanner::bannerImage() const
     return m_banner;
 }
 
-void WiiBanner::setAnimationSpeed(short animSpeed)
+void WiiBanner::setAnimationSpeed(Uint16 animSpeed)
 {
     m_animSpeed = animSpeed;
 }
 
-short WiiBanner::animationSpeed() const
+Uint16 WiiBanner::animationSpeed() const
 {
     return m_animSpeed;
 }
 
-void WiiBanner::setPermissions(u8 permissions)
+void WiiBanner::setPermissions(Uint8 permissions)
 {
     m_permissions = permissions;
 }
 
-u8 WiiBanner::permissions() const
+Uint8 WiiBanner::permissions() const
 {
     return m_permissions;
 }
 
-void WiiBanner::setBannerSize(u32 size)
+void WiiBanner::setBannerSize(Uint32 size)
 {
     m_bannerSize = size;
 }
 
-u32 WiiBanner::bannerSize() const
+Uint32 WiiBanner::bannerSize() const
 {
     return m_bannerSize;
 }
 
-void WiiBanner::setFlags(u32 flags)
+void WiiBanner::setFlags(Uint32 flags)
 {
     m_flags = flags;
 }
 
-u32 WiiBanner::flags() const
+Uint32 WiiBanner::flags() const
 {
     return m_flags;
 }

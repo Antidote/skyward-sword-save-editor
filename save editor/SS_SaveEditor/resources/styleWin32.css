@@ -135,7 +135,7 @@ QGroupBox::title
     border-bottom: none;
 }
 
-QToolButton
+QToolButton, #qt_toolbox_toolboxbutton
 {
     border: 1px solid rgb(171, 173, 179);
     border-radius: 4px;
@@ -170,13 +170,13 @@ QCheckBox::indicator:checked:pressed
     image: url(:/ui/CheckBox/CheckBox_checked_clicked);
 }
 
-QToolButton:hover, QPushButton:hover, QTabBar::Tab:hover
+QToolButton:hover, QPushButton:hover, QTabBar::Tab:hover, #qt_toolbox_toolboxbutton:hover
 {
     border-color: rgb(128, 43, 96);
     background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(239, 239, 239, 255), stop:1 rgba(227, 227, 227, 255));
 }
 
-QToolButton:checked, QPushButton:pressed
+QToolButton:checked, QPushButton:pressed, #qt_toolbox_toolboxbutton:pressed
 {
     background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(227, 227, 227, 255), stop:1 rgba(249, 249, 249, 255));
 }

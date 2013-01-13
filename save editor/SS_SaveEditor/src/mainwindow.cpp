@@ -37,6 +37,7 @@
 #include "preferencesdialog.h"
 #include "newfiledialog.h"
 #include "wiikeys.h"
+#include "settingsmanager.h"
 
 #ifdef DEBUG
 QString dir("D:/Projects/dolphin-emu/Binary/x64/User/Wii/title/00010000/534f5545/data");
@@ -60,7 +61,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     QSettings settings("WiiKing2", "WiiKing2 Editor");
-
+    m_settingsManager = SettingsManager::instance();
     m_ui->actionPreferences->setEnabled(true);
     if (settings.allKeys().count() > 0)
     {
@@ -102,6 +103,7 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete m_ui;
+    delete m_settingsManager;
     if (m_gameFile != NULL)
     {
         if (m_gameFile->isOpen())
@@ -172,8 +174,8 @@ void MainWindow::setupActions()
     m_ui->actionOpen->setShortcuts(QKeySequence::Open);
     m_ui->actionOpen->setStatusTip(tr("Opens a Skyward Sword save file..."));
     // File -> New
-    m_ui->action_New->setShortcuts(QKeySequence::New);
-    m_ui->action_New->setStatusTip(tr("Creates a new Skyward Sword save file"));
+    m_ui->actionNew->setShortcuts(QKeySequence::New);
+    m_ui->actionNew->setStatusTip(tr("Creates a new Skyward Sword save file"));
     // File -> Save
     m_ui->actionSave->setShortcuts(QKeySequence::Save);
     m_ui->actionSave->setStatusTip(tr("Saves the current open file..."));
@@ -250,7 +252,7 @@ void MainWindow::setupConnections()
     connect(m_ui->curRoomLineEdit,      SIGNAL(textChanged(QString)), this, SLOT(onTextChanged(QString)));
     connect(m_gameGroup,                SIGNAL(triggered(QAction*)),  this, SLOT(onGameChanged(QAction*)));
     connect(m_ui->actionOpen,           SIGNAL(triggered()),          this, SLOT(onOpen()));
-    connect(m_ui->action_New,           SIGNAL(triggered()),          this, SLOT(onNew()));
+    connect(m_ui->actionNew,            SIGNAL(triggered()),          this, SLOT(onNew()));
     connect(m_ui->createDeleteGameBtn,  SIGNAL(clicked()),            this, SLOT(onCreateNewGame()));
     connect(m_ui->actionSave,           SIGNAL(triggered()),          this, SLOT(onSave()));
     connect(m_ui->actionSaveAs,         SIGNAL(triggered()),          this, SLOT(onSaveAs()));
@@ -448,7 +450,7 @@ void MainWindow::onCurrentAdressChanged(int address)
    }
 
    ((QStandardItemModel*)m_ui->inspectorView->model())->setItem(0, 1, new QStandardItem(QString("%1").arg((qint32)charVal)));
-   ((QStandardItemModel*)m_ui->inspectorView->model())->setItem(1, 1, new QStandardItem(QString("%1 '%2'").arg((quint32)ucharVal).arg(ucharVal)));
+   ((QStandardItemModel*)m_ui->inspectorView->model())->setItem(1, 1, new QStandardItem(QString("%1 '%2'").arg((quint32)ucharVal).arg(charVal)));
    ((QStandardItemModel*)m_ui->inspectorView->model())->setItem(2, 1, new QStandardItem(QString("%1").arg(int32Val)));
    ((QStandardItemModel*)m_ui->inspectorView->model())->setItem(3, 1, new QStandardItem(QString("%1").arg(uint32Val)));
    ((QStandardItemModel*)m_ui->inspectorView->model())->setItem(4, 1, new QStandardItem(QString("%1").arg(int64Val)));
@@ -857,9 +859,48 @@ void MainWindow::onNew()
     updateInfo();*/
 
     if (!m_newFileDialog)
-        m_newFileDialog = new NewFileDialog();
+        m_newFileDialog = new NewFileDialog(this);
 
-    m_newFileDialog->show();
+    int res = m_newFileDialog->exec();
+
+    if (res == QDialog::Accepted)
+    {
+        bool fileValid = false;
+        if (!m_gameFile)
+            m_gameFile = new SkywardSwordFile((SkywardSwordFile::Region)m_newFileDialog->region());
+
+        for (quint32 i = 0; i < IGameFile::GameCount; i++)
+        {
+            if (m_newFileDialog->isGameValid(i))
+            {
+                fileValid = true;
+                m_gameFile->createNewGame((IGameFile::Game)i);
+                m_gameFile->setNew(false);
+                m_gameFile->setPlayerName(m_newFileDialog->playerName     (i));
+                m_gameFile->setRupees    (m_newFileDialog->rupees         (i));
+                m_gameFile->setCurrentHP (m_newFileDialog->currentHealth  (i));
+                m_gameFile->setTotalHP   (m_newFileDialog->heartContainers(i) * 4);
+                m_gameFile->updateChecksum();
+            }
+            else
+            {
+                qDebug() << "invalid";
+                continue;
+            }
+        }
+
+        if (fileValid)
+        {
+            updateTitle();
+            toggleWidgetStates();
+            updateInfo();
+        }
+        else
+        {
+            delete m_gameFile;
+            m_gameFile = NULL;
+        }
+    }
 }
 
 void MainWindow::onCreateNewGame()

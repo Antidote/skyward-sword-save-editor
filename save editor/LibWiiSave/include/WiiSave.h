@@ -3,7 +3,7 @@
 
 #include <map>
 #include <string>
-#include "tools.h"
+#include <Types.hpp>
 
 class WiiFile;
 class WiiBanner;
@@ -20,9 +20,9 @@ public:
     virtual ~WiiSave();
 
     bool     loadFromFile(const std::string& filename);
-    bool     loadFromMemory(const u8* data, u64 length);
+    bool     loadFromMemory(const Uint8* data, Uint64 length);
 
-    bool     saveToFile(const std::string& filepath, u8* macAddress, int ngId, u8* ngPriv, u8* ngSig, int ngKeyId);
+    bool     saveToFile(const std::string& filepath, Uint8* macAddress, Uint32 ngId, Uint8* ngPriv, Uint8* ngSig, Uint32 ngKeyId);
 
     void     addFile(const std::string& filename, WiiFile* file);
     WiiFile* getFile(const std::string& filename) const;
@@ -36,13 +36,13 @@ private:
 
     WiiBanner* readBanner();
     WiiFile*   readFile();
-    WiiImage*  readImage(int width, int height);
-    void       readCerts(u32 totalSize);
+    WiiImage*  readImage(Uint32 width, Uint32 height);
+    void       readCerts(Uint32 totalSize);
 
     void       writeBanner();
-    u32        writeFile(WiiFile* file);
+    Uint32     writeFile(WiiFile* file);
     void       writeImage(WiiImage* image);
-    void       writeCerts(int filesSize, int ngId, u8* ngPriv, u8* ngSig, int ngKeyId);
+    void       writeCerts(Uint32 filesSize, Uint32 ngId, Uint8* ngPriv, Uint8* ngSig, Uint32 ngKeyId);
 
     std::string readNullTermString();
 

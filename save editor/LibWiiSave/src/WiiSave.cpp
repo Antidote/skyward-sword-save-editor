@@ -6,7 +6,6 @@
 #include "IOException.hpp"
 #include "aes.h"
 #include "ec.h"
-#include "tools.h"
 #include "utility.h"
 #include "md5.h"
 #include "utf8.h"
@@ -19,9 +18,9 @@
 #include <iostream>
 #include <iomanip>
 
-const u8 sd_key[16]      = {0xab, 0x01, 0xb9, 0xd8, 0xe1, 0x62, 0x2b, 0x08, 0xaf, 0xba, 0xd8, 0x4d, 0xbf, 0xc2, 0xa5, 0x5d};
-const u8 sd_iv[16]       = {0x21, 0x67, 0x12, 0xe6, 0xaa, 0x1f, 0x68, 0x9f, 0x95, 0xc5, 0xa2, 0x23, 0x24, 0xdc, 0x6a, 0x98};
-const u8 md5_blanker[16] = {0x0e, 0x65, 0x37, 0x81, 0x99, 0xbe, 0x45, 0x17, 0xab, 0x06, 0xec, 0x22, 0x45, 0x1a, 0x57, 0x93};
+const Uint8 sd_key[16]      = {0xab, 0x01, 0xb9, 0xd8, 0xe1, 0x62, 0x2b, 0x08, 0xaf, 0xba, 0xd8, 0x4d, 0xbf, 0xc2, 0xa5, 0x5d};
+const Uint8 sd_iv[16]       = {0x21, 0x67, 0x12, 0xe6, 0xaa, 0x1f, 0x68, 0x9f, 0x95, 0xc5, 0xa2, 0x23, 0x24, 0xdc, 0x6a, 0x98};
+const Uint8 md5_blanker[16] = {0x0e, 0x65, 0x37, 0x81, 0x99, 0xbe, 0x45, 0x17, 0xab, 0x06, 0xec, 0x22, 0x45, 0x1a, 0x57, 0x93};
 
 WiiSave::WiiSave() :
     m_banner(NULL),
@@ -60,7 +59,7 @@ WiiSave::~WiiSave()
 bool WiiSave::loadFromFile(const std::string& filename)
 {
     FILE* f = fopen(filename.c_str(), "rb");
-    u8* data;
+    Uint8* data;
     int length;
 
     if (!f)
@@ -73,12 +72,12 @@ bool WiiSave::loadFromFile(const std::string& filename)
     length = ftell(f);
     fseek(f, 0, SEEK_SET);
 
-    data = new u8[length];
+    data = new Uint8[length];
     fread(data, 1, length, f);
     return loadFromMemory(data, length);
 }
 
-bool WiiSave::loadFromMemory(const u8* data, u64 length)
+bool WiiSave::loadFromMemory(const Uint8* data, Uint64 length)
 {
     if (m_reader == NULL)
         m_reader = new BinaryReader(data, length);
@@ -96,7 +95,7 @@ bool WiiSave::loadFromMemory(const u8* data, u64 length)
         return false;
     }
 
-    int bkVer = m_reader->readUInt32();
+    Uint32 bkVer = m_reader->readUInt32();
     bkVer = bkVer;
     if (bkVer != 0x00000070)
     {
@@ -104,7 +103,7 @@ bool WiiSave::loadFromMemory(const u8* data, u64 length)
         return false;
     }
 
-    int bkMagic = m_reader->readUInt32();
+    Uint32 bkMagic = m_reader->readUInt32();
     bkMagic = bkMagic;
     if (bkMagic != 0x426B0001)
     {
@@ -112,15 +111,15 @@ bool WiiSave::loadFromMemory(const u8* data, u64 length)
         return false;
     }
 
-    int ngId = m_reader->readUInt32();
+    Uint32 ngId = m_reader->readUInt32();
     ngId = ngId;
 
-    int numFiles = m_reader->readUInt32();
+    Uint32 numFiles = m_reader->readUInt32();
 
     /*int fileSize =*/ m_reader->readUInt32();
     m_reader->seek(8); // skip unknown data;
 
-    int totalSize = m_reader->readUInt32();
+    Uint32 totalSize = m_reader->readUInt32();
     m_reader->seek(64); // Unknown (Most likely padding)
     m_reader->seek(8);
     m_reader->seek(6);
@@ -128,7 +127,7 @@ bool WiiSave::loadFromMemory(const u8* data, u64 length)
     m_reader->seek(0x10);
 
     WiiFile* file;
-    for (int i = 0; i < numFiles; ++i)
+    for (Uint32 i = 0; i < numFiles; ++i)
     {
         file = readFile();
         if (file)
@@ -139,7 +138,7 @@ bool WiiSave::loadFromMemory(const u8* data, u64 length)
     return true;
 }
 
-bool WiiSave::saveToFile(const std::string& filepath, u8* macAddress, int ngId, u8* ngPriv, u8* ngSig, int ngKeyId)
+bool WiiSave::saveToFile(const std::string& filepath, Uint8* macAddress, Uint32 ngId, Uint8* ngPriv, Uint8* ngSig, Uint32 ngKeyId)
 {
     m_writer = new BinaryWriter(filepath);
     m_writer->setAutoResizing(true);
@@ -147,19 +146,19 @@ bool WiiSave::saveToFile(const std::string& filepath, u8* macAddress, int ngId, 
 
     writeBanner();
 
-    m_writer->writeInt32(0x70);
-    m_writer->writeInt32(0x426B0001);
-    m_writer->writeInt32(ngId); // NG-ID
-    m_writer->writeInt32(m_files.size());
-    m_writer->writeInt32(0); // Size of files;
+    m_writer->writeUInt32(0x70);
+    m_writer->writeUInt32(0x426B0001);
+    m_writer->writeUInt32(ngId); // NG-ID
+    m_writer->writeUInt32(m_files.size());
+    m_writer->writeUInt32(0); // Size of files;
     m_writer->seek(8);
-    m_writer->writeInt32(0); // totalSize
+    m_writer->writeUInt32(0); // totalSize
     m_writer->seek(64);
-    m_writer->writeInt64(m_banner->gameID());
+    m_writer->writeUInt64(m_banner->gameID());
     m_writer->writeBytes((Int8*)macAddress, 6);
     m_writer->seek(2); // unknown;
     m_writer->seek(0x10); // padding;
-    int totalSize = 0;
+    Uint32 totalSize = 0;
     for (std::map<std::string, WiiFile*>::const_iterator iter = m_files.begin(); iter != m_files.end(); ++iter)
     {
         totalSize += writeFile(iter->second);
@@ -167,9 +166,9 @@ bool WiiSave::saveToFile(const std::string& filepath, u8* macAddress, int ngId, 
     int pos = m_writer->position();
     // Write size data
     m_writer->seek(0xF0C0 + 0x10, Stream::Beginning);
-    m_writer->writeInt32(totalSize);
+    m_writer->writeUInt32(totalSize);
     m_writer->seek(0xF0C0 + 0x1C, Stream::Beginning);
-    m_writer->writeInt32(totalSize + 0x3c0);
+    m_writer->writeUInt32(totalSize + 0x3c0);
     m_writer->seek(pos, Stream::Beginning);
 
     writeCerts(totalSize, ngId, ngPriv, ngSig, ngKeyId);
@@ -214,18 +213,18 @@ WiiBanner* WiiSave::banner() const
 
 WiiBanner* WiiSave::readBanner()
 {
-    u8* dec = new u8[0xf0c0];
+    Uint8* dec = new Uint8[0xf0c0];
     memset(dec, 0, 0xF0C0);
-    u8* data = (u8*)m_reader->readBytes(0xF0C0);
-    u8* oldData = m_reader->data();
-    u64 oldPos = m_reader->position();
-    u64 oldLen = m_reader->length();
-    u64 gameId;
-    u32 bannerSize;
-    u8  permissions;
-    u8  md5[16];
-    u8  md5Calc[16];
-    u8  tmpIV[26];
+    Uint8* data = (Uint8*)m_reader->readBytes(0xF0C0);
+    Uint8* oldData = m_reader->data();
+    Uint64 oldPos = m_reader->position();
+    Uint64 oldLen = m_reader->length();
+    Uint64 gameId;
+    Uint32 bannerSize;
+    Uint8  permissions;
+    Uint8  md5[16];
+    Uint8  md5Calc[16];
+    Uint8  tmpIV[26];
     memcpy(tmpIV, sd_iv, 16);
 
     aes_set_key(sd_key);
@@ -360,9 +359,9 @@ WiiBanner* WiiSave::readBanner()
     return banner;
 }
 
-WiiImage* WiiSave::readImage(int width, int height)
+WiiImage* WiiSave::readImage(Uint32 width, Uint32 height)
 {
-    u8* image = (u8*)m_reader->readBytes(width*height*2);
+    Uint8* image = (Uint8*)m_reader->readBytes(width*height*2);
 
     if (!isEmpty(image, width*height*2))
         return new WiiImage(width, height, image);
@@ -372,15 +371,15 @@ WiiImage* WiiSave::readImage(int width, int height)
 
 WiiFile* WiiSave::readFile()
 {
-    int fileLen;
-    u8 permissions;
-    u8 attributes;
-    u8 type;
+    Uint32 fileLen;
+    Uint8 permissions;
+    Uint8 attributes;
+    Uint8 type;
     std::string name;
-    u8* filedata;
+    Uint8* filedata;
     WiiFile* ret;
 
-    int magic = m_reader->readUInt32();
+    Uint32 magic = m_reader->readUInt32();
     if (magic != 0x03adf17e)
     {
         std::cerr << "Not a valid File entry header: 0x" << std::hex << magic << std::endl;
@@ -396,17 +395,17 @@ WiiFile* WiiSave::readFile()
     ret->setPermissions(permissions);
     ret->setAttributes(attributes);
     ret->setType((WiiFile::Type)type);
-    u8* iv = (u8*)m_reader->readBytes(0x10);
+    Uint8* iv = (Uint8*)m_reader->readBytes(0x10);
     m_reader->seek(0x20);
 
     if (type == WiiFile::File)
     {
         // Read file data
         int roundedLen = (fileLen + 63) & ~63;
-        filedata = (u8*)m_reader->readBytes(roundedLen);
+        filedata = (Uint8*)m_reader->readBytes(roundedLen);
 
         // Decrypt file
-        u8* decData = new u8[roundedLen];
+        Uint8* decData = new Uint8[roundedLen];
         aes_set_key(sd_key);
         aes_decrypt(iv, filedata, decData, roundedLen);
         delete filedata;
@@ -417,20 +416,20 @@ WiiFile* WiiSave::readFile()
     return ret;
 }
 
-void WiiSave::readCerts(u32 totalSize)
+void WiiSave::readCerts(Uint32 totalSize)
 {
-    u32 dataSize = totalSize - 0x340;
-    u8* sig    = (u8*)m_reader->readBytes(0x40);
-    u8* ngCert = (u8*)m_reader->readBytes(0x180);
-    u8* apCert = (u8*)m_reader->readBytes(0x180);
+    Uint32 dataSize = totalSize - 0x340;
+    Uint8* sig    = (Uint8*)m_reader->readBytes(0x40);
+    Uint8* ngCert = (Uint8*)m_reader->readBytes(0x180);
+    Uint8* apCert = (Uint8*)m_reader->readBytes(0x180);
     m_reader->seek(0xF0C0, Stream::Beginning);
-    u8* data   = (u8*)m_reader->readBytes(dataSize);
-    u8* hash;
+    Uint8* data   = (Uint8*)m_reader->readBytes(dataSize);
+    Uint8* hash;
 
     hash = getSha1(data, dataSize);
-    u8* hash2 = getSha1(hash, 20);
+    Uint8* hash2 = getSha1(hash, 20);
 
-    int ok = check_ec(ngCert, apCert, sig, hash2);
+    check_ec(ngCert, apCert, sig, hash2);
 }
 
 void WiiSave::writeBanner()
@@ -454,11 +453,11 @@ void WiiSave::writeBanner()
 
     utf8::utf8to16(str.begin(), str.end(), back_inserter(tmp));
 
-    for (int i = 0; i <= 32; ++i)
+    for (Uint32 i = 0; i <= 32; ++i)
     {
         if (i >= tmp.size())
             break;
-        u16 chr = tmp[i];
+        Uint16 chr = tmp[i];
         if (chr != 0xFEFF)
             m_writer->writeInt16(chr);
     }
@@ -470,12 +469,12 @@ void WiiSave::writeBanner()
 
     utf8::utf8to16(str.begin(), str.end(), back_inserter(tmp));
 
-    for (u32 i = 0; i < tmp.size(); ++i)
+    for (Uint32 i = 0; i < tmp.size(); ++i)
     {
         if (i >= tmp.size())
             break;
 
-        u16 chr = tmp[i];
+        Uint16 chr = tmp[i];
         if (chr != 0xFEFF)
             m_writer->writeInt16(chr);
     }
@@ -487,9 +486,9 @@ void WiiSave::writeBanner()
     m_writer->writeBytes((Int8*)bannerImage->data(), bannerImage->width()*bannerImage->height()*2);
 
     // For empty icons
-    u8* tmpIcon = new u8[48*48*2];
+    Uint8* tmpIcon = new Uint8[48*48*2];
     memset(tmpIcon, 0, 48*48*2);
-    for (u32 i = 0; i < 8; ++i)
+    for (Uint32 i = 0; i < 8; ++i)
     {
         if (i < m_banner->icons().size())
         {
@@ -503,15 +502,15 @@ void WiiSave::writeBanner()
     m_writer->Save();
     delete[] tmpIcon; // delete tmp buffer;
 
-    u8* hash = new u8[0x10];
-    MD5(hash, (u8*)m_writer->data(), 0xF0C0);
+    Uint8* hash = new Uint8[0x10];
+    MD5(hash, (Uint8*)m_writer->data(), 0xF0C0);
     m_writer->seek(0x0E, Stream::Beginning);
     m_writer->writeBytes((Int8*)hash, 0x10);
 
     aes_set_key(sd_key);
-    u8 data[0xF0C0];
+    Uint8 data[0xF0C0];
     memcpy(data, m_writer->data(), 0xF0C0);
-    u8  tmpIV[26];
+    Uint8  tmpIV[26];
     memcpy(tmpIV, sd_iv, 16);
     aes_encrypt(tmpIV, data, data, 0xF0C0);
 
@@ -527,32 +526,32 @@ void WiiSave::writeImage(WiiImage* image)
     m_writer->writeBytes(data, image->width() * image->height() * 2);
 }
 
-u32 WiiSave::writeFile(WiiFile* file)
+Uint32 WiiSave::writeFile(WiiFile* file)
 {
-    u32 ret = 0x80;
+    Uint32 ret = 0x80;
 
-    m_writer->writeInt32(0x03ADF17E);
-    m_writer->writeInt32(file->length());
+    m_writer->writeUInt32(0x03ADF17E);
+    m_writer->writeUInt32(file->length());
     m_writer->writeByte(file->permissions());
     m_writer->writeByte(file->attributes());
     m_writer->writeByte(file->type());
 
-    u8 name[0x45];
+    Uint8 name[0x45];
     sillyRandom(name, 0x45);
     memcpy(name, file->filename().c_str(), file->filename().size());
     name[file->filename().size()] = '\0';
     m_writer->writeBytes((Int8*)name, 0x45);
-    u8 iv[16];
+    Uint8 iv[16];
     sillyRandom(iv, 0x10);
     m_writer->writeBytes((Int8*)iv, 0x10);
-    u8 crap[0x20];
+    Uint8 crap[0x20];
     sillyRandom(crap, 0x20);
     m_writer->writeBytes((Int8*)crap, 0x20);
 
     if (file->type() == WiiFile::File)
     {
         int roundedSize = (file->length() + 63) & ~63;
-        u8* data = new u8[roundedSize];
+        Uint8* data = new Uint8[roundedSize];
         memset(data, 0, roundedSize);
 
         aes_set_key(sd_key);
@@ -560,23 +559,24 @@ u32 WiiSave::writeFile(WiiFile* file)
 
         m_writer->writeBytes((Int8*)data, roundedSize);
         ret += roundedSize;
+        delete[] data;
     }
 
     return ret;
 }
 
-void WiiSave::writeCerts(int filesSize, int ngId, u8* ngPriv, u8* ngSig, int ngKeyId)
+void WiiSave::writeCerts(Uint32 filesSize, Uint32 ngId, Uint8* ngPriv, Uint8* ngSig, Uint32 ngKeyId)
 {
-    u8 sig[0x40];
-    u8 ngCert[0x180];
-    u8 apCert[0x180];
-    u8* hash;
-    u8 apPriv[30];
-    u8 apSig[60];
-    char signer[64];
-    char name[64];
-    u8* data;
-    u32 dataSize;
+    Uint8  sig[0x40];
+    Uint8  ngCert[0x180];
+    Uint8  apCert[0x180];
+    Uint8* hash;
+    Uint8  apPriv[30];
+    Uint8  apSig[60];
+    char   signer[64];
+    char   name[64];
+    Uint8* data;
+    Uint32 dataSize;
 
 	sprintf(signer, "Root-CA00000001-MS00000002");
 	sprintf(name, "NG%08x", ngId);
@@ -597,12 +597,12 @@ void WiiSave::writeCerts(int filesSize, int ngId, u8* ngPriv, u8* ngSig, int ngK
 	delete[] hash;
 
 	dataSize = filesSize + 0x80;
-	data = new u8[dataSize];
-	u8* rawData = m_writer->data();
+    data = new Uint8[dataSize];
+    Uint8* rawData = m_writer->data();
 	memcpy(data, rawData + 0xF0C0, dataSize);
 
 	hash = getSha1(data, dataSize);
-	u8* hash2 = getSha1(hash, 20);
+    Uint8* hash2 = getSha1(hash, 20);
 	delete[] hash;
 	delete[] data;
 
@@ -611,7 +611,7 @@ void WiiSave::writeCerts(int filesSize, int ngId, u8* ngPriv, u8* ngSig, int ngK
 	if (!isSystemBigEndian())
         stuff = swap32(stuff);
 
-	*(u32*)(sig+60) = stuff;
+    *(Uint32*)(sig+60) = stuff;
 	delete[] hash2;
 
 	m_writer->writeBytes((Int8*)sig, 0x40);

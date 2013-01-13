@@ -28,6 +28,7 @@ class QButtonGroup;
 class QAbstractButton;
 class QHexEdit;
 class NewFileDialog;
+class SettingsManager;
 
 namespace Ui {
 class MainWindow;
@@ -92,6 +93,7 @@ private:
     QFileSystemWatcher*       m_fileWatcher;
     QHexEdit*                 m_hexEdit;
     NewFileDialog*            m_newFileDialog;
+    SettingsManager*          m_settingsManager;
 };
 
 #endif // MAINWINDOW_H

@@ -3,12 +3,12 @@
 
 #include <QDialog>
 class QToolBox;
+class QAbstractButton;
+class GameInfoWidget;
 
 namespace Ui {
 class NewFileDialog;
 }
-
-class GameInfoWidget;
 
 class NewFileDialog : public QDialog
 {
@@ -18,8 +18,17 @@ public:
     explicit NewFileDialog(QWidget *parent = 0);
     ~NewFileDialog();
 
-    QString playerName() const;
-    
+    quint32 region         ()                   const;
+    bool    isGameValid    (const quint32 game) const;
+    QString playerName     (const quint32 game) const;
+    quint32 rupees         (const quint32 game) const;
+    quint32 heartContainers(const quint32 game) const;
+    quint32 currentHealth  (const quint32 game) const;
+
+
+private slots:
+    void showEvent(QShowEvent *);
+    void onButtonClicked(QAbstractButton*);
 private:
     Ui::NewFileDialog *m_ui;
     QToolBox*       m_gameToolBox;

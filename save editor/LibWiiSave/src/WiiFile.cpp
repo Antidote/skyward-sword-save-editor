@@ -21,13 +21,13 @@ WiiFile::WiiFile(const std::string& filename) :
 {
 }
 
-WiiFile::WiiFile(const std::string& filename, u8 permissions, const u8* data, int length) :
+WiiFile::WiiFile(const std::string& filename, Uint8 permissions, const Uint8* data, Uint32 length) :
     m_permissions(permissions),
     m_attributes(0),
     m_type(WiiFile::File),
     m_filename(filename),
     m_fileLen(length),
-    m_fileData((u8*)data)
+    m_fileData((Uint8*)data)
 {
 }
 
@@ -48,22 +48,27 @@ std::string WiiFile::filename() const
     return m_filename;
 }
 
-void WiiFile::setPermissions(const u8 permissions)
+void WiiFile::setPermissions(const Uint8 permissions)
 {
-    m_permissions = (u8)permissions;
+    m_permissions = (Uint8)permissions;
 }
 
-u8 WiiFile::permissions() const
+Uint8 WiiFile::permissions() const
 {
     return m_permissions;
 }
 
-void WiiFile::setData(const u8* data)
+void WiiFile::setData(const Uint8* data)
 {
-    m_fileData = (u8*)data;
+    if (m_fileData)
+    {
+        delete[] m_fileData;
+        m_fileData = NULL;
+    }
+    m_fileData = (Uint8*)data;
 }
 
-u8* WiiFile::data() const
+Uint8* WiiFile::data() const
 {
     return m_fileData;
 }
@@ -78,12 +83,12 @@ int WiiFile::length() const
     return m_fileLen;
 }
 
-void WiiFile::setAttributes(const u8 attr)
+void WiiFile::setAttributes(const Uint8 attr)
 {
     m_attributes = attr;
 }
 
-u8 WiiFile::attributes() const
+Uint8 WiiFile::attributes() const
 {
     return m_attributes;
 }
