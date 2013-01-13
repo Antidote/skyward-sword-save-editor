@@ -1,13 +1,13 @@
 #ifndef BN_H
 #define BN_H
 
-#include <tools.h>
+#include <Types.hpp>
 
-int bn_compare(u8 *a, u8 *b, u32 n);
-void bn_sub_modulus(u8 *a, u8 *N, u32 n);
-void bn_add(u8 *d, u8 *a, u8 *b, u8 *N, u32 n);
-void bn_mul(u8 *d, u8 *a, u8 *b, u8 *N, u32 n);
-void bn_exp(u8 *d, u8 *a, u8 *N, u32 n, u8 *e, u32 en);
-void bn_inv(u8 *d, u8 *a, u8 *N, u32 n);
+int  bn_compare(Uint8 *a, Uint8 *b, Uint32 n);
+void bn_sub_modulus(Uint8 *a, Uint8 *N, Uint32 n);
+void bn_add(Uint8 *d, Uint8 *a, Uint8 *b, Uint8 *N, Uint32 n);
+void bn_mul(Uint8 *d, Uint8 *a, Uint8 *b, Uint8 *N, Uint32 n);
+void bn_exp(Uint8 *d, Uint8 *a, Uint8 *N, Uint32 n, Uint8 *e, Uint32 en);
+void bn_inv(Uint8 *d, Uint8 *a, Uint8 *N, Uint32 n);
 
 #endif // BN_H

@@ -164,6 +164,7 @@ bool SkywardSwordFile::save(const QString& filename)
                 file.remove(m_filename);
                 file.rename(tmpFilename, m_filename);
                 file.remove(tmpFilename);
+                m_isDirty = false;
                 return true;
             }
             else
@@ -1409,11 +1410,11 @@ bool SkywardSwordFile::saveDataBin()
     m_isDirty = false;
     if (m_saveGame != NULL)
     {
-        qDebug() << "Changing wiiking2.sav data";
-        WiiFile* wiiking2 = m_saveGame->getFile("/wiiking2.sav");
-        wiiking2->setData((unsigned char*)m_data);
+        //qDebug() << "Changing wiiking2.sav data";
+        //WiiFile* wiiking2 = m_saveGame->getFile("/wiiking2.sav");
+        //wiiking2->setData((unsigned char*)m_data);
         qDebug() << "Done saving to" << m_filename;
-        m_saveGame->saveToFile(m_filename.toStdString(), (u8*)WiiKeys::instance()->macAddr().data(), WiiKeys::instance()->NGID(),(u8*)WiiKeys::instance()->NGPriv().data(), (u8*)WiiKeys::instance()->NGSig().data(), WiiKeys::instance()->NGKeyID());       
+        m_saveGame->saveToFile(m_filename.toStdString(), (quint8*)WiiKeys::instance()->macAddr().data(), WiiKeys::instance()->NGID(),(quint8*)WiiKeys::instance()->NGPriv().data(), (quint8*)WiiKeys::instance()->NGSig().data(), WiiKeys::instance()->NGKeyID());
         return true;
     }
     else
@@ -1499,7 +1500,7 @@ bool SkywardSwordFile::saveDataBin()
             m_saveGame->setBanner(wiiBanner);
             m_saveGame->addFile("/wiiking2.sav", new WiiFile("wiiking2.sav", WiiFile::GroupRW | WiiFile::OwnerRW, (quint8*)m_data, 0xFBE0));
             m_saveGame->addFile("/skip.dat", new WiiFile("skip.dat", WiiFile::GroupRW | WiiFile::OwnerRW, skipData(), 0x80));
-            m_saveGame->saveToFile(m_filename.toStdString(), (u8*)WiiKeys::instance()->macAddr().data(), WiiKeys::instance()->NGID(),(u8*)WiiKeys::instance()->NGPriv().data(), (u8*)WiiKeys::instance()->NGSig().data(), WiiKeys::instance()->NGKeyID());
+            m_saveGame->saveToFile(m_filename.toStdString(), (quint8*)WiiKeys::instance()->macAddr().data(), WiiKeys::instance()->NGID(),(quint8*)WiiKeys::instance()->NGPriv().data(), (quint8*)WiiKeys::instance()->NGSig().data(), WiiKeys::instance()->NGKeyID());
             delete m_saveGame;
             m_saveGame = NULL;
             return true;
@@ -1608,4 +1609,3 @@ const QPixmap SkywardSwordFile::banner() const
 const float SkywardSwordFile::DEFAULT_POS_X = -4798.150391f;
 const float SkywardSwordFile::DEFAULT_POS_Y =  1237.629517f;
 const float SkywardSwordFile::DEFAULT_POS_Z = -6573.722656f;
-const ushort SkywardSwordFile::JAPANESE_NAME[4] = {0x30ea, 0x30f3, 0x30af, 0};

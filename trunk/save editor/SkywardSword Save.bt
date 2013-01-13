@@ -227,6 +227,7 @@ struct GameData
             ushort totalHeartPieces; // Not sure about this one
             ushort currentHealth; // Watching link die instantly is amusing :3
             byte unk;
+            Printf("%.4X", FTell());
             byte currentRoom;
             FSeek(GameOff + 0x531C);
             string currentLocation;

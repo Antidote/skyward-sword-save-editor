@@ -49,7 +49,8 @@ SOURCES += \
     src/qhexedit2/qhexedit.cpp \
     src/qhexedit2/commands.cpp \
     src/newfiledialog.cpp \
-	src/gameinfowidget.cpp
+	src/gameinfowidget.cpp \
+    src/settingsmanager.cpp
 
 HEADERS  += \
     include/mainwindow.h \
@@ -68,7 +69,8 @@ HEADERS  += \
     include/qhexedit2/qhexedit.h \
     include/qhexedit2/commands.h \
     include/newfiledialog.h \
-    include/gameinfowidget.h
+    include/gameinfowidget.h \
+    include/settingsmanager.h
 
 FORMS    += \
     forms/mainwindow.ui \

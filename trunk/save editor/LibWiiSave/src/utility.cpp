@@ -1,37 +1,36 @@
 #include "utility.h"
-#include "tools.h"
 #include <iostream>
 #include <string.h>
 #include "sha1.h"
 
-bool isEmpty(u8* buf, size_t size)
+bool isEmpty(Uint8* buf, size_t size)
 {
     return buf[0] == 0 && !memcmp(buf, buf + 1, size - 1);
 }
 
-unsigned short swapU16(unsigned short val )
+Uint16 swapU16(Uint16 val)
 {
     return (val << 8) | (val >> 8 );
 }
 
-short swap16(short val )
+Int16 swap16(Int16 val)
 {
     return (val << 8) | ((val >> 8) & 0xFF);
 }
 
-unsigned int swapU32(unsigned int val)
+Uint32 swapU32(Uint32 val)
 {
     val = ((val << 8) & 0xFF00FF00 ) | ((val >> 8) & 0xFF00FF );
     return (val << 16) | (val >> 16);
 }
 
-int swap32( int val )
+Int32 swap32(Int32 val)
 {
     val = ((val << 8) & 0xFF00FF00) | ((val >> 8) & 0xFF00FF );
-    return (val << 16) | ((val >> 16) & 0xFFFF);
+    return (Uint32)(val << 16) | ((val >> 16) & 0xFFFF);
 }
 
-long long swap64(long long val)
+Int64 swap64(Int64 val)
 {
     return ((long long)((((long long)(val) & 0xFF00000000000000ULL) >> 56) |
           (((long long)(val) & 0x00FF000000000000ULL) >> 40) |
@@ -43,18 +42,23 @@ long long swap64(long long val)
           (((long long)(val) & 0x00000000000000FFULL) << 56)));
 }
 
-u8* getSha1( u8 * stuff, u32 stuff_size )
+Uint64 swapU64(Uint64 val)
+{
+    return (Uint64)swap64(val);
+}
+
+Uint8* getSha1( Uint8 * stuff, Uint32 stuff_size )
 {
 	SHA1Context sha;
 	SHA1Reset( &sha );
-	SHA1Input( &sha, (const unsigned char*)stuff, stuff_size );
+    SHA1Input( &sha, (const Uint8*)stuff, stuff_size );
 	if( !SHA1Result( &sha ) )
 	{
 	    std::cout << "getSha1 -> error" << std::endl;
 		return 0;
 	}
 
-	u8* ret = new u8[20];
+    Uint8* ret = new Uint8[20];
 	memset(ret, 0, 20);
 
 	for( int i = 0; i < 5 ; i++ )

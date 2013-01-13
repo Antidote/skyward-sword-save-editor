@@ -1,10 +1,10 @@
 #ifndef EC_H
 #define EC_H
-#include "tools.h"
+#include <Types.hpp>
 
-int check_ec( u8 *ng, u8 *ap, u8 *sig, u8 *sig_hash );
-void make_ec_cert( u8 *cert, u8 *sig, char *signer, char *name, u8 *priv, u32 key_id );
-void generate_ecdsa( u8 *R, u8 *S, u8 *k, u8 *hash );
+bool  check_ec      ( Uint8 *ng, Uint8 *ap, Uint8 *sig, Uint8 *sig_hash );
+void  make_ec_cert  ( Uint8 *cert, Uint8 *sig, char *signer, char *name, Uint8 *priv, Uint32 key_id );
+void  generate_ecdsa( Uint8 *R, Uint8 *S, Uint8 *k, Uint8 *hash );
 
 #endif // EC_H
 

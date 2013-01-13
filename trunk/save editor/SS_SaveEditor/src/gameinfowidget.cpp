@@ -13,9 +13,19 @@ GameInfoWidget::~GameInfoWidget()
     delete m_ui;
 }
 
+bool GameInfoWidget::isGameValid() const
+{
+    return m_ui->createGameChkBox->isChecked();
+}
+
 QString GameInfoWidget::playerName() const
 {
     return m_ui->playerNameLineEdit->text();
+}
+
+void GameInfoWidget::setPlayerName(const QString &name)
+{
+    m_ui->playerNameLineEdit->setText(name);
 }
 
 quint32 GameInfoWidget::rupees() const

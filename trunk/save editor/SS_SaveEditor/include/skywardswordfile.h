@@ -51,7 +51,6 @@ public:
     static const float DEFAULT_POS_X;
     static const float DEFAULT_POS_Y;
     static const float DEFAULT_POS_Z;
-    static const ushort JAPANESE_NAME[4];
 
     enum Region
     {

@@ -6,32 +6,20 @@
 #include <stdio.h>
 
 #include "bn.h"
-/*
-static void bn_print(char *name, u8 *a, u32 n)
-{
-	u32 i;
 
-	printf("%s = ", name);
-
-	for (i = 0; i < n; i++)
-		printf("%02x", a[i]);
-
-	printf("\n");
-}
-*/
-static void bn_zero(u8 *d, u32 n)
+static void bn_zero(Uint8 *d, Uint32 n)
 {
 	memset(d, 0, n);
 }
 
-static void bn_copy(u8 *d, u8 *a, u32 n)
+static void bn_copy(Uint8 *d, Uint8 *a, Uint32 n)
 {
 	memcpy(d, a, n);
 }
 
-int bn_compare(u8 *a, u8 *b, u32 n)
+int bn_compare(Uint8 *a, Uint8 *b, Uint32 n)
 {
-	u32 i;
+    Uint32 i;
 
 	for (i = 0; i < n; i++) {
 		if (a[i] < b[i])
@@ -43,11 +31,11 @@ int bn_compare(u8 *a, u8 *b, u32 n)
 	return 0;
 }
 
-void bn_sub_modulus(u8 *a, u8 *N, u32 n)
+void bn_sub_modulus(Uint8 *a, Uint8 *N, Uint32 n)
 {
-	u32 i;
-	u32 dig;
-	u8 c;
+    Uint32 i;
+    Uint32 dig;
+    Uint8 c;
 
 	c = 0;
 	for (i = n - 1; i < n; i--) {
@@ -57,11 +45,11 @@ void bn_sub_modulus(u8 *a, u8 *N, u32 n)
 	}
 }
 
-void bn_add(u8 *d, u8 *a, u8 *b, u8 *N, u32 n)
+void bn_add(Uint8 *d, Uint8 *a, Uint8 *b, Uint8 *N, Uint32 n)
 {
-	u32 i;
-	u32 dig;
-	u8 c;
+    Uint32 i;
+    Uint32 dig;
+    Uint8 c;
 
 	c = 0;
 	for (i = n - 1; i < n; i--) {
@@ -77,10 +65,10 @@ void bn_add(u8 *d, u8 *a, u8 *b, u8 *N, u32 n)
 		bn_sub_modulus(d, N, n);
 }
 
-void bn_mul(u8 *d, u8 *a, u8 *b, u8 *N, u32 n)
+void bn_mul(Uint8 *d, Uint8 *a, Uint8 *b, Uint8 *N, Uint32 n)
 {
-	u32 i;
-	u8 mask;
+    Uint32 i;
+    Uint8 mask;
 
 	bn_zero(d, n);
 
@@ -92,11 +80,11 @@ void bn_mul(u8 *d, u8 *a, u8 *b, u8 *N, u32 n)
 		}
 }
 
-void bn_exp(u8 *d, u8 *a, u8 *N, u32 n, u8 *e, u32 en)
+void bn_exp(Uint8 *d, Uint8 *a, Uint8 *N, Uint32 n, Uint8 *e, Uint32 en)
 {
-	u8 t[512];
-	u32 i;
-	u8 mask;
+    Uint8 t[512];
+    Uint32 i;
+    Uint8 mask;
 
 	bn_zero(d, n);
 	d[n-1] = 1;
@@ -111,9 +99,9 @@ void bn_exp(u8 *d, u8 *a, u8 *N, u32 n, u8 *e, u32 en)
 }
 
 // only for prime N -- stupid but lazy, see if I care
-void bn_inv(u8 *d, u8 *a, u8 *N, u32 n)
+void bn_inv(Uint8 *d, Uint8 *a, Uint8 *N, Uint32 n)
 {
-	u8 t[512], s[512];
+    Uint8 t[512], s[512];
 
 	bn_copy(t, N, n);
 	bn_zero(s, n);
