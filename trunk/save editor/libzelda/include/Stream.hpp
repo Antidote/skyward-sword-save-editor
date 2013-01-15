@@ -19,7 +19,7 @@ public:
     virtual void writeBytes(Int8* data, Int64 length);
     virtual Int8 readByte();
     virtual Int8* readBytes(Int64 length);
-    void seek(Uint64 position, SeekOrigin origin = Current);
+    void seek(Int64 position, SeekOrigin origin = Current);
     void resize(Uint64 newSize);
 
     void  setData(const Uint8*, Uint64 length);
@@ -42,8 +42,8 @@ protected:
     Uint64  m_position;
     Uint64  m_length;
     Endian  m_endian;
-    Uint8* m_data;
-    bool m_autoResize;
+    Uint8*  m_data;
+    bool    m_autoResize;
 };
 
 #endif // __STREAM_HPP__

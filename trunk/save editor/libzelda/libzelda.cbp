@@ -8,7 +8,7 @@
 		<Build>
 			<Target title="Debug Win32">
 				<Option platforms="Windows;" />
-				<Option output="lib/Win32/libzelda-d" prefix_auto="1" extension_auto="1" />
+				<Option output="lib/Win32/zelda-d" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="" />
 				<Option object_output="obj/Debug/" />
 				<Option type="2" />
@@ -19,7 +19,7 @@
 				</Compiler>
 			</Target>
 			<Target title="Release Win32">
-				<Option output="lib/Win32/libzelda" prefix_auto="1" extension_auto="1" />
+				<Option output="lib/Win32/zelda" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="" />
 				<Option object_output="obj/Release/" />
 				<Option type="2" />
@@ -33,14 +33,14 @@
 				</Linker>
 			</Target>
 			<Target title="Debug Wii">
-				<Option output="lib/Wii/libzelda-d" prefix_auto="1" extension_auto="1" />
+				<Option output="lib/Wii/zelda-d" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="" />
 				<Option type="2" />
 				<Option compiler="devkitppc_wii" />
 				<Option createDefFile="1" />
 			</Target>
 			<Target title="Release Wii">
-				<Option output="lib/Wii/libzelda" prefix_auto="1" extension_auto="1" />
+				<Option output="lib/Wii/zelda" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="" />
 				<Option type="2" />
 				<Option compiler="devkitppc_wii" />
@@ -48,7 +48,7 @@
 			</Target>
 			<Target title="Debug Linux">
 				<Option platforms="Unix;" />
-				<Option output="lib/Linux/libzelda-d" prefix_auto="1" extension_auto="1" />
+				<Option output="lib/Linux/zelda-d" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="" />
 				<Option type="2" />
 				<Option compiler="gcc" />
@@ -56,7 +56,7 @@
 			</Target>
 			<Target title="Release Linux">
 				<Option platforms="Unix;" />
-				<Option output="lib/Linux/libzelda" prefix_auto="1" extension_auto="1" />
+				<Option output="lib/Linux/zelda" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="" />
 				<Option type="2" />
 				<Option compiler="gcc" />
@@ -72,6 +72,7 @@
 		<Unit filename="include/Exception.hpp" />
 		<Unit filename="include/FileNotFoundException.hpp" />
 		<Unit filename="include/IOException.hpp" />
+		<Unit filename="include/InvalidOperationException.hpp" />
 		<Unit filename="include/Stream.hpp" />
 		<Unit filename="include/Types.hpp" />
 		<Unit filename="src/BinaryReader.cpp" />
