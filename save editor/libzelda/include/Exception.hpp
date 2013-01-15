@@ -10,7 +10,7 @@ public:
         m_message(message)
     {};
 
-    std::string getMessage() const
+    std::string message() const
     {
         return m_message;
     };

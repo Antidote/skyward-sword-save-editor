@@ -1,6 +1,8 @@
 #include "Stream.hpp"
 #include "IOException.hpp"
+#include "InvalidOperationException.hpp"
 #include <string.h>
+#include <sstream>
 
 Stream::Stream() :
     m_position(0),
@@ -16,7 +18,7 @@ Stream::Stream(const Uint8* data, Uint64 length) :
     m_autoResize(true)
 {
     if (length <= 0)
-        throw "Length cannot be <= to 0";
+        throw InvalidOperationException("Length cannot be <= to 0");
 
     m_length = length;
     if (data)
@@ -102,22 +104,36 @@ Int8* Stream::readBytes(Int64 length)
     return ret;
 }
 
-void Stream::seek(Uint64 position, SeekOrigin origin)
+void Stream::seek(Int64 position, SeekOrigin origin)
 {
-    if (position > m_length && !m_autoResize)
-        throw IOException("Stream::seek() -> Position outside stream bounds");
-
-
     switch (origin)
     {
         case Beginning:
+            if ((position < 0 || (Uint32)position > m_length) && !m_autoResize)
+            {
+                std::stringstream ss;
+                ss << position;
+                throw IOException("Stream::seek() Beginnning -> Position outside stream bounds: " + ss.str());
+            }
             m_position = position;
             break;
         case Current:
+            if (((m_position + position) < 0 || (m_position + position) > m_length) && !m_autoResize)
+            {
+                std::stringstream ss;
+                ss << (m_position + position);
+                throw IOException("Stream::seek() Current -> Position outside stream bounds: " + ss.str());
+            }
             m_position += position;
             break;
         case End:
-            m_position += m_length - position;
+            if (((m_length - position < 0) || (m_length - position) > m_length) && !m_autoResize)
+            {
+                std::stringstream ss;
+                ss << std::hex << "0x" << (m_length - position);
+                throw IOException("Stream::seek() End -> Position outside stream bounds " + ss.str());
+            }
+            m_position = m_length - position;
             break;
     }
 }
@@ -125,7 +141,7 @@ void Stream::seek(Uint64 position, SeekOrigin origin)
 void Stream::resize(Uint64 newSize)
 {
     if (newSize < m_length)
-        throw Exception("InvalidOperationException: Stream:Resize() -> New size cannot be less to the old size.");
+        throw InvalidOperationException("Stream:Resize() -> New size cannot be less to the old size.");
 
     // Allocate and copy new buffer
     Uint8* newArray = new Uint8[newSize];
