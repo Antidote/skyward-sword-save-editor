@@ -221,3 +221,14 @@ QSpinBox, QDoubleSpinBox, QLineEdit
     color:black;
     padding: 2px 8px;
 }
+
+/* Should the text be visible? */
+#hourSepLbl[blink="false"], #minSepLbl[blink="false"], #secSepLbl[blink="false"]
+{
+        color: black; /* show the text*/
+}
+/* else */
+#hourSepLbl[blink="true"], #minSepLbl[blink="true"], #secSepLbl[blink="true"]
+{
+        color: rgba(0, 0, 0, 0); /* hide the text */
+}

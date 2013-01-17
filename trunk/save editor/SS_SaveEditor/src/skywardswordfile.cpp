@@ -21,6 +21,7 @@
 #include "Exception.hpp"
 #include "wiikeys.h"
 #include "checksum.h"
+#include "settingsmanager.h"
 #include <QMessageBox>
 
 #include <QtEndian>
@@ -37,7 +38,7 @@ SkywardSwordFile::SkywardSwordFile(Region region) :
     // Gentlemen start your checksum engine!!!
     m_checksumEngine = Checksum();
 
-    CreateEmptyFile(region);
+    createEmptyFile(region);
     m_isOpen = true;
     m_bannerImage = QImage();
 }
@@ -175,25 +176,24 @@ bool SkywardSwordFile::save(const QString& filename)
     return false;
 }
 
+int regionConv[]=
+{
+    SkywardSwordFile::NTSCURegion,
+    SkywardSwordFile::NTSCJRegion,
+    SkywardSwordFile::PALRegion
+};
+
 void SkywardSwordFile::createNewGame(SkywardSwordFile::Game game)
 {
-    if (!m_data)
-    {
-        // Default to NTSC-U Region
-        CreateEmptyFile(NTSCURegion);
-    }
-
     if (m_isOpen == false)
     {
-        for (int i = 0; i < 3; i++)
-        {
-            m_game = (Game)i;
-            setNew(true);
-            updateChecksum();
-        }
-        m_isOpen = true;
+        int region = SettingsManager::instance()->defaultRegion();
+        createEmptyFile((Region)regionConv[region]);
     }
 
+    setGame(game);
+    memset(m_data + gameOffset(), 0, 0x53C0);
+    setNew(false);
     m_game = game;
     setSaveTime(QDateTime::currentDateTime());
     setCurrentArea   ("F000");
@@ -203,9 +203,10 @@ void SkywardSwordFile::createNewGame(SkywardSwordFile::Game game)
     setPlayerRotation(0.0f, 0.0f, 0.0f);
     setCameraPosition(DEFAULT_POS_X, DEFAULT_POS_Y, DEFAULT_POS_Z);
     setCameraRotation(0.0f, 0.0f, 0.0f);
+    emit modified();
 }
 
-void SkywardSwordFile::CreateEmptyFile(Region region)
+void SkywardSwordFile::createEmptyFile(Region region)
 {
     // Need to create a new buffer so we can make our changes.
     m_data = new char[0xFBE0];
@@ -221,10 +222,13 @@ void SkywardSwordFile::CreateEmptyFile(Region region)
     for (int i = 0; i < 3; i++)
     {
         m_game = (IGameFile::Game)i;
+        updateChecksum();
         setNew(true);
     }
     m_game = IGameFile::Game1;
     m_isDirty = true;
+    m_isOpen = true;
+    emit modified();
 }
 
 void SkywardSwordFile::exportGame(const QString &filepath, Game game)
@@ -269,14 +273,13 @@ void SkywardSwordFile::deleteGame(Game game)
     updateChecksum();
     m_game = oldGame;
     m_isDirty = true;
+    emit modified();
 }
 
 void SkywardSwordFile::deleteAllGames()
 {
     for (int i = 0; i < 3; i++)
         deleteGame((Game)i);
-
-    m_isDirty = true;
 }
 
 void SkywardSwordFile::close()
@@ -372,6 +375,7 @@ void SkywardSwordFile::setRegion(SkywardSwordFile::Region val)
 
     *(quint32*)(m_data) = val;
     m_isDirty = true;
+    emit modified();
 }
 
 PlayTime SkywardSwordFile::playTime() const
@@ -380,9 +384,10 @@ PlayTime SkywardSwordFile::playTime() const
         return PlayTime();
     PlayTime playTime;
     quint64 tmp = qFromBigEndian<quint64>(*(quint64*)(m_data + gameOffset()));
-    playTime.Hours = ((tmp / TICKS_PER_SECOND) / 60) / 60;
-    playTime.Minutes =  ((tmp / TICKS_PER_SECOND) / 60) % 60;
-    playTime.Seconds = ((tmp / TICKS_PER_SECOND) % 60);
+    playTime.Days    = (((tmp / TICKS_PER_SECOND) / 60) / 60) / 24;
+    playTime.Hours   = (((tmp / TICKS_PER_SECOND) / 60) / 60) % 24;
+    playTime.Minutes = (( tmp / TICKS_PER_SECOND) / 60) % 60;
+    playTime.Seconds = (( tmp / TICKS_PER_SECOND) % 60);
     return playTime;
 }
 
@@ -391,11 +396,16 @@ void SkywardSwordFile::setPlayTime(PlayTime val)
 {
     if (!m_data)
         return;
-    quint64 totalSeconds = (val.Hours * 60) * 60;
-    totalSeconds += val.Minutes * 60;
-    totalSeconds += val.Seconds;
+    quint64 totalSeconds = 0;
+    totalSeconds += ((val.Days    * 60) * 60) * 24;
+    totalSeconds += ( val.Hours   * 60) * 60;
+    totalSeconds += ( val.Minutes * 60);
+    totalSeconds +=   val.Seconds;
     *(quint64*)(m_data + gameOffset()) = qToBigEndian<quint64>(TICKS_PER_SECOND * totalSeconds);
     m_isDirty = true;
+
+    this->updateChecksum();
+    emit modified();
 }
 
 QDateTime SkywardSwordFile::saveTime() const
@@ -410,6 +420,8 @@ void SkywardSwordFile::setSaveTime(const QDateTime& time)
 {
     *(qint64*)(m_data + gameOffset() + 0x0008) = qToBigEndian<qint64>(toWiiTime(time));
     m_isDirty = true;
+    this->updateChecksum();
+    emit modified();
 }
 
 Vector3 SkywardSwordFile::playerPosition() const
@@ -435,6 +447,7 @@ void SkywardSwordFile::setPlayerPosition(Vector3 pos)
     *(float*)(m_data + gameOffset() + 0x0014) = swapFloat(pos.Y);
     *(float*)(m_data + gameOffset() + 0x0018) = swapFloat(pos.Z);
     m_isDirty = true;
+    emit modified();
 }
 
 Vector3 SkywardSwordFile::playerRotation() const
@@ -459,6 +472,8 @@ void SkywardSwordFile::setPlayerRotation(Vector3 rotation)
     *(float*)(m_data + gameOffset() + 0x0020) = swapFloat(rotation.Y);
     *(float*)(m_data + gameOffset() + 0x0024) = swapFloat(rotation.Z);
     m_isDirty = true;
+    updateChecksum();
+    emit modified();
 }
 
 Vector3 SkywardSwordFile::cameraPosition() const
@@ -482,7 +497,8 @@ void SkywardSwordFile::setCameraPosition(Vector3 pos)
     *(float*)(m_data + gameOffset() + 0x0028) = swapFloat(pos.X);
     *(float*)(m_data + gameOffset() + 0x002C) = swapFloat(pos.Y);
     *(float*)(m_data + gameOffset() + 0x0030) = swapFloat(pos.Z);
-    m_isDirty = true;
+    updateChecksum();
+    emit modified();
 }
 
 Vector3 SkywardSwordFile::cameraRotation() const
@@ -508,6 +524,7 @@ void SkywardSwordFile::setCameraRotation(Vector3 rotation)
     *(float*)(m_data + gameOffset() + 0x0038) = swapFloat(rotation.Y);
     *(float*)(m_data + gameOffset() + 0x003C) = swapFloat(rotation.Z);
     m_isDirty = true;
+    emit modified();
 }
 
 QString SkywardSwordFile::playerName() const
@@ -540,6 +557,8 @@ void SkywardSwordFile::setPlayerName(const QString &name)
         *(ushort*)(m_data + gameOffset() + (0x08D4 + j++)) = qToBigEndian<quint16>(name.utf16()[i]);
     }
     m_isDirty = true;
+    this->updateChecksum();
+    emit modified();
 }
 
 bool SkywardSwordFile::isHeroMode() const
@@ -557,6 +576,8 @@ void SkywardSwordFile::setHeroMode(bool val)
 
     setFlag(0x08FE, 0x08, val);
     m_isDirty = true;
+    this->updateChecksum();
+    emit modified();
 }
 
 bool SkywardSwordFile::introViewed() const
@@ -578,8 +599,39 @@ void SkywardSwordFile::setIntroViewed(bool val)
         *(char*)(m_data + gameOffset() + 0x0941) = 0;
 
     m_isDirty = true;
+    this->updateChecksum();
+    emit modified();
 }
 
+void SkywardSwordFile::practiceSwordChanged(bool val)
+{
+    this->setSword(PracticeSword, val);
+}
+
+void SkywardSwordFile::goddessSwordChanged(bool val)
+{
+    this->setSword(GoddessSword, val);
+}
+
+void SkywardSwordFile::goddessLongSwordChanged(bool val)
+{
+    this->setSword(LongSword, val);
+}
+
+void SkywardSwordFile::goddessWhiteSwordChanged(bool val)
+{
+    this->setSword(WhiteSword, val);
+}
+
+void SkywardSwordFile::masterSwordChanged(bool val)
+{
+    this->setSword(MasterSword, val);
+}
+
+void SkywardSwordFile::trueMasterSwordChanged(bool val)
+{
+    this->setSword(TrueMasterSword, val);
+}
 
 bool SkywardSwordFile::sword(Sword sword) const
 {
@@ -622,6 +674,8 @@ void SkywardSwordFile::setSword(Sword sword, bool val)
     }
 
     m_isDirty = true;
+    this->updateChecksum();
+    emit modified();
 }
 
 bool SkywardSwordFile::equipment(WeaponEquipment weapon) const
@@ -709,6 +763,8 @@ void SkywardSwordFile::setEquipment(WeaponEquipment weapon, bool val)
         default: return;
     }
     m_isDirty = true;
+    this->updateChecksum();
+    emit modified();
 }
 
 quint32 SkywardSwordFile::ammo(Ammo type)
@@ -742,6 +798,8 @@ void SkywardSwordFile::setAmmo(Ammo type, quint32 val)
 
    *(quint32*)(m_data + gameOffset() + 0x0A60) = qToBigEndian(arrows | (bombs << 7) | (seeds << 23));
     m_isDirty = true;
+    this->updateChecksum();
+    emit modified();
 }
 
 bool SkywardSwordFile::bug(Bug bug) const
@@ -801,6 +859,7 @@ void SkywardSwordFile::setBug(Bug bug, bool val)
         default: return;
     }
     m_isDirty = true;
+    emit modified();
 }
 
 quint32 SkywardSwordFile::bugQuantity(Bug bug) const
@@ -861,6 +920,7 @@ void SkywardSwordFile::setBugQuantity(Bug bug, quint32 val)
         default: return;
     }
     m_isDirty = true;
+    emit modified();
 }
 
 bool SkywardSwordFile::material(Material material)
@@ -933,6 +993,7 @@ void SkywardSwordFile::setMaterial(Material material, bool val)
         default: return;
     }
     m_isDirty = true;
+    emit modified();
 }
 
 quint32 SkywardSwordFile::materialQuantity(Material material)
@@ -1005,6 +1066,7 @@ void SkywardSwordFile::setMaterialQuantity(Material material, quint32 val)
         default: return;
     }
     m_isDirty = true;
+    emit modified();
 }
 
 quint32 SkywardSwordFile::gratitudeCrystalAmount()
@@ -1022,6 +1084,8 @@ void SkywardSwordFile::setGratitudeCrystalAmount(quint16 val)
     quint16 oldVal = qFromBigEndian<quint16>(*(quint16*)(m_data + gameOffset() + 0x0A50)) & 0xFC00;
     *(quint16*)(m_data + gameOffset() + 0x0A50) = qToBigEndian<quint16>(oldVal | (val << 3 & 0x03FF));
     m_isDirty = true;
+    this->updateChecksum();
+    emit modified();
 }
 
 ushort SkywardSwordFile::rupees() const
@@ -1032,12 +1096,14 @@ ushort SkywardSwordFile::rupees() const
     return qFromBigEndian<quint16>(*(ushort*)(m_data + gameOffset() + 0x0A5E));
 }
 
-void SkywardSwordFile::setRupees(ushort val)
+void SkywardSwordFile::setRupees(int val)
 {
     if (!m_data)
         return;
-    *(ushort*)(m_data + gameOffset() + 0x0A5E) = qToBigEndian<quint16>(val);
+    *(ushort*)(m_data + gameOffset() + 0x0A5E) = qToBigEndian<quint16>((ushort)val);
     m_isDirty = true;
+    this->updateChecksum();
+    emit modified();
 }
 
 ushort SkywardSwordFile::totalHP() const
@@ -1047,13 +1113,14 @@ ushort SkywardSwordFile::totalHP() const
     return qToBigEndian<quint16>(*(ushort*)(m_data + gameOffset() + 0x5302));
 }
 
-void SkywardSwordFile::setTotalHP(ushort val)
+void SkywardSwordFile::setTotalHP(int val)
 {
     if (!m_data)
         return;
 
-    *(ushort*)(m_data + gameOffset() + 0x5302) = qToBigEndian<quint16>(val);
+    *(ushort*)(m_data + gameOffset() + 0x5302) = qToBigEndian<quint16>((ushort)val);
     m_isDirty = true;
+    emit modified();
 }
 
 ushort SkywardSwordFile::unkHP() const
@@ -1064,13 +1131,14 @@ ushort SkywardSwordFile::unkHP() const
     return qFromBigEndian<quint16>(*(ushort*)(m_data + gameOffset() + 0x5304));
 }
 
-void SkywardSwordFile::setUnkHP(ushort val)
+void SkywardSwordFile::setUnkHP(int val)
 {
     if (!m_data)
         return;
 
-    *(ushort*)(m_data + gameOffset() + 0x5304) = qToBigEndian<quint16>(val);
+    *(ushort*)(m_data + gameOffset() + 0x5304) = qToBigEndian<quint16>((ushort)val);
     m_isDirty = true;
+    emit modified();
 }
 
 ushort SkywardSwordFile::currentHP() const
@@ -1081,12 +1149,13 @@ ushort SkywardSwordFile::currentHP() const
     return qFromBigEndian<quint16>(*(quint16*)(m_data + gameOffset() + 0x5306));
 }
 
-void SkywardSwordFile::setCurrentHP(ushort val)
+void SkywardSwordFile::setCurrentHP(int val)
 {
     if (!m_data)
         return;
-    *(ushort*)(m_data + gameOffset() + 0x5306) = qToBigEndian<quint16>(val);
+    *(ushort*)(m_data + gameOffset() + 0x5306) = qToBigEndian<quint16>((ushort)val);
     m_isDirty = true;
+    emit modified();
 }
 
 uint SkywardSwordFile::roomID() const
@@ -1094,10 +1163,12 @@ uint SkywardSwordFile::roomID() const
     return (uint)(*(uchar*)(m_data + gameOffset() + 0x5309));
 }
 
-void SkywardSwordFile::setRoomID(uint val)
+void SkywardSwordFile::setRoomID(int val)
 {
     *(uchar*)(m_data + gameOffset() + 0x5309) = (uchar)val;
     m_isDirty = true;
+    this->updateChecksum();
+    emit modified();
 }
 
 QString SkywardSwordFile::currentMap() const
@@ -1109,6 +1180,8 @@ void SkywardSwordFile::setCurrentMap(const QString& map)
 {
     writeNullTermString(map, gameOffset() + 0x531c);
     m_isDirty = true;
+    this->updateChecksum();
+    emit modified();
 }
 
 QString SkywardSwordFile::currentArea() const
@@ -1120,6 +1193,8 @@ void SkywardSwordFile::setCurrentArea(const QString& map)
 {
     writeNullTermString(map, gameOffset() + 0x533c);
     m_isDirty = true;
+    this->updateChecksum();
+    emit modified();
 }
 
 QString SkywardSwordFile::currentRoom() const // Not sure about this one
@@ -1131,6 +1206,8 @@ void SkywardSwordFile::setCurrentRoom(const QString& map) // Not sure about this
 {
     writeNullTermString(map, gameOffset() + 0x535c);
     m_isDirty = true;
+    this->updateChecksum();
+    emit modified();
 }
 
 void SkywardSwordFile::setGameData(const QByteArray &data)
@@ -1163,6 +1240,7 @@ void SkywardSwordFile::setSkipData(const quint8 *data)
 {
     memcpy((m_data + 0x20 + (0x53C0 * 3)), data, 0x80);
     m_isDirty = true;
+    emit modified();
 }
 
 uint SkywardSwordFile::checksum() const
@@ -1186,7 +1264,12 @@ void SkywardSwordFile::updateChecksum()
     if (!m_data)
         return;
 
-    *(uint*)(m_data + gameOffset() + 0x53BC) =  qToBigEndian<quint32>(m_checksumEngine.CRC32((const unsigned char*)m_data, gameOffset(), 0x53BC)); // change it to Big Endian
+    quint32 checksum = m_checksumEngine.CRC32((const unsigned char*)m_data, gameOffset(), 0x53BC);
+    if (this->checksum() != checksum)
+    {
+        *(uint*)(m_data + gameOffset() + 0x53BC) =  qToBigEndian<quint32>(checksum); // change it to Big Endian
+        emit checksumUpdated();
+    }
 }
 
 bool SkywardSwordFile::isNew() const
@@ -1201,6 +1284,7 @@ void SkywardSwordFile::setNew(bool val)
 {
     *(char*)(m_data + gameOffset() + 0x53AD) = val;
     m_isDirty = true;
+    emit modified();
 }
 
 bool SkywardSwordFile::isModified() const
@@ -1283,6 +1367,412 @@ bool SkywardSwordFile::isValidFile(const QString &filepath, Region* outRegion)
     return (region == NTSCURegion || region == NTSCJRegion || region == PALRegion) && size == 0xFBE0;
 }
 
+// SLOTS
+
+void SkywardSwordFile::slingshotChanged(bool val)
+{
+    this->setEquipment(SlingshotWeapon, val);
+}
+
+void SkywardSwordFile::scattershotChanged(bool val)
+{
+    this->setEquipment(ScattershotWeapon, val);
+}
+
+void SkywardSwordFile::seedAmmoQuantityChanged(int val)
+{
+    this->setAmmo(SeedAmmo, val);
+}
+
+void SkywardSwordFile::bugnetChanged(bool val)
+{
+    this->setEquipment(BugnetWeapon, val);
+}
+
+void SkywardSwordFile::bigBugnetChanged(bool val)
+{
+    this->setEquipment(BigBugnetWeapon, val);
+}
+
+void SkywardSwordFile::beetleChanged(bool val)
+{
+    this->setEquipment(BeetleWeapon, val);
+
+}
+
+void SkywardSwordFile::hookBeetleChanged(bool val)
+{
+    this->setEquipment(HookBeetleWeapon, val);
+}
+
+void SkywardSwordFile::quickBeetleChanged(bool val)
+{
+    this->setEquipment(QuickBeetleWeapon, val);
+}
+
+void SkywardSwordFile::toughBeetleChanged(bool val)
+{
+    this->setEquipment(ToughBeetleWeapon, val);
+}
+
+void SkywardSwordFile::gustBellowsChanged(bool val)
+{
+    this->setEquipment(GustBellowsWeapon, val);
+}
+
+void SkywardSwordFile::whipChanged(bool val)
+{
+    this->setEquipment(WhipWeapon, val);
+}
+
+void SkywardSwordFile::clawshotChanged(bool val)
+{
+    this->setEquipment(ClawshotWeapon, val);
+}
+
+void SkywardSwordFile::bombChanged(bool val)
+{
+    this->setEquipment(BombWeapon, val);
+}
+
+void SkywardSwordFile::bombAmmoQuantityChanged(int val)
+{
+    this->setAmmo(BombAmmo, val);
+}
+
+void SkywardSwordFile::bowChanged(bool val)
+{
+    this->setEquipment(BowWeapon, val);
+}
+
+void SkywardSwordFile::ironBowChanged(bool val)
+{
+    this->setEquipment(IronBowWeapon, val);
+}
+
+void SkywardSwordFile::sacredBowChanged(bool val)
+{
+    this->setEquipment(SacredBowWeapon, val);
+}
+
+void SkywardSwordFile::arrowAmmoQuantityChanged(int val)
+{
+    this->setAmmo(ArrowAmmo, val);
+}
+
+void SkywardSwordFile::harpChanged(bool val)
+{
+    this->setEquipment(HarpEquipment, val);
+}
+
+void SkywardSwordFile::sailClothChanged(bool val)
+{
+    this->setEquipment(SailClothEquipment, val);
+}
+
+void SkywardSwordFile::diggingMittsChanged(bool val)
+{
+    this->setEquipment(DiggingMittsEquipment, val);
+}
+
+void SkywardSwordFile::moleMittsChanged(bool val)
+{
+    this->setEquipment(MoleMittsEquipment, val);
+}
+
+void SkywardSwordFile::fireShieldEaringsChanged(bool val)
+{
+    this->setEquipment(FireShieldEaringsEquipment, val);
+}
+
+void SkywardSwordFile::waterDragonScaleChanged(bool val)
+{
+    this->setEquipment(WaterDragonScaleEquipment, val);
+}
+
+void SkywardSwordFile::hornetChanged(bool val)
+{
+    this->setBug(HornetBug, val);
+}
+
+void SkywardSwordFile::hornetQuantityChanged(int val)
+{
+    this->setBugQuantity(HornetBug, val);
+}
+void SkywardSwordFile::butterflyChanged(bool val)
+{
+    this->setBug(ButterflyBug, val);
+}
+
+void SkywardSwordFile::butterflyQuantityChanged(int val)
+{
+    this->setBugQuantity(ButterflyBug, val);
+}
+void SkywardSwordFile::dragonflyChanged(bool val)
+{
+    this->setBug(DragonflyBug, val);
+}
+
+void SkywardSwordFile::dragonflyQuantityChanged(int val)
+{
+    this->setBugQuantity(DragonflyBug, val);
+}
+
+void SkywardSwordFile::fireflyChanged(bool val)
+{
+    this->setBug(FireflyBug, val);
+}
+
+void SkywardSwordFile::fireflyQuantityChanged(int val)
+{
+    this->setBugQuantity(FireflyBug, val);
+}
+
+void SkywardSwordFile::rhinoBeetleChanged(bool val)
+{
+    this->setBug(RhinoBeetleBug, val);
+}
+
+void SkywardSwordFile::rhinoBeetleQuantityChanged(int val)
+{
+    this->setBugQuantity(RhinoBeetleBug, val);
+}
+
+void SkywardSwordFile::ladybugChanged(bool val)
+{
+    this->setBug(LadybugBug, val);
+}
+
+void SkywardSwordFile::ladybugQuantityChanged(int val)
+{
+    this->setBugQuantity(LadybugBug, val);
+}
+
+void SkywardSwordFile::sandCicadaChanged(bool val)
+{
+    this->setBug(SandCicadaBug, val);
+}
+
+void SkywardSwordFile::sandCicadaQuantityChanged(int val)
+{
+    this->setBugQuantity(SandCicadaBug, val);
+}
+
+void SkywardSwordFile::stagBeetleChanged(bool val)
+{
+    this->setBug(StagBeetleBug, val);
+}
+
+void SkywardSwordFile::stagBeetleQuantityChanged(int val)
+{
+    this->setBugQuantity(StagBeetleBug, val);
+}
+
+void SkywardSwordFile::grasshopperChanged(bool val)
+{
+    this->setBug(GrasshopperBug, val);
+}
+
+void SkywardSwordFile::grasshopperQuantityChanged(int val)
+{
+    this->setBugQuantity(GrasshopperBug, val);
+}
+
+void SkywardSwordFile::mantisChanged(bool val)
+{
+    this->setBug(MantisBug, val);
+}
+
+void SkywardSwordFile::mantisQuantityChanged(int val)
+{
+    this->setBugQuantity(MantisBug, val);
+}
+
+void SkywardSwordFile::antChanged(bool val)
+{
+    this->setBug(AntBug, val);
+}
+
+void SkywardSwordFile::antQuantityChanged(int val)
+{
+    this->setBugQuantity(AntBug, val);
+}
+
+void SkywardSwordFile::eldinRollerChanged(bool val)
+{
+    this->setBug(RollerBug, val);
+}
+
+void SkywardSwordFile::eldinRollerQuantityChanged(int val)
+{
+    this->setBugQuantity(RollerBug, val);
+}
+
+void SkywardSwordFile::hornetLarvaeChanged(bool val)
+{
+    this->setMaterial(HornetLarvaeMaterial, val);
+}
+
+void SkywardSwordFile::hornetLarvaeQuantityChanged(int val)
+{
+    this->setMaterialQuantity(HornetLarvaeMaterial, (quint32)val);
+}
+
+void SkywardSwordFile::birdFeatherChanged(bool val)
+{
+    this->setMaterial(BirdFeatherMaterial, val);
+}
+
+void SkywardSwordFile::birdFeatherQuantityChanged(int val)
+{
+    this->setMaterialQuantity(BirdFeatherMaterial, val);
+}
+
+void SkywardSwordFile::tumbleWeedChanged(bool val)
+{
+    this->setMaterial(TumbleWeedMaterial, val);
+}
+
+void SkywardSwordFile::tumbleWeedQuantityChanged(int val)
+{
+    this->setMaterialQuantity(TumbleWeedMaterial, val);
+}
+
+void SkywardSwordFile::lizardTailChanged(bool val)
+{
+    this->setMaterial(LizardTailMaterial, val);
+}
+
+void SkywardSwordFile::lizardTailQuantityChanged(int val)
+{
+    this->setMaterialQuantity(LizardTailMaterial, val);
+}
+
+void SkywardSwordFile::eldinOreChanged(bool val)
+{
+    this->setMaterial(EldinOreMaterial, val);
+}
+
+void SkywardSwordFile::eldinOreQuantityChanged(int val)
+{
+    this->setMaterialQuantity(EldinOreMaterial, val);
+}
+
+void SkywardSwordFile::ancientFlowerChanged(bool val)
+{
+    this->setMaterial(AncientFlowerMaterial, val);
+}
+
+void SkywardSwordFile::ancientFlowerQuantityChanged(int val)
+{
+    this->setMaterialQuantity(AncientFlowerMaterial, val);
+}
+
+void SkywardSwordFile::amberRelicChanged(bool val)
+{
+    this->setMaterial(AmberRelicMaterial, val);
+}
+
+void SkywardSwordFile::amberRelicQuantityChanged(int val)
+{
+    this->setMaterialQuantity(AmberRelicMaterial, val);
+}
+
+void SkywardSwordFile::duskRelicChanged(bool val)
+{
+    this->setMaterial(DuskRelicMaterial, val);
+}
+
+void SkywardSwordFile::duskRelicQuantityChanged(int val)
+{
+    this->setMaterialQuantity(DuskRelicMaterial, val);
+}
+
+void SkywardSwordFile::jellyBlobChanged(bool val)
+{
+    this->setMaterial(JellyBlobMaterial, val);
+}
+
+void SkywardSwordFile::jellyBlobQuantityChanged(int val)
+{
+    this->setMaterialQuantity(JellyBlobMaterial, val);
+}
+
+void SkywardSwordFile::monsterClawChanged(bool val)
+{
+    this->setMaterial(MonsterClawMaterial, val);
+}
+
+void SkywardSwordFile::monsterClawQuantityChanged(int val)
+{
+    this->setMaterialQuantity(MonsterClawMaterial, val);
+}
+
+void SkywardSwordFile::monsterHornChanged(bool val)
+{
+    this->setMaterial(MonsterHornMaterial, val);
+}
+
+void SkywardSwordFile::monsterHornQuantityChanged(int val)
+{
+    this->setMaterialQuantity(MonsterHornMaterial, val);
+}
+
+void SkywardSwordFile::decoSkullChanged(bool val)
+{
+    this->setMaterial(OrnamentalSkullMaterial, val);
+}
+
+void SkywardSwordFile::decoSkullQuantityChanged(int val)
+{
+    this->setMaterialQuantity(OrnamentalSkullMaterial, val);
+}
+
+void SkywardSwordFile::evilCrystalChanged(bool val)
+{
+    this->setMaterial(EvilCrystalMaterial, val);
+}
+
+void SkywardSwordFile::evilCrystalQuantityChanged(int val)
+{
+    this->setMaterialQuantity(EvilCrystalMaterial, val);
+}
+
+void SkywardSwordFile::blueBirdFeatherChanged(bool val)
+{
+    this->setMaterial(BlueBirdFeatherMaterial, val);
+}
+
+void SkywardSwordFile::blueBirdFeatherQuantityChanged(int val)
+{
+    this->setMaterialQuantity(BlueBirdFeatherMaterial, val);
+}
+
+void SkywardSwordFile::goldenSkullChanged(bool val)
+{
+    this->setMaterial(GoldenSkullMaterial, val);
+}
+
+void SkywardSwordFile::goldenSkullQuantityChanged(int val)
+{
+    this->setMaterialQuantity(GoldenSkullMaterial, val);
+}
+
+void SkywardSwordFile::goddessPlumeChanged(bool val)
+{
+    this->setMaterial(GoddessPlumeMaterial, val);
+}
+
+void SkywardSwordFile::goddessPlumeQuantityChanged(int val)
+{
+    this->setMaterialQuantity(GoddessPlumeMaterial, val);
+}
+
+void SkywardSwordFile::gratitudeCrystalAmountChanged(int val)
+{
+    this->setGratitudeCrystalAmount(val);
+}
+
 quint32 SkywardSwordFile::quantity(bool isRight, int offset) const
 {
     if (!m_data)
@@ -1333,6 +1823,9 @@ void SkywardSwordFile::setNight(const bool val)
         *(quint8*)(m_data + gameOffset() + 0x53B3) |= 0x01;
     else
         *(quint8*)(m_data + gameOffset() + 0x53B3) &= ~0x01;
+
+    this->updateChecksum();
+    emit modified();
 }
 
 void SkywardSwordFile::setData(char *data)
@@ -1342,6 +1835,8 @@ void SkywardSwordFile::setData(char *data)
 
     m_data = data;
     m_isOpen = true;
+    this->updateChecksum();
+    emit modified();
 }
 
 bool SkywardSwordFile::loadDataBin(const QString& filepath, Game game)
@@ -1386,7 +1881,7 @@ bool SkywardSwordFile::loadDataBin(const QString& filepath, Game game)
     }
     catch (Exception e)
     {
-        QMessageBox msg(QMessageBox::Warning, "Error loading file", e.getMessage().c_str());
+        QMessageBox msg(QMessageBox::Warning, "Error loading file", e.message().c_str());
         msg.exec();
     }
     catch (std::string what)
@@ -1424,7 +1919,6 @@ bool SkywardSwordFile::saveDataBin()
         char gameId[5];
         memset(gameId, 0, 5);
         memcpy(gameId, (char*)&r, 4);
-        qDebug() << gameId;
         qDebug() << "Attempting to load embedded banner.tpl";
         QFile banner(":/BannerData/banner.tpl");
         if (banner.open(QFile::ReadOnly))
@@ -1527,7 +2021,6 @@ QString SkywardSwordFile::bannerTitle() const
 
     memset(gameId, 0, 5);
     memcpy(gameId, (char*)&r, 4);
-    qDebug() << gameId;
     QFile title(QString(":/BannerData/%1/title.bin").arg(gameId));
     if (title.open(QFile::ReadOnly))
     {
@@ -1609,3 +2102,4 @@ const QPixmap SkywardSwordFile::banner() const
 const float SkywardSwordFile::DEFAULT_POS_X = -4798.150391f;
 const float SkywardSwordFile::DEFAULT_POS_Y =  1237.629517f;
 const float SkywardSwordFile::DEFAULT_POS_Z = -6573.722656f;
+

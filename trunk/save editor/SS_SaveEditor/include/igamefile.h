@@ -18,7 +18,7 @@
 
 #include <QString>
 
-class IGameFile
+class IGameFile : public QObject
 {
 public:
     enum Game
@@ -29,8 +29,6 @@ public:
         Game3,
         GameCount
     };
-
-    virtual ~IGameFile(){}
 
     virtual bool isOpen() const=0;
     virtual void close() = 0;

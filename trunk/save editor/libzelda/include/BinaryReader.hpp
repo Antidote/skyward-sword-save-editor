@@ -15,15 +15,16 @@ public:
     void writeByte(Int8 byte);
     void writeBytes(Int8*, Int64);
 
-    Int16  readInt16();
-    Uint16 readUInt16();
-    Int32  readInt32();
-    Uint32 readUInt32();
-    Int64  readInt64();
-    Uint64 readUInt64();
-    float  readFloat();
-    double readDouble();
-    bool   readBool();
+    Int16       readInt16();
+    Uint16      readUInt16();
+    Int32       readInt32();
+    Uint32      readUInt32();
+    Int64       readInt64();
+    Uint64      readUInt64();
+    float       readFloat();
+    double      readDouble();
+    bool        readBool();
+    std::string readUnicode();
 
     bool   isOpenForWriting();
 private:

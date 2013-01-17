@@ -124,6 +124,8 @@ quint64 toWiiTime(QDateTime time)
     sysTime = time.toTime_t();
     // Account for DST where needed
     gmTime = localtime(&sysTime);
+    if (!gmTime)
+        return 0;
     if(gmTime->tm_isdst == 1)
         tzDST = 3600;
     else

@@ -144,5 +144,6 @@ void PreferencesDialog::accept()
         settings->setDefaultPlayerNameForRegion(SettingsManager::NTSCJ, m_ui->ntscJNameLE->text());
     if (m_ui->palNameLE->isModified() && !m_ui->palNameLE->text().isEmpty())
         settings->setDefaultPlayerNameForRegion(SettingsManager::PAL, m_ui->palNameLE->text());
-    this->done(QDialog::Accepted);
+
+    QDialog::accept();
 }

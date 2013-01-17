@@ -18,6 +18,11 @@ bool GameInfoWidget::isGameValid() const
     return m_ui->createGameChkBox->isChecked();
 }
 
+void GameInfoWidget::setGameValid(const bool val)
+{
+    m_ui->createGameChkBox->setChecked(val);
+}
+
 QString GameInfoWidget::playerName() const
 {
     return m_ui->playerNameLineEdit->text();

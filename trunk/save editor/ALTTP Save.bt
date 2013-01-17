@@ -7,7 +7,7 @@
 // Purpose: Reverse engineer ALTTP Saves
 //--------------------------------------
 
-
+LittleEndian();
 enum <short> Letters
 {
     A = 0x00,
@@ -148,22 +148,22 @@ struct Crystals
 
 struct RoomFlags
 {
-    short Quadrant1:1;
-    short Quadrant2:1;
-    short Quadrant3:1;
-    short Quadrant4:1;
-    short Chest1:1;
-    short Chest2:1;
-    short Chest3:1;
-    short Chest4:1;
-    short BossBattleWon:1;
-    short Key:1;
-    short KeyOrChest:1;
-    short ChestOrTile:1;
-    short Door1:1;
-    short Door2:1;
-    short Door3:1;
-    short Door4:1;
+    char Chest1:1;
+    char Chest2:1;
+    char Chest3:1;
+    char Chest4:1;
+    char Quadrant1:1;
+    char Quadrant2:1;
+    char Quadrant3:1;
+    char Quadrant4:1;
+    char Door1:1;
+    char Door2:1;
+    char Door3:1;
+    char Door4:1;
+    char BossBattleWon:1;
+    char Key:1;
+    char KeyOrChest:1;
+    char ChestOrTile:1;
 };
 
 struct OverworldEvents
@@ -228,8 +228,8 @@ struct Items
     char Shield;
     char Armor;
     char BottleType[4];
-    short RupeeMax;
-    short RupeeCurrent;
+    ushort RupeeMax;
+    ushort RupeeCurrent;
 };
 /*
 enum <byte> StartLocation
@@ -317,5 +317,5 @@ struct Game
 
 struct
 {
-    Game games[6] <optimize = false>;
+    Game games[1] <optimize = false>;
 }file;

@@ -15,6 +15,7 @@ NewFileDialog::NewFileDialog(QWidget *parent) :
     m_ui->setupUi(this);
     m_gameToolBox = new QToolBox(m_ui->gameGroupBox);
     m_game1Widget = new GameInfoWidget();
+    m_game1Widget->setGameValid(true);
     m_game1Widget->setObjectName("m_game1Widget");
     m_gameToolBox->addItem(m_game1Widget, "Game 1");
     m_gameToolBox->setTabOrder(m_ui->palRB, m_ui->buttonBox);
@@ -124,8 +125,9 @@ quint32 NewFileDialog::currentHealth(const quint32 game) const
     return tmp->currentHealth();
 }
 
-void NewFileDialog::showEvent(QShowEvent *)
+void NewFileDialog::showEvent(QShowEvent *se)
 {
+    m_game1Widget->setGameValid(true);
     SettingsManager* settings = SettingsManager::instance();
     switch(settings->defaultRegion())
     {
@@ -137,6 +139,8 @@ void NewFileDialog::showEvent(QShowEvent *)
     m_game1Widget->setPlayerName(settings->defaultPlayerNameForRegion(settings->defaultRegion()));
     m_game2Widget->setPlayerName(settings->defaultPlayerNameForRegion(settings->defaultRegion()));
     m_game3Widget->setPlayerName(settings->defaultPlayerNameForRegion(settings->defaultRegion()));
+
+    QDialog::showEvent(se);
 }
 
 void NewFileDialog::onButtonClicked(QAbstractButton *b)

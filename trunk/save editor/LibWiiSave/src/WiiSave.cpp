@@ -173,7 +173,7 @@ bool WiiSave::saveToFile(const std::string& filepath, Uint8* macAddress, Uint32 
 
     writeCerts(totalSize, ngId, ngPriv, ngSig, ngKeyId);
 
-    m_writer->Save();
+    m_writer->save();
 
     return true;
 }
@@ -289,38 +289,13 @@ WiiBanner* WiiSave::readBanner()
     animSpeed = m_reader->readUInt16();
     m_reader->seek(22);
 
-    std::vector<short> tmp;
-    for (int i = 0; i < 32; ++i)
-    {
-        short chr = m_reader->readUInt16();
-        if (chr)
-            tmp.push_back(chr);
-        else
-        {
-            tmp.push_back((short)0);
-            break;
-        }
-    }
+    gameTitle = m_reader->readUnicode();
     if (m_reader->position() != 0x0080)
         m_reader->seek(0x0080, Stream::Beginning);
 
-    utf8::utf16to8(tmp.begin(), tmp.end(), back_inserter(gameTitle));
-
-    tmp.clear();
-    for (int i = 0; i < 32; ++i)
-    {
-        short chr = m_reader->readUInt16();
-        if (chr)
-            tmp.push_back(chr);
-        else
-        {
-            tmp.push_back((short)0);
-            break;
-        }
-    }
+    subTitle = m_reader->readUnicode();
     if (m_reader->position() != 0x00C0)
         m_reader->seek(0x00C0, Stream::Beginning);
-    utf8::utf16to8(tmp.begin(), tmp.end(), back_inserter(subTitle));
 
     WiiBanner* banner = new WiiBanner;
     banner->setGameID(gameId);
@@ -499,7 +474,7 @@ void WiiSave::writeBanner()
             m_writer->writeBytes((Int8*)tmpIcon, 48*48*2);
         }
     }
-    m_writer->Save();
+    m_writer->save();
     delete[] tmpIcon; // delete tmp buffer;
 
     Uint8* hash = new Uint8[0x10];
