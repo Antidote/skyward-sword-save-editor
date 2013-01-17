@@ -1,10 +1,12 @@
 #include "BinaryReader.hpp"
 #include "IOException.hpp"
 #include "FileNotFoundException.hpp"
-#include "utility.h"
+#include "utility.hpp"
+#include "utf8.h"
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <vector>
 
 BinaryReader::BinaryReader(const Stream& stream) :
     Stream(stream)
@@ -156,6 +158,24 @@ bool BinaryReader::readBool()
 
     bool ret = *(bool*)(m_data + m_position);
     m_position += 1;
+    return ret;
+}
+
+std::string BinaryReader::readUnicode()
+{
+    std::string ret;
+    std::vector<short> tmp;
+    bool done = false;
+    do
+    {
+        short chr = readUInt16();
+        if (chr && !done)
+            tmp.push_back(chr);
+        else
+            break;
+    }while(!done);
+
+    utf8::utf16to8(tmp.begin(), tmp.end(), back_inserter(ret));
     return ret;
 }
 

@@ -24,6 +24,7 @@ public:
     quint32 defaultRegion() const;
     void setDefaultRegion(const quint32 region);
 
+    void saveSettings();
     static SettingsManager* instance();
 signals:
     

@@ -29,12 +29,14 @@ class FileInfoDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit FileInfoDialog(QWidget *parent, SkywardSwordFile& game);
+    explicit FileInfoDialog(QWidget *parent);
     ~FileInfoDialog();
 
+    void setGameFile(SkywardSwordFile* game);
 private slots:
-    void onRegionChanged(QAbstractButton*);
-    void onAccepted();
+    void showEvent(QShowEvent *);
+    void onRegionChanged(int);
+    void accept();
 private:
     enum StringType {Title, Subtitle};
     QString regionString(int region, StringType type) const;

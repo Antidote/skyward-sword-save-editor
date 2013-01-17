@@ -50,6 +50,9 @@
            <property name="text">
             <string>NTSC-U</string>
            </property>
+           <attribute name="buttonGroup">
+            <string notr="true">regionBtnGrp</string>
+           </attribute>
           </widget>
          </item>
          <item>
@@ -57,6 +60,9 @@
            <property name="text">
             <string>NTSC-J</string>
            </property>
+           <attribute name="buttonGroup">
+            <string notr="true">regionBtnGrp</string>
+           </attribute>
           </widget>
          </item>
          <item>
@@ -64,6 +70,9 @@
            <property name="text">
             <string>PAL</string>
            </property>
+           <attribute name="buttonGroup">
+            <string notr="true">regionBtnGrp</string>
+           </attribute>
           </widget>
          </item>
         </layout>
@@ -170,6 +179,12 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>ntscURadioBtn</tabstop>
+  <tabstop>ntscJRadioBtn</tabstop>
+  <tabstop>palRadioBtn</tabstop>
+  <tabstop>buttonBox</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
@@ -205,4 +220,7 @@
    </hints>
   </connection>
  </connections>
+ <buttongroups>
+  <buttongroup name="regionBtnGrp"/>
+ </buttongroups>
 </ui>

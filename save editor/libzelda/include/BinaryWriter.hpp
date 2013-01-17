@@ -9,7 +9,7 @@ class BinaryWriter : public Stream
 public:
     BinaryWriter(const Stream& stream);
     BinaryWriter(const std::string& filename);
-    void Save(const std::string& filename="");
+    void save(const std::string& filename="");
 
     Int8 readByte();
     Int8* readBytes(Int64);
@@ -23,6 +23,7 @@ public:
     void writeFloat(float);
     void writeDouble(double);
     void writeBool(bool);
+    void writeUnicode(const std::string& str);
     bool isOpenForReading();
 private:
     std::string m_filename;

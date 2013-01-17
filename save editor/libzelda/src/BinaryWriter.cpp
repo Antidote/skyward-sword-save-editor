@@ -1,10 +1,12 @@
 #include "BinaryWriter.hpp"
 #include "IOException.hpp"
 #include "FileNotFoundException.hpp"
-#include "utility.h"
+#include "utility.hpp"
+#include "utf8.h"
 
 #include <stdio.h>
 #include <string.h>
+#include <vector>
 
 BinaryWriter::BinaryWriter(const Stream& stream) :
     Stream(stream)
@@ -13,13 +15,13 @@ BinaryWriter::BinaryWriter(const Stream& stream) :
 BinaryWriter::BinaryWriter(const std::string& filename)
     : m_filename(filename)
 {
-    m_length = 0x10;
+    m_length = 0x1;
     m_position = 0;
     m_data = new Uint8[m_length];
     memset(m_data, 0, m_length);
 }
 
-void BinaryWriter::Save(const std::string& filename)
+void BinaryWriter::save(const std::string& filename)
 {
     if (filename.empty() && m_filename.empty())
         throw Exception("InvalidOperationException: BinaryWriter::Save() -> No file specified, cannot save.");
@@ -161,6 +163,22 @@ void BinaryWriter::writeBool(bool val)
 
     *(bool*)(m_data + m_position) = val;
     m_position += sizeof(bool);
+}
+
+void BinaryWriter::writeUnicode(const std::string& str)
+{
+    std::string tmpStr = "\xEF\xBB\xBF" + str;
+
+    std::vector<short> tmp;
+
+    utf8::utf8to16(tmpStr.begin(), tmpStr.end(), back_inserter(tmp));
+
+    for (Uint32 i = 0; i < tmp.size(); ++i)
+    {
+        Uint16 chr = tmp[i];
+        if (chr != 0xFEFF)
+            writeInt16(chr);
+    }
 }
 
 bool BinaryWriter::isOpenForReading()

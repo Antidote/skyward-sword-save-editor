@@ -16,6 +16,7 @@ public:
     ~GameInfoWidget();
     
     bool    isGameValid    () const;
+    void   setGameValid    (const bool val);
     QString playerName     () const;
     void setPlayerName(const QString&);
     quint32 rupees         () const;

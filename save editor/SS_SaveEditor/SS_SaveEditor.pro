@@ -50,7 +50,8 @@ SOURCES += \
     src/qhexedit2/commands.cpp \
     src/newfiledialog.cpp \
 	src/gameinfowidget.cpp \
-    src/settingsmanager.cpp
+    src/settingsmanager.cpp \
+    include/playtimewidget.cpp
 
 HEADERS  += \
     include/mainwindow.h \
@@ -70,7 +71,8 @@ HEADERS  += \
     include/qhexedit2/commands.h \
     include/newfiledialog.h \
     include/gameinfowidget.h \
-    include/settingsmanager.h
+    include/settingsmanager.h \
+    include/playtimewidget.h
 
 FORMS    += \
     forms/mainwindow.ui \
@@ -80,7 +82,8 @@ FORMS    += \
     forms/exportquestdialog.ui \
     forms/preferencesdialog.ui \
     forms/newfiledialog.ui \
-	forms/gameinfowidget.ui
+	forms/gameinfowidget.ui \
+    include/playtimewidget.ui
 
 RESOURCES += \
     resources/resources.qrc

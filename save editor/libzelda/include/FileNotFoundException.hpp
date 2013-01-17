@@ -11,7 +11,7 @@ public:
         m_filename(filename)
     {}
 
-    std::string GetFilename() const { return m_filename; }
+    std::string filename() const { return m_filename; }
 private:
     std::string m_filename;
 };

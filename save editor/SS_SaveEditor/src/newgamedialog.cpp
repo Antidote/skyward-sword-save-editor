@@ -17,6 +17,7 @@
 #include "ui_newgamedialog.h"
 #include "igamefile.h"
 #include "skywardswordfile.h"
+#include "settingsmanager.h"
 
 NewGameDialog::NewGameDialog(QWidget *parent, SkywardSwordFile::Game game) :
     QDialog(parent),
@@ -24,6 +25,8 @@ NewGameDialog::NewGameDialog(QWidget *parent, SkywardSwordFile::Game game) :
     m_game(game)
 {
     m_ui->setupUi(this);
+
+    m_ui->nameLineEdit->setText(SettingsManager::instance()->defaultPlayerName());
 }
 
 NewGameDialog::~NewGameDialog()
@@ -31,21 +34,18 @@ NewGameDialog::~NewGameDialog()
     delete m_ui;
 }
 
-void NewGameDialog::gameFile(SkywardSwordFile& gameFile)
+void NewGameDialog::gameFile(SkywardSwordFile* gameFile)
 {
-    SkywardSwordFile* tmpFile = &gameFile;
-    if (tmpFile == NULL)
-        tmpFile = new SkywardSwordFile(SkywardSwordFile::NTSCURegion);
+    if (!gameFile)
+        gameFile = new SkywardSwordFile(SkywardSwordFile::NTSCURegion);
 
-    tmpFile->createNewGame(m_game); // Create a new Game with defaults.
+    gameFile->createNewGame(m_game); // Create a new Game with defaults.
 
-    tmpFile->setPlayerName (m_ui->nameLineEdit->text());
-    tmpFile->setRupees     (m_ui->rupeeSpinBox->value());
-    tmpFile->setTotalHP    (m_ui->hpSpinBox->value());
-    tmpFile->setCurrentHP  (m_ui->hpSpinBox->value());
-    tmpFile->setUnkHP      (m_ui->hpSpinBox->value());
-    tmpFile->setNew        (false);
-    tmpFile->updateChecksum();
-
-    gameFile = *tmpFile;
+    gameFile->setPlayerName (m_ui->nameLineEdit->text());
+    gameFile->setRupees     (m_ui->rupeeSpinBox->value());
+    gameFile->setTotalHP    (m_ui->hpSpinBox->value());
+    gameFile->setCurrentHP  (m_ui->hpSpinBox->value());
+    gameFile->setUnkHP      (m_ui->hpSpinBox->value());
+    gameFile->setNew        (false);
+    gameFile->updateChecksum();
 }

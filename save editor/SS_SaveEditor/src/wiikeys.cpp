@@ -31,6 +31,11 @@ WiiKeys::WiiKeys() :
 {
 }
 
+WiiKeys::~WiiKeys()
+{
+    saveKeys();
+}
+
 bool WiiKeys::open(const QString &filepath)
 {
     if (filepath.size() <= 0)

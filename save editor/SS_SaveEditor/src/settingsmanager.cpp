@@ -21,12 +21,9 @@ SettingsManager::SettingsManager()
 
 SettingsManager::~SettingsManager()
 {
-    QSettings settings;
-    settings.beginGroup("General Settings");
-    settings.setValue("defaultPlayerNameForRegion", m_defaultNameList);
-    settings.setValue("defaultRegion", (m_defaultRegion == NTSCU ? "NTSCU" : (m_defaultRegion == NTSCJ ? "NTSCJ" : "PAL")));
-    settings.endGroup();
+    saveSettings();
 }
+
 
 QString SettingsManager::defaultPlayerNameForRegion(quint32 region) const
 {
@@ -54,6 +51,15 @@ void SettingsManager::setDefaultRegion(const quint32 region)
         return;
 
     m_defaultRegion = region;
+}
+
+void SettingsManager::saveSettings()
+{
+    QSettings settings;
+    settings.beginGroup("General Settings");
+    settings.setValue("defaultPlayerNameForRegion", m_defaultNameList);
+    settings.setValue("defaultRegion", (m_defaultRegion == NTSCU ? "NTSCU" : (m_defaultRegion == NTSCJ ? "NTSCJ" : "PAL")));
+    settings.endGroup();
 }
 
 

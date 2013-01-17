@@ -16,6 +16,8 @@
 #ifndef SKYWARDSWORDFILE_H
 #define SKYWARDSWORDFILE_H
 
+#include <QObject>
+
 #include <QFile>
 #include "igamefile.h"
 #include <QImage>
@@ -29,6 +31,7 @@ class WiiSave;
 
 struct PlayTime
 {
+    int Days;
     int Hours;
     int Minutes;
     int Seconds;
@@ -46,6 +49,7 @@ struct Vector3
 
 class SkywardSwordFile : public IGameFile
 {
+    Q_OBJECT
 public:
     // Default coords for new file
     static const float DEFAULT_POS_X;
@@ -138,12 +142,12 @@ public:
 
     SkywardSwordFile(Region region);
     SkywardSwordFile(const QString& filepath = NULL, Game game = Game1);
-    ~SkywardSwordFile();
+    virtual ~SkywardSwordFile();
 
     bool save(const QString& filepath = "");
     bool open(Game game = GameNone, const QString& filepath="");
     void createNewGame(Game game);
-    void CreateEmptyFile(Region region);
+    void createEmptyFile(Region region);
     void exportGame(const QString& filepath, Game game = GameNone);
     void exportGame(const QString& filepath, Game game = GameNone, Region region = NTSCURegion);
     void deleteGame(Game game = GameNone);
@@ -166,9 +170,8 @@ public:
     Region    region() const;
     void      setRegion(Region);
     PlayTime  playTime() const;
-    void      setPlayTime(PlayTime val);
+    //void      setPlayTime(PlayTime val);
     QDateTime saveTime() const;
-    void      setSaveTime(const QDateTime& time);
     Vector3   playerPosition() const;
     void      setPlayerPosition(float x, float y, float z);
     void      setPlayerPosition(Vector3 pos);
@@ -182,11 +185,8 @@ public:
     void      setCameraRotation(float roll, float pitch, float yaw);
     void      setCameraRotation(Vector3 rotation);
     QString   playerName() const;
-    void      setPlayerName(const QString& name);
     bool      isHeroMode() const;
-    void      setHeroMode(bool val);
     bool      introViewed() const;
-    void      setIntroViewed(bool val);
     bool      sword(Sword sword) const;
     void      setSword(Sword sword, bool val);
     bool      equipment(WeaponEquipment weapon) const;
@@ -204,24 +204,17 @@ public:
     quint32   gratitudeCrystalAmount();
     void      setGratitudeCrystalAmount(quint16 val);
     ushort    rupees() const;
-    void      setRupees(ushort val);
     ushort    totalHP() const;
-    void      setTotalHP(ushort val);
+
     ushort    unkHP() const;
-    void      setUnkHP(ushort val);
     ushort    currentHP() const;
-    void      setCurrentHP(ushort val);
     uint      checksum() const;
     uint      roomID() const;
-    void      setRoomID(uint val);
     QString   currentMap() const;
-    void      setCurrentMap(const QString& map);
     QString   currentArea() const;
-    void      setCurrentArea(const QString& map);
     QString   currentRoom() const;
-    void      setCurrentRoom(const QString& map);
+
     bool      isNight() const;
-    void      setNight(const bool val);
     void      setGameData(const QByteArray& data);
     QByteArray gameData();
     quint8*   skipData() const;
@@ -238,6 +231,120 @@ public:
     const QPixmap banner() const;
     const QIcon  icon() const;
     static bool isValidFile(const QString& filepath, Region* region);
+
+signals:
+    void checksumUpdated();
+    void modified();
+
+public slots:
+    // General
+    void setPlayTime(PlayTime val);
+    void setSaveTime(const QDateTime& time);
+    void setPlayerName(const QString& name);
+    void setRupees(int val);
+    void setTotalHP(int val);
+    void setUnkHP(int val);
+    void setCurrentHP(int val);
+    void setRoomID(int val);
+    void setCurrentRoom(const QString& map);
+    void setCurrentMap(const QString& map);
+    void setCurrentArea(const QString& map);
+    void setNight(const bool val);
+    void setIntroViewed(bool val);
+    void setHeroMode(bool val);
+    // Sword
+    void practiceSwordChanged(bool);
+    void goddessSwordChanged(bool);
+    void goddessLongSwordChanged(bool);
+    void goddessWhiteSwordChanged(bool);
+    void masterSwordChanged(bool);
+    void trueMasterSwordChanged(bool);
+    // Equipment
+    void slingshotChanged(bool);
+    void scattershotChanged(bool);
+    void seedAmmoQuantityChanged(int);
+    void bugnetChanged(bool);
+    void bigBugnetChanged(bool);
+    void beetleChanged(bool);
+    void hookBeetleChanged(bool);
+    void quickBeetleChanged(bool);
+    void toughBeetleChanged(bool);
+    void gustBellowsChanged(bool);
+    void whipChanged(bool);
+    void clawshotChanged(bool);
+    // Bombs
+    void bombChanged(bool);
+    void bombAmmoQuantityChanged(int);
+    // Bows
+    void bowChanged(bool);
+    void ironBowChanged(bool);
+    void sacredBowChanged(bool);
+    void arrowAmmoQuantityChanged(int);
+    void harpChanged(bool);
+    void sailClothChanged(bool);
+    void diggingMittsChanged(bool);
+    void moleMittsChanged(bool);
+    void fireShieldEaringsChanged(bool);
+    void waterDragonScaleChanged(bool);
+    // Bugs
+    void hornetChanged(bool);
+    void hornetQuantityChanged(int);
+    void butterflyChanged(bool);
+    void butterflyQuantityChanged(int);
+    void dragonflyChanged(bool);
+    void dragonflyQuantityChanged(int);
+    void fireflyChanged(bool);
+    void fireflyQuantityChanged(int);
+    void rhinoBeetleChanged(bool);
+    void rhinoBeetleQuantityChanged(int);
+    void ladybugChanged(bool);
+    void ladybugQuantityChanged(int);
+    void sandCicadaChanged(bool);
+    void sandCicadaQuantityChanged(int);
+    void stagBeetleChanged(bool);
+    void stagBeetleQuantityChanged(int);
+    void grasshopperChanged(bool);
+    void grasshopperQuantityChanged(int);
+    void mantisChanged(bool);
+    void mantisQuantityChanged(int);
+    void antChanged(bool);
+    void antQuantityChanged(int);
+    void eldinRollerChanged(bool);
+    void eldinRollerQuantityChanged(int);
+    // Materials
+    void hornetLarvaeChanged(bool);
+    void hornetLarvaeQuantityChanged(int);
+    void birdFeatherChanged(bool);
+    void birdFeatherQuantityChanged(int);
+    void tumbleWeedChanged(bool);
+    void tumbleWeedQuantityChanged(int);
+    void lizardTailChanged(bool);
+    void lizardTailQuantityChanged(int);
+    void eldinOreChanged(bool);
+    void eldinOreQuantityChanged(int);
+    void ancientFlowerChanged(bool);
+    void ancientFlowerQuantityChanged(int);
+    void amberRelicChanged(bool);
+    void amberRelicQuantityChanged(int);
+    void duskRelicChanged(bool);
+    void duskRelicQuantityChanged(int);
+    void jellyBlobChanged(bool);
+    void jellyBlobQuantityChanged(int);
+    void monsterClawChanged(bool);
+    void monsterClawQuantityChanged(int);
+    void monsterHornChanged(bool);
+    void monsterHornQuantityChanged(int);
+    void decoSkullChanged(bool);
+    void decoSkullQuantityChanged(int);
+    void evilCrystalChanged(bool);
+    void evilCrystalQuantityChanged(int);
+    void blueBirdFeatherChanged(bool);
+    void blueBirdFeatherQuantityChanged(int);
+    void goldenSkullChanged(bool);
+    void goldenSkullQuantityChanged(int);
+    void goddessPlumeChanged(bool);
+    void goddessPlumeQuantityChanged(int);
+    void gratitudeCrystalAmountChanged(int);
 
 private:
     quint32 quantity(bool isRight, int offset) const;

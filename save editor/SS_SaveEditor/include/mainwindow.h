@@ -28,7 +28,10 @@ class QButtonGroup;
 class QAbstractButton;
 class QHexEdit;
 class NewFileDialog;
+class FileInfoDialog;
 class SettingsManager;
+class PlayTimeWidget;
+class PreferencesDialog;
 
 namespace Ui {
 class MainWindow;
@@ -42,15 +45,17 @@ public:
     static const quint32 UPDATE_DELAY = 5000;
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    
-    void updateInfo();
-    void updateTitle(); // any reason these are exposed?
-    void clearInfo();
     SkywardSwordFile* gameFile();
 
+public slots:
+    void updateInfo();
+    void updateTitle();
+    void clearInfo();
+
 private slots:
+    void onPlayerPositionChanged();
+    void onCameraPositionChanged();
     void onTextChanged(QString text);
-    void onValueChanged();
     void onGameChanged(QAction*);
     void onCreateNewGame();
     void onDeleteGame();
@@ -82,6 +87,7 @@ private:
     void setupHexEdit();
     void setupActions();
     void setupConnections();
+    void setupFileConnections();
     Ui::MainWindow*           m_ui;
     QString                   m_oldFilename;
     SkywardSwordFile*         m_gameFile;
@@ -89,11 +95,13 @@ private:
     bool                      m_isUpdating;
     bool                      m_isChecking;
     QActionGroup*             m_gameGroup;
-    QButtonGroup*             m_regionGroup;
     QFileSystemWatcher*       m_fileWatcher;
     QHexEdit*                 m_hexEdit;
     NewFileDialog*            m_newFileDialog;
+    FileInfoDialog*           m_fileInfoDialog;
+    PreferencesDialog*        m_preferencesDialog;
     SettingsManager*          m_settingsManager;
+    PlayTimeWidget*           m_playTime;
 };
 
 #endif // MAINWINDOW_H

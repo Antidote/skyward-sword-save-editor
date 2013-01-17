@@ -1,4 +1,4 @@
-#include "utility.h"
+#include "utility.hpp"
 #include <iostream>
 #include <string.h>
 
@@ -19,14 +19,16 @@ short swap16(short val )
 
 unsigned int swapU32(unsigned int val)
 {
-    val = ((val << 8) & 0xFF00FF00 ) | ((val >> 8) & 0xFF00FF );
-    return (val << 16) | (val >> 16);
+    val = (val & 0x0000FFFF) << 16 | (val & 0xFFFF0000) >> 16;
+    val = (val & 0x00FF00FF) << 8 | (val & 0xFF00FF00) >> 8;
+    return (Uint32)val;
 }
 
 int swap32( int val )
 {
-    val = ((val << 8) & 0xFF00FF00) | ((val >> 8) & 0xFF00FF );
-    return (val << 16) | ((val >> 16) & 0xFFFF);
+    val = (val & 0x0000FFFF) << 16 | (val & 0xFFFF0000) >> 16;
+    val = (val & 0x00FF00FF) << 8 | (val & 0xFF00FF00) >> 8;
+    return val;
 }
 
 long long swap64(long long val)

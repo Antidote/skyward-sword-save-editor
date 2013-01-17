@@ -34,7 +34,7 @@ public:
     explicit NewGameDialog(QWidget *parent = 0, SkywardSwordFile::Game game = SkywardSwordFile::Game1);
     ~NewGameDialog();
 
-    void gameFile(SkywardSwordFile& gameFile);
+    void gameFile(SkywardSwordFile* gameFile);
 
 private:
     Ui::NewGameDialog* m_ui;
