@@ -1,6 +1,7 @@
 #include "utility.hpp"
 #include <iostream>
 #include <string.h>
+#include <stdlib.h>
 
 bool isEmpty(Int8* buf, size_t size)
 {
@@ -47,4 +48,10 @@ bool isSystemBigEndian()
 {
     char* test = (char*)"\xFE\xFF";
     return (*(unsigned short*)test == 0xFEFF);
+}
+
+void fillRandom(Uint8 * rndArea, Uint8 count)
+{
+        for(Uint16 i = 0; i < count; i++)
+                rndArea[i]=rand();
 }

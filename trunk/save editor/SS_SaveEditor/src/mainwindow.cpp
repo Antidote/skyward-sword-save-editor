@@ -281,6 +281,11 @@ void MainWindow::setupFileConnections()
     connect(m_ui->curMapLineEdit,       SIGNAL(textChanged(QString)), m_gameFile, SLOT(setCurrentMap(QString)));
     connect(m_ui->curAreaLineEdit,      SIGNAL(textChanged(QString)), m_gameFile, SLOT(setCurrentArea(QString)));
     connect(m_ui->curRoomLineEdit,      SIGNAL(textChanged(QString)), m_gameFile, SLOT(setCurrentRoom(QString)));
+    // Wallets
+    connect(m_ui->mediumWalletChkBox,   SIGNAL(toggled(bool)),        m_gameFile, SLOT(setMediumWallet(bool)));
+    connect(m_ui->bigWalletChkBox,      SIGNAL(toggled(bool)),        m_gameFile, SLOT(setBigWallet(bool)));
+    connect(m_ui->giantWalletChkBox,    SIGNAL(toggled(bool)),        m_gameFile, SLOT(setGiantWallet(bool)));
+    connect(m_ui->tycoonWalletChkBox,   SIGNAL(toggled(bool)),        m_gameFile, SLOT(setTycoonWallet(bool)));
     // Swords
     connect(m_ui->practiceSwdChkBox,    SIGNAL(toggled(bool)),        m_gameFile, SLOT(practiceSwordChanged(bool)));
     connect(m_ui->goddessSwdChkBox,     SIGNAL(toggled(bool)),        m_gameFile, SLOT(goddessSwordChanged(bool)));
@@ -566,6 +571,12 @@ void MainWindow::updateInfo()
     m_ui->nightChkbox        ->setChecked(m_gameFile->isNight());
     m_ui->heroModeChkBox     ->setChecked(m_gameFile->isHeroMode());
     m_ui->introViewedChkBox  ->setChecked(m_gameFile->introViewed());
+
+    // Wallets
+    m_ui->mediumWalletChkBox ->setChecked(m_gameFile->wallet(SkywardSwordFile::MediumWallet));
+    m_ui->bigWalletChkBox    ->setChecked(m_gameFile->wallet(SkywardSwordFile::BigWallet));
+    m_ui->giantWalletChkBox  ->setChecked(m_gameFile->wallet(SkywardSwordFile::GiantWallet));
+    m_ui->tycoonWalletChkBox ->setChecked(m_gameFile->wallet(SkywardSwordFile::TycoonWallet));
     // Swords
     m_ui->practiceSwdChkBox  ->setChecked(m_gameFile->sword (SkywardSwordFile::PracticeSword));
     m_ui->goddessSwdChkBox   ->setChecked(m_gameFile->sword (SkywardSwordFile::GoddessSword));

@@ -39,7 +39,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="playerTab">
        <attribute name="title">
@@ -719,67 +719,6 @@
         <string>Equipment</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_16">
-        <item row="0" column="1">
-         <widget class="QGroupBox" name="bugnetGrpBox">
-          <property name="title">
-           <string>Bug Net</string>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_2">
-           <property name="margin">
-            <number>2</number>
-           </property>
-           <property name="spacing">
-            <number>2</number>
-           </property>
-           <item row="0" column="0">
-            <widget class="QCheckBox" name="bugNetChkBox">
-             <property name="toolTip">
-              <string>Bug Net</string>
-             </property>
-             <property name="statusTip">
-              <string>Bug Net</string>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="icon">
-              <iconset resource="../resources/resources.qrc">
-               <normaloff>:/Weapons/Bugnet</normaloff>:/Weapons/Bugnet</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>48</width>
-               <height>48</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QCheckBox" name="bigBugNetChkBox">
-             <property name="toolTip">
-              <string>Big Bug Net</string>
-             </property>
-             <property name="statusTip">
-              <string>Big Bug Net</string>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="icon">
-              <iconset resource="../resources/resources.qrc">
-               <normaloff>:/Weapons/BigBugnet</normaloff>:/Weapons/BigBugnet</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>48</width>
-               <height>48</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
         <item row="0" column="2">
          <widget class="QGroupBox" name="slingShotGrpBox">
           <property name="title">
@@ -845,6 +784,214 @@
              </property>
              <property name="maximum">
               <number>127</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QGroupBox" name="bugnetGrpBox">
+          <property name="title">
+           <string>Bug Net</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_2">
+           <property name="margin">
+            <number>2</number>
+           </property>
+           <property name="spacing">
+            <number>2</number>
+           </property>
+           <item row="0" column="0">
+            <widget class="QCheckBox" name="bugNetChkBox">
+             <property name="toolTip">
+              <string>Bug Net</string>
+             </property>
+             <property name="statusTip">
+              <string>Bug Net</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="../resources/resources.qrc">
+               <normaloff>:/Weapons/Bugnet</normaloff>:/Weapons/Bugnet</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>48</width>
+               <height>48</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QCheckBox" name="bigBugNetChkBox">
+             <property name="toolTip">
+              <string>Big Bug Net</string>
+             </property>
+             <property name="statusTip">
+              <string>Big Bug Net</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="../resources/resources.qrc">
+               <normaloff>:/Weapons/BigBugnet</normaloff>:/Weapons/BigBugnet</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>48</width>
+               <height>48</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="1" column="2" rowspan="2">
+         <widget class="QGroupBox" name="swdGroupBox">
+          <property name="title">
+           <string>Swords</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_10">
+           <property name="margin">
+            <number>2</number>
+           </property>
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <item row="0" column="2">
+            <widget class="QCheckBox" name="goddessSwdChkBox">
+             <property name="toolTip">
+              <string>Goddess Sword</string>
+             </property>
+             <property name="statusTip">
+              <string>Goddess Sword</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="../resources/resources.qrc">
+               <normaloff>:/Swords/GoddessSword</normaloff>:/Swords/GoddessSword</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>32</width>
+               <height>160</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="2">
+            <widget class="QCheckBox" name="masterSwdChkBox">
+             <property name="toolTip">
+              <string>Master Sword</string>
+             </property>
+             <property name="statusTip">
+              <string>Master Sword</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="../resources/resources.qrc">
+               <normaloff>:/Swords/MasterSword</normaloff>:/Swords/MasterSword</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>32</width>
+               <height>160</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="3">
+            <widget class="QCheckBox" name="trueMasterSwdChkBox">
+             <property name="toolTip">
+              <string>True Master Sword</string>
+             </property>
+             <property name="statusTip">
+              <string>True Master Sword</string>
+             </property>
+             <property name="icon">
+              <iconset resource="../resources/resources.qrc">
+               <normaloff>:/Swords/TrueMasterSword</normaloff>:/Swords/TrueMasterSword</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>32</width>
+               <height>160</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="3">
+            <widget class="QCheckBox" name="longSwdChkBox">
+             <property name="toolTip">
+              <string>Goddess Long Sword</string>
+             </property>
+             <property name="statusTip">
+              <string>Goddess Long Sword</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="../resources/resources.qrc">
+               <normaloff>:/Swords/LongSword</normaloff>:/Swords/LongSword</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>32</width>
+               <height>160</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QCheckBox" name="whiteSwdChkBox">
+             <property name="toolTip">
+              <string>Goddess White Sword</string>
+             </property>
+             <property name="statusTip">
+              <string>Goddess White Sword</string>
+             </property>
+             <property name="icon">
+              <iconset resource="../resources/resources.qrc">
+               <normaloff>:/Swords/GoddessWhiteSword</normaloff>:/Swords/GoddessWhiteSword</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>32</width>
+               <height>160</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QCheckBox" name="practiceSwdChkBox">
+             <property name="toolTip">
+              <string>Practice Sword</string>
+             </property>
+             <property name="statusTip">
+              <string>Practice Sword</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="../resources/resources.qrc">
+               <normaloff>:/Swords/PracticeSword</normaloff>:/Swords/PracticeSword</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>32</width>
+               <height>160</height>
+              </size>
              </property>
             </widget>
            </item>
@@ -1048,153 +1195,6 @@
               <size>
                <width>48</width>
                <height>48</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item row="1" column="2" rowspan="2">
-         <widget class="QGroupBox" name="swdGroupBox">
-          <property name="title">
-           <string>Swords</string>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_10">
-           <property name="margin">
-            <number>2</number>
-           </property>
-           <property name="spacing">
-            <number>0</number>
-           </property>
-           <item row="0" column="2">
-            <widget class="QCheckBox" name="goddessSwdChkBox">
-             <property name="toolTip">
-              <string>Goddess Sword</string>
-             </property>
-             <property name="statusTip">
-              <string>Goddess Sword</string>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="icon">
-              <iconset resource="../resources/resources.qrc">
-               <normaloff>:/Swords/GoddessSword</normaloff>:/Swords/GoddessSword</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>32</width>
-               <height>160</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="2">
-            <widget class="QCheckBox" name="masterSwdChkBox">
-             <property name="toolTip">
-              <string>Master Sword</string>
-             </property>
-             <property name="statusTip">
-              <string>Master Sword</string>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="icon">
-              <iconset resource="../resources/resources.qrc">
-               <normaloff>:/Swords/MasterSword</normaloff>:/Swords/MasterSword</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>32</width>
-               <height>160</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="3">
-            <widget class="QCheckBox" name="trueMasterSwdChkBox">
-             <property name="toolTip">
-              <string>True Master Sword</string>
-             </property>
-             <property name="statusTip">
-              <string>True Master Sword</string>
-             </property>
-             <property name="icon">
-              <iconset resource="../resources/resources.qrc">
-               <normaloff>:/Swords/TrueMasterSword</normaloff>:/Swords/TrueMasterSword</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>32</width>
-               <height>160</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="3">
-            <widget class="QCheckBox" name="longSwdChkBox">
-             <property name="toolTip">
-              <string>Goddess Long Sword</string>
-             </property>
-             <property name="statusTip">
-              <string>Goddess Long Sword</string>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="icon">
-              <iconset resource="../resources/resources.qrc">
-               <normaloff>:/Swords/LongSword</normaloff>:/Swords/LongSword</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>32</width>
-               <height>160</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QCheckBox" name="whiteSwdChkBox">
-             <property name="toolTip">
-              <string>Goddess White Sword</string>
-             </property>
-             <property name="statusTip">
-              <string>Goddess White Sword</string>
-             </property>
-             <property name="icon">
-              <iconset resource="../resources/resources.qrc">
-               <normaloff>:/Swords/GoddessWhiteSword</normaloff>:/Swords/GoddessWhiteSword</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>32</width>
-               <height>160</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QCheckBox" name="practiceSwdChkBox">
-             <property name="toolTip">
-              <string>Practice Sword</string>
-             </property>
-             <property name="statusTip">
-              <string>Practice Sword</string>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="icon">
-              <iconset resource="../resources/resources.qrc">
-               <normaloff>:/Swords/PracticeSword</normaloff>:/Swords/PracticeSword</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>32</width>
-               <height>160</height>
               </size>
              </property>
             </widget>
@@ -1456,7 +1456,7 @@
           </property>
          </spacer>
         </item>
-        <item row="2" column="4">
+        <item row="2" column="5">
          <spacer name="horizontalSpacer_4">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
@@ -1468,6 +1468,98 @@
            </size>
           </property>
          </spacer>
+        </item>
+        <item row="0" column="4" rowspan="3">
+         <widget class="QGroupBox" name="walletsGroup">
+          <property name="title">
+           <string>Wallets</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_17">
+           <item row="3" column="0">
+            <widget class="QCheckBox" name="giantWalletChkBox">
+             <property name="icon">
+              <iconset resource="../resources/resources.qrc">
+               <normaloff>:/Wallets/GiantWallet</normaloff>:/Wallets/GiantWallet</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>64</width>
+               <height>64</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QCheckBox" name="bigWalletChkBox">
+             <property name="icon">
+              <iconset resource="../resources/resources.qrc">
+               <normaloff>:/Wallets/BigWallet</normaloff>:/Wallets/BigWallet</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>64</width>
+               <height>64</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QCheckBox" name="mediumWalletChkBox">
+             <property name="icon">
+              <iconset resource="../resources/resources.qrc">
+               <normaloff>:/Wallets/MediumWallet</normaloff>:/Wallets/MediumWallet</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>64</width>
+               <height>64</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="QCheckBox" name="smallWalletChkBox">
+             <property name="icon">
+              <iconset resource="../resources/resources.qrc">
+               <normaloff>:/Wallets/SmallWallet</normaloff>:/Wallets/SmallWallet</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>64</width>
+               <height>64</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0">
+            <widget class="QCheckBox" name="tycoonWalletChkBox">
+             <property name="icon">
+              <iconset resource="../resources/resources.qrc">
+               <normaloff>:/Wallets/TycoonWallet</normaloff>:/Wallets/TycoonWallet</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>64</width>
+               <height>64</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="0">
+            <spacer name="verticalSpacer_5">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
         </item>
        </layout>
       </widget>

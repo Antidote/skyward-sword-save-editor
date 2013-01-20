@@ -2,6 +2,8 @@
 #ifndef _SHA1_H_
 #define _SHA1_H_
 
+#include <Types.hpp>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -32,6 +34,10 @@ int SHA1Result(SHA1Context *);
 void SHA1Input( SHA1Context *,
 		const unsigned char *,
 		unsigned);
+
+
+
+Uint8* getSha1( Uint8 * stuff, Uint32 stuff_size );
 
 #ifdef __cplusplus
 }
