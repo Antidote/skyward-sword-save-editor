@@ -1,5 +1,5 @@
 #include "WiiBanner.h"
-#include "utility.h"
+#include <utility.hpp>
 #include <string.h>
 
 WiiImage::WiiImage(Uint32 width, Uint32 height, Uint8* data) :

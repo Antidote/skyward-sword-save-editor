@@ -14,7 +14,6 @@ public:
 
     void writeByte(Int8 byte);
     void writeBytes(Int8*, Int64);
-
     Int16       readInt16();
     Uint16      readUInt16();
     Int32       readInt32();
@@ -28,6 +27,7 @@ public:
 
     bool   isOpenForWriting();
 private:
+    Uint32      m_bitPosition;
     std::string m_filename;
 };
 

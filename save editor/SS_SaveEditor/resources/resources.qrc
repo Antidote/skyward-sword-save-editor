@@ -126,4 +126,11 @@
         <file alias="CheckBox/CheckBox_hover">ui/CheckBox/CheckBox_hover.png</file>
         <file alias="CheckBox/CheckBox_normal">ui/CheckBox/CheckBox_normal.png</file>
     </qresource>
+    <qresource prefix="/Wallets">
+        <file alias="BigWallet">Equipment/Wallets/Big Wallet.png</file>
+        <file alias="GiantWallet">Equipment/Wallets/Giant Wallet.png</file>
+        <file alias="MediumWallet">Equipment/Wallets/Medium Wallet.png</file>
+        <file alias="SmallWallet">Equipment/Wallets/Small Wallet.png</file>
+        <file alias="TycoonWallet">Equipment/Wallets/Tycoo Wallet.png</file>
+    </qresource>
 </RCC>

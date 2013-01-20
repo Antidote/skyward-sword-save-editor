@@ -78,16 +78,12 @@
 		<Unit filename="include/WiiBanner.h" />
 		<Unit filename="include/WiiFile.h" />
 		<Unit filename="include/WiiSave.h" />
-		<Unit filename="include/aes.h" />
+		<Unit filename="include/WiiSaveFileReader.hpp" />
 		<Unit filename="include/bn.h" />
 		<Unit filename="include/ec.h" />
 		<Unit filename="include/md5.h" />
 		<Unit filename="include/sha1.h" />
 		<Unit filename="include/utf8.h" />
-		<Unit filename="include/utf8/checked.h" />
-		<Unit filename="include/utf8/core.h" />
-		<Unit filename="include/utf8/unchecked.h" />
-		<Unit filename="include/utility.h" />
 		<Unit filename="src/WiiBanner.cpp" />
 		<Unit filename="src/WiiFile.cpp" />
 		<Unit filename="src/WiiSave.cpp" />
@@ -101,10 +97,9 @@
 		<Unit filename="src/md5.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src/sha1.c">
+		<Unit filename="src/sha1.cpp">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src/utility.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

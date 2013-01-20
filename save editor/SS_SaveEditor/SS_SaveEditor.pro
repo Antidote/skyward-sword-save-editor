@@ -23,6 +23,7 @@ CONFIG(release, release|debug){
 }
 
 TARGET = SS_SaveEditor
+QMAKE_CXXFLAGS = -O0 -O1 -O2 -O3 -Os
 TEMPLATE = app
 INCLUDEPATH += include \
            ../LibWiiSave/include \
@@ -31,6 +32,7 @@ unix:LIBS += -L../LibWiiSave/lib/Linux -lWiiSave -L../libzelda/lib/Linux -lzelda
 win32:LIBS +=  -L../LibWiiSave/lib/Win32 -lWiiSave -L../libzelda/lib/Win32 -lzelda
 
 LIBS +=
+QMAKE_LFLAGS += -static
 
 SOURCES += \
     src/main.cpp\

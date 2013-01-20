@@ -7,6 +7,7 @@
 class BinaryWriter : public Stream
 {
 public:
+    BinaryWriter(const Uint8* data, Uint64 length);
     BinaryWriter(const Stream& stream);
     BinaryWriter(const std::string& filename);
     void save(const std::string& filename="");

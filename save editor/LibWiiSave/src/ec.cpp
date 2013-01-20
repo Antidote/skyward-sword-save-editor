@@ -6,7 +6,7 @@
 #include <iostream>
 #include <time.h>
 #include <stdlib.h>
-#include "utility.h"
+#include <utility.hpp>
 
 #include "bn.h"
 #include "ec.h"

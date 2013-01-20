@@ -39,6 +39,8 @@
  */
 
 #include "sha1.h"
+#include <string.h>
+#include <Utility.hpp>
 
 /*
  *  Define the circular shift macro
@@ -368,4 +370,27 @@ void SHA1PadMessage(SHA1Context *context)
     context->Message_Block[63] = (context->Length_Low) & 0xFF;
 
     SHA1ProcessMessageBlock(context);
+}
+
+Uint8* getSha1( Uint8 * stuff, Uint32 stuff_size )
+{
+	SHA1Context sha;
+	SHA1Reset( &sha );
+    SHA1Input( &sha, (const Uint8*)stuff, stuff_size );
+	if( !SHA1Result( &sha ) )
+		return 0;
+
+    Uint8* ret = new Uint8[20];
+	memset(ret, 0, 20);
+
+	for( int i = 0; i < 5 ; i++ )
+	{
+	    int val = sha.Message_Digest[ i ];
+        if (!isSystemBigEndian())
+            val = swap32(val);
+
+		memcpy( (char*)ret + ( i * 4 ), &val, 4 );
+	}
+
+	return ret;
 }

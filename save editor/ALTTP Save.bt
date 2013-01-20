@@ -231,12 +231,13 @@ struct Items
     ushort RupeeMax;
     ushort RupeeCurrent;
 };
-/*
+
 enum <byte> StartLocation
 {
     LinksHouse = 0x00,
-    Sanctuary = 0x01,
- */   
+    Sanctuary  = 0x01,
+    Any        = 0x05
+};
     
 enum <byte> MapIcon
 {
@@ -296,7 +297,7 @@ struct Game
         ProgressIndicator pIndicator;
         ProgressFlags pFlags;
         MapIcon mapIcon;
-        char abvr;
+        StartLocation start;
         ProgressFlags2 pIndicator2;
         LightDarkWorldIndicator worldIndicator;
         char unused;
@@ -317,5 +318,5 @@ struct Game
 
 struct
 {
-    Game games[1] <optimize = false>;
+    Game games[6] <optimize = false>;
 }file;

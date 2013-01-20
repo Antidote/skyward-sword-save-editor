@@ -145,7 +145,8 @@ struct GameData
             uchar weaponsSelectableFlag;
             uchar knightTunic;
             uchar unkFlagsEldinKey;
-            uchar unk;
+            uchar unkFINDME;
+            Printf("%.4X\n", (ushort)(FTell() - GameOff));
             FSeek(GameOff + 0x08F1);
             char zTargetIntro;
             char unkFlag1[4];

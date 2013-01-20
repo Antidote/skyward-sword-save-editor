@@ -6,9 +6,8 @@
 #include "IOException.hpp"
 #include "aes.h"
 #include "ec.h"
-#include "utility.h"
+#include <utility.hpp>
 #include "md5.h"
-#include "utf8.h"
 #include "sha1.h"
 
 #include <stdio.h>
@@ -338,7 +337,7 @@ WiiImage* WiiSave::readImage(Uint32 width, Uint32 height)
 {
     Uint8* image = (Uint8*)m_reader->readBytes(width*height*2);
 
-    if (!isEmpty(image, width*height*2))
+    if (!isEmpty((Int8*)image, width*height*2))
         return new WiiImage(width, height, image);
 
     return NULL;
@@ -422,37 +421,12 @@ void WiiSave::writeBanner()
     m_writer->writeInt16(m_banner->animationSpeed());
     m_writer->seek(22);
 
-    std::string str = "\xEF\xBB\xBF" + m_banner->title();
-
-    std::vector<short> tmp;
-
-    utf8::utf8to16(str.begin(), str.end(), back_inserter(tmp));
-
-    for (Uint32 i = 0; i <= 32; ++i)
-    {
-        if (i >= tmp.size())
-            break;
-        Uint16 chr = tmp[i];
-        if (chr != 0xFEFF)
-            m_writer->writeInt16(chr);
-    }
+    m_writer->writeUnicode(m_banner->title());
 
     if (m_writer->position() != 0x0080)
         m_writer->seek(0x0080, Stream::Beginning);
-    str = "\xEF\xBB\xBF" + m_banner->subtitle();
-    tmp.clear();
 
-    utf8::utf8to16(str.begin(), str.end(), back_inserter(tmp));
-
-    for (Uint32 i = 0; i < tmp.size(); ++i)
-    {
-        if (i >= tmp.size())
-            break;
-
-        Uint16 chr = tmp[i];
-        if (chr != 0xFEFF)
-            m_writer->writeInt16(chr);
-    }
+    m_writer->writeUnicode(m_banner->subtitle());
 
     if (m_writer->position() != 0x00C0)
         m_writer->seek(0x00C0, Stream::Beginning);
@@ -512,15 +486,15 @@ Uint32 WiiSave::writeFile(WiiFile* file)
     m_writer->writeByte(file->type());
 
     Uint8 name[0x45];
-    sillyRandom(name, 0x45);
+    fillRandom(name, 0x45);
     memcpy(name, file->filename().c_str(), file->filename().size());
     name[file->filename().size()] = '\0';
     m_writer->writeBytes((Int8*)name, 0x45);
     Uint8 iv[16];
-    sillyRandom(iv, 0x10);
+    fillRandom(iv, 0x10);
     m_writer->writeBytes((Int8*)iv, 0x10);
     Uint8 crap[0x20];
-    sillyRandom(crap, 0x20);
+    fillRandom(crap, 0x20);
     m_writer->writeBytes((Int8*)crap, 0x20);
 
     if (file->type() == WiiFile::File)

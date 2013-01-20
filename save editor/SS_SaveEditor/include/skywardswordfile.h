@@ -140,6 +140,15 @@ public:
          TrueMasterSword
     };
 
+    enum WalletType
+    {
+        SmallWallet,
+        MediumWallet,
+        BigWallet,
+        GiantWallet,
+        TycoonWallet
+    };
+
     SkywardSwordFile(Region region);
     SkywardSwordFile(const QString& filepath = NULL, Game game = Game1);
     virtual ~SkywardSwordFile();
@@ -187,6 +196,7 @@ public:
     QString   playerName() const;
     bool      isHeroMode() const;
     bool      introViewed() const;
+    bool      wallet(WalletType);
     bool      sword(Sword sword) const;
     void      setSword(Sword sword, bool val);
     bool      equipment(WeaponEquipment weapon) const;
@@ -252,6 +262,13 @@ public slots:
     void setNight(const bool val);
     void setIntroViewed(bool val);
     void setHeroMode(bool val);
+
+    // Wallets
+    void setSmallWallet(bool);
+    void setMediumWallet(bool);
+    void setBigWallet(bool);
+    void setGiantWallet(bool);
+    void setTycoonWallet(bool);
     // Sword
     void practiceSwordChanged(bool);
     void goddessSwordChanged(bool);

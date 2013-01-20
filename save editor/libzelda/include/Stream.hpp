@@ -15,8 +15,10 @@ public:
     Stream(Stream* stream);
     virtual ~Stream();
 
+    virtual void writeBit(bool val);
     virtual void writeByte(Int8 byte);
     virtual void writeBytes(Int8* data, Int64 length);
+    virtual bool readBit();
     virtual Int8 readByte();
     virtual Int8* readBytes(Int64 length);
     void seek(Int64 position, SeekOrigin origin = Current);
@@ -39,6 +41,7 @@ public:
     bool isBigEndian() const;
     bool isLittleEndian() const;
 protected:
+    Uint32  m_bitPosition;
     Uint64  m_position;
     Uint64  m_length;
     Endian  m_endian;

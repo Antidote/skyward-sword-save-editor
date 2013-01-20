@@ -14,4 +14,7 @@ unsigned int   swapU32(unsigned int val);
 
 bool isSystemBigEndian();
 
+void fillRandom(Uint8 * rndArea, Uint8 count);
+
+
 #endif

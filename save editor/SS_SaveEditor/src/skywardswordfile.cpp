@@ -580,6 +580,51 @@ void SkywardSwordFile::setHeroMode(bool val)
     emit modified();
 }
 
+bool SkywardSwordFile::wallet(SkywardSwordFile::WalletType type)
+{
+    switch(type)
+    {
+        case SmallWallet:  return true;
+        case MediumWallet: return flag(0x09EF, 0x04);
+        case BigWallet:    return flag(0x09EF, 0x08);
+        case GiantWallet:  return flag(0x09EF, 0x10);
+        case TycoonWallet: return flag(0x09EF, 0x20);
+    }
+
+    return false;
+}
+void SkywardSwordFile::setSmallWallet(bool)
+{
+}
+
+void SkywardSwordFile::setMediumWallet(bool val)
+{
+    setFlag(0x09EF, 0x04, val);
+    this->updateChecksum();
+    emit modified();
+}
+
+void SkywardSwordFile::setBigWallet(bool val)
+{
+    setFlag(0x09EF, 0x08, val);
+    this->updateChecksum();
+    emit modified();
+}
+
+void SkywardSwordFile::setGiantWallet(bool val)
+{
+    setFlag(0x09EF, 0x10, val);
+    this->updateChecksum();
+    emit modified();
+}
+
+void SkywardSwordFile::setTycoonWallet(bool val)
+{
+    setFlag(0x09EF, 0x20, val);
+    this->updateChecksum();
+    emit modified();
+}
+
 bool SkywardSwordFile::introViewed() const
 {
     if (!m_data)
@@ -593,11 +638,7 @@ void SkywardSwordFile::setIntroViewed(bool val)
     if (!m_data)
         return;
 
-    if (val)
-        *(char*)(m_data + gameOffset() + 0x0941) = 2;
-    else
-        *(char*)(m_data + gameOffset() + 0x0941) = 0;
-
+    setFlag(0x0941, 0x02, val);
     m_isDirty = true;
     this->updateChecksum();
     emit modified();
