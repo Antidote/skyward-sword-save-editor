@@ -17,6 +17,10 @@
 #include "ui_preferencesdialog.h"
 #include "wiikeys.h"
 #include "settingsmanager.h"
+#include <QDir>
+#include <QFileInfo>
+#include <QApplication>
+#include <QFileDialog>
 #include <QDebug>
 
 class HexValidator : public QValidator
@@ -52,14 +56,9 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     m_ui->ngSigPt2LineEdit->setValidator(new HexValidator(this));
     m_ui->ngPrivLineEdit->setValidator(new HexValidator(this));
     m_ui->macAddrLineEdit->setValidator(new HexValidator(this));
-    m_ui->ngIDLineEdit->setText(QString(QByteArray::fromHex(QString::number(WiiKeys::instance()->NGID(), 16).toAscii()).toHex()));
-    m_ui->ngKeyIDLineEdit->setText(QString(QByteArray::fromHex(QString::number(WiiKeys::instance()->NGKeyID(), 16).toAscii()).toHex()));
-    m_ui->ngSigPt1LineEdit->setText(WiiKeys::instance()->NGSig().remove(30, 30).toHex());
-    m_ui->ngSigPt2LineEdit->setText(WiiKeys::instance()->NGSig().mid(30).toHex());
-    m_ui->ngPrivLineEdit->setText(WiiKeys::instance()->NGPriv().toHex());
-    m_ui->macAddrLineEdit->setText(WiiKeys::instance()->macAddr().toHex());
     connect(m_ui->ngSigPt1LineEdit, SIGNAL(textChanged(QString)), this, SLOT(onTextChanged(QString)));
     connect(m_ui->ngSigPt2LineEdit, SIGNAL(textChanged(QString)), this, SLOT(onTextChanged(QString)));
+    connect(m_ui->loadKeysBtn, SIGNAL(clicked()), this, SLOT(onLoadKeys()));
 
     // Region Settings
     SettingsManager* settings = SettingsManager::instance();
@@ -146,4 +145,35 @@ void PreferencesDialog::accept()
         settings->setDefaultPlayerNameForRegion(SettingsManager::PAL, m_ui->palNameLE->text());
 
     QDialog::accept();
+}
+
+void PreferencesDialog::showEvent(QShowEvent *se)
+{
+    m_ui->ngIDLineEdit->setText(QString(QByteArray::fromHex(QString::number(WiiKeys::instance()->NGID(), 16).toAscii()).toHex()));
+    m_ui->ngKeyIDLineEdit->setText(QString(QByteArray::fromHex(QString::number(WiiKeys::instance()->NGKeyID(), 16).toAscii()).toHex()));
+    m_ui->ngSigPt1LineEdit->setText(WiiKeys::instance()->NGSig().remove(30, 30).toHex());
+    m_ui->ngSigPt2LineEdit->setText(WiiKeys::instance()->NGSig().mid(30).toHex());
+    m_ui->ngPrivLineEdit->setText(WiiKeys::instance()->NGPriv().toHex());
+    m_ui->macAddrLineEdit->setText(WiiKeys::instance()->macAddr().toHex());
+
+    QDialog::showEvent(se);
+}
+
+void PreferencesDialog::onLoadKeys()
+{
+    QFileInfo finfo(qApp->applicationDirPath() + "/keys.bin");
+    if (!finfo.exists())
+    {
+        QString fileName = QFileDialog::getOpenFileName(this, "Load Keys", qApp->applicationDirPath(), "BootMii keys.bin (*.bin)");
+
+        if (!fileName.isEmpty())
+        {
+
+            if (WiiKeys::instance()->open(fileName, true))
+            {
+                this->hide();
+                this->show();
+            }
+        }
+    }
 }

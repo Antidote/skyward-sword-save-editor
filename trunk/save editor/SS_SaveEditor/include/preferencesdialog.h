@@ -32,10 +32,11 @@ public:
 
 public slots:
     void accept();
+    void showEvent(QShowEvent *);
 
 private slots:
     void onTextChanged(QString);
-
+    void onLoadKeys();
 private:
     Ui::PreferencesDialog *m_ui;
 };

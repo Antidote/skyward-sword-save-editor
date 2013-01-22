@@ -36,10 +36,30 @@ WiiKeys::~WiiKeys()
     saveKeys();
 }
 
-bool WiiKeys::open(const QString &filepath)
+bool WiiKeys::open(const QString &filepath, bool clear)
 {
-    if (filepath.size() <= 0)
+    if (filepath.isEmpty())
         return false;
+
+    if (clear)
+    {
+        if (m_ngPriv)
+        {
+            delete[] m_ngPriv;
+            m_ngPriv = NULL;
+        }
+
+        if (m_ngSig)
+        {
+            delete[] m_ngSig;
+            m_ngSig = NULL;
+        }
+
+        if (m_ngID != 0)
+            m_ngID = 0;
+        if (m_ngKeyID != 0)
+            m_ngKeyID = 0;
+    }
 
     FILE* f = fopen(filepath.toAscii(), "rb");
 

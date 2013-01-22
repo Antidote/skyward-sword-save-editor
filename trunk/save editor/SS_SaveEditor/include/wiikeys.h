@@ -23,7 +23,7 @@ class WiiKeys
 {
 public:
     ~WiiKeys();
-    bool open(const QString& filepath);
+    bool open(const QString& filepath, bool clear = false);
     bool loadKeys();
     void saveKeys();
     bool isOpen() const;
