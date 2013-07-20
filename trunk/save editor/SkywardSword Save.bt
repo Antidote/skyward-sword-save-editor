@@ -9,7 +9,7 @@
 
 BigEndian();
 
-enum <byte> WeaponID
+enum <uchar> WeaponID
 {
     Bombs,
     Bow,
@@ -23,7 +23,7 @@ enum <byte> WeaponID
     Harp // Useless but interesting
 };
 
-enum <byte> LocationID 
+enum LocationID 
 {
    Skyloft,
    SealedGrounds,
@@ -90,17 +90,17 @@ enum <byte> LocationID
 
 struct ItemFlag
 {
-    byte item1:1;
-    byte item2:1;
-    byte item3:1;
-    byte item4:1;
-    byte item5:1;
-    byte item6:1;
-    byte item7:1;
-    byte item8:1;
+    uchar item1:1;
+    uchar item2:1;
+    uchar item3:1;
+    uchar item4:1;
+    uchar item5:1;
+    uchar item6:1;
+    uchar item7:1;
+    uchar item8:1;
 };
 
-enum <byte> InterfaceType
+enum <uchar> InterfaceType
 {
     Standard = 0x00,
     Light = 0x20,
@@ -135,8 +135,8 @@ struct GameData
             int64 ticks;
             Position playPos;
             Position camPos;
-            FSeek(GameOff + 0x08D3);
-            LocationID locationID;
+            uchar data[0x890]; // Contains Beacons, times and other goodies, need to figure this block out
+            LocationID locationID <format = hex>;
             short name[8];
             uchar missionFlags1;
             uchar unkFlags1;
@@ -146,29 +146,42 @@ struct GameData
             uchar knightTunic;
             uchar unkFlagsEldinKey;
             uchar unkFINDME;
-            Printf("%.4X\n", (ushort)(FTell() - GameOff));
-            FSeek(GameOff + 0x08F1);
-            char zTargetIntro;
-            char unkFlag1[4];
-            char dekuHornet; // need to find value
-            char unkFlag3;
-            char crateIntro;
-            char unkFlags2[5];
-            //FSeek(GameOff + 0x08FE);
-            byte heroMode; // May also be other things, however if you AND it by 0x08 you get the flag for hero mode
-            FSeek(GameOff + 0x090C);
-            byte itemsStolenInterfaceSelectionFlags;
-            byte itemsStolen1;
-            FSeek(GameOff + 0x0934);
+            uchar unkFlags2[2];
+            uchar gameBreakingBugLocation; // Area of interest, NEED TO RESEARCH!!!!!
+            uchar unkFlags3[2];
+            uchar zTargetIntro;
+            uchar unkFlags4[4];
+            uchar dekuHornet; // need to find value
+            uchar unkFlag3;
+            uchar crateIntro;
+            uchar unkFlags5[5];
+            uchar heroMode; // May also be other things, however if you AND it by 0x08 you get the flag for hero mode
+            uchar unknownFlags;
+            uchar goddessChests1;
+            uchar goddessChests2;
+            uchar goddessChests3;
+            uchar unkFlags6[9];
+            uchar itemsStolenInterfaceSelectionFlags;
+            uchar itemsStolen1;
+            uchar unkFlags7[11];
+            uchar eventFlagsRattle;
+            uchar unkFlags8[3];
+            uchar beedlesInsectCage;
+            uchar unkFlags9[4];
+            uchar cawlinsLetter;
+            uchar unkFlags10[0x12];        
             uchar treasure1;
             uchar unk;
             uchar treasure2; // Also holds some scene flags, such as horwell.
             uchar treasure3;
-            FSeek(GameOff + 0x0941);
-            byte introFlag; // Controls wether the file has gone through the first cutscene.
-            FSeek(GameOff + 0x09D2);
+            uchar unkFlags11[0x0A];
+            uchar introFlag; // Controls wether the file has gone through the first cutscene.
+            uchar unkZeros[0x1A]; // This may not all be zeros;
+            uchar unkFlags12[0x12];
+            uchar unkZeros2[0x1E];
+            uchar unkFlags13[0x46];
             InterfaceType interfaceType <format = hex>;
-            FSeek(GameOff + 0x09E4);
+            uchar unkFlags14[0x11];
             ItemFlag itemFlags1;
             uchar staminaRollHeartItem;
             ItemFlag itemFlags2;
@@ -187,89 +200,124 @@ struct GameData
             ItemFlag itemFlags11;
             ItemFlag itemFlags12;
             ItemFlag itemFlags13;
-            uchar unk;
-            uchar unk;
-            uchar unk;
-            uchar unk;
+            uchar unkFlags15[4];
             ItemFlag itemFlags14;
             ItemFlag itemFlags15;
             ItemFlag itemFlags16;
-            uchar unk;
-            uchar unk;
-            uchar unk;
-            uchar unk;          
-            FSeek(GameOff + 0x0A3C);
-            ushort amberRelic;
-            FSeek(GameOff + 0x0A44);
+            uchar unkFlags16[3];
+            uchar unkZeros17[0x30];
+            union
+            {
+                int unk;
+                char unkData[4];
+            }unkUnion;
+            ushort goddesPlumeGoldenSkull;
+            ushort blueBirdFeatherEvilCrystal;
+            ushort ornamentalSkullMonsterHorn;
+            ushort monsterClawJellyBlob;
+            ushort duskRelicAmberRelic;
+            ushort ancientFlowerEldinOre;
+            ushort lizardTailTumbleWeed;
+            ushort birdFeatherDekuHornetLarvae;
             ushort fireflyStagBeatleAmount;
-            ushort unkBug1;
-            ushort gerudoDragonFly;
-            FSeek(GameOff + 0x0A50);
+            ushort eldinRollerGerudoDragonfly;
+            ushort sandCicadaLanayruAnt;
+            ushort blessedButterflyVolcanicLadybug;
+            ushort skyloftMantisDekuHornet;
+            ushort woodlanRhinoBeetleFaronGrasshopper;
             ushort gratitudeCrystalsAmount<format = binary>;
-            FSeek(GameOff + 0x0A5E);
+            uchar  unused[0x0A];
+            ushort unk;
             ushort rupees;
-            FSeek(GameOff + 0x1A66);
-            char dashIntro;
-            char unkFlag6;
-            char unkFlag7; // Seems to deal with Horwell, for one scene and triggers the skyloft intro scene.
-            char skyLoftFlags;
-            char unkFlag8;
-            char horwellJakamar;
-            FSeek(GameOff + 0x30F5);
-            char skyloftIntro;
-            char unkflags[2];
-            char lanayruFacilityBarrel1;
-            char lanayruFacilityBarrel2;
-            char linkroomRupee;
-            FSeek(GameOff + 0x3570);
-            uchar enemyDeadFlag; // Seems to be the "Electric Toad" in the sand pit to the left of the save in Lanayru Mining Facility
-            FSeek(GameOff + 0x5302);
+            uint32 ammo;
+            uchar unkData[0x1AC];
+            uchar scratch[0xE50];
+            uchar unkBytes[4];
+            uchar unkFlags18[2];
+            uchar dashIntro;
+            uchar unkFlag6;
+            uchar unkFlag7; // Seems to deal with Horwell, for one scene and triggers the skyloft intro scene.
+            uchar skyLoftFlags;
+            uchar unkFlag8;
+            uchar horwellJakamar;
+            uchar unkFlags19[0x1A4];
+            uchar scratch2[0x36F0];
             ushort totalHearts;
             ushort totalHeartPieces; // Not sure about this one
             ushort currentHealth; // Watching link die instantly is amusing :3
-            byte unk;
-            Printf("%.4X", FTell());
-            byte currentRoom;
-            FSeek(GameOff + 0x531C);
-            string currentLocation;
-            FSeek(GameOff + 0x533C);
-            string currentArea;
-            FSeek(GameOff + 0x535C);
-            string currentLocationCopy;
-            FSeek(GameOff + 0x53AD);
-            char isNew;
+            ushort currentRoom;
+            ushort unkShorts[9];
+            uchar currentLocation[0x20];
+            uchar currentArea[0x20];
+            uchar currentLocationCopy[0x20];
+            int unkInts[2];
+            uchar unk;
+            uchar unkBytes1[7]; // unused?
+            uchar unk;
+            uchar unkBytes2[0x0F];
+            uchar unkValues[8]; // 0x00, 0x01 ... 0x07
+            uchar unk;
+            uchar unkBytes3[8];
+            uchar isNew;
             WeaponID equipedWeapon;
-            FSeek(GameOff + 0x53B0);
-            char equipedItem;
-            char equipedItemCopy;
-            char unknown; // Dowsing?
-            char isNight;
-            char unknown;
+            ushort equipedItem;
+            ushort equipedItemCopy;
+            uchar isNight;
+            uchar unknown[8]; // padding?
        }info;
-       char rawData[0x53BC];
+       uchar rawData[0x53BC];
     }data;
     int checksum <format = hex>;
 };
 
 struct Skip
 {
-    char unk[0x20];
+    union
+    {
+        struct
+        {
+            ubyte unk:1;
+            ubyte knightTunic:1;
+            ubyte saveZeldaRequest:1;
+            ubyte firstTablet:1;
+            ubyte fiGoddessSword:1;
+            ubyte ZeldaMissing:1;
+            ubyte unused:1; // ? Verify
+            ubyte unk :1;
+            ubyte unk :1;
+            ubyte loftwingStatueVictoryScene:1;
+            ubyte redLoftwing:1;
+            ubyte grooseIntroScene:1;
+            ubyte zeldaToSurface:1;
+            ubyte zeldaRecklessScene:1;
+            ubyte unused:1; //? verify
+            ubyte unused:1; //? verify
+        }flags;
+        uchar unk[0x20];
+    }data;
     uint checksum;
 };
 
 struct
 {
-    union
+    if (FileSize() == 0xFBE0)
     {
-        struct
+        union
         {
-            char magic[4]; // SOUE
-            uchar padding[0x18]; // 0x00
-            int   headerSize <format = hex>; // header size - 1
-        }headerData;
-        char data[headerData.headerSize - 1];
-    }header;
-    GameData gameData[3] <optimize = false>;
-    
-    Skip skip[3];
+            struct
+            {
+                uchar magic[4]; // SOUE
+                uchar padding[0x18]; // 0x00
+                int   headerSize <format = hex>; // header size - 1
+            }headerData;
+            uchar data[headerData.headerSize - 1];
+        }header;
+        GameData gameData[3] <optimize = false>;
+        Skip skip[3];
+        uchar padding[0x14];
+    }
+    else
+    {
+        GameData gameData;
+    };
 }file;
